@@ -1,11 +1,9 @@
 # BLib
 
-Our project is a menegment system of library, the system include client side and server side, the server side connect to DB that save the users and library information.
-
+Our project is a library management system, which includes both a client-side and server-side component. The server side connects to a database that stores user and library information.
 ## Description
 
-Blib is an education project that focus on creating full stack system that manage a library. The system writen in Java and use JavaFx for the gui. The system also connect to MySql DB to manage the user and library data, the connecting to the DB handled using the library JDBC, the client-sever handled using OCSF.
-
+BLib is an educational project focused on developing a full-stack system for managing a library. The system is written in Java, with a graphical user interface built using JavaFX. It connects to a MySQL database to manage user and library data, with database communication handled through JDBC. The client-server interaction is managed using OCSF.
 ## Models
 
 ### System Use Case
