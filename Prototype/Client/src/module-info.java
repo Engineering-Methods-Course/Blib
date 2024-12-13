@@ -4,5 +4,5 @@
 /**
  * 
  */
-module Blib {
+module Client {
 }
