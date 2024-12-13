@@ -58,7 +58,7 @@ local.properties
 
 # Uncomment this line if you wish to ignore the project description file.
 # Typically, this file would be tracked if it contains build/dependency configurations:
-#.project
+.project
 
 ### Eclipse Patch ###
 # Spring Boot Tooling
@@ -146,10 +146,11 @@ fabric.properties
 ### Intellij Patch ###
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
-# *.iml
-# modules.xml
-# .idea/misc.xml
-# *.ipr
+*.iml
+modules.xml
+.idea/misc.xml
+*.ipr
+.idea/
 
 # Sonarlint plugin
 # https://plugins.jetbrains.com/plugin/7973-sonarlint
@@ -205,3 +206,6 @@ replay_pid*
 
 # Remote temp files
 RemoteSystemsTempFiles/
+
+# remove manifest.mf files
+*.MF
