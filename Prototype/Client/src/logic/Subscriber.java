@@ -1,4 +1,4 @@
-package Entities;
+package logic;
 
 public class Subscriber {
 
@@ -21,7 +21,7 @@ public class Subscriber {
     private String email;
 
     // Status to check if the subscriber is frozen (inactive)
-    private boolean statusIsFrozer = false;
+    private boolean statusIsFrozen = false;
 
     // Subscriber's account password
     private String password;
@@ -52,7 +52,7 @@ public class Subscriber {
      *
      * @return the id of the subscriber
      */
-    public int getId() {
+    public int getID() {
         return id;
     }
 
@@ -160,8 +160,8 @@ public class Subscriber {
      *
      * @return true if the account is frozen, false otherwise
      */
-    public boolean isStatusIsFrozer() {
-        return statusIsFrozer;
+    public boolean statusIsFrozen() {
+        return statusIsFrozen;
     }
 
     /**
@@ -170,7 +170,7 @@ public class Subscriber {
      * @param statusIsFrozer true if the account should be frozen, false otherwise
      */
     public void setStatusIsFrozer(boolean statusIsFrozer) {
-        this.statusIsFrozer = statusIsFrozer;
+        this.statusIsFrozen = statusIsFrozer;
     }
 
     /**

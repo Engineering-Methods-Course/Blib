@@ -1,11 +1,13 @@
-package GUI;
+package gui;
 
-import Entities.Subscriber;
+import logic.Subscriber;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.event.ActionEvent;
+
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -56,7 +58,7 @@ public class SubscriberEditProfileController implements Initializable {
      */
     public void clickBackButton(ActionEvent event) throws Exception {
         // Navigate to the desired destination using the navigateTo function
-        SubscriberFrameController.navigateTo(event, "/GUI/SubscriberProfileOptionsFrame.fxml", "/GUI/Subscriber.css", "Profile Options");
+        SubscriberFrameController.navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
     }
 
     /**
@@ -67,12 +69,16 @@ public class SubscriberEditProfileController implements Initializable {
     public void loadProfileDetails(Subscriber s1) {
         this.subscriber = s1;
         // Set values in the text fields from the Subscriber object
-        this.txtID.setText(subscriber.getID());
+        this.txtID.setText(String.valueOf(subscriber.getID()));
         this.txtName.setText(subscriber.getName());
         this.txtLastName.setText(subscriber.getLastName());
         this.txtHistory.setText(subscriber.getHistory());
-        this.txtPhone.setText(subscriber.getPhone());
+        this.txtPhone.setText(String.valueOf(subscriber.getPhone()));
         this.txtEmail.setText(subscriber.getEmail());
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
 }

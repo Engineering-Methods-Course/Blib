@@ -1,6 +1,12 @@
-package GUI;
+package gui;
 
-import Entities.Subscriber;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import logic.Subscriber;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -11,6 +17,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SubscriberFrameController implements Initializable {
+    private Subscriber subscriber;
     @FXML
     private Label lblWelcome;
 
@@ -40,15 +47,23 @@ public class SubscriberFrameController implements Initializable {
     /**
      * Loads the subscriber's name into the welcome text field.
      *
-     * @param subscriber The Subscriber object containing user details.
+     * @param s1 The Subscriber object containing user details.
      */
-    public void loadSubscriberName(Subscriber subscriber) {
-        // Set the text of the txtWelcomeUserName field to the subscriber's full name
-        txtWelcomeUserName.setText(subscriber.getName() + " " + subscriber.getLastName());
+    public void loadSubscriberName(Object s1) {
+        try{
+            // Set the text of the txtWelcomeUserName field to the subscriber's full name
+            this.subscriber = (Subscriber) s1;
+            txtWelcomeUserName.setText(subscriber.getName() + " " + subscriber.getLastName());
+        }
+        catch (ClassCastException e){
+            e.getMessage();
+        }
+
+
     }
     public void clickProfileButton(ActionEvent event) throws Exception{
         System.out.println("exit Subscriber Frame");
-        navigateTo(event, "/GUI/SubscriberProfileOptions.fxml", "/GUI/Subscriber.css", "Profile Options");
+        navigateTo(event, "gui/SubscriberProfileOptions.fxml", "gui/Subscriber.css", "Profile Options");
     }
 
     /**
@@ -60,9 +75,10 @@ public class SubscriberFrameController implements Initializable {
      * @param stageTitle The title for the new stage window (e.g., "Profile Options").
      * @throws Exception If the FXML file cannot be loaded or another error occurs during navigation.
      */
-    public void navigateTo(ActionEvent event, String fxmlDestination, String cssFilePath, String stageTitle) throws Exception {
+    public static void navigateTo(ActionEvent event, String fxmlDestination, String cssFilePath, String stageTitle) throws Exception {
         // Close the current stage
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Stage currentStage;
+        currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         currentStage.close();
 
         // Load the destination FXML
@@ -76,7 +92,6 @@ public class SubscriberFrameController implements Initializable {
         if (cssFilePath != null && !cssFilePath.isEmpty()) {
             scene.getStylesheets().add(getClass().getResource(cssFilePath).toExternalForm());
         }
-
         // Set up the new stage
         newStage.setTitle(stageTitle);
         newStage.setScene(scene);

@@ -1,6 +1,5 @@
-package GUI;
+package gui;
 
-import Entities.Subscriber;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -27,7 +26,7 @@ public class SubscriberProfileOptionsController implements Initializable {
      */
     public void clickEditProfileButton(ActionEvent event) throws Exception {
         // Navigate to the desired destination using the navigateTo function
-        SubscriberFrameController.navigateTo(event, "/GUI/SubscriberEditProfileFrame.fxml", "/GUI/Subscriber.css", "Edit Profile");
+        SubscriberFrameController.navigateTo(event, "/gui/SubscriberEditProfileFrame.fxml", "/gui/Subscriber.css", "Edit Profile");
     }
 
     /**
@@ -38,7 +37,11 @@ public class SubscriberProfileOptionsController implements Initializable {
      */
     public void clickBackButton(ActionEvent event) throws Exception {
         // Navigate to the desired destination using the navigateTo function
-        SubscriberFrameController.navigateTo(event, "/GUI/SubscriberFrame.fxml", "/GUI/Subscriber.css", "Profile");
+        SubscriberFrameController.navigateTo(event, "/gui/SubscriberFrame.fxml", "/gui/Subscriber.css", "Profile");
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
 }
