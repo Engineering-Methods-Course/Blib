@@ -6,21 +6,24 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="487.0" prefWidth="388.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:controller="GUI.SubscriberFrameController" prefHeight="487.0" prefWidth="388.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-
-        <Label fx:id="lblWelcome" layoutX="120.0" layoutY="34.0" text="Welcome">
+        <Label fx:id="lblWelcome" text="Welcome" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="20.0">
             <font>
                 <Font size="36.0" />
             </font>
         </Label>
 
-        <TextField fx:id="txtWelcomeUserName" editable="false" layoutX="118.0" layoutY="116.0" />
-        <Button fx:id="btnProfile" layoutX="87.0" layoutY="167.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="213.0" text="Profile" />
-        <Button fx:id="btnBorrowExtension" layoutX="87.0" layoutY="229.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="213.0" text="Borrow Extension" />
-        <Button fx:id="btnOrder" layoutX="87.0" layoutY="292.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="213.0" text="Order book" />
-        <Button fx:id="btnSearchBook" layoutX="87.0" layoutY="357.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="213.0" text="Search book" />
-        <Button fx:id="btnLogout" layoutX="14.0" layoutY="442.0" mnemonicParsing="false" text="Log out" />
+        <TextField fx:id="txtWelcomeUserName" editable="false" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="80.0" />
 
+        <Button fx:id="btnProfile" onMouseClicked="#clickProfileButton" text="Profile" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="150.0" />
+
+        <Button fx:id="btnBorrowExtension" text="Borrow Extension" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="210.0" />
+
+        <Button fx:id="btnOrder" text="Order book" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="270.0" />
+
+        <Button fx:id="btnSearchBook" text="Search book" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="330.0" />
+
+        <Button fx:id="btnLogout" text="Log out" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
     </children>
 </AnchorPane>

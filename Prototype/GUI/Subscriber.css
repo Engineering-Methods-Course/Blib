@@ -1,0 +1,46 @@
+/* Global Styles */
+.root {
+    -fx-background-color: #f8f9fa; /* White-ish background */
+}
+
+/* Label Styles */
+.label {
+    -fx-text-fill: #0056b3; /* Rich blue color for text */
+    -fx-font-size: 16px; /* Adjust font size */
+    -fx-font-weight: bold;
+}
+
+/* Button Styles */
+.button {
+    -fx-background-color: linear-gradient(to bottom, #007bff, #0056b3); /* Gradient blue */
+    -fx-text-fill: white; /* White text */
+    -fx-font-size: 14px; /* Adjust font size */
+    -fx-padding: 10px 20px; /* Padding for better aesthetics */
+    -fx-border-color: #003d99; /* Slightly darker blue border */
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px; /* Rounded corners */
+}
+
+.button:hover {
+    -fx-background-color: #0056b3; /* Darker blue on hover */
+    -fx-cursor: hand; /* Hand cursor */
+}
+
+.button:pressed {
+    -fx-background-color: #003d99; /* Even darker blue when clicked */
+}
+
+/* TextField Styles */
+.text-field {
+    -fx-background-color: #e9ecef; /* Light grey background for text fields */
+    -fx-text-fill: #0056b3; /* Blue text */
+    -fx-border-color: #0056b3; /* Border matching blue palette */
+    -fx-border-radius: 3px;
+    -fx-padding: 5px;
+}
+
+/* AnchorPane Specific Styles */
+.anchor-pane {
+    -fx-padding: 10px; /* Padding around content */
+}
