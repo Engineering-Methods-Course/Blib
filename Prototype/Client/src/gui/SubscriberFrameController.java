@@ -83,14 +83,14 @@ public class SubscriberFrameController implements Initializable {
 
         // Load the destination FXML
         Stage newStage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource(fxmlDestination));
+        Parent root = FXMLLoader.load(SubscriberFrameController.class.getResource(fxmlDestination));
 
         // Create the new scene
         Scene scene = new Scene(root);
 
         // Optionally add a CSS file if provided
         if (cssFilePath != null && !cssFilePath.isEmpty()) {
-            scene.getStylesheets().add(getClass().getResource(cssFilePath).toExternalForm());
+            scene.getStylesheets().add(SubscriberFrameController.class.getResource(cssFilePath).toExternalForm());
         }
         // Set up the new stage
         newStage.setTitle(stageTitle);
