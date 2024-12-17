@@ -5,21 +5,21 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="518.0" prefWidth="483.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="518.0" prefWidth="483.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberEditProfileController">
    <children>
-      <Button fx:id="btnBack" layoutX="14.0" layoutY="479.0" mnemonicParsing="false" text="Back" />
-      <Button fx:id="btnUpdate" layoutX="216.0" layoutY="405.0" mnemonicParsing="false" text="Update" />
-      <TextField fx:id="txtID" editable="false" layoutX="193.0" layoutY="63.0" />
-      <TextField fx:id="txtName" layoutX="193.0" layoutY="116.0" />
-      <TextField fx:id="txtLastName" layoutX="193.0" layoutY="165.0" />
-      <TextField fx:id="txtHistory" editable="false" layoutX="193.0" layoutY="220.0" />
-      <TextField fx:id="txtPhone" layoutX="193.0" layoutY="263.0" />
-      <TextField fx:id="txtEmail" layoutX="193.0" layoutY="311.0" />
-      <Label fx:id="lblID" layoutX="100.0" layoutY="67.0" text="ID:" />
-      <Label fx:id="lblName" layoutX="93.0" layoutY="120.0" text="Name:" />
-      <Label fx:id="lblLastName" layoutX="93.0" layoutY="169.0" text="Last Name:" />
-      <Label fx:id="lblHistory" layoutX="100.0" layoutY="224.0" text="History:" />
-      <Label fx:id="lblPhone" layoutX="100.0" layoutY="267.0" text="Phone:" />
-      <Label fx:id="lblEmail" layoutX="100.0" layoutY="315.0" text="Email:" />
+      <Button fx:id="btnBack" layoutX="13.0" layoutY="472.0" mnemonicParsing="false" onAction="#clickBackButton" text="Back" />
+      <Button fx:id="btnUpdate" layoutX="214.0" layoutY="363.0" mnemonicParsing="false" text="Update" />
+      <TextField fx:id="txtID" editable="false" layoutX="193.0" layoutY="63.0" AnchorPane.leftAnchor="200.0" />
+      <TextField fx:id="txtName" layoutX="193.0" layoutY="116.0" AnchorPane.leftAnchor="200.0" />
+      <TextField fx:id="txtLastName" layoutX="193.0" layoutY="165.0" AnchorPane.leftAnchor="200.0" />
+      <TextField fx:id="txtHistory" editable="false" layoutX="193.0" layoutY="217.0" AnchorPane.leftAnchor="200.0" />
+      <TextField fx:id="txtPhone" layoutX="193.0" layoutY="263.0" AnchorPane.leftAnchor="200.0" />
+      <TextField fx:id="txtEmail" layoutX="193.0" layoutY="311.0" AnchorPane.leftAnchor="200.0" />
+      <Label fx:id="lblID" layoutX="93.0" layoutY="67.0" text="ID:" AnchorPane.leftAnchor="100.0" />
+      <Label fx:id="lblName" layoutX="91.0" layoutY="120.0" text="Name:" AnchorPane.leftAnchor="100.0" />
+      <Label fx:id="lblLastName" layoutX="91.0" layoutY="169.0" text="Last Name:" AnchorPane.leftAnchor="100.0" />
+      <Label fx:id="lblHistory" layoutX="95.0" layoutY="221.0" text="History:" AnchorPane.leftAnchor="100.0" />
+      <Label fx:id="lblPhone" layoutX="90.0" layoutY="267.0" text="Phone:" AnchorPane.leftAnchor="100.0" />
+      <Label fx:id="lblEmail" layoutX="100.0" layoutY="315.0" text="Email:" AnchorPane.leftAnchor="100.0" />
    </children>
 </AnchorPane>

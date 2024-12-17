@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class SubscriberFrameController implements Initializable {
@@ -63,7 +64,7 @@ public class SubscriberFrameController implements Initializable {
     }
     public void clickProfileButton(ActionEvent event) throws Exception{
         System.out.println("exit Subscriber Frame");
-        navigateTo(event, "gui/SubscriberProfileOptions.fxml", "gui/Subscriber.css", "Profile Options");
+        navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
     }
 
     /**
@@ -83,14 +84,14 @@ public class SubscriberFrameController implements Initializable {
 
         // Load the destination FXML
         Stage newStage = new Stage();
-        Parent root = FXMLLoader.load(SubscriberFrameController.class.getResource(fxmlDestination));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(SubscriberFrameController.class.getResource(fxmlDestination)));
 
         // Create the new scene
         Scene scene = new Scene(root);
 
         // Optionally add a CSS file if provided
         if (cssFilePath != null && !cssFilePath.isEmpty()) {
-            scene.getStylesheets().add(SubscriberFrameController.class.getResource(cssFilePath).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(SubscriberFrameController.class.getResource(cssFilePath)).toExternalForm());
         }
         // Set up the new stage
         newStage.setTitle(stageTitle);
@@ -100,4 +101,13 @@ public class SubscriberFrameController implements Initializable {
         newStage.show();
     }
 
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(SubscriberFrameController.class.getResource("/gui/SubscriberFrame.fxml")));
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/gui/Subscriber.css")).toExternalForm());
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Subscriber Frame");
+        primaryStage.show();
+
+    }
 }

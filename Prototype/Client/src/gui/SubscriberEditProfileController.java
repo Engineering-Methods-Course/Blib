@@ -72,8 +72,8 @@ public class SubscriberEditProfileController implements Initializable {
         this.txtID.setText(String.valueOf(subscriber.getID()));
         this.txtName.setText(subscriber.getName());
         this.txtLastName.setText(subscriber.getLastName());
-        //this.txtHistory.setText(subscriber.getHistory());
-        //this.txtPhone.setText(String.valueOf(subscriber.getPhone()));
+        this.txtHistory.setText(String.valueOf(subscriber.getSubscriptionHistory()));
+        this.txtPhone.setText(String.valueOf(subscriber.getPhoneNumber()));
         this.txtEmail.setText(subscriber.getEmail());
     }
 

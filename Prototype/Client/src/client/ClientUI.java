@@ -19,8 +19,8 @@ public class ClientUI extends Application {
         chat= new ClientController("localhost", 5555);
         // TODO Auto-generated method stub
 
-
-        //aFrame.start(primaryStage);
+        SubscriberFrameController aFrame=new SubscriberFrameController();
+        aFrame.start(primaryStage);
     }
 
 
