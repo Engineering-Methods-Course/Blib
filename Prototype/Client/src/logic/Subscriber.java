@@ -3,7 +3,7 @@ package logic;
 public class Subscriber {
 
     // Unique identifier for the subscriber
-    private int id;
+    private String id;
 
     // First name of the subscriber
     private String name;
@@ -37,7 +37,7 @@ public class Subscriber {
      * @param email Subscriber's email address
      * @param password Subscriber's account password
      */
-    public Subscriber(int id, String name, String lastName, int subscriptionHistory, String phoneNumber, String email, String password) {
+    public Subscriber(String id, String name, String lastName, int subscriptionHistory, String phoneNumber, String email, String password) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -52,7 +52,7 @@ public class Subscriber {
      *
      * @return the id of the subscriber
      */
-    public int getID() {
+    public String getID() {
         return id;
     }
 
@@ -61,7 +61,7 @@ public class Subscriber {
      *
      * @param id Unique identifier for the subscriber
      */
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

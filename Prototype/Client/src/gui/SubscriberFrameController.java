@@ -23,7 +23,7 @@ public class SubscriberFrameController implements Initializable {
     private Label lblWelcome;
 
     @FXML
-    private TextField txtWelcomeUserName;
+    private Label lblWelcomeUserName;
 
     @FXML
     private Button btnProfile;
@@ -42,7 +42,10 @@ public class SubscriberFrameController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //
+        if (lblWelcomeUserName != null) {
+            // Initialize the TextField if needed (e.g., set a default text)
+            lblWelcomeUserName.setText("Default Text"); // Or leave it empty
+        }
     }
 
     /**
@@ -50,18 +53,20 @@ public class SubscriberFrameController implements Initializable {
      *
      * @param s1 The Subscriber object containing user details.
      */
-    public void loadSubscriberName(Object s1) {
-        try{
-            // Set the text of the txtWelcomeUserName field to the subscriber's full name
-            this.subscriber = (Subscriber) s1;
-            txtWelcomeUserName.setText(subscriber.getName() + " " + subscriber.getLastName());
-        }
-        catch (ClassCastException e){
-            e.getMessage();
-        }
+    public void loadSubscriberName(Subscriber s1) {
+        this.subscriber = s1;
+        System.out.println("loadSubscriberName() called");  // Check if this is printed
 
-
+        if (lblWelcomeUserName != null && subscriber != null) {
+            lblWelcomeUserName.setText(subscriber.getName() + " " + subscriber.getLastName());
+            System.out.println("Welcome text set to: " + subscriber.getName() + " " + subscriber.getLastName());
+        } else {
+            System.out.println("lblWelcomeUserName is null or subscriber is null.");
+        }
     }
+
+
+
     public void clickProfileButton(ActionEvent event) throws Exception{
         System.out.println("exit Subscriber Frame");
         navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
@@ -100,7 +105,7 @@ public class SubscriberFrameController implements Initializable {
         // Show the new stage
         newStage.show();
     }
-
+    /*
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(SubscriberFrameController.class.getResource("/gui/SubscriberFrame.fxml")));
         Scene scene = new Scene(root);
@@ -110,4 +115,6 @@ public class SubscriberFrameController implements Initializable {
         primaryStage.show();
 
     }
+    */
+
 }

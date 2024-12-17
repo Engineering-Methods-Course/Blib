@@ -61,6 +61,10 @@ public class SubscriberEditProfileController implements Initializable {
         SubscriberFrameController.navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
     }
 
+    public void clickUpdateButton(ActionEvent event) throws Exception {
+
+    }
+
     /**
      * This method loads the profile details into the respective text fields.
      * It sets the values from the Subscriber object into the text fields.
@@ -76,6 +80,7 @@ public class SubscriberEditProfileController implements Initializable {
         this.txtPhone.setText(String.valueOf(subscriber.getPhoneNumber()));
         this.txtEmail.setText(subscriber.getEmail());
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
