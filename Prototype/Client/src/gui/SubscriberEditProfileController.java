@@ -80,6 +80,9 @@ public class SubscriberEditProfileController implements Initializable {
         this.txtPhone.setText(String.valueOf(subscriber.getPhoneNumber()));
         this.txtEmail.setText(subscriber.getEmail());
     }
+    public void loadSubscriber(Subscriber s1) {
+        subscriber = s1;
+    }
 
 
     @Override

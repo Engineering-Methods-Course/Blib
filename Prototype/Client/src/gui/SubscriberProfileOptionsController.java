@@ -4,12 +4,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
+import logic.Subscriber;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SubscriberProfileOptionsController implements Initializable {
-
+    private Subscriber subscriber;
     // FXML elements for buttons
     @FXML
     private Button btnBack = null; // Button to go back to the main profile screen
@@ -38,6 +39,9 @@ public class SubscriberProfileOptionsController implements Initializable {
     public void clickBackButton(ActionEvent event) throws Exception {
         // Navigate to the desired destination using the navigateTo function
         SubscriberFrameController.navigateTo(event, "/gui/SubscriberFrame.fxml", "/gui/Subscriber.css", "Profile");
+    }
+    public void loadSubscriber(Subscriber s1) {
+        subscriber = s1;
     }
 
     @Override

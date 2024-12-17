@@ -1,5 +1,6 @@
 package gui;
 
+import common.commandMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -46,20 +47,9 @@ public class LoginController implements Initializable  {
     }
     @FXML
     public void clickLoginButton(ActionEvent event) throws Exception {
-        // Create a test subscriber object
         Subscriber testSubscriber = new Subscriber("123", "Mona", "Lisa", 1, "0541234567", "MonaLisa@e.braude.ac.il", "abc");
-
-        // Pass the Subscriber object to the SubscriberFrameController
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SubscriberFrame.fxml"));
-        Parent root = loader.load();
-
-        // Get the SubscriberFrameController instance
-        SubscriberFrameController subscriberFrameController = loader.getController();
-
-        // Pass the Subscriber object to the controller's method
-        subscriberFrameController.loadSubscriberName(testSubscriber);
-
-        // Use the navigateTo method to handle the transition
+        commandMessage dataToTransfer=new commandMessage("12",testSubscriber);
+        // Pass the Subscriber object to the next controller using the navigateTo method
         navigateTo(event, "/gui/SubscriberFrame.fxml", "/gui/Subscriber.css", "Subscriber Frame");
     }
 

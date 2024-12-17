@@ -1,14 +1,14 @@
 package common;
 
 public class commandMessage {
-    private int id;
+    private String id;
     private Object messageContent;
 
-    public commandMessage(int id, Object messageContent) {
+    public commandMessage(String id, Object messageContent) {
         this.id = id;
         this.messageContent = messageContent;
     }
-    public int getId() {
+    public String getId() {
         return id;
     }
     public Object getMessageContent() {

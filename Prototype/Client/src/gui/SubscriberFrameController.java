@@ -12,12 +12,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import common.commandMessage;
 
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class SubscriberFrameController implements Initializable {
+    private Objects data;
+
     private Subscriber subscriber;
     @FXML
     private Label lblWelcome;
@@ -42,10 +45,7 @@ public class SubscriberFrameController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if (lblWelcomeUserName != null) {
-            // Initialize the TextField if needed (e.g., set a default text)
-            lblWelcomeUserName.setText("Default Text"); // Or leave it empty
-        }
+        loadSubscriberName(subscriber);
     }
 
     /**
