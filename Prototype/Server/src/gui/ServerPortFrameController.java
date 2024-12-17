@@ -43,9 +43,18 @@ public class ServerPortFrameController  {
 		else
 		{
 			((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary window
-			Stage primaryStage = new Stage();
 			FXMLLoader loader = new FXMLLoader();
 			ServerUI.runServer(p);
+			((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary window
+			ServerUI.runServer(p);
+
+			// Open the ServerConnectedClients window
+			Stage primaryStage = new Stage();
+			Parent root = FXMLLoader.load(getClass().getResource("/gui/ServerConnectedClients.fxml"));
+			Scene scene = new Scene(root);
+			primaryStage.setTitle("Connected Clients");
+			primaryStage.setScene(scene);
+			primaryStage.show();
 		}
 	}
 

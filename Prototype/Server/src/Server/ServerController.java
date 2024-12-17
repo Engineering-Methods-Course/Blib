@@ -1,6 +1,7 @@
 package Server;
 
 import java.io.*;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -12,7 +13,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import common.commandMessage;
-import logic.Subscriber;
 import ocsf.server.*;
 
 public class ServerController extends AbstractServer{
@@ -66,7 +66,6 @@ public class ServerController extends AbstractServer{
         }
 
     }
-
     /**
      * This method overrides the one in the superclass.  Called
      * when the server starts listening for connections.
@@ -110,15 +109,6 @@ public class ServerController extends AbstractServer{
         }
     }
 
-
-
-
-
-
-
-
-
-
     /**
      * This method displays the details of a specific subscriber
      * @param messageContent
@@ -151,7 +141,6 @@ public class ServerController extends AbstractServer{
         }
         return subscriberDetails;
     }
-
     /**
      * This method edits the details of a specific subscriber
      * @param messageContent
@@ -239,4 +228,9 @@ public class ServerController extends AbstractServer{
         }
         return subscribersList;
     }
+    @Override
+    protected void clientConnected(ConnectionToClient client) {
+        System.out.println("Client connected");
+    }
+
 }

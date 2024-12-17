@@ -8,11 +8,11 @@ public class ServerUI extends Application {
     final public static int DEFAULT_PORT = 5555;
 
 
-    public static void main(String[] args) throws Exception
+    public static void main( String args[]) throws Exception
     {
         try{
             launch(args);
-        }catch (Exception e){System.out.println("Error in ServerUI main: " + e.getMessage());}
+        }catch (Exception e){}
     } // end main
 
     @Override

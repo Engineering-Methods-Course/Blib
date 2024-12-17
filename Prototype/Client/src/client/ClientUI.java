@@ -1,5 +1,5 @@
 package client;
-import gui.LoginController;
+import gui.*;
 import javafx.application.Application;
 
 import javafx.stage.Stage;
@@ -10,7 +10,7 @@ import gui.SubscriberFrameController;
 public class ClientUI extends Application {
     public static ClientController chat; //only one instance
 
-    public static void main( String args[] ) throws Exception
+    public static void main(String[] args) throws Exception
     {
         launch(args);
     } // end main
@@ -23,6 +23,4 @@ public class ClientUI extends Application {
         LoginController aFrame=new LoginController();
         aFrame.start(primaryStage);
     }
-
-
 }
