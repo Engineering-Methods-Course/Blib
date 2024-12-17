@@ -9,8 +9,8 @@ import logic.Subscriber;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SubscriberProfileOptionsController implements Initializable {
-    private Subscriber subscriber;
+public class ProfileOptionsController implements Initializable {
+    private static Subscriber s2;
     // FXML elements for buttons
     @FXML
     private Button btnBack = null; // Button to go back to the main profile screen
@@ -21,31 +21,32 @@ public class SubscriberProfileOptionsController implements Initializable {
 
     /**
      * This method handles the Edit Profile button click event.
-     * It navigates to the SubscriberEditProfileFrame.fxml to allow editing of the profile.
+     * It navigates to the EditProfileFrame.fxml to allow editing of the profile.
      * @param event The action event triggered by clicking the Edit Profile button
      * @throws Exception If there is an issue with the navigation
      */
     public void clickEditProfileButton(ActionEvent event) throws Exception {
         // Navigate to the desired destination using the navigateTo function
-        SubscriberFrameController.navigateTo(event, "/gui/SubscriberEditProfileFrame.fxml", "/gui/Subscriber.css", "Edit Profile");
+        SubscriberWelcomeFrameController.navigateTo(event, "/gui/EditProfileFrame.fxml", "/gui/Subscriber.css", "Edit Profile");
     }
 
     /**
      * This method handles the Back button click event.
-     * It navigates back to the main Subscriber profile screen (SubscriberFrame.fxml).
+     * It navigates back to the main Subscriber profile screen (SubscriberWelcomeFrame.fxml).
      * @param event The action event triggered by clicking the Back button
      * @throws Exception If there is an issue with the navigation
      */
     public void clickBackButton(ActionEvent event) throws Exception {
         // Navigate to the desired destination using the navigateTo function
-        SubscriberFrameController.navigateTo(event, "/gui/SubscriberFrame.fxml", "/gui/Subscriber.css", "Profile");
+        SubscriberWelcomeFrameController.navigateTo(event, "/gui/SubscriberWelcomeFrame.fxml", "/gui/Subscriber.css", "Profile");
     }
-    public void loadSubscriber(Subscriber s1) {
-        subscriber = s1;
+    public static Subscriber getS2() {
+        return s2;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        s2=LoginController.getS1();
 
     }
 }

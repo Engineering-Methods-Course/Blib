@@ -12,7 +12,7 @@ import javafx.event.ActionEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SubscriberEditProfileController implements Initializable {
+public class EditProfileController implements Initializable {
 
     // Subscriber object to store the profile details
     private Subscriber subscriber;
@@ -52,13 +52,13 @@ public class SubscriberEditProfileController implements Initializable {
 
     /**
      * This method handles the back button click event.
-     * It navigates to the previous screen (SubscriberProfileOptionsFrame.fxml).
+     * It navigates to the previous screen (ProfileOptionsFrame.fxml).
      * @param event The action event triggered by clicking the back button
      * @throws Exception If there is an issue with the navigation
      */
     public void clickBackButton(ActionEvent event) throws Exception {
         // Navigate to the desired destination using the navigateTo function
-        SubscriberFrameController.navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
+        SubscriberWelcomeFrameController.navigateTo(event, "/gui/ProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
     }
 
     public void clickUpdateButton(ActionEvent event) throws Exception {
@@ -71,22 +71,18 @@ public class SubscriberEditProfileController implements Initializable {
      * @param s1 The Subscriber object containing profile data
      */
     public void loadProfileDetails(Subscriber s1) {
-        this.subscriber = s1;
         // Set values in the text fields from the Subscriber object
         this.txtID.setText(String.valueOf(subscriber.getID()));
         this.txtName.setText(subscriber.getName());
         this.txtLastName.setText(subscriber.getLastName());
-        this.txtHistory.setText(String.valueOf(subscriber.getSubscriptionHistory()));
         this.txtPhone.setText(String.valueOf(subscriber.getPhoneNumber()));
         this.txtEmail.setText(subscriber.getEmail());
-    }
-    public void loadSubscriber(Subscriber s1) {
-        subscriber = s1;
     }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        subscriber=ProfileOptionsController.getS2();
+        loadProfileDetails(subscriber);
     }
 }

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="518.0" prefWidth="483.0" spacing="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberEditProfileController">   <children>
+<VBox alignment="CENTER" prefHeight="518.0" prefWidth="483.0" spacing="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.EditProfileController">   <children>
       <!-- Spacer to push content towards the center -->
       <Region VBox.vgrow="ALWAYS" />
 

@@ -4,8 +4,6 @@ import javafx.application.Application;
 
 import javafx.stage.Stage;
 
-import gui.SubscriberFrameController;
-
 
 public class ClientUI extends Application {
     public static ClientController chat; //only one instance
