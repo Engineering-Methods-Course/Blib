@@ -1,26 +1,46 @@
 package Server;
 
-import java.io.*;
-import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-import common.commandMessage;
+import common.*;
+import gui.*;
 import ocsf.server.*;
 
 public class ServerController extends AbstractServer{
 
     private Connection conn;
-    private commandMessage command;
-    public ServerController(int port) {
+    private final ServerMonitorFrameController serverMonitorController;
+    public ServerController(int port, ServerMonitorFrameController serverMonitorController) {
         super(port);
+        this.serverMonitorController = serverMonitorController;
+    }
+    /**
+     * This method overrides the one in the superclass. Called
+     * when a client has connected to the server add it to the list of clients.
+     * @param client the connection connected to the client.
+     */
+    @Override
+    protected void clientConnected(ConnectionToClient client) {
+        System.out.println("Client connected");
+
+        serverMonitorController.clientConnected(client);
+    }
+
+    /**
+     * This method overrides the one in the superclass. Called
+     * when a client has disconnected from the server remove it from the list of clients.
+     * @param client the connection with the client.
+     */
+    @Override
+    protected synchronized void clientDisconnected(ConnectionToClient client) {
+        System.out.println("Client disconnected");
+        serverMonitorController.clientDisconnected(client);
     }
     /**
      * This method handles any messages received from the client.
@@ -35,7 +55,7 @@ public class ServerController extends AbstractServer{
         {
             if(msg instanceof commandMessage)
             {
-                this.command = (commandMessage) msg;
+                commandMessage command = (commandMessage) msg;
 
                 /**
                  * 201 - Get info of a specific subscriber
@@ -90,7 +110,7 @@ public class ServerController extends AbstractServer{
     {
         try
         {
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
             System.out.println("Driver definition succeed");
         } catch (Exception ex) {
             /* handle the error*/
@@ -228,9 +248,7 @@ public class ServerController extends AbstractServer{
         }
         return subscribersList;
     }
-    @Override
-    protected void clientConnected(ConnectionToClient client) {
-        System.out.println("Client connected");
-    }
+
+
 
 }

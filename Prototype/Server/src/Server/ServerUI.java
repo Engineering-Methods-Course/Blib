@@ -1,35 +1,56 @@
-package Server;
+package server;
 
-import gui.ServerPortFrameController;
+import Server.ServerController;
+import gui.ServerMonitorFrameController;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import logic.Subscriber;
+
+import java.io.IOException;
+import java.util.Vector;
+import gui.ServerPortFrameController;
 
 public class ServerUI extends Application {
     final public static int DEFAULT_PORT = 5555;
+    public static Vector<Subscriber> subscribers =new Vector<Subscriber>();
 
-
-    public static void main( String args[]) throws Exception
+    /**
+     * main method
+     * @param args
+     * @throws Exception
+     */
+    public static void main( String args[] ) throws Exception
     {
-        try{
-            launch(args);
-        }catch (Exception e){}
+        launch(args);
     } // end main
-
+    /**
+     * This method starts the server
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        // TODO Auto-generated method stub
+    public void start(Stage primaryStage) throws Exception
+    {
         ServerPortFrameController aFrame = new ServerPortFrameController(); // create StudentFrame
-
         aFrame.start(primaryStage);
     }
-
-    public static void runServer(String p)
+    /**
+     * This method runs the server
+     * @param p
+     * @throws IOException
+     */
+    public static void runServer(String p) throws IOException
     {
-        int port = 0; //Port to listen on
+        //Port to listen on
+        int port = 0;
 
         try
         {
-            port = Integer.parseInt(p); //Set port to 5555
+            //Set port to 5555
+            port = Integer.parseInt(p);
 
         }
         catch(Throwable t)
@@ -37,11 +58,24 @@ public class ServerUI extends Application {
             System.out.println("ERROR - Could not connect!");
         }
 
-        ServerController sv = new ServerController(port);
+        Stage primaryStage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+
+        Pane root = loader.load(ServerUI.class.getResource("/gui/ServerMonitor.fxml").openStream());
+        ServerMonitorFrameController serverMonitorController = loader.getController();
+
+        Scene scene = new Scene(root);
+        primaryStage.setTitle("Server Monitor");
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        ServerController sv = new ServerController(port, serverMonitorController);
 
         try
         {
-            sv.listen(); //Start listening for connections
+            //Start listening for connections
+            sv.listen();
         }
         catch (Exception ex)
         {
@@ -51,4 +85,3 @@ public class ServerUI extends Application {
 
 
 }
-
