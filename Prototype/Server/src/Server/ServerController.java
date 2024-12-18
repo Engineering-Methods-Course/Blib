@@ -10,9 +10,10 @@ import java.sql.SQLException;
 
 import common.*;
 import gui.*;
+import logic.*;
 import ocsf.server.*;
 
-public class ServerController extends AbstractServer{
+public class ServerController extends AbstractServer implements SubscriberController, LibrarianController {
 
     private Connection conn;
     private final ServerMonitorFrameController serverMonitorController;
@@ -53,29 +54,40 @@ public class ServerController extends AbstractServer{
     protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
         try
         {
-            if(msg instanceof commandMessage)
+            if(msg instanceof ClientServerMessage)
             {
-                commandMessage command = (commandMessage) msg;
+                ClientServerMessage message = (ClientServerMessage) msg;
 
                 /**
                  * 201 - Get info of a specific subscriber
                  * 203 - Edit info of a specific subscriber
                  * 205 - Get a list of all subscribers
                  */
-                switch (command.getId()){
+                switch (message.getId()){
+                        // Login subscriber
                     case 201:
-                        ArrayList<String> subscriberDetails = displaySubscriberDetails((String)command.getMessageContent());
-                        sendToAllClients(subscriberDetails); // change to send to client
+                        if(message.getMessageContent() instanceof ArrayList)
+                        {
+                            ArrayList<String> subscriberDetails = subscriberLogin((ArrayList<String>)message.getMessageContent(), conn);
+                            ClientServerMessage subscriberDetailsCommandMessage = new ClientServerMessage(202, subscriberDetails);
+                            client.sendToClient(subscriberDetailsCommandMessage);
+                        }
                         break;
+                        //  Edit subscriber details
                     case 203:
-                        ArrayList<String> editedDetails = editSubscriberDetails((String)command.getMessageContent());
-                        sendToAllClients(editedDetails); // change to send to client
+                        if(message.getMessageContent() instanceof ArrayList)
+                        {
+                            ArrayList<String> editedDetails = editSubscriberDetails((ArrayList<String>)message.getMessageContent(),conn);
+                            ClientServerMessage editedDetailsCommandMessage = new ClientServerMessage(204, editedDetails);
+                            client.sendToClient(editedDetailsCommandMessage);
+                        }
                         break;
-                    case 205:
-                        ArrayList<ArrayList<String>> subscribersList = getSubscribersList();
-                        sendToAllClients(subscribersList); // change to send to client
-
-                        break;
+                    //! will be implemented in the future
+                    /*case 205:
+                        ArrayList<ArrayList<String>> subscribersList = getSubscribersList(conn);
+                        ClientServerMessage subscribersListCommandMessage = new ClientServerMessage(206, subscribersList);
+                        client.sendToClient(subscribersListCommandMessage);
+                        break;*/
                     default:
                         System.out.println("Invalid command id");
                 }
@@ -128,127 +140,4 @@ public class ServerController extends AbstractServer{
             System.out.println("VendorError: " + ex.getErrorCode());
         }
     }
-
-    /**
-     * This method displays the details of a specific subscriber
-     * @param messageContent
-     */
-    private ArrayList<String> displaySubscriberDetails(String messageContent) {
-        ArrayList<String> subscriberDetails = new ArrayList<>();
-        try {
-            /**
-             * The query selects all columns from the subscriber table where the id matches a given value
-             * stmt.setString(1, messageContent) sets the first placeholder in the query to the value of messageContent
-             */
-            String query = "SELECT * FROM subscriber WHERE id = ?";
-            PreparedStatement statement = conn.prepareStatement(query);
-            statement.setString(1, messageContent);
-
-            /**
-             * The result set is the result of the query
-             * The while loop iterates over the result set and prints the values of the columns
-             */
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                subscriberDetails.add(rs.getString("subscriber_id"));
-                subscriberDetails.add(rs.getString("subscriber_name"));
-                subscriberDetails.add(rs.getString("subscriber_phone_number"));
-                subscriberDetails.add(rs.getString("subscriber_email"));
-                subscriberDetails.add(rs.getString("subscriber_status"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return subscriberDetails;
-    }
-    /**
-     * This method edits the details of a specific subscriber
-     * @param messageContent
-     */
-    private ArrayList<String> editSubscriberDetails(String messageContent) {
-        ArrayList<String> editedDetails = new ArrayList<>();
-        try {
-            /**
-             * The message content is split into an array of strings using the regex pattern
-             */
-            String regex = "[,\\.\\s]";
-            String[] details = messageContent.split(regex);
-            String subscriberId = details[0];
-            String subscriberName = details[1];
-            String subscriberPhoneNumber = details[2];
-            String subscriberEmail = details[3];
-
-            /**
-             * The query updates the name, phone number, and email of the subscriber where the id matches the given value
-             */
-            String query = "UPDATE subscriber SET subscriber_name = ?, subscriber_phone_number = ?, subscriber_email = ? WHERE id = ?";
-            PreparedStatement statement = conn.prepareStatement(query);
-            statement.setString(1, subscriberName);
-            statement.setString(2, subscriberPhoneNumber);
-            statement.setString(3, subscriberEmail);
-            statement.setString(4, subscriberId);
-
-            /**
-             *  Execute the update
-             *  If the update was successful, retrieve the updated details
-             */
-            try
-            {
-                statement.executeUpdate();
-                query = "SELECT * FROM subscriber WHERE id = ?";
-                statement = conn.prepareStatement(query);
-                statement.setString(1, subscriberId);
-                ResultSet rs = statement.executeQuery();
-                if (rs.next()) {
-                    editedDetails.add(rs.getString("subscriber_id"));
-                    editedDetails.add(rs.getString("subscriber_name"));
-                    editedDetails.add(rs.getString("subscriber_phone_number"));
-                    editedDetails.add(rs.getString("subscriber_email"));
-                    editedDetails.add(rs.getString("subscriber_status"));
-                }
-            } catch (SQLException e)
-            {
-                throw new RuntimeException(e);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return editedDetails;
-    }
-
-    /**
-     * This method retrieves a list of all subscribers
-     */
-    private ArrayList<ArrayList<String>> getSubscribersList() {
-        ArrayList<ArrayList<String>> subscribersList = new ArrayList<>();
-        try {
-            /**
-             * The query selects all columns from the subscriber table
-             */
-            String query = "SELECT * FROM subscriber";
-            PreparedStatement statement = conn.prepareStatement(query);
-
-            /**
-             * Execute the query
-             * If the query was successful, add the values of the columns to a list
-             * Add the list to the subscribers list
-             */
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                ArrayList<String> subscriberDetails = new ArrayList<>();
-                subscriberDetails.add(rs.getString("subscriber_id"));
-                subscriberDetails.add(rs.getString("subscriber_name"));
-                subscriberDetails.add(rs.getString("subscriber_phone_number"));
-                subscriberDetails.add(rs.getString("subscriber_email"));
-                subscriberDetails.add(rs.getString("subscriber_status"));
-                subscribersList.add(subscriberDetails);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return subscribersList;
-    }
-
-
-
 }

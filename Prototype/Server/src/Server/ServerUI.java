@@ -1,26 +1,22 @@
-package server;
+package Server;
 
-import Server.ServerController;
 import gui.ServerMonitorFrameController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import logic.Subscriber;
 
 import java.io.IOException;
-import java.util.Vector;
 import gui.ServerPortFrameController;
 
 public class ServerUI extends Application {
     final public static int DEFAULT_PORT = 5555;
-    public static Vector<Subscriber> subscribers =new Vector<Subscriber>();
 
     /**
      * main method
-     * @param args
-     * @throws Exception
+     * @param args the command line arguments
+     * @throws Exception if an error occurs
      */
     public static void main( String args[] ) throws Exception
     {
@@ -28,8 +24,8 @@ public class ServerUI extends Application {
     } // end main
     /**
      * This method starts the server
-     * @param primaryStage
-     * @throws Exception
+     * @param primaryStage the stage
+     * @throws Exception   if an error occurs
      */
     @Override
     public void start(Stage primaryStage) throws Exception
@@ -39,8 +35,8 @@ public class ServerUI extends Application {
     }
     /**
      * This method runs the server
-     * @param p
-     * @throws IOException
+     * @param p the port number
+     * @throws IOException if an error occurs
      */
     public static void runServer(String p) throws IOException
     {

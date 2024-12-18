@@ -1,7 +1,6 @@
 package gui;
 
-import javafx.scene.layout.Pane;
-import server.ServerUI;
+import Server.ServerUI;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import java.util.Objects;
 
 public class ServerPortFrameController  {
 
@@ -30,14 +31,14 @@ public class ServerPortFrameController  {
 	private TextField portxt;
 	ObservableList<String> list;
 
-	private String getport() {
+	private String getPort() {
 		return portxt.getText();
 	}
 
 	public void Done(ActionEvent event) throws Exception {
 		String p;
 
-		p=getport();
+		p=getPort();
 		if(p.trim().isEmpty()) {
 			System.out.println("You must enter a port number");
 
@@ -52,10 +53,10 @@ public class ServerPortFrameController  {
 	}
 
 	public void start(Stage primaryStage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("/gui/ServerPort.fxml"));
+		Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/gui/ServerPort.fxml")));
 
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("/gui/ServerPort.css").toExternalForm());
+		scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/gui/ServerPort.css")).toExternalForm());
 		primaryStage.setTitle("Client");
 		primaryStage.setScene(scene);
 

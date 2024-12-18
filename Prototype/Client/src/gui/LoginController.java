@@ -1,6 +1,6 @@
 package gui;
 
-import common.commandMessage;
+import common.ClientServerMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,7 +52,7 @@ public class LoginController implements Initializable  {
     @FXML
     public void clickLoginButton(ActionEvent event) throws Exception {
         Subscriber testSubscriber = new Subscriber("123", "Mona", "Lisa", 1, "0541234567", "MonaLisa@e.braude.ac.il", "abc");
-        commandMessage dataToTransfer=new commandMessage("12",testSubscriber);
+        ClientServerMessage dataToTransfer=new ClientServerMessage("12",testSubscriber);
         s1=testSubscriber;
 
         // Pass the Subscriber object to the next controller using the navigateTo method

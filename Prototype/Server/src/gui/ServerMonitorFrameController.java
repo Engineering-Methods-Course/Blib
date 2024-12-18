@@ -16,9 +16,9 @@ import java.util.*;
 
 public class ServerMonitorFrameController {
     private static int index = 1;
-    private ObservableList<List<String>> serverMonitorList = FXCollections.observableArrayList();
-    private Property<ObservableList<List<String>>> serverMonitorListProperty = new SimpleObjectProperty<>(serverMonitorList);
-    private Map<ConnectionToClient, Integer> clientMap = new HashMap<>();
+    private final ObservableList<List<String>> serverMonitorList = FXCollections.observableArrayList();
+    private final Property<ObservableList<List<String>>> serverMonitorListProperty = new SimpleObjectProperty<>(serverMonitorList);
+    private final Map<ConnectionToClient, Integer> clientMap = new HashMap<>();
 
 
     @FXML

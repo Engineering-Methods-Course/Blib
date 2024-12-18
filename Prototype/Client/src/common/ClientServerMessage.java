@@ -1,10 +1,10 @@
 package common;
 
-public class commandMessage {
+public class ClientServerMessage {
     private String id;
     private Object messageContent;
 
-    public commandMessage(String id, Object messageContent) {
+    public ClientServerMessage(String id, Object messageContent) {
         this.id = id;
         this.messageContent = messageContent;
     }
