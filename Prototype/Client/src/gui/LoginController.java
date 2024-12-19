@@ -11,7 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import logic.Subscriber;
+import common.Subscriber;
 
 import java.net.URL;
 import java.util.Objects;
@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 
 import static gui.SubscriberWelcomeFrameController.navigateTo;
 
-public class LoginController implements Initializable  {
+public class LoginController implements Initializable {
     private static Subscriber s1;
 
     @FXML
@@ -31,15 +31,21 @@ public class LoginController implements Initializable  {
     @FXML
     private Button btnLogin;  // Reference to the login button
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        //
-    }
-
     public static Subscriber getS1() {
         return s1;
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        //
+    }
+    /**
+     * This method handles the login button click event.
+     * It navigates to the SubscriberWelcomeFrame.fxml if the login is successful.
+     *
+     * @param event The action event triggered by clicking the login button
+     * @throws Exception If there is an issue with the navigation
+     */
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(SubscriberWelcomeFrameController.class.getResource("/gui/LoginFrame.fxml")));
         Scene scene = new Scene(root);
@@ -49,11 +55,18 @@ public class LoginController implements Initializable  {
         primaryStage.show();
 
     }
+    /**
+     * This method handles the login button click event.
+     * It navigates to the SubscriberWelcomeFrame.fxml if the login is successful.
+     *
+     * @param event The action event triggered by clicking the login button
+     * @throws Exception If there is an issue with the navigation
+     */
     @FXML
     public void clickLoginButton(ActionEvent event) throws Exception {
-        Subscriber testSubscriber = new Subscriber("123", "Mona", "Lisa", 1, "0541234567", "MonaLisa@e.braude.ac.il", "abc");
-        ClientServerMessage dataToTransfer=new ClientServerMessage("12",testSubscriber);
-        s1=testSubscriber;
+        Subscriber testSubscriber = new Subscriber(123, "Mona", "Lisa", "0541234567", "MonaLisa@e.braude.ac.il", "Aa123456");
+        ClientServerMessage dataToTransfer = new ClientServerMessage("12", testSubscriber);
+        s1 = testSubscriber;
 
         // Pass the Subscriber object to the next controller using the navigateTo method
         navigateTo(event, "/gui/SubscriberWelcomeFrame.fxml", "/gui/Subscriber.css", "Subscriber Frame");

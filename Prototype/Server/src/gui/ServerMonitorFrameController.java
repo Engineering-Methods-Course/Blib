@@ -15,12 +15,13 @@ import ocsf.server.ConnectionToClient;
 import java.util.*;
 
 public class ServerMonitorFrameController {
+    //
     private static int index = 1;
     private final ObservableList<List<String>> serverMonitorList = FXCollections.observableArrayList();
     private final Property<ObservableList<List<String>>> serverMonitorListProperty = new SimpleObjectProperty<>(serverMonitorList);
     private final Map<ConnectionToClient, Integer> clientMap = new HashMap<>();
 
-
+    // FXML elements for the server monitor table
     @FXML
     private TableView<List<String>> serverMonitorTable;
 
@@ -37,6 +38,7 @@ public class ServerMonitorFrameController {
     private TableColumn<List<String>, String> status;
     @FXML
     private Button monitorButton;
+
     /**
      * This method initializes the server monitor
      */
@@ -53,8 +55,10 @@ public class ServerMonitorFrameController {
 
     /**
      * This method gets the monitor button
-     * @param event
-     * @throws Exception
+     *
+     * @param event The action event triggered by clicking the monitor button
+     *
+     * @throws Exception If there is an issue with the navigation
      */
     public void getExitBtn(ActionEvent event) throws Exception {
         System.out.println("Exit Blib server");
@@ -64,8 +68,9 @@ public class ServerMonitorFrameController {
     /**
      * This method adds a row to the server monitor
      * Contains the host, ip, and status of the client
-     * @param host
-     * @param ip
+     *
+     * @param host The host name of the client
+     * @param ip  The ip address of the client
      */
     private void addRow(String host, String ip) {
         List<String> list = new ArrayList<>();
@@ -81,7 +86,8 @@ public class ServerMonitorFrameController {
 
     /**
      * This method adds a client to the server monitor
-     * @param client
+     *
+     * @param client The client to be added
      */
     public void clientConnected(ConnectionToClient client) {
         try {
@@ -101,7 +107,8 @@ public class ServerMonitorFrameController {
 
     /**
      * This method removes a client from the server monitor
-     * @param client
+     *
+     * @param client The client to be removed
      */
     public void clientDisconnected(ConnectionToClient client) {
         int index = clientMap.get(client) - 1; // Adjust for zero-based index

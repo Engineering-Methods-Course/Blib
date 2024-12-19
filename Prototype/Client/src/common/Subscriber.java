@@ -1,12 +1,12 @@
-package logic;
+package common;
 
 public class Subscriber {
 
     // Unique identifier for the subscriber
-    private String id;
+    private int id;
 
     // First name of the subscriber
-    private String name;
+    private String firstname;
 
     // Last name of the subscriber
     private String lastName;
@@ -25,23 +25,20 @@ public class Subscriber {
 
     // Subscriber's account password
     private String password;
-
     /**
      * Constructor to initialize a Subscriber object with all necessary details.
      *
      * @param id Unique identifier for the subscriber
      * @param name First name of the subscriber
      * @param lastName Last name of the subscriber
-     * @param subscriptionHistory Number of subscriptions the subscriber has had
      * @param phoneNumber Subscriber's phone number
      * @param email Subscriber's email address
      * @param password Subscriber's account password
      */
-    public Subscriber(String id, String name, String lastName, int subscriptionHistory, String phoneNumber, String email, String password) {
+    public Subscriber(int id, String name, String lastName, String phoneNumber, String email, String password) {
         this.id = id;
-        this.name = name;
+        this.firstname = name;
         this.lastName = lastName;
-        this.subscriptionHistory = subscriptionHistory;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
@@ -52,7 +49,7 @@ public class Subscriber {
      *
      * @return the id of the subscriber
      */
-    public String getID() {
+    public int getID() {
         return id;
     }
 
@@ -61,7 +58,7 @@ public class Subscriber {
      *
      * @param id Unique identifier for the subscriber
      */
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -70,8 +67,8 @@ public class Subscriber {
      *
      * @return the name of the subscriber
      */
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstname;
     }
 
     /**
@@ -79,8 +76,8 @@ public class Subscriber {
      *
      * @param name First name of the subscriber
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String name) {
+        this.firstname = name;
     }
 
     /**
@@ -109,16 +106,6 @@ public class Subscriber {
     public int getSubscriptionHistory() {
         return subscriptionHistory;
     }
-
-    /**
-     * Sets the subscription history of the subscriber.
-     *
-     * @param subscriptionHistory Number of subscriptions the subscriber has had
-     */
-    public void setSubscriptionHistory(int subscriptionHistory) {
-        this.subscriptionHistory = subscriptionHistory;
-    }
-
     /**
      * Gets the phone number of the subscriber.
      *

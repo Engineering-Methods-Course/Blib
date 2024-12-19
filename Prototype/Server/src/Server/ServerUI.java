@@ -8,49 +8,39 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import gui.ServerPortFrameController;
 
+import gui.ServerPortFrameController;
+/**
+ * This class is the server UI
+ */
 public class ServerUI extends Application {
     final public static int DEFAULT_PORT = 5555;
 
     /**
      * main method
+     *
      * @param args the command line arguments
      * @throws Exception if an error occurs
      */
-    public static void main( String args[] ) throws Exception
-    {
+    public static void main(String args[]) throws Exception {
         launch(args);
     } // end main
-    /**
-     * This method starts the server
-     * @param primaryStage the stage
-     * @throws Exception   if an error occurs
-     */
-    @Override
-    public void start(Stage primaryStage) throws Exception
-    {
-        ServerPortFrameController aFrame = new ServerPortFrameController(); // create StudentFrame
-        aFrame.start(primaryStage);
-    }
+
     /**
      * This method runs the server
+     *
      * @param p the port number
      * @throws IOException if an error occurs
      */
-    public static void runServer(String p) throws IOException
-    {
+    public static void runServer(String p) throws IOException {
         //Port to listen on
         int port = 0;
 
-        try
-        {
+        try {
             //Set port to 5555
             port = Integer.parseInt(p);
 
-        }
-        catch(Throwable t)
-        {
+        } catch (Throwable t) {
             System.out.println("ERROR - Could not connect!");
         }
 
@@ -68,15 +58,24 @@ public class ServerUI extends Application {
 
         ServerController sv = new ServerController(port, serverMonitorController);
 
-        try
-        {
+        try {
             //Start listening for connections
             sv.listen();
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             System.out.println("ERROR - Could not listen for clients!");
         }
+    }
+
+    /**
+     * This method starts the server
+     *
+     * @param primaryStage the stage
+     * @throws Exception if an error occurs
+     */
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        ServerPortFrameController aFrame = new ServerPortFrameController(); // create StudentFrame
+        aFrame.start(primaryStage);
     }
 
 

@@ -12,8 +12,7 @@ import java.io.*;
  * This class overrides some of the methods defined in the abstract
  * superclass in order to give more functionality to the client.
  */
-public class ChatClient extends AbstractClient
-{
+public class ChatClient extends AbstractClient {
     //Instance variables **********************************************
 
     /**
@@ -28,14 +27,13 @@ public class ChatClient extends AbstractClient
     /**
      * Constructs an instance of the chat client.
      *
-     * @param host The server to connect to.
-     * @param port The port number to connect on.
+     * @param host     The server to connect to.
+     * @param port     The port number to connect on.
      * @param clientUI The interface type variable.
      */
 
     public ChatClient(String host, int port, ChatIF clientUI)
-            throws IOException
-    {
+            throws IOException {
         super(host, port); //Call the superclass constructor
         this.clientUI = clientUI;
         openConnection();
@@ -48,13 +46,12 @@ public class ChatClient extends AbstractClient
      *
      * @param msg The message from the server.
      */
-    public void handleMessageFromServer(Object msg)
-    {
+    public void handleMessageFromServer(Object msg) {
         System.out.println("--> handleMessageFromServer");
 
         awaitResponse = false;
         String st;
-        st=msg.toString();
+        st = msg.toString();
         String[] result = st.split("\\s");
 
 
@@ -66,10 +63,8 @@ public class ChatClient extends AbstractClient
      * @param message The message from the UI.
      */
 
-    public void handleMessageFromClientUI(String message)
-    {
-        try
-        {
+    public void handleMessageFromClientUI(String message) {
+        try {
             openConnection();//in order to send more than one message
             awaitResponse = true;
             sendToServer(message);
@@ -81,11 +76,9 @@ public class ChatClient extends AbstractClient
                     e.printStackTrace();
                 }
             }
-        }
-        catch(IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
-            clientUI.display("Could not send message to server: Terminating client."+ e);
+            clientUI.display("Could not send message to server: Terminating client." + e);
             quit();
         }
     }
@@ -94,13 +87,11 @@ public class ChatClient extends AbstractClient
     /**
      * This method terminates the client.
      */
-    public void quit()
-    {
-        try
-        {
+    public void quit() {
+        try {
             closeConnection();
+        } catch (IOException e) {
         }
-        catch(IOException e) {}
         System.exit(0);
     }
 }

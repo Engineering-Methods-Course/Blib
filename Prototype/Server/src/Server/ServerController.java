@@ -13,17 +13,24 @@ import gui.*;
 import logic.*;
 import ocsf.server.*;
 
+/**
+ * This class extends the AbstractServer class and implements the SubscriberController and LibrarianController interfaces.
+ * It is used to control the server.
+ */
 public class ServerController extends AbstractServer implements SubscriberController, LibrarianController {
 
-    private Connection conn;
     private final ServerMonitorFrameController serverMonitorController;
+    private Connection conn;
+
     public ServerController(int port, ServerMonitorFrameController serverMonitorController) {
         super(port);
         this.serverMonitorController = serverMonitorController;
     }
+
     /**
      * This method overrides the one in the superclass. Called
      * when a client has connected to the server add it to the list of clients.
+     *
      * @param client the connection connected to the client.
      */
     @Override
@@ -36,6 +43,7 @@ public class ServerController extends AbstractServer implements SubscriberContro
     /**
      * This method overrides the one in the superclass. Called
      * when a client has disconnected from the server remove it from the list of clients.
+     *
      * @param client the connection with the client.
      */
     @Override
@@ -43,19 +51,18 @@ public class ServerController extends AbstractServer implements SubscriberContro
         System.out.println("Client disconnected");
         serverMonitorController.clientDisconnected(client);
     }
+
     /**
      * This method handles any messages received from the client.
      *
-     * @param msg The message received from the client.
+     * @param msg    The message received from the client.
      * @param client The connection from which the message originated.
      * @param
      */
     @Override
     protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
-        try
-        {
-            if(msg instanceof ClientServerMessage)
-            {
+        try {
+            if (msg instanceof ClientServerMessage) {
                 ClientServerMessage message = (ClientServerMessage) msg;
 
                 /**
@@ -63,28 +70,40 @@ public class ServerController extends AbstractServer implements SubscriberContro
                  * 203 - Edit info of a specific subscriber
                  * 205 - Get a list of all subscribers
                  */
-                switch (message.getId()){
-                        // Login subscriber
+                switch (message.getId()) {
+                    // Login subscriber
                     case 201:
-                        if(message.getMessageContent() instanceof ArrayList)
-                        {
-                            ArrayList<String> subscriberDetails = subscriberLogin((ArrayList<String>)message.getMessageContent(), conn);
-                            ClientServerMessage subscriberDetailsCommandMessage = new ClientServerMessage(202, subscriberDetails);
-                            client.sendToClient(subscriberDetailsCommandMessage);
+                        try {
+                            if (message.getMessageContent() instanceof ArrayList) {
+                                Subscriber subscriberDetails = subscriberLogin((ArrayList<String>) message.getMessageContent(), conn);
+                                ClientServerMessage subscriberDetailsCommandMessage = new ClientServerMessage(202, subscriberDetails);
+                                client.sendToClient(subscriberDetailsCommandMessage);
+                            } else {
+                                System.out.println("Cannot logIn the account Message is not a ArrayList<String>");
+                                client.sendToClient(null);
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error: with LogIn method" + e);
                         }
                         break;
-                        //  Edit subscriber details
+                    //  Edit subscriber details
                     case 203:
-                        if(message.getMessageContent() instanceof ArrayList)
-                        {
-                            ArrayList<String> editedDetails = editSubscriberDetails((ArrayList<String>)message.getMessageContent(),conn);
-                            ClientServerMessage editedDetailsCommandMessage = new ClientServerMessage(204, editedDetails);
-                            client.sendToClient(editedDetailsCommandMessage);
+                        try {
+                            if (message.getMessageContent() instanceof Subscriber) {
+                                Subscriber editedDetails = editSubscriberDetails((Subscriber) message.getMessageContent(), conn);
+                                ClientServerMessage editedDetailsCommandMessage = new ClientServerMessage(204, editedDetails);
+                                client.sendToClient(editedDetailsCommandMessage);
+                            } else {
+                                System.out.println("Cannot Edit account Message is not a subscriber");
+                                client.sendToClient(null);
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error: with Edit method" + e);
                         }
                         break;
                     //! will be implemented in the future
                     /*case 205:
-                        ArrayList<ArrayList<String>> subscribersList = getSubscribersList(conn);
+                        ArrayList<Subscriber> subscribersList = getSubscribersList(conn);
                         ClientServerMessage subscribersListCommandMessage = new ClientServerMessage(206, subscribersList);
                         client.sendToClient(subscribersListCommandMessage);
                         break;*/
@@ -92,19 +111,18 @@ public class ServerController extends AbstractServer implements SubscriberContro
                         System.out.println("Invalid command id");
                 }
             }
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println("Error: incorrect msg object type" + e);
         }
 
     }
+
     /**
      * This method overrides the one in the superclass.  Called
      * when the server starts listening for connections.
      */
-    protected void serverStarted()
-    {
-        System.out.println ("Server listening for connections on port " + getPort());
+    protected void serverStarted() {
+        System.out.println("Server listening for connections on port " + getPort());
 
         connectToDb();
 
@@ -114,14 +132,12 @@ public class ServerController extends AbstractServer implements SubscriberContro
      * This method overrides the one in the superclass.  Called
      * when the server stops listening for connections.
      */
-    protected void serverStopped()  {
-        System.out.println ("Server has stopped listening for connections.");
+    protected void serverStopped() {
+        System.out.println("Server has stopped listening for connections.");
     }
 
-    private void connectToDb()
-    {
-        try
-        {
+    private void connectToDb() {
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
             System.out.println("Driver definition succeed");
         } catch (Exception ex) {
@@ -129,12 +145,10 @@ public class ServerController extends AbstractServer implements SubscriberContro
             System.out.println("Driver definition failed");
         }
 
-        try
-        {
-            this.conn = DriverManager.getConnection("jdbc:mysql://localhost/blib?serverTimezone=IST","root","Aa123456");
+        try {
+            this.conn = DriverManager.getConnection("jdbc:mysql://localhost/blib?serverTimezone=IST", "root", "Aa123456");
             System.out.println("SQL connection succeed");
-        } catch (SQLException ex)
-        {/* handle any errors*/
+        } catch (SQLException ex) {/* handle any errors*/
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());

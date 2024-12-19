@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
-import logic.Subscriber;
+import common.Subscriber;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,9 +19,14 @@ public class ProfileOptionsController implements Initializable {
     @FXML
     private Button btnWatchHistory = null; // Button to view watch history
 
+    public static Subscriber getS2() {
+        return s2;
+    }
+
     /**
      * This method handles the Edit Profile button click event.
      * It navigates to the EditProfileFrame.fxml to allow editing of the profile.
+     *
      * @param event The action event triggered by clicking the Edit Profile button
      * @throws Exception If there is an issue with the navigation
      */
@@ -33,6 +38,7 @@ public class ProfileOptionsController implements Initializable {
     /**
      * This method handles the Back button click event.
      * It navigates back to the main Subscriber profile screen (SubscriberWelcomeFrame.fxml).
+     *
      * @param event The action event triggered by clicking the Back button
      * @throws Exception If there is an issue with the navigation
      */
@@ -40,13 +46,16 @@ public class ProfileOptionsController implements Initializable {
         // Navigate to the desired destination using the navigateTo function
         SubscriberWelcomeFrameController.navigateTo(event, "/gui/SubscriberWelcomeFrame.fxml", "/gui/Subscriber.css", "Profile");
     }
-    public static Subscriber getS2() {
-        return s2;
-    }
-
+    /**
+     * This method handles the Watch History button click event.
+     * It navigates to the WatchHistoryFrame.fxml to view the watch history.
+     *
+     * @param event The action event triggered by clicking the Watch History button
+     * @throws Exception If there is an issue with the navigation
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        s2=LoginController.getS1();
+        s2 = LoginController.getS1();
 
     }
 }

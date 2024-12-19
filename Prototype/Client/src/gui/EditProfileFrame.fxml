@@ -8,52 +8,54 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="518.0" prefWidth="483.0" spacing="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.EditProfileController">   <children>
-      <!-- Spacer to push content towards the center -->
-      <Region VBox.vgrow="ALWAYS" />
+<VBox alignment="CENTER" prefHeight="518.0" prefWidth="483.0" spacing="20.0" xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.EditProfileController">
+    <children>
+        <!-- Spacer to push content towards the center -->
+        <Region VBox.vgrow="ALWAYS"/>
 
-      <!-- Centered Content (Labels + TextFields) -->
-      <VBox alignment="CENTER" spacing="20.0">
-         <!-- ID -->
-         <HBox alignment="CENTER" spacing="10.0">
-            <Label fx:id="lblID" text="ID:" prefWidth="100.0" />
-            <TextField fx:id="txtID"  editable="false" prefWidth="200.0" />
-         </HBox>
+        <!-- Centered Content (Labels + TextFields) -->
+        <VBox alignment="CENTER" spacing="20.0">
+            <!-- ID -->
+            <HBox alignment="CENTER" spacing="10.0">
+                <Label fx:id="lblID" text="ID:" prefWidth="100.0"/>
+                <TextField fx:id="txtID" editable="false" prefWidth="200.0"/>
+            </HBox>
 
-         <!-- Name -->
-         <HBox alignment="CENTER" spacing="10.0">
-            <Label fx:id="lblName" text="Name:" prefWidth="100.0" />
-            <TextField fx:id="txtName" prefWidth="200.0" />
-         </HBox>
+            <!-- Name -->
+            <HBox alignment="CENTER" spacing="10.0">
+                <Label fx:id="lblName" text="Name:" prefWidth="100.0"/>
+                <TextField fx:id="txtName" prefWidth="200.0"/>
+            </HBox>
 
-         <!-- Last Name -->
-         <HBox alignment="CENTER" spacing="10.0">
-            <Label fx:id="lblLastName" text="Last Name:" prefWidth="100.0" />
-            <TextField fx:id="txtLastName" prefWidth="200.0" />
-         </HBox>
+            <!-- Last Name -->
+            <HBox alignment="CENTER" spacing="10.0">
+                <Label fx:id="lblLastName" text="Last Name:" prefWidth="100.0"/>
+                <TextField fx:id="txtLastName" prefWidth="200.0"/>
+            </HBox>
 
-         <!-- Phone -->
-         <HBox alignment="CENTER" spacing="10.0">
-            <Label fx:id="lblPhone" text="Phone:" prefWidth="100.0" />
-            <TextField fx:id="txtPhone" prefWidth="200.0" />
-         </HBox>
+            <!-- Phone -->
+            <HBox alignment="CENTER" spacing="10.0">
+                <Label fx:id="lblPhone" text="Phone:" prefWidth="100.0"/>
+                <TextField fx:id="txtPhone" prefWidth="200.0"/>
+            </HBox>
 
-         <!-- Email -->
-         <HBox alignment="CENTER" spacing="10.0">
-            <Label fx:id="lblEmail" text="Email:" prefWidth="100.0" />
-            <TextField fx:id="txtEmail" prefWidth="200.0" />
-         </HBox>
+            <!-- Email -->
+            <HBox alignment="CENTER" spacing="10.0">
+                <Label fx:id="lblEmail" text="Email:" prefWidth="100.0"/>
+                <TextField fx:id="txtEmail" prefWidth="200.0"/>
+            </HBox>
 
-         <!-- Update Button -->
-         <Button fx:id="btnUpdate" onAction="#clickUpdateButton" prefHeight="50.0" prefWidth="200.0" text="Update" />
-      </VBox>
+            <!-- Update Button -->
+            <Button fx:id="btnUpdate" onAction="#clickUpdateButton" prefHeight="50.0" prefWidth="200.0" text="Update"/>
+        </VBox>
 
-      <!-- Spacer to push the "Back" button to the bottom -->
-      <Region VBox.vgrow="ALWAYS" />
+        <!-- Spacer to push the "Back" button to the bottom -->
+        <Region VBox.vgrow="ALWAYS"/>
 
-      <!-- Back Button (smaller) aligned to bottom-left -->
-      <HBox alignment="CENTER_LEFT">
-         <Button fx:id="btnBack" onAction="#clickBackButton" prefHeight="40.0" prefWidth="100.0" text="Back" />
-      </HBox>
-   </children>
+        <!-- Back Button (smaller) aligned to bottom-left -->
+        <HBox alignment="CENTER_LEFT">
+            <Button fx:id="btnBack" onAction="#clickBackButton" prefHeight="40.0" prefWidth="100.0" text="Back"/>
+        </HBox>
+    </children>
 </VBox>

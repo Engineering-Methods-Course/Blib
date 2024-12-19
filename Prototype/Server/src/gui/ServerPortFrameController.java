@@ -15,57 +15,77 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
-public class ServerPortFrameController  {
+public class ServerPortFrameController {
 
 
-	String temp="";
+    String temp = "";
+    //FXML elements
+    @FXML
+    private Button btnExit = null;
+    @FXML
+    private Button btnDone = null;
+    @FXML
+    private Label lbllist;
 
-	@FXML
-	private Button btnExit = null;
-	@FXML
-	private Button btnDone = null;
-	@FXML
-	private Label lbllist;
+    @FXML
+    private TextField portxt;
+    ObservableList<String> list;
+    /**
+     * This method gets the port number
+     *
+     * @return The port number
+     */
+    private String getPort() {
+        return portxt.getText();
+    }
+    /**
+     * This method handles the Done button click event.
+     * It starts the server and hides the port window.
+     *
+     * @param event The action event triggered by clicking the Done button
+     * @throws Exception If there is an issue with starting the server
+     */
+    public void Done(ActionEvent event) throws Exception {
+        String p;
 
-	@FXML
-	private TextField portxt;
-	ObservableList<String> list;
+        p = getPort();
+        if (p.trim().isEmpty()) {
+            System.out.println("You must enter a port number");
 
-	private String getPort() {
-		return portxt.getText();
-	}
+        } else {
+            ServerUI.runServer(p);
 
-	public void Done(ActionEvent event) throws Exception {
-		String p;
+            // hide port window
+            ((Node) event.getSource()).getScene().getWindow().hide();
+        }
+    }
+    /**
+     * This method handles the Exit button click event.
+     * It exits the server.
+     *
+     * @param event The action event triggered by clicking the Exit button
+     * @throws Exception If there is an issue with exiting the server
+     */
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/gui/ServerPort.fxml")));
 
-		p=getPort();
-		if(p.trim().isEmpty()) {
-			System.out.println("You must enter a port number");
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/gui/ServerPort.css")).toExternalForm());
+        primaryStage.setTitle("Client");
+        primaryStage.setScene(scene);
 
-		}
-		else
-		{
-			ServerUI.runServer(p);
-
-			// hide port window
-			((Node)event.getSource()).getScene().getWindow().hide();
-		}
-	}
-
-	public void start(Stage primaryStage) throws Exception {
-		Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/gui/ServerPort.fxml")));
-
-		Scene scene = new Scene(root);
-		scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/gui/ServerPort.css")).toExternalForm());
-		primaryStage.setTitle("Client");
-		primaryStage.setScene(scene);
-
-		primaryStage.show();
-	}
-
-	public void getExitBtn(ActionEvent event) throws Exception {
-		System.out.println("exit Academic Tool");
-		System.exit(0);
-	}
+        primaryStage.show();
+    }
+    /**
+     * This method handles the Exit button click event.
+     * It exits the server.
+     *
+     * @param event The action event triggered by clicking the Exit button
+     * @throws Exception If there is an issue with exiting the server
+     */
+    public void getExitBtn(ActionEvent event) throws Exception {
+        System.out.println("exit Academic Tool");
+        System.exit(0);
+    }
 
 }

@@ -5,26 +5,27 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 
-<VBox prefHeight="506.0" prefWidth="419.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ProfileOptionsController">
-   <children>
-      <!-- Spacer to push buttons to the center -->
-      <Region VBox.vgrow="ALWAYS" />
+<VBox prefHeight="506.0" prefWidth="419.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="gui.ProfileOptionsController">
+    <children>
+        <!-- Spacer to push buttons to the center -->
+        <Region VBox.vgrow="ALWAYS"/>
 
-      <!-- Centered Buttons -->
-      <VBox spacing="20.0" alignment="CENTER" VBox.vgrow="NEVER">
-         <Button fx:id="btnEditProfile" onAction="#clickEditProfileButton" text="Edit profile"
-                 prefWidth="200.0" prefHeight="50.0" />
-         <Button fx:id="btnWatchHistory" text="Watch history"
-                 prefWidth="200.0" prefHeight="50.0" />
-      </VBox>
+        <!-- Centered Buttons -->
+        <VBox spacing="20.0" alignment="CENTER" VBox.vgrow="NEVER">
+            <Button fx:id="btnEditProfile" onAction="#clickEditProfileButton" text="Edit profile"
+                    prefWidth="200.0" prefHeight="50.0"/>
+            <Button fx:id="btnWatchHistory" text="Watch history"
+                    prefWidth="200.0" prefHeight="50.0"/>
+        </VBox>
 
-      <!-- Spacer to push Back button to the bottom -->
-      <Region VBox.vgrow="ALWAYS" />
+        <!-- Spacer to push Back button to the bottom -->
+        <Region VBox.vgrow="ALWAYS"/>
 
-      <!-- Back Button aligned to the bottom-left, smaller size -->
-      <HBox alignment="BOTTOM_LEFT">
-         <Button fx:id="btnBack" onAction="#clickBackButton" text="Back"
-                 prefWidth="100.0" prefHeight="40.0" />
-      </HBox>
-   </children>
+        <!-- Back Button aligned to the bottom-left, smaller size -->
+        <HBox alignment="BOTTOM_LEFT">
+            <Button fx:id="btnBack" onAction="#clickBackButton" text="Back"
+                    prefWidth="100.0" prefHeight="40.0"/>
+        </HBox>
+    </children>
 </VBox>

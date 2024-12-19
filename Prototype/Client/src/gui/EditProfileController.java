@@ -1,6 +1,6 @@
 package gui;
 
-import logic.Subscriber;
+import common.Subscriber;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -53,6 +53,7 @@ public class EditProfileController implements Initializable {
     /**
      * This method handles the back button click event.
      * It navigates to the previous screen (ProfileOptionsFrame.fxml).
+     *
      * @param event The action event triggered by clicking the back button
      * @throws Exception If there is an issue with the navigation
      */
@@ -68,21 +69,25 @@ public class EditProfileController implements Initializable {
     /**
      * This method loads the profile details into the respective text fields.
      * It sets the values from the Subscriber object into the text fields.
+     *
      * @param s1 The Subscriber object containing profile data
      */
     public void loadProfileDetails(Subscriber s1) {
         // Set values in the text fields from the Subscriber object
         this.txtID.setText(String.valueOf(subscriber.getID()));
-        this.txtName.setText(subscriber.getName());
+        this.txtName.setText(subscriber.getFirstName());
         this.txtLastName.setText(subscriber.getLastName());
         this.txtPhone.setText(String.valueOf(subscriber.getPhoneNumber()));
         this.txtEmail.setText(subscriber.getEmail());
     }
 
-
+    /**
+     * Initializes the controller class. This method is automatically called
+     * after the FXML file is loaded.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        subscriber=ProfileOptionsController.getS2();
+        subscriber = ProfileOptionsController.getS2();
         loadProfileDetails(subscriber);
     }
 }
