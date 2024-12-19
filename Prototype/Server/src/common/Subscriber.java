@@ -1,6 +1,9 @@
 package common;
 
-public class Subscriber {
+import java.io.Serializable;
+
+
+public class Subscriber implements Serializable {
 
     // Unique identifier for the subscriber
     private int id;

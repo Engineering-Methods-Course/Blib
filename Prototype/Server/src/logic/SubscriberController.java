@@ -13,7 +13,18 @@ import common.*;
 /**
  * This interface is used to control the subscriber
  */
-public interface SubscriberController {
+public  class SubscriberController {
+
+    private static SubscriberController instance = null;
+    private SubscriberController() {
+    }
+    public static SubscriberController getInstance() {
+        if (instance == null) {
+            instance = new SubscriberController();
+        }
+        return instance;
+    }
+
     /**
      * This method logins the subscriber to the system
      * and displays the details of a specific subscriber
@@ -22,17 +33,18 @@ public interface SubscriberController {
      * @param conn           The connection to the database
      * @return The subscriber
      */
-    default Subscriber subscriberLogin(ArrayList<String> messageContent, Connection conn) {
+    public Subscriber subscriberLogin(ArrayList<String> messageContent, Connection conn) {
         ArrayList<String> subscriberDetails = new ArrayList<>();
+        boolean status;
         try {
             /*
              * The query selects all columns from the subscriber table where the id matches a given value
              * stmt.setString(1, messageContent) sets the first placeholder in the query to the value of messageContent
              */
-            String query = "SELECT * FROM subscriber WHERE id = ? AND subscriber_password = ? ";
+            String query = "SELECT * FROM subscriber WHERE subScriber_id = ? AND subscriber_password = ? ";
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setInt(1, Integer.parseInt(messageContent.get(0)));
-            statement.setString(2, messageContent.get(5));
+            statement.setString(2, messageContent.get(1));
             /*
              * The result set is the result of the query
              * The while loop iterates over the result set and prints the values of the columns
@@ -45,11 +57,17 @@ public interface SubscriberController {
                 subscriberDetails.add(rs.getString("subscriber_phone_number"));
                 subscriberDetails.add(rs.getString("subscriber_email"));
                 subscriberDetails.add(rs.getString("subscriber_password"));
-                subscriberDetails.add(String.valueOf(rs.getBoolean("subscriber_status")));
+                subscriberDetails.add(String.valueOf(rs.getInt("subscriber_status")));
+            }
+            if(subscriberDetails.get(6).equals("0")){
+                status = false;}
+            else{
+                status = true;
             }
             // Create the subscriber and return it
+
             return new Subscriber(Integer.parseInt(subscriberDetails.get(0)), subscriberDetails.get(1),
-                    subscriberDetails.get(2), subscriberDetails.get(3), subscriberDetails.get(4), subscriberDetails.get(5), Boolean.parseBoolean(subscriberDetails.get(6)));
+                    subscriberDetails.get(2), subscriberDetails.get(3), subscriberDetails.get(4), subscriberDetails.get(5), status);
         } catch (SQLException e) {
             // If an error occur
             e.printStackTrace();
@@ -64,7 +82,7 @@ public interface SubscriberController {
      * @param conn           The connection to the database
      * @return The edited subscriber
      */
-    default Subscriber editSubscriberDetails(Subscriber messageContent, Connection conn) {
+    public Subscriber editSubscriberDetails(Subscriber messageContent, Connection conn) {
         ArrayList<String> editedDetails = new ArrayList<>();
         try {
             /*
@@ -73,7 +91,7 @@ public interface SubscriberController {
              */
             String query = "UPDATE subscriber SET subscriber_fname = ?," +
                     " subscriber_lname = ?, subscriber_phone_number = ?, " +
-                    "subscriber_email = ?, subscriber_password = ? WHERE id = ?";
+                    "subscriber_email = ?, subscriber_password = ? WHERE subScriber_id = ?";
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setString(1, messageContent.getFirstName());
             statement.setString(2, messageContent.getLastName());
@@ -92,6 +110,7 @@ public interface SubscriberController {
         }
 
         try {
+            boolean status;
             String query = "SELECT * FROM subscriber WHERE id = ?";
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setInt(1, messageContent.getID());
@@ -104,9 +123,15 @@ public interface SubscriberController {
                 editedDetails.add(rs.getString("subscriber_email"));
                 editedDetails.add(rs.getString("subscriber_password"));
                 editedDetails.add(rs.getString("subscriber_status"));
+                if(editedDetails.get(6).equals("0")){
+                    status = false;}
+                else{
+                    status = true;
+                }
+                // Create the subscriber and return it
 
                 return new Subscriber(Integer.parseInt(editedDetails.get(0)), editedDetails.get(1),
-                        editedDetails.get(2), editedDetails.get(3), editedDetails.get(4), editedDetails.get(5),  Boolean.parseBoolean(editedDetails.get(6)));
+                        editedDetails.get(2), editedDetails.get(3), editedDetails.get(4), editedDetails.get(5), status);
             }
         } catch (SQLException e) {
             // If an error occur

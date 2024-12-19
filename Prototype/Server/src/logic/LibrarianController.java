@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import common.*;
 
 //! will be implemented in the future WIP
-public interface LibrarianController {
+public  interface LibrarianController {
 
     /**
      * This method retrieves a list of all subscribers
      */
-    default ArrayList<Subscriber> getSubscribersList(Connection conn) {
+    default  ArrayList<Subscriber> getSubscribersList(Connection conn) {
         ArrayList<Subscriber> subscribersList = new ArrayList<>();
         try {
             /*

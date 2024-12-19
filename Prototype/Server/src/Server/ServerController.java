@@ -17,14 +17,16 @@ import ocsf.server.*;
  * This class extends the AbstractServer class and implements the SubscriberController and LibrarianController interfaces.
  * It is used to control the server.
  */
-public class ServerController extends AbstractServer implements SubscriberController, LibrarianController {
+public class ServerController extends AbstractServer {
 
     private final ServerMonitorFrameController serverMonitorController;
-    private Connection conn;
+    private static Connection conn;
+    private SubscriberController subscriberController = null;
 
     public ServerController(int port, ServerMonitorFrameController serverMonitorController) {
         super(port);
         this.serverMonitorController = serverMonitorController;
+        subscriberController = SubscriberController.getInstance();
     }
 
     /**
@@ -75,24 +77,26 @@ public class ServerController extends AbstractServer implements SubscriberContro
                     case 201:
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
-                                Subscriber subscriberDetails = subscriberLogin((ArrayList<String>) message.getMessageContent(), conn);
+                                Subscriber subscriberDetails = subscriberController.subscriberLogin((ArrayList<String>) message.getMessageContent(), conn);
                                 ClientServerMessage subscriberDetailsCommandMessage = new ClientServerMessage(202, subscriberDetails);
                                 client.sendToClient(subscriberDetailsCommandMessage);
+                                System.out.println("Subscriber details was sent to client");
                             } else {
                                 System.out.println("Cannot logIn the account Message is not a ArrayList<String>");
                                 client.sendToClient(null);
                             }
                         } catch (Exception e) {
-                            System.out.println("Error: with LogIn method" + e);
+                            System.out.println("Error: with LogIn method " + e);
                         }
                         break;
                     //  Edit subscriber details
                     case 203:
                         try {
                             if (message.getMessageContent() instanceof Subscriber) {
-                                Subscriber editedDetails = editSubscriberDetails((Subscriber) message.getMessageContent(), conn);
+                                Subscriber editedDetails = subscriberController.editSubscriberDetails((Subscriber) message.getMessageContent(), conn);
                                 ClientServerMessage editedDetailsCommandMessage = new ClientServerMessage(204, editedDetails);
                                 client.sendToClient(editedDetailsCommandMessage);
+                                System.out.println("Updated Subscriber details was sent to client");
                             } else {
                                 System.out.println("Cannot Edit account Message is not a subscriber");
                                 client.sendToClient(null);
@@ -138,7 +142,7 @@ public class ServerController extends AbstractServer implements SubscriberContro
 
     private void connectToDb() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             System.out.println("Driver definition succeed");
         } catch (Exception ex) {
             /* handle the error*/
