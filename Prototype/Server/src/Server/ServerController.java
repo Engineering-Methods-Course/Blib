@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import common.*;
@@ -78,8 +76,7 @@ public class ServerController extends AbstractServer {
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
                                 Subscriber subscriberDetails = subscriberController.subscriberLogin((ArrayList<String>) message.getMessageContent(), conn);
-                                ClientServerMessage subscriberDetailsCommandMessage = new ClientServerMessage(202, subscriberDetails);
-                                client.sendToClient(subscriberDetailsCommandMessage);
+                                client.sendToClient(new ClientServerMessage(202, subscriberDetails));
                                 System.out.println("Subscriber details was sent to client");
                             } else {
                                 System.out.println("Cannot logIn the account Message is not a ArrayList<String>");
@@ -94,8 +91,7 @@ public class ServerController extends AbstractServer {
                         try {
                             if (message.getMessageContent() instanceof Subscriber) {
                                 Subscriber editedDetails = subscriberController.editSubscriberDetails((Subscriber) message.getMessageContent(), conn);
-                                ClientServerMessage editedDetailsCommandMessage = new ClientServerMessage(204, editedDetails);
-                                client.sendToClient(editedDetailsCommandMessage);
+                                client.sendToClient(new ClientServerMessage(204, editedDetails));
                                 System.out.println("Updated Subscriber details was sent to client");
                             } else {
                                 System.out.println("Cannot Edit account Message is not a subscriber");

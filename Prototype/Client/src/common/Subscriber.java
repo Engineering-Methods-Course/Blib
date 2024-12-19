@@ -1,6 +1,9 @@
 package common;
 
-public class Subscriber {
+import java.io.Serializable;
+
+
+public class Subscriber implements Serializable {
 
     // Unique identifier for the subscriber
     private int id;
@@ -25,23 +28,25 @@ public class Subscriber {
 
     // Subscriber's account password
     private String password;
+
     /**
      * Constructor to initialize a Subscriber object with all necessary details.
      *
-     * @param id Unique identifier for the subscriber
-     * @param name First name of the subscriber
-     * @param lastName Last name of the subscriber
+     * @param id          Unique identifier for the subscriber
+     * @param name        First name of the subscriber
+     * @param lastName    Last name of the subscriber
      * @param phoneNumber Subscriber's phone number
-     * @param email Subscriber's email address
-     * @param password Subscriber's account password
+     * @param email       Subscriber's email address
+     * @param password    Subscriber's account password
      */
-    public Subscriber(int id, String name, String lastName, String phoneNumber, String email, String password) {
+    public Subscriber(int id, String name, String lastName, String phoneNumber, String email, String password,boolean status) {
         this.id = id;
         this.firstname = name;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
+        this.statusIsFrozen = status;
     }
 
     /**
@@ -106,6 +111,7 @@ public class Subscriber {
     public int getSubscriptionHistory() {
         return subscriptionHistory;
     }
+
     /**
      * Gets the phone number of the subscriber.
      *
@@ -176,5 +182,14 @@ public class Subscriber {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String toString() {
+        return "Subscriber ID: " + id + "\n" +
+                "Name: " + firstname + " " + lastName + "\n" +
+                "Phone Number: " + phoneNumber + "\n" +
+                "Email: " + email + "\n" +
+                "Password: " + password + "\n" +
+                "Status: " + (statusIsFrozen ? "Frozen" : "Active") + "\n";
     }
 }

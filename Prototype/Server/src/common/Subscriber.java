@@ -183,4 +183,13 @@ public class Subscriber implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String toString() {
+        return "Subscriber ID: " + id + "\n" +
+                "Name: " + firstname + " " + lastName + "\n" +
+                "Phone Number: " + phoneNumber + "\n" +
+                "Email: " + email + "\n" +
+                "Password: " + password + "\n" +
+                "Status: " + (statusIsFrozen ? "Frozen" : "Active") + "\n";
+    }
 }
