@@ -20,6 +20,7 @@ public  class SubscriberController {
     }
     public static SubscriberController getInstance() {
         if (instance == null) {
+            System.out.println("SubscriberController was created successfully");
             instance = new SubscriberController();
         }
         return instance;
@@ -59,18 +60,27 @@ public  class SubscriberController {
                 subscriberDetails.add(rs.getString("subscriber_password"));
                 subscriberDetails.add(String.valueOf(rs.getInt("subscriber_status")));
             }
-            // Can be 0 or 1
-            if(subscriberDetails.get(6).equals("0")){
-                status = false;}
-            else{
-                status = true;
+            // No subscriber found
+            if(subscriberDetails.isEmpty()){
+                System.out.println("No subscriber found(Subscriber LogIn Failed)");
+                return  null;
             }
-            // Create the subscriber and return it
-            return new Subscriber(Integer.parseInt(subscriberDetails.get(0)), subscriberDetails.get(1),
-                    subscriberDetails.get(2), subscriberDetails.get(3), subscriberDetails.get(4), subscriberDetails.get(5), status);
+            else {
+                System.out.println("Subscriber found");
+                // Status Can be 0 or 1
+                if(subscriberDetails.get(6).equals("0")){
+                    status = false;}
+                else{
+                    status = true;
+                }
+                System.out.println("Subscriber found (Subscriber LogIn Successful)");
+                // Create the subscriber and return it
+                return new Subscriber(Integer.parseInt(subscriberDetails.get(0)), subscriberDetails.get(1),
+                        subscriberDetails.get(2), subscriberDetails.get(3), subscriberDetails.get(4), subscriberDetails.get(5), status);
+            }
         } catch (SQLException e) {
             // If an error occur
-            e.printStackTrace();
+            System.out.println("Error: Login Failed" + e);
             return null;
         }
     }
@@ -99,16 +109,18 @@ public  class SubscriberController {
             statement.setString(4, messageContent.getEmail());
             statement.setString(5, messageContent.getPassword());
             statement.setInt(6, messageContent.getID());
-            /**
+            /*
              *  Execute the update
              */
             statement.executeUpdate();
         } catch (SQLException e) {
             // If an error occur
-            System.out.println("Error: With updating the subscriber in sql" + e);
+            System.out.println("Error: Finding an Subscriber (editSubscriberDetails)" + e);
             return null;
         }
-
+        /*
+         *  Execute the export of the new subscriber details
+         */
         try {
             boolean status;
             String query = "SELECT * FROM subscriber WHERE subscriber_id = ?";
@@ -122,22 +134,26 @@ public  class SubscriberController {
                 editedDetails.add(rs.getString("subscriber_phone_number"));
                 editedDetails.add(rs.getString("subscriber_email"));
                 editedDetails.add(rs.getString("subscriber_password"));
-                editedDetails.add(rs.getString("subscriber_status"));
-                if(editedDetails.get(6).equals("0")){
-                    status = false;}
-                else{
-                    status = true;
-                }
-                // Create the subscriber and return it
-                return new Subscriber(Integer.parseInt(editedDetails.get(0)), editedDetails.get(1),
-                        editedDetails.get(2), editedDetails.get(3), editedDetails.get(4), editedDetails.get(5), status);
+                editedDetails.add(String.valueOf(rs.getInt("subscriber_status")));
             }
+            if(editedDetails.isEmpty()) {
+                System.out.println("Failed to export new subscriber details from sql (editSubscriberDetails)");
+                return null;
+            }
+            if(editedDetails.get(6).equals("0")){
+                status = false;}
+            else{
+                status = true;
+            }
+            System.out.println("Subscriber Edit Successful");
+            // Create the subscriber and return it
+            return new Subscriber(Integer.parseInt(editedDetails.get(0)), editedDetails.get(1),
+                    editedDetails.get(2), editedDetails.get(3), editedDetails.get(4), editedDetails.get(5), status);
         } catch (SQLException e) {
             // If an error occur
             System.out.println("Error: With exporting new subscriber details from sql" + e);
             return null;
         }
-        return null;
     }
 }
 

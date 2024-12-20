@@ -15,17 +15,18 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import common.Subscriber;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
 
 import static gui.SubscriberWelcomeFrameController.navigateTo;
 
 public class LoginController implements Initializable {
     private static Subscriber localSubscriber = null;
     private static ChatClient chatClient;
+    private static Subscriber s1;
 
     @FXML
     private TextField txtUsername;  // Reference to the username field
@@ -35,6 +36,10 @@ public class LoginController implements Initializable {
 
     @FXML
     private Button btnLogin;  // Reference to the login button
+
+    public static Subscriber getS1() {
+        return s1;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -66,6 +71,7 @@ public class LoginController implements Initializable {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Subscriber Frame");
         primaryStage.show();
+
     }
 
     @FXML
@@ -89,7 +95,6 @@ public class LoginController implements Initializable {
             System.out.println("Error sending login message to server: " + e.getMessage());
         }
 
-        System.out.println("bla bla bla");
         if (localSubscriber != null) {
             navigateTo(event, "/gui/SubscriberWelcomeFrame.fxml", "/gui/Subscriber.css", "Subscriber Frame");
         } else {

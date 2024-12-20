@@ -20,11 +20,13 @@ public class ServerController extends AbstractServer {
     private final ServerMonitorFrameController serverMonitorController;
     private static Connection conn;
     private SubscriberController subscriberController = null;
+    private LibrarianController librarianController = null;
 
     public ServerController(int port, ServerMonitorFrameController serverMonitorController) {
         super(port);
         this.serverMonitorController = serverMonitorController;
         subscriberController = SubscriberController.getInstance();
+        librarianController = LibrarianController.getInstance();
     }
 
     /**
@@ -35,8 +37,7 @@ public class ServerController extends AbstractServer {
      */
     @Override
     protected void clientConnected(ConnectionToClient client) {
-        System.out.println("Client connected");
-
+        System.out.println("Client connected" + client.toString());
         serverMonitorController.clientConnected(client);
     }
 
@@ -71,6 +72,18 @@ public class ServerController extends AbstractServer {
                  * 205 - Get a list of all subscribers
                  */
                 switch (message.getId()) {
+                    // Get all subscribers list
+                    case 103:
+                        try{
+                            ArrayList<Subscriber> subscribersList = librarianController.getSubscribersList(conn);
+                            client.sendToClient(new ClientServerMessage(104, subscribersList));
+                            System.out.println("Subscribers list was sent to client");
+                            break;
+                        }catch (Exception e){
+                            System.out.println("Error: with getting subscribers list (case103)" + e);
+                            client.sendToClient(new ClientServerMessage(104, null));
+                            break;
+                        }
                     // Login subscriber
                     case 201:
                         try {
@@ -82,11 +95,12 @@ public class ServerController extends AbstractServer {
                                 System.out.println("Cannot logIn the account Message is not a ArrayList<String>");
                                 client.sendToClient(new ClientServerMessage(202, null));
                             }
+                            break;
                         } catch (Exception e) {
-                            System.out.println("Error: with LogIn method " + e);
+                            System.out.println("Error: with subscriber login method (case201) " + e);
                             client.sendToClient(new ClientServerMessage(202, null));
+                            break;
                         }
-                        break;
                     //  Edit subscriber details
                     case 203:
                         try {
@@ -96,24 +110,22 @@ public class ServerController extends AbstractServer {
                                 System.out.println("Updated Subscriber details was sent to client");
                             } else {
                                 System.out.println("Cannot Edit account Message is not a subscriber");
-                                client.sendToClient(null);
+                                client.sendToClient(new ClientServerMessage(204, null));
+
                             }
+                            break;
                         } catch (Exception e) {
-                            System.out.println("Error: with Edit method" + e);
+                            System.out.println("Error: with Edit method (case203)" + e);
+                            client.sendToClient(new ClientServerMessage(204, null));
+                            break;
                         }
-                        break;
-                    //! will be implemented in the future
-                    /*case 205:
-                        ArrayList<Subscriber> subscribersList = getSubscribersList(conn);
-                        ClientServerMessage subscribersListCommandMessage = new ClientServerMessage(206, subscribersList);
-                        client.sendToClient(subscribersListCommandMessage);
-                        break;*/
+
                     default:
-                        System.out.println("Invalid command id");
+                        System.out.println("Invalid command id(handleMessageFromClient ServerController)");
                 }
             }
         } catch (Exception e) {
-            System.out.println("Error: incorrect msg object type" + e);
+            System.out.println("Error: incorrect msg object type (handleMessageFromClient ServerController)" + e);
         }
 
     }
