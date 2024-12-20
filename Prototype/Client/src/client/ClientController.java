@@ -1,9 +1,12 @@
 
 package client;
-
 import java.io.*;
+import java.sql.Connection;
+import java.util.ArrayList;
 
 import common.ChatIF;
+import common.ClientServerMessage;
+import common.Subscriber;
 
 
 /**
@@ -11,13 +14,14 @@ import common.ChatIF;
  * chat interface in order to activate the display() method.
  * Warning: Some of the code here is cloned in ServerConsole
  */
-public class ClientController implements ChatIF {
+public class ClientController implements ChatIF
+{
     //Class variables *************************************************
-
+    //private Connection conn;
     /**
      * The default port to connect on.
      */
-    public static int DEFAULT_PORT;
+    public static int DEFAULT_PORT ;
 
     //Instance variables **********************************************
 
@@ -34,15 +38,18 @@ public class ClientController implements ChatIF {
      * @param host The host to connect to.
      * @param port The port to connect on.
      */
-    public ClientController(String host, int port) {
-        try {
-            client = new ChatClient(host, port, this);
-        } catch (IOException exception) {
-            System.out.println("Error: Can't setup connection!" + " Terminating client.");
+    public ClientController(String host, int port)
+    {
+        try
+        {
+            client= new ChatClient(host, port, this);
+        }
+        catch(IOException exception)
+        {
+            System.out.println("Error: Can't setup connection!"+ " Terminating client.");
             System.exit(1);
         }
     }
-
 
     //Instance methods ************************************************
 
@@ -50,8 +57,9 @@ public class ClientController implements ChatIF {
      * This method waits for input from the console.  Once it is
      * received, it sends it to the client's message handler.
      */
-    public void accept(String str) {
-        client.handleMessageFromClientUI(str);
+    public void accept(ClientServerMessage msg)
+    {
+        client.handleMessageFromClientUI(msg);
     }
 
     /**
@@ -60,7 +68,8 @@ public class ClientController implements ChatIF {
      *
      * @param message The string to be displayed.
      */
-    public void display(String message) {
+    public void display(String message)
+    {
         System.out.println("> " + message);
     }
 }

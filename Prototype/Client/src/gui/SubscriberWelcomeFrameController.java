@@ -75,7 +75,7 @@ public class SubscriberWelcomeFrameController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        subscriber = LoginController.getS1();
+        subscriber = LoginController.getLocalSubscriber();
         loadSubscriberName(subscriber);
     }
 

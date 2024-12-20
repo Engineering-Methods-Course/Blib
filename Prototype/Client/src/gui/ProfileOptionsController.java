@@ -46,16 +46,10 @@ public class ProfileOptionsController implements Initializable {
         // Navigate to the desired destination using the navigateTo function
         SubscriberWelcomeFrameController.navigateTo(event, "/gui/SubscriberWelcomeFrame.fxml", "/gui/Subscriber.css", "Profile");
     }
-    /**
-     * This method handles the Watch History button click event.
-     * It navigates to the WatchHistoryFrame.fxml to view the watch history.
-     *
-     * @param event The action event triggered by clicking the Watch History button
-     * @throws Exception If there is an issue with the navigation
-     */
+    //! missing documentation
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        s2 = LoginController.getS1();
+        s2 = LoginController.getLocalSubscriber();
 
     }
 }

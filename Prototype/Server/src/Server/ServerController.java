@@ -80,10 +80,11 @@ public class ServerController extends AbstractServer {
                                 System.out.println("Subscriber details was sent to client");
                             } else {
                                 System.out.println("Cannot logIn the account Message is not a ArrayList<String>");
-                                client.sendToClient(null);
+                                client.sendToClient(new ClientServerMessage(202, null));
                             }
                         } catch (Exception e) {
                             System.out.println("Error: with LogIn method " + e);
+                            client.sendToClient(new ClientServerMessage(202, null));
                         }
                         break;
                     //  Edit subscriber details

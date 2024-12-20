@@ -1,5 +1,7 @@
 package gui;
 
+import client.ChatClient;
+import client.ClientUI;
 import common.ClientServerMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,14 +15,17 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import common.Subscriber;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static gui.SubscriberWelcomeFrameController.navigateTo;
 
 public class LoginController implements Initializable {
-    private static Subscriber s1;
+    private static Subscriber localSubscriber = null;
+    private static ChatClient chatClient;
 
     @FXML
     private TextField txtUsername;  // Reference to the username field
@@ -31,45 +36,68 @@ public class LoginController implements Initializable {
     @FXML
     private Button btnLogin;  // Reference to the login button
 
-    public static Subscriber getS1() {
-        return s1;
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //
     }
-    /**
-     * This method handles the login button click event.
-     * It navigates to the SubscriberWelcomeFrame.fxml if the login is successful.
-     *
-     * @param event The action event triggered by clicking the login button
-     * @throws Exception If there is an issue with the navigation
-     */
+
+    public LoginController() {
+
+    }
+
+    public static Subscriber getLocalSubscriber() {
+        return localSubscriber;
+    }
+
+    public static void setLocalSubscriber(Subscriber subscriberToSet) {
+        localSubscriber = subscriberToSet;
+    }
+
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(SubscriberWelcomeFrameController.class.getResource("/gui/LoginFrame.fxml")));
+        // Use FXMLLoader to load the FXML
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/gui/LoginFrame.fxml")));
+        Parent root = loader.load();
+
+        // Get the controller instance from the FXMLLoader
+        LoginController loginController = loader.getController();
+        // Set up the scene and stage
         Scene scene = new Scene(root);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/gui/Subscriber.css")).toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.setTitle("Subscriber Frame");
         primaryStage.show();
-
     }
-    /**
-     * This method handles the login button click event.
-     * It navigates to the SubscriberWelcomeFrame.fxml if the login is successful.
-     *
-     * @param event The action event triggered by clicking the login button
-     * @throws Exception If there is an issue with the navigation
-     */
+
     @FXML
     public void clickLoginButton(ActionEvent event) throws Exception {
-        Subscriber testSubscriber = new Subscriber(123, "Mona", "Lisa", "0541234567", "MonaLisa@e.braude.ac.il", "Aa123456");
-        ClientServerMessage dataToTransfer = new ClientServerMessage("12", testSubscriber);
-        s1 = testSubscriber;
+        String username = txtUsername.getText();
+        String password = txtPassword.getText();
 
-        // Pass the Subscriber object to the next controller using the navigateTo method
-        navigateTo(event, "/gui/SubscriberWelcomeFrame.fxml", "/gui/Subscriber.css", "Subscriber Frame");
+        if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+            System.out.println("Username and password cannot be empty");
+            return;
+        }
+        ArrayList<String> loginDetails = new ArrayList<>();
+        loginDetails.add(username);
+        loginDetails.add(password);
+
+        ClientServerMessage loginMessage = new ClientServerMessage(201, loginDetails);
+
+        try {
+            ClientUI.chat.accept(loginMessage);
+        } catch (Exception e) {
+            System.out.println("Error sending login message to server: " + e.getMessage());
+        }
+
+        System.out.println("bla bla bla");
+        if (localSubscriber != null) {
+            navigateTo(event, "/gui/SubscriberWelcomeFrame.fxml", "/gui/Subscriber.css", "Subscriber Frame");
+        } else {
+            System.out.println("Something went Wrong try again please: ");
+        }
+
     }
 
 }
+
+
