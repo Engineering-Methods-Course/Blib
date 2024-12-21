@@ -76,14 +76,12 @@ public class EditProfileController implements Initializable {
         String phoneNumber = txtPhone.getText();
         String email = txtEmail.getText();
         String password = txtPassword.getText();
+        boolean status = false;
 
-        // Create a Subscriber object using the retrieved values
-        // Assuming `status` is an additional boolean you may want to set
-        boolean status = false; // Modify as needed for your application
         Subscriber subscriber = new Subscriber(id, name, lastName, phoneNumber, email, password, status);
 
         // Create a ClientServerMessage with the subscriber and ID 204
-        ClientServerMessage editedProfileMessage = new ClientServerMessage(204, subscriber);
+        ClientServerMessage editedProfileMessage = new ClientServerMessage(203, subscriber);
 
         try {
             ClientUI.chat.accept(editedProfileMessage);
@@ -110,6 +108,7 @@ public class EditProfileController implements Initializable {
         this.txtLastName.setText(localSubscriber.getLastName());
         this.txtPhone.setText(String.valueOf(localSubscriber.getPhoneNumber()));
         this.txtEmail.setText(localSubscriber.getEmail());
+        this.txtPassword.setText(localSubscriber.getPassword());
     }
 
 

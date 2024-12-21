@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import static gui.SubscriberWelcomeFrameController.navigateTo;
@@ -48,7 +49,7 @@ public class ClientIPFrameController {
      * Handle the Enter button click event.
      */
     @FXML
-    public void clickEnterButton(ActionEvent event) {
+    public void clickEnterButton(ActionEvent event) throws Exception {
         String ipAddress = txtIP.getText().trim();
         String portText = txtPort.getText().trim();
 
@@ -66,8 +67,11 @@ public class ClientIPFrameController {
             navigateTo(event, "/gui/LoginFrame.fxml", "/gui/Subscriber.css", "Login");
         } catch (NumberFormatException e) {
             System.out.println("Port must be a valid number.");
+            throw e;
+
         } catch (Exception e) {
             System.out.println("Failed to initialize client: " + e.getMessage());
+            throw e;
         }
     }
 
