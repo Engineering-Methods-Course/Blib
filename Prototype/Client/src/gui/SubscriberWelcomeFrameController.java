@@ -152,6 +152,8 @@ public class SubscriberWelcomeFrameController implements Initializable  {
      */
     public void clickLogoutButton(ActionEvent event) throws Exception {
         System.out.println("exit Subscriber Frame");
+        setLocalSubscriber(null);
+        LoginController.setLocalSubscriber(null);
         navigateTo(event, "/gui/LoginFrame.fxml", "/gui/Subscriber.css", "Login");
     }
 
