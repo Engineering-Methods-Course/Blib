@@ -53,7 +53,7 @@ public class ServerGUI extends Application {
         ServerMonitorFrameController serverMonitorController = loader.getController();
 
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(Objects.requireNonNull(ServerUI.class.getResource("/gui/Server.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(ServerGUI.class.getResource("/gui/Server.css")).toExternalForm());
         primaryStage.setTitle("Server Monitor");
         // Set the close button to call the exit button
         primaryStage.setOnCloseRequest(event -> {
