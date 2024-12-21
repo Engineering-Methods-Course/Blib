@@ -8,8 +8,10 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import gui.ServerPortFrameController;
+
 /**
  * This class is the server UI
  */
@@ -51,7 +53,17 @@ public class ServerUI extends Application {
         ServerMonitorFrameController serverMonitorController = loader.getController();
 
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(Objects.requireNonNull(ServerUI.class.getResource("/gui/Server.css")).toExternalForm());
         primaryStage.setTitle("Server Monitor");
+        // Set the close button to call the exit button
+        primaryStage.setOnCloseRequest(event -> {
+            try {
+                serverMonitorController.getExitBtn(null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
 
         primaryStage.setScene(scene);
         primaryStage.show();

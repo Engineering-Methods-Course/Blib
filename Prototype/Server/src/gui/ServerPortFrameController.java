@@ -30,6 +30,7 @@ public class ServerPortFrameController {
     @FXML
     private TextField portxt;
     ObservableList<String> list;
+
     /**
      * This method gets the port number
      *
@@ -38,6 +39,7 @@ public class ServerPortFrameController {
     private String getPort() {
         return portxt.getText();
     }
+
     /**
      * This method handles the Done button click event.
      * It starts the server and hides the port window.
@@ -59,23 +61,33 @@ public class ServerPortFrameController {
             ((Node) event.getSource()).getScene().getWindow().hide();
         }
     }
+
     /**
      * This method handles the Exit button click event.
      * It exits the server.
      *
-     * @param event The action event triggered by clicking the Exit button
+     * @param primaryStage The stage of the server
      * @throws Exception If there is an issue with exiting the server
      */
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/gui/ServerPort.fxml")));
 
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/gui/ServerPort.css")).toExternalForm());
-        primaryStage.setTitle("Client");
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/gui/Server.css")).toExternalForm());
+        primaryStage.setTitle("Set Port Number");
         primaryStage.setScene(scene);
-
+        primaryStage.setResizable(false); // Disable window resizing
+        // exit on close
+        primaryStage.setOnCloseRequest(event -> {
+            try {
+                getExitBtn(null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         primaryStage.show();
     }
+
     /**
      * This method handles the Exit button click event.
      * It exits the server.

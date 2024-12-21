@@ -1,5 +1,6 @@
 package Server;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import java.sql.Connection;
@@ -67,24 +68,25 @@ public class ServerController extends AbstractServer {
                 ClientServerMessage message = (ClientServerMessage) msg;
 
                 /**
-                 * 201 - Get info of a specific subscriber
-                 * 203 - Edit info of a specific subscriber
-                 * 205 - Get a list of all subscribers
+                 * 103 - Get all subscribers list (return case 104)
+                 * 201 - Get info of a specific subscriber (return case 202)
+                 * 203 - Edit info of a specific subscriber (return case 204)
+                 * 999 - Client disconnected
                  */
                 switch (message.getId()) {
                     // Get all subscribers list
                     case 103:
-                        try{
+                        try {
                             ArrayList<Subscriber> subscribersList = librarianController.getSubscribersList(conn);
                             client.sendToClient(new ClientServerMessage(104, subscribersList));
                             System.out.println("Subscribers list was sent to client");
                             break;
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             System.out.println("Error: with getting subscribers list (case103)" + e);
                             client.sendToClient(new ClientServerMessage(104, null));
                             break;
                         }
-                    // Login subscriber
+                        // Login subscriber
                     case 201:
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
@@ -101,7 +103,7 @@ public class ServerController extends AbstractServer {
                             client.sendToClient(new ClientServerMessage(202, null));
                             break;
                         }
-                    //  Edit subscriber details
+                        //  Edit subscriber details
                     case 203:
                         try {
                             if (message.getMessageContent() instanceof Subscriber) {
@@ -119,7 +121,16 @@ public class ServerController extends AbstractServer {
                             client.sendToClient(new ClientServerMessage(204, null));
                             break;
                         }
-
+                        // Client disconnected
+                    case 999:
+                        try {
+                            serverMonitorController.clientDisconnected(client);
+                            client.close();
+                            break;
+                        } catch (IOException e) {
+                            System.out.println("Error: with closing client connection (case999)" + e);
+                            break;
+                        }
                     default:
                         System.out.println("Invalid command id(handleMessageFromClient ServerController)");
                 }
@@ -136,9 +147,7 @@ public class ServerController extends AbstractServer {
      */
     protected void serverStarted() {
         System.out.println("Server listening for connections on port " + getPort());
-
         connectToDb();
-
     }
 
     /**
