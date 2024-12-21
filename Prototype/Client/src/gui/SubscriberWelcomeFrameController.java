@@ -154,6 +154,7 @@ public class SubscriberWelcomeFrameController implements Initializable  {
         System.out.println("exit Subscriber Frame");
         setLocalSubscriber(null);
         LoginController.setLocalSubscriber(null);
+        navigateTo(event, "/gui/LoginFrame.fxml", "/gui/Subscriber.css", "Login");
 
     }
 

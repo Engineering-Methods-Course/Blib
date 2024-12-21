@@ -53,6 +53,13 @@
                     </cellValueFactory>
                 </TableColumn>
 
+                <!-- Password Column -->
+                <TableColumn fx:id="statusColumn" prefWidth="150" text="Status">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="status" />
+                    </cellValueFactory>
+                </TableColumn>
+
                 <!-- History Column with Button -->
                 <TableColumn fx:id="historyColumn" prefWidth="150" text="History" />
             </columns>

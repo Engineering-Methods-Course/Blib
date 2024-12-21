@@ -38,6 +38,8 @@ public class ViewAllController {
     @FXML
     private TableColumn<Subscriber, String> passwordColumn;
     @FXML
+    private TableColumn<Subscriber, String> statusColumn;
+    @FXML
     private TableColumn<Subscriber, String> historyColumn;
 
     @FXML
@@ -62,6 +64,7 @@ public class ViewAllController {
             phoneNumberColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getPhoneNumber()));
             emailColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getEmail()));
             passwordColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getPassword()));
+            statusColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(getFrozenMessage(cellData.getValue().getStatusIsFrozen())));
             historyColumn.setCellFactory(column -> new TableCell<Subscriber, String>() {
                         private final Button button = new Button("Watch History");
                         {
@@ -76,8 +79,12 @@ public class ViewAllController {
             System.out.println("Subscribers list is null!");
         }
     }
-
-
+    private String getFrozenMessage(Boolean isFrozen) {
+        if (isFrozen) {
+            return "Frozen";
+        }
+        return "Active";
+    }
     public void clickBack(ActionEvent actionEvent) throws Exception{
         navigateTo(actionEvent, "/gui/LoginFrame.fxml", "/gui/Subscriber.css", "Login");
     }
