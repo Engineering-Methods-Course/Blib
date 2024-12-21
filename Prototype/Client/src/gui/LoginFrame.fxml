@@ -20,5 +20,6 @@
 
         <!-- Login Button -->
         <Button fx:id="btnLogin" onAction="#clickLoginButton" prefWidth="200.0" text="Login" />
+      <Button fx:id="btnViewAll" mnemonicParsing="false" onAction="#clickViewAll" text="View All Subscribers" />
     </children>
 </VBox>

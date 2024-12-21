@@ -153,17 +153,19 @@ public class Subscriber implements Serializable {
      *
      * @return true if the account is frozen, false otherwise
      */
-    public boolean statusIsFrozen() {
+    public boolean getStatusIsFrozen() {
         return statusIsFrozen;
     }
+
+
 
     /**
      * Sets the frozen status of the subscriber's account.
      *
-     * @param statusIsFrozer true if the account should be frozen, false otherwise
+     * @param statusIsFrozen true if the account should be frozen, false otherwise
      */
-    public void setStatusIsFrozer(boolean statusIsFrozer) {
-        this.statusIsFrozen = statusIsFrozer;
+    public void setStatusIsFrozen(boolean statusIsFrozen) {
+        this.statusIsFrozen = statusIsFrozen;
     }
 
     /**

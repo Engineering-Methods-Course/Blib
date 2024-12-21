@@ -6,12 +6,14 @@ import common.ClientServerMessage;
 import common.Subscriber;
 import gui.EditProfileController;
 import gui.LoginController;
+import gui.ViewAllController;
 import ocsf.client.*;
 import common.ChatIF;
 
 
 import java.io.*;
 import java.sql.Connection;
+import java.util.ArrayList;
 
 /**
  * This class overrides some of the methods defined in the abstract
@@ -79,7 +81,7 @@ public class ClientController extends AbstractClient
                             Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
                             LoginController.setLocalSubscriber(subscriberFromServer);
                         }
-                        return;
+                        break;
                     //  Edit subscriber details
                     case 204:
                         if(message.getMessageContent()==null){
@@ -91,7 +93,17 @@ public class ClientController extends AbstractClient
                             LoginController.setLocalSubscriber(subscriberFromServer);
                             EditProfileController.setLocalSubscriber(subscriberFromServer);
                         }
-                        return;
+                        break;
+
+                    case 104:
+                        if(message.getMessageContent()==null){
+                            System.out.println("No Subscribers to show");
+                        }
+                        else if(message.getMessageContent() instanceof ArrayList<?>){
+                            ArrayList<Subscriber> subscribersFromServer = (ArrayList<Subscriber>) message.getMessageContent();
+                            ViewAllController.setSubscribers(subscribersFromServer);
+                        }
+                        break;
                     default:
                         System.out.println("Invalid command id");
                 }

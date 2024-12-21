@@ -99,6 +99,23 @@ public class LoginController implements Initializable {
 
     }
 
+    public void clickViewAll(ActionEvent actionEvent) {
+        ClientServerMessage askForSubscribers = new ClientServerMessage(103, null);
+        try {
+            ClientUI.chat.accept(askForSubscribers);
+        } catch (Exception e) {
+            System.out.println("Error sending login message to server: " + e.getMessage());
+        }
+
+        try {
+            // Use the navigateTo method from ClientUI to switch to the ViewAll screen
+            ClientUI.navigateTo(actionEvent, "/gui/ViewAllFrame.fxml", "/gui/Subscriber.css", "View All Subscribers");
+        } catch (Exception e) {
+            System.out.println("Error navigating to ViewAll: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
 }
 
 
