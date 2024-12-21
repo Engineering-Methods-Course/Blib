@@ -9,8 +9,10 @@ import common.Subscriber;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static gui.SubscriberWelcomeFrameController.navigateTo;
+
 public class ProfileOptionsController implements Initializable {
-    private static Subscriber s2;
+    private static Subscriber localSubscriber;
     // FXML elements for buttons
     @FXML
     private Button btnBack = null; // Button to go back to the main profile screen
@@ -19,8 +21,8 @@ public class ProfileOptionsController implements Initializable {
     @FXML
     private Button btnWatchHistory = null; // Button to view watch history
 
-    public static Subscriber getS2() {
-        return s2;
+    public static Subscriber getLocalSubscriber() {
+        return localSubscriber;
     }
 
     /**
@@ -32,7 +34,7 @@ public class ProfileOptionsController implements Initializable {
      */
     public void clickEditProfileButton(ActionEvent event) throws Exception {
         // Navigate to the desired destination using the navigateTo function
-        SubscriberWelcomeFrameController.navigateTo(event, "/gui/EditProfileFrame.fxml", "/gui/Subscriber.css", "Edit Profile");
+        navigateTo(event, "/gui/EditProfileFrame.fxml", "/gui/Subscriber.css", "Edit Profile");
     }
 
     /**
@@ -44,12 +46,12 @@ public class ProfileOptionsController implements Initializable {
      */
     public void clickBackButton(ActionEvent event) throws Exception {
         // Navigate to the desired destination using the navigateTo function
-        SubscriberWelcomeFrameController.navigateTo(event, "/gui/SubscriberWelcomeFrame.fxml", "/gui/Subscriber.css", "Profile");
+        navigateTo(event, "/gui/SubscriberWelcomeFrame.fxml", "/gui/Subscriber.css", "Profile");
     }
     //! missing documentation
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        s2 = LoginController.getLocalSubscriber();
+        localSubscriber = LoginController.getLocalSubscriber();
 
     }
 }

@@ -25,8 +25,6 @@ import static gui.SubscriberWelcomeFrameController.navigateTo;
 
 public class LoginController implements Initializable {
     private static Subscriber localSubscriber = null;
-    private static ChatClient chatClient;
-    private static Subscriber s1;
 
     @FXML
     private TextField txtUsername;  // Reference to the username field
@@ -36,10 +34,7 @@ public class LoginController implements Initializable {
 
     @FXML
     private Button btnLogin;  // Reference to the login button
-
-    public static Subscriber getS1() {
-        return s1;
-    }
+    
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 
 public class SubscriberWelcomeFrameController implements Initializable {
 
-    private Subscriber subscriber;
+    private static Subscriber localSubscriber;
     @FXML
     private Label lblWelcome;
 
@@ -75,8 +75,8 @@ public class SubscriberWelcomeFrameController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        subscriber = LoginController.getLocalSubscriber();
-        loadSubscriberName(subscriber);
+        localSubscriber = LoginController.getLocalSubscriber();
+        loadSubscriberName(localSubscriber);
     }
 
     /**
@@ -85,16 +85,20 @@ public class SubscriberWelcomeFrameController implements Initializable {
      * @param s1 The Subscriber object containing user details.
      */
     public void loadSubscriberName(Subscriber s1) {
-        this.subscriber = s1;
+        this.localSubscriber = s1;
         System.out.println("loadSubscriberName() called");  // Check if this is printed
 
-        if (lblWelcomeUserName != null && subscriber != null) {
-            lblWelcomeUserName.setText(subscriber.getFirstName() + " " + subscriber.getLastName());
-            System.out.println("Welcome text set to: " + subscriber.getFirstName() + " " + subscriber.getLastName());
+        if (lblWelcomeUserName != null && localSubscriber != null) {
+            lblWelcomeUserName.setText(localSubscriber.getFirstName() + " " + localSubscriber.getLastName());
+            System.out.println("Welcome text set to: " + localSubscriber.getFirstName() + " " + localSubscriber.getLastName());
         } else {
             System.out.println("lblWelcomeUserName is null or subscriber is null.");
         }
     }
+    public static void setLocalSubscriber(Subscriber subscriberToSet) {
+        localSubscriber = subscriberToSet;
+    }
+
     /**
      * This method handles the Borrow Extension button click event.
      * It navigates to the BorrowExtensionFrame.fxml to allow the user to extend a book's borrowing period.

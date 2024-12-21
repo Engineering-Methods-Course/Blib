@@ -1,6 +1,8 @@
 package gui;
 
+import client.ClientUI;
 import common.Subscriber;
+import common.ClientServerMessage;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -12,10 +14,12 @@ import javafx.event.ActionEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static gui.SubscriberWelcomeFrameController.navigateTo;
+
 public class EditProfileController implements Initializable {
 
     // Subscriber object to store the profile details
-    private Subscriber subscriber;
+    private Subscriber localSubscriber;
 
     // FXML elements for labels and text fields
     @FXML
@@ -43,6 +47,8 @@ public class EditProfileController implements Initializable {
     private TextField txtPhone; // TextField for Phone input
     @FXML
     private TextField txtEmail; // TextField for Email input
+    @FXML
+    private TextField txtPassword;
 
     // FXML elements for buttons
     @FXML
@@ -59,11 +65,36 @@ public class EditProfileController implements Initializable {
      */
     public void clickBackButton(ActionEvent event) throws Exception {
         // Navigate to the desired destination using the navigateTo function
-        SubscriberWelcomeFrameController.navigateTo(event, "/gui/ProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
+        navigateTo(event, "/gui/ProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
     }
 
     public void clickUpdateButton(ActionEvent event) throws Exception {
+        // Retrieve the text from the TextField components
+        int id = Integer.parseInt(txtID.getText());
+        String name = txtName.getText();
+        String lastName = txtLastName.getText();
+        String phoneNumber = txtPhone.getText();
+        String email = txtEmail.getText();
+        String password = txtPassword.getText();
 
+        // Create a Subscriber object using the retrieved values
+        // Assuming `status` is an additional boolean you may want to set
+        boolean status = false; // Modify as needed for your application
+        Subscriber subscriber = new Subscriber(id, name, lastName, phoneNumber, email, password, status);
+
+        // Create a ClientServerMessage with the subscriber and ID 204
+        ClientServerMessage editedProfileMessage = new ClientServerMessage(204, subscriber);
+
+        try {
+            ClientUI.chat.accept(editedProfileMessage);
+        } catch (Exception e) {
+            System.out.println("Error sending login message to server: " + e.getMessage());
+        }
+        navigateTo(event, "/gui/ProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
+
+    }
+    public static void setLocalSubscriber(Subscriber localSubscriber) {
+        localSubscriber = localSubscriber;
     }
 
     /**
@@ -74,12 +105,14 @@ public class EditProfileController implements Initializable {
      */
     public void loadProfileDetails(Subscriber s1) {
         // Set values in the text fields from the Subscriber object
-        this.txtID.setText(String.valueOf(subscriber.getID()));
-        this.txtName.setText(subscriber.getFirstName());
-        this.txtLastName.setText(subscriber.getLastName());
-        this.txtPhone.setText(String.valueOf(subscriber.getPhoneNumber()));
-        this.txtEmail.setText(subscriber.getEmail());
+        this.txtID.setText(String.valueOf(localSubscriber.getID()));
+        this.txtName.setText(localSubscriber.getFirstName());
+        this.txtLastName.setText(localSubscriber.getLastName());
+        this.txtPhone.setText(String.valueOf(localSubscriber.getPhoneNumber()));
+        this.txtEmail.setText(localSubscriber.getEmail());
     }
+
+
 
     /**
      * Initializes the controller class. This method is automatically called
@@ -87,7 +120,7 @@ public class EditProfileController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        subscriber = ProfileOptionsController.getS2();
-        loadProfileDetails(subscriber);
+        localSubscriber = ProfileOptionsController.getLocalSubscriber();
+        loadProfileDetails(localSubscriber);
     }
 }

@@ -4,6 +4,7 @@ package client;
 
 import common.ClientServerMessage;
 import common.Subscriber;
+import gui.EditProfileController;
 import gui.LoginController;
 import ocsf.client.*;
 import common.ChatIF;
@@ -77,24 +78,28 @@ public class ChatClient extends AbstractClient
                         else if(message.getMessageContent() instanceof Subscriber)
                         {
                             Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
-                            System.out.println(subscriberFromServer);
-                            //ClientServerMessage subscriberDetailsCommandMessage = new ClientServerMessage(202, subscriberFromServer);
                             LoginController.setLocalSubscriber(subscriberFromServer);
 
                         }
                         return;
                     //  Edit subscriber details
                     case 204:
-                        if(message.getMessageContent() instanceof ArrayList)
-                        {
-                            break;
+                        if(message.getMessageContent()==null){
+                            System.out.println("Could not update");
                         }
-                        break;
+                        else if(message.getMessageContent() instanceof Subscriber)
+                        {
+                            Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
+                            LoginController.setLocalSubscriber(subscriberFromServer);
+                            EditProfileController.setLocalSubscriber(subscriberFromServer);
+                        }
+                        return;
                     default:
                         System.out.println("Invalid command id");
                 }
             }
-        }catch (Exception e)
+        }
+        catch (Exception e)
         {
             System.out.println("Error: incorrect msg object type" + e);
         }

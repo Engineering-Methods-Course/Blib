@@ -46,6 +46,12 @@
                 <TextField fx:id="txtEmail" prefWidth="200.0"/>
             </HBox>
 
+            <!-- Password -->
+            <HBox alignment="CENTER" spacing="10.0">
+                <Label fx:id="lblPassword" text="Password:" prefWidth="100.0"/>
+                <TextField fx:id="txtPassword" prefWidth="200.0"/>
+            </HBox>
+
             <!-- Update Button -->
             <Button fx:id="btnUpdate" onAction="#clickUpdateButton" prefHeight="50.0" prefWidth="200.0" text="Update"/>
         </VBox>
