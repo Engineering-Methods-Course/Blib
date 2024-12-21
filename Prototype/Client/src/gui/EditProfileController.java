@@ -14,7 +14,8 @@ import javafx.event.ActionEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static gui.SubscriberWelcomeFrameController.navigateTo;
+import static client.ClientUI.navigateTo;
+//import static gui.SubscriberWelcomeFrameController.navigateTo;
 
 public class EditProfileController implements Initializable {
 

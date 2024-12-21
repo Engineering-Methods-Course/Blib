@@ -1,6 +1,5 @@
 package gui;
 
-import client.ChatClient;
 import client.ClientUI;
 import common.ClientServerMessage;
 import javafx.event.ActionEvent;
@@ -20,8 +19,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+import static client.ClientUI.navigateTo;
 
-import static gui.SubscriberWelcomeFrameController.navigateTo;
+
+//import static gui.SubscriberWelcomeFrameController.navigateTo;
 
 public class LoginController implements Initializable {
     private static Subscriber localSubscriber = null;

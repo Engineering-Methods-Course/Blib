@@ -1,5 +1,11 @@
 package gui;
 
+import client.ClientController;
+import client.ClientUI;
+import common.ClientServerMessage;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -16,7 +22,10 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class SubscriberWelcomeFrameController implements Initializable {
+import static client.ClientUI.navigateTo;
+import static java.lang.System.exit;
+
+public class SubscriberWelcomeFrameController implements Initializable  {
 
     private static Subscriber localSubscriber;
     @FXML
@@ -36,7 +45,8 @@ public class SubscriberWelcomeFrameController implements Initializable {
     @FXML
     private Button btnLogout;
 
-    /**
+
+    /*
      * Navigates to a specified FXML destination, optionally applying a CSS file and setting the title of the new stage.
      *
      * @param event           The ActionEvent triggered by the user's interaction (e.g., button click).
@@ -44,7 +54,7 @@ public class SubscriberWelcomeFrameController implements Initializable {
      * @param cssFilePath     The optional path to the CSS file to style the new view (e.g., "/GUI/Subscriber.css"). Pass null if no CSS is required.
      * @param stageTitle      The title for the new stage window (e.g., "Profile Options").
      * @throws Exception If the FXML file cannot be loaded or another error occurs during navigation.
-     */
+
     public static void navigateTo(ActionEvent event, String fxmlDestination, String cssFilePath, String stageTitle) throws Exception {
         // Close the current stage
         Stage currentStage;
@@ -65,8 +75,31 @@ public class SubscriberWelcomeFrameController implements Initializable {
         // Set up the new stage
         newStage.setTitle(stageTitle);
         newStage.setScene(scene);
+        newStage.setOnCloseRequest(event1 -> {
+            // Run logOutAction() in a background thread to prevent blocking
+            Task<Void> logOutTask = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    logOutAction();  // Call your logout action in the background
+                    return null;
+                }
+            };
+            // Start the background task
+            new Thread(logOutTask).start();
+        });
         // Show the new stage
         newStage.show();
+    }
+    */
+
+
+    private static void logOutAction() throws Exception {
+        ClientServerMessage logOutMessage=new ClientServerMessage(999,null);
+        try {
+            ClientUI.chat.accept(logOutMessage);
+        } catch (Exception e) {
+            System.out.println("Error sending login message to server: " + e.getMessage());
+        }
     }
 
     /**
@@ -121,5 +154,6 @@ public class SubscriberWelcomeFrameController implements Initializable {
         System.out.println("exit Subscriber Frame");
         navigateTo(event, "/gui/LoginFrame.fxml", "/gui/Subscriber.css", "Login");
     }
+
 
 }

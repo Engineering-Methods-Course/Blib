@@ -1,7 +1,6 @@
 package gui;
 
 import client.ChatClient;
-import client.ClientController;
 import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,10 +11,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.Objects;
 
-import static gui.SubscriberWelcomeFrameController.navigateTo;
+import static client.ClientUI.navigateTo;
+//import static gui.SubscriberWelcomeFrameController.navigateTo;
 
 public class ClientIPFrameController {
 
@@ -62,7 +61,7 @@ public class ClientIPFrameController {
         // Proceed with the entered IP and Port
         try {
             int port = Integer.parseInt(portText);
-            ClientUI.chat=new ClientController(ipAddress, port);
+            ClientUI.chat=new ChatClient(ipAddress, port);
             // Navigate to the next frame
             navigateTo(event, "/gui/LoginFrame.fxml", "/gui/Subscriber.css", "Login");
         } catch (NumberFormatException e) {
@@ -79,7 +78,7 @@ public class ClientIPFrameController {
      * Handle the Exit button click event.
      */
     @FXML
-    public void clickExitButton(ActionEvent event) {
+    public void clickExitButton(ActionEvent event) throws Exception {
         System.exit(0);
     }
 

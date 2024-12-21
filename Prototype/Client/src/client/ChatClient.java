@@ -1,172 +1,75 @@
 
-
 package client;
-
-import common.ClientServerMessage;
-import common.Subscriber;
-import gui.EditProfileController;
-import gui.LoginController;
-import ocsf.client.*;
-import common.ChatIF;
-
-
 import java.io.*;
-import java.sql.Connection;
-import java.util.ArrayList;
+
+import common.ChatIF;
+import common.ClientServerMessage;
+
 
 /**
- * This class overrides some of the methods defined in the abstract
- * superclass in order to give more functionality to the client.
+ * This class constructs the UI for a chat client.  It implements the
+ * chat interface in order to activate the display() method.
+ * Warning: Some of the code here is cloned in ServerConsole
  */
-public class ChatClient extends AbstractClient
+public class ChatClient implements ChatIF
 {
-    //Instance variables **********************************************
-    private Connection conn;
+    //Class variables *************************************************
+    //private Connection conn;
     /**
-     * The interface type variable.  It allows the implementation of
-     * the display method in the client.
+     * The default port to connect on.
      */
-    ChatIF clientUI;
-    public static boolean awaitResponse = false;
+    public static int DEFAULT_PORT ;
+
+    //Instance variables **********************************************
+
+    /**
+     * The instance of the client that created this ConsoleChat.
+     */
+    ClientController client;
 
     //Constructors ****************************************************
 
     /**
-     * Constructs an instance of the chat client.
+     * Constructs an instance of the ClientConsole UI.
      *
-     * @param host The server to connect to.
-     * @param port The port number to connect on.
-     * @param clientUI The interface type variable.
+     * @param host The host to connect to.
+     * @param port The port to connect on.
      */
-
-    public ChatClient(String host, int port, ChatIF clientUI)
-            throws IOException
+    public ChatClient(String host, int port) throws Exception
     {
-        super(host, port); //Call the superclass constructor
-        this.clientUI = clientUI;
-        openConnection();
-    }
+        try
+        {
+            client= new ClientController(host, port, this);
+        }
+        catch(IOException exception)
+        {
 
+            System.out.println("Error: Can't setup connection!"+ " Terminating client.");
+            throw exception;
+            //System.exit(1);
+        }
+    }
 
     //Instance methods ************************************************
 
     /**
-     * This method handles all data that comes in from the server.
-     *
-     * @param msg The message from the server.
+     * This method waits for input from the console.  Once it is
+     * received, it sends it to the client's message handler.
      */
-    public void handleMessageFromServer(Object msg)
+    public void accept(ClientServerMessage msg)
     {
-        awaitResponse=false; // @@@@@@@@@@ check this if necessary
-        try
-        {
-            if(msg instanceof ClientServerMessage)
-            {
-                ClientServerMessage message = (ClientServerMessage) msg;
-
-                /**
-                 * 202 - Get info of a specific subscriber back from the server
-                 * 204 - Edit info of a specific subscriber
-                 * 206 - Get a list of all subscribers
-                 */
-                switch (message.getId()){
-                    // get the details of i
-                    case 202:
-                        if(message.getMessageContent()==null){
-                            System.out.println("Wrong Username(id) or Password");
-                        }
-                        else if(message.getMessageContent() instanceof Subscriber)
-                        {
-                            Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
-                            LoginController.setLocalSubscriber(subscriberFromServer);
-
-                        }
-                        return;
-                    //  Edit subscriber details
-                    case 204:
-                        if(message.getMessageContent()==null){
-                            System.out.println("Could not update");
-                        }
-                        else if(message.getMessageContent() instanceof Subscriber)
-                        {
-                            Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
-                            LoginController.setLocalSubscriber(subscriberFromServer);
-                            EditProfileController.setLocalSubscriber(subscriberFromServer);
-                        }
-                        return;
-                    default:
-                        System.out.println("Invalid command id");
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            System.out.println("Error: incorrect msg object type" + e);
-        }
-
-
-    }
-    public Subscriber makeSubscriberFromDetailsArray(ArrayList<String>subscriberDetailsArray){
-        if (subscriberDetailsArray == null || subscriberDetailsArray.size() < 7) {
-            throw new IllegalArgumentException("Invalid subscriber details array");
-        }
-
-        try {
-            int subscriberId = Integer.parseInt(subscriberDetailsArray.get(0));
-            String firstName = subscriberDetailsArray.get(1);
-            String lastName = subscriberDetailsArray.get(2);
-            String phoneNumber = subscriberDetailsArray.get(3);
-            String email = subscriberDetailsArray.get(4);
-            String password = subscriberDetailsArray.get(5);
-            boolean status = Boolean.parseBoolean(subscriberDetailsArray.get(6));
-
-
-            // Assuming Subscriber has an appropriate constructor
-            return new Subscriber(subscriberId, firstName, lastName,phoneNumber, email, password,status);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid subscriber ID format", e);
-        }
+        client.handleMessageFromClientUI(msg);
     }
 
     /**
-     * This method handles all data coming from the UI
+     * This method overrides the method in the ChatIF interface.  It
+     * displays a message onto the screen.
      *
-     * @param message The message from the UI.
+     * @param message The string to be displayed.
      */
-
-    public void handleMessageFromClientUI(ClientServerMessage message) {
-        try {
-            openConnection(); // Ensure the connection is open before sending
-            awaitResponse = true; // Mark as waiting for a response
-            sendToServer(message); // Send the ClientServerMessage object
-            // Wait for the server response
-            while (awaitResponse) {
-                try {
-                    Thread.sleep(100); // Poll for the response
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            clientUI.display("Could not send message to server: Terminating client. " + e);
-            quit();
-        }
-    }
-
-
-
-    /**
-     * This method terminates the client.
-     */
-    public void quit()
+    public void display(String message)
     {
-        try
-        {
-            closeConnection();
-        }
-        catch(IOException e) {}
-        System.exit(0);
+        System.out.println("> " + message);
     }
 }
-//End of ChatClient class
+//End of ConsoleChat class

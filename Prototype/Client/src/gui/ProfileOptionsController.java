@@ -9,7 +9,9 @@ import common.Subscriber;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static gui.SubscriberWelcomeFrameController.navigateTo;
+import static client.ClientUI.navigateTo;
+
+//import static gui.SubscriberWelcomeFrameController.navigateTo;
 
 public class ProfileOptionsController implements Initializable {
     private static Subscriber localSubscriber;
