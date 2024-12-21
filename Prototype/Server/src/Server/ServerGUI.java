@@ -16,8 +16,6 @@ import gui.ServerPortFrameController;
  * This class is the server UI
  */
 public class ServerGUI extends Application {
-    final public static int DEFAULT_PORT = 5555;
-
     /**
      * main method
      *
@@ -26,7 +24,7 @@ public class ServerGUI extends Application {
      */
     public static void main(String args[]) throws Exception {
         launch(args);
-    } // end main
+    }
 
     /**
      * This method runs the server
@@ -39,7 +37,7 @@ public class ServerGUI extends Application {
         int port = 0;
 
         try {
-            //Set port to 5555
+            //! Set port to 5555
             port = Integer.parseInt(p);
 
         } catch (Throwable t) {
@@ -58,7 +56,7 @@ public class ServerGUI extends Application {
         // Set the close button to call the exit button
         primaryStage.setOnCloseRequest(event -> {
             try {
-                serverMonitorController.getExitBtn(null);
+                System.exit(0);
             } catch (Exception e) {
                 e.printStackTrace();
             }

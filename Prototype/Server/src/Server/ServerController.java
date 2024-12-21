@@ -1,6 +1,5 @@
 package Server;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import java.sql.Connection;
@@ -67,7 +66,7 @@ public class ServerController extends AbstractServer {
             if (msg instanceof ClientServerMessage) {
                 ClientServerMessage message = (ClientServerMessage) msg;
 
-                /**
+                /*
                  * 103 - Get all subscribers list (return case 104)
                  * 201 - Get info of a specific subscriber (return case 202)
                  * 203 - Edit info of a specific subscriber (return case 204)
@@ -123,14 +122,9 @@ public class ServerController extends AbstractServer {
                         }
                         // Client disconnected
                     case 999:
-                        try {
                             serverMonitorController.clientDisconnected(client);
-                            client.close();
-                            break;
-                        } catch (IOException e) {
-                            System.out.println("Error: with closing client connection (case999)" + e);
-                            break;
-                        }
+                        break;
+
                     default:
                         System.out.println("Invalid command id(handleMessageFromClient ServerController)");
                 }

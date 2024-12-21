@@ -1,6 +1,5 @@
 package gui;
 
-import Server.ServerController;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -103,13 +102,14 @@ public class ServerMonitorFrameController {
      * @param client The client to be removed
      */
     public void clientDisconnected(ConnectionToClient client) {
-        int index = clientMap.get(client); // Adjust for zero-based index
+        int clinetIndex = clientMap.get(client); // Adjust for zero-based index
         for (List<String> connectedClient : serverMonitorList) {
-            if (connectedClient.get(0).equals(String.valueOf(index))) {
+            if (connectedClient.get(0).equals(String.valueOf(clinetIndex))) {
                 serverMonitorList.remove(connectedClient);
                 break;
             }
         }
         clientMap.remove(client);
+        index--;
     }
 }
