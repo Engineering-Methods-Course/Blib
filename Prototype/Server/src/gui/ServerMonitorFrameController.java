@@ -62,7 +62,7 @@ public class ServerMonitorFrameController {
      * @throws Exception If there is an issue with the navigation
      */
     public void getExitBtn(ActionEvent event) throws Exception {
-        System.out.println("Exit Blib server");
+        System.out.println("ServerMonitorFrameController: Exit Blib server");
         System.exit(0);
     }
 

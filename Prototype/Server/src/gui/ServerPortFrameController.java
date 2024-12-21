@@ -96,7 +96,7 @@ public class ServerPortFrameController {
      * @throws Exception If there is an issue with exiting the server
      */
     public void getExitBtn(ActionEvent event) throws Exception {
-        System.out.println("exit Academic Tool");
+        System.out.println("ServerPortFrameController: Exit Blib server");
         System.exit(0);
     }
 
