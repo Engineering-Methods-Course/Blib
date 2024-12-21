@@ -96,17 +96,25 @@ public class ServerMonitorFrameController {
 
     }
 
-    /**
+    /**clientDisconnected
      * This method removes a client from the server monitor
      *
      * @param client The client to be removed
      */
     public void clientDisconnected(ConnectionToClient client) {
-        int clinetIndex = clientMap.get(client); // Adjust for zero-based index
+        int clientIndex = clientMap.get(client); // Adjust for zero-based index
         for (List<String> connectedClient : serverMonitorList) {
-            if (connectedClient.get(0).equals(String.valueOf(clinetIndex))) {
+            int currentIndex = Integer.parseInt(connectedClient.get(0));
+            if (currentIndex == clientIndex) {
                 serverMonitorList.remove(connectedClient);
                 break;
+            }
+        }
+        // Adjust the index of the remaining clients
+        for (List<String> connectedClient : serverMonitorList) {
+            int currentIndex = Integer.parseInt(connectedClient.get(0));
+            if (currentIndex > clientIndex) {
+                connectedClient.set(0, String.valueOf(currentIndex - 1));
             }
         }
         clientMap.remove(client);
