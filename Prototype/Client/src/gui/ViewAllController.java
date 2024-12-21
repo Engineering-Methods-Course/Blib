@@ -66,13 +66,26 @@ public class ViewAllController {
             passwordColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getPassword()));
             statusColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(getFrozenMessage(cellData.getValue().getStatusIsFrozen())));
             historyColumn.setCellFactory(column -> new TableCell<Subscriber, String>() {
-                        private final Button button = new Button("Watch History");
-                        {
-                            button.setOnAction(event -> {
-                            });
-                        }
-                    });
+                private final Button button = new Button("Watch History");
 
+                {
+                    button.setOnAction(event -> {
+                        Subscriber subscriber = getTableView().getItems().get(getIndex());
+                        // Handle button action here, e.g., show subscriber's history
+                        System.out.println("Watch history for: " + subscriber.getFirstName() + " " + subscriber.getLastName());
+                    });
+                }
+
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(button);
+                    }
+                }
+            });
             // Assign the ObservableList to the TableView
             subscriberTable.setItems(subscriberList);
         } else {
