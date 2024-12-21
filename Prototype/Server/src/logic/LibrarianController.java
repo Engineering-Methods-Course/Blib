@@ -57,7 +57,7 @@ public class LibrarianController {
                     status = true;
                 }
                 subscribersList.add(new Subscriber(Integer.parseInt(subscriberDetails.get(0)), subscriberDetails.get(1),
-                            subscriberDetails.get(2), subscriberDetails.get(3), subscriberDetails.get(4), "XXX", status));
+                            subscriberDetails.get(2), subscriberDetails.get(3), subscriberDetails.get(4), subscriberDetails.get(5), status));
             }
             if (subscribersList.isEmpty()) {
                 System.out.println("No subscribers found(getSubscribersList LibrarianController) ");
