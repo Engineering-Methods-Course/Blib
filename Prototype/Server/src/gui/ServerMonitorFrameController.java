@@ -96,7 +96,8 @@ public class ServerMonitorFrameController {
 
     }
 
-    /**clientDisconnected
+    /**
+     * clientDisconnected
      * This method removes a client from the server monitor
      *
      * @param client The client to be removed

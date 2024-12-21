@@ -1,6 +1,7 @@
 package Server;
 
 import gui.ServerMonitorFrameController;
+import gui.ServerPortFrameController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,8 +10,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Objects;
-
-import gui.ServerPortFrameController;
 
 /**
  * This class is the server UI
@@ -22,7 +21,7 @@ public class ServerGUI extends Application {
      * @param args the command line arguments
      * @throws Exception if an error occurs
      */
-    public static void main(String args[]) throws Exception {
+    public static void main(String[] args) throws Exception {
         launch(args);
     }
 
@@ -87,6 +86,4 @@ public class ServerGUI extends Application {
         ServerPortFrameController aFrame = new ServerPortFrameController(); // create StudentFrame
         aFrame.start(primaryStage);
     }
-
-
 }

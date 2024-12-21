@@ -19,6 +19,7 @@ public class ServerPortFrameController {
 
 
     String temp = "";
+    ObservableList<String> list;
     //FXML elements
     @FXML
     private Button btnExit = null;
@@ -26,10 +27,8 @@ public class ServerPortFrameController {
     private Button btnDone = null;
     @FXML
     private Label lbllist;
-
     @FXML
     private TextField portxt;
-    ObservableList<String> list;
 
     /**
      * This method gets the port number

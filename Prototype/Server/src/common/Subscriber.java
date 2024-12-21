@@ -158,7 +158,6 @@ public class Subscriber implements Serializable {
     }
 
 
-
     /**
      * Sets the frozen status of the subscriber's account.
      *
@@ -186,12 +185,12 @@ public class Subscriber implements Serializable {
         this.password = password;
     }
 
+    /**
+     * Returns a string representation of the subscriber.
+     *
+     * @return a string representation of the subscriber
+     */
     public String toString() {
-        return "Subscriber ID: " + id + "\n" +
-                "Name: " + firstname + " " + lastName + "\n" +
-                "Phone Number: " + phoneNumber + "\n" +
-                "Email: " + email + "\n" +
-                "Password: " + password + "\n" +
-                "Status: " + (statusIsFrozen ? "Frozen" : "Active") + "\n";
+        return "Subscriber ID: " + id + "\n" + "Name: " + firstname + " " + lastName + "\n" + "Phone Number: " + phoneNumber + "\n" + "Email: " + email + "\n" + "Password: " + password + "\n" + "Status: " + (statusIsFrozen ? "Frozen" : "Active") + "\n";
     }
 }

@@ -8,16 +8,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import common.*;
-
 /**
  * This interface is used to control the subscriber
  */
-public  class SubscriberController {
+public class SubscriberController {
 
     private static SubscriberController instance = null;
+
     private SubscriberController() {
     }
+
+    /**
+     * This method creates an instance of the SubscriberController
+     * if it does not exist
+     *
+     * @return The instance of the SubscriberController
+     */
     public static SubscriberController getInstance() {
         if (instance == null) {
             System.out.println("SubscriberController was created successfully");
@@ -27,6 +33,7 @@ public  class SubscriberController {
     }
 
     /**
+     * case 201
      * This method logins the subscriber to the system
      * and displays the details of a specific subscriber
      *
@@ -61,22 +68,16 @@ public  class SubscriberController {
                 subscriberDetails.add(String.valueOf(rs.getInt("subscriber_status")));
             }
             // No subscriber found
-            if(subscriberDetails.isEmpty()){
+            if (subscriberDetails.isEmpty()) {
                 System.out.println("No subscriber found(Subscriber LogIn Failed)");
-                return  null;
-            }
-            else {
+                return null;
+            } else {
                 System.out.println("Subscriber found");
                 // Status Can be 0 or 1
-                if(subscriberDetails.get(6).equals("0")){
-                    status = false;}
-                else{
-                    status = true;
-                }
+                status = !subscriberDetails.get(6).equals("0");
                 System.out.println("Subscriber found (Subscriber LogIn Successful)");
                 // Create the subscriber and return it
-                return new Subscriber(Integer.parseInt(subscriberDetails.get(0)), subscriberDetails.get(1),
-                        subscriberDetails.get(2), subscriberDetails.get(3), subscriberDetails.get(4), subscriberDetails.get(5), status);
+                return new Subscriber(Integer.parseInt(subscriberDetails.get(0)), subscriberDetails.get(1), subscriberDetails.get(2), subscriberDetails.get(3), subscriberDetails.get(4), subscriberDetails.get(5), status);
             }
         } catch (SQLException e) {
             // If an error occur
@@ -86,6 +87,7 @@ public  class SubscriberController {
     }
 
     /**
+     * case 203
      * This method edits the details of a specific subscriber
      *
      * @param messageContent The message content
@@ -99,9 +101,7 @@ public  class SubscriberController {
              * The query updates the first name, last name, phone number,
              * and email of the subscriber where the id matches the given value
              */
-            String query = "UPDATE subscriber SET subscriber_fname = ?," +
-                    " subscriber_lname = ?, subscriber_phone_number = ?, " +
-                    "subscriber_email = ?, subscriber_password = ? WHERE subscriber_id = ?";
+            String query = "UPDATE subscriber SET subscriber_fname = ?," + " subscriber_lname = ?, subscriber_phone_number = ?, " + "subscriber_email = ?, subscriber_password = ? WHERE subscriber_id = ?";
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setString(1, messageContent.getFirstName());
             statement.setString(2, messageContent.getLastName());
@@ -136,19 +136,14 @@ public  class SubscriberController {
                 editedDetails.add(rs.getString("subscriber_password"));
                 editedDetails.add(String.valueOf(rs.getInt("subscriber_status")));
             }
-            if(editedDetails.isEmpty()) {
+            if (editedDetails.isEmpty()) {
                 System.out.println("Failed to export new subscriber details from sql (editSubscriberDetails)");
                 return null;
             }
-            if(editedDetails.get(6).equals("0")){
-                status = false;}
-            else{
-                status = true;
-            }
+            status = !editedDetails.get(6).equals("0");
             System.out.println("Subscriber Edit Successful");
             // Create the subscriber and return it
-            return new Subscriber(Integer.parseInt(editedDetails.get(0)), editedDetails.get(1),
-                    editedDetails.get(2), editedDetails.get(3), editedDetails.get(4), editedDetails.get(5), status);
+            return new Subscriber(Integer.parseInt(editedDetails.get(0)), editedDetails.get(1), editedDetails.get(2), editedDetails.get(3), editedDetails.get(4), editedDetails.get(5), status);
         } catch (SQLException e) {
             // If an error occur
             System.out.println("Error: With exporting new subscriber details from sql" + e);

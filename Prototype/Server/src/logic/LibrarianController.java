@@ -1,19 +1,26 @@
 package logic;
 
+import common.Subscriber;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import common.*;
-
 public class LibrarianController {
 
     private static LibrarianController instance = null;
+
     private LibrarianController() {
     }
 
+    /**
+     * This method creates an instance of the LibrarianController
+     * if it does not exist
+     *
+     * @return The instance of the LibrarianController
+     */
     public static LibrarianController getInstance() {
         if (instance == null) {
             System.out.println("LibrarianController was created successfully");
@@ -23,7 +30,12 @@ public class LibrarianController {
     }
 
     /**
-     * This method retrieves a list of all subscribers
+     * case 101
+     * This method logs in the librarian to the system
+     * and displays the details of a specific librarian
+     *
+     * @param conn The connection to the database
+     * @return The librarian
      */
     public static ArrayList<Subscriber> getSubscribersList(Connection conn) {
         ArrayList<Subscriber> subscribersList = new ArrayList<>();
@@ -51,13 +63,8 @@ public class LibrarianController {
                 subscriberDetails.add(rs.getString("subscriber_password"));
                 subscriberDetails.add(String.valueOf(rs.getInt("subscriber_status")));
 
-                if (subscriberDetails.get(6).equals("0")) {
-                    status = false;
-                } else {
-                    status = true;
-                }
-                subscribersList.add(new Subscriber(Integer.parseInt(subscriberDetails.get(0)), subscriberDetails.get(1),
-                            subscriberDetails.get(2), subscriberDetails.get(3), subscriberDetails.get(4), subscriberDetails.get(5), status));
+                status = !subscriberDetails.get(6).equals("0");
+                subscribersList.add(new Subscriber(Integer.parseInt(subscriberDetails.get(0)), subscriberDetails.get(1), subscriberDetails.get(2), subscriberDetails.get(3), subscriberDetails.get(4), subscriberDetails.get(5), status));
             }
             if (subscribersList.isEmpty()) {
                 System.out.println("No subscribers found(getSubscribersList LibrarianController) ");

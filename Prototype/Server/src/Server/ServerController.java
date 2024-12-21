@@ -1,15 +1,17 @@
 package Server;
 
-import java.util.ArrayList;
+import common.ClientServerMessage;
+import common.Subscriber;
+import gui.ServerMonitorFrameController;
+import logic.LibrarianController;
+import logic.SubscriberController;
+import ocsf.server.AbstractServer;
+import ocsf.server.ConnectionToClient;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import common.*;
-import gui.*;
-import logic.*;
-import ocsf.server.*;
+import java.util.ArrayList;
 
 /**
  * This class extends the AbstractServer class and implements the SubscriberController and LibrarianController interfaces.
@@ -17,8 +19,8 @@ import ocsf.server.*;
  */
 public class ServerController extends AbstractServer {
 
-    private final ServerMonitorFrameController serverMonitorController;
     private static Connection conn;
+    private final ServerMonitorFrameController serverMonitorController;
     private SubscriberController subscriberController = null;
     private LibrarianController librarianController = null;
 
@@ -63,8 +65,7 @@ public class ServerController extends AbstractServer {
     @Override
     protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
         try {
-            if (msg instanceof ClientServerMessage) {
-                ClientServerMessage message = (ClientServerMessage) msg;
+            if (msg instanceof ClientServerMessage message) {
 
                 /*
                  * 103 - Get all subscribers list (return case 104)
@@ -76,7 +77,7 @@ public class ServerController extends AbstractServer {
                     // Get all subscribers list
                     case 103:
                         try {
-                            ArrayList<Subscriber> subscribersList = librarianController.getSubscribersList(conn);
+                            ArrayList<Subscriber> subscribersList = LibrarianController.getSubscribersList(conn);
                             client.sendToClient(new ClientServerMessage(104, subscribersList));
                             System.out.println("Subscribers list was sent to client");
                             break;
@@ -122,7 +123,7 @@ public class ServerController extends AbstractServer {
                         }
                         // Client disconnected
                     case 999:
-                            serverMonitorController.clientDisconnected(client);
+                        serverMonitorController.clientDisconnected(client);
                         break;
 
                     default:
@@ -162,7 +163,7 @@ public class ServerController extends AbstractServer {
         }
 
         try {
-            this.conn = DriverManager.getConnection("jdbc:mysql://localhost/blib?serverTimezone=IST", "root", "Aa123456");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/blib?serverTimezone=IST", "root", "Aa123456");
             System.out.println("SQL connection succeed");
         } catch (SQLException ex) {/* handle any errors*/
             System.out.println("SQLException: " + ex.getMessage());
