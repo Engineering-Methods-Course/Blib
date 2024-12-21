@@ -1,6 +1,6 @@
 package gui;
 
-import Server.ServerUI;
+import Server.ServerGUI;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -55,7 +55,7 @@ public class ServerPortFrameController {
             System.out.println("You must enter a port number");
 
         } else {
-            ServerUI.runServer(p);
+            ServerGUI.runServer(p);
 
             // hide port window
             ((Node) event.getSource()).getScene().getWindow().hide();

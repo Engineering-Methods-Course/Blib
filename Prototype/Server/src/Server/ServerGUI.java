@@ -15,7 +15,7 @@ import gui.ServerPortFrameController;
 /**
  * This class is the server UI
  */
-public class ServerUI extends Application {
+public class ServerGUI extends Application {
     final public static int DEFAULT_PORT = 5555;
 
     /**
@@ -49,7 +49,7 @@ public class ServerUI extends Application {
         Stage primaryStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
 
-        Pane root = loader.load(ServerUI.class.getResource("/gui/ServerMonitor.fxml").openStream());
+        Pane root = loader.load(ServerGUI.class.getResource("/gui/ServerMonitor.fxml").openStream());
         ServerMonitorFrameController serverMonitorController = loader.getController();
 
         Scene scene = new Scene(root);
