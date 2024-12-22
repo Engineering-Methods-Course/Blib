@@ -23,22 +23,23 @@ import java.util.ResourceBundle;
 import static client.ClientGUIController.navigateTo;
 
 
-//import static gui.SubscriberWelcomeFrameController.navigateTo;
 
 public class SubscriberLoginController implements Initializable {
 
     private static Subscriber localSubscriber = null;
 
     @FXML
-    private TextField txtUsername;  // Reference to the username field
-
+    private TextField txtUsername;
     @FXML
-    private PasswordField txtPassword;  // Reference to the password field
-
+    private PasswordField txtPassword;
     @FXML
-    private Button btnLogin;  // Reference to the login button
+    private Button btnLogin;
 
-
+    /**
+     * This method initializes the Subscriber login screen
+     * not used
+     *
+     */
     public SubscriberLoginController() {
 
     }
@@ -141,6 +142,7 @@ public class SubscriberLoginController implements Initializable {
     public void clickViewAll(ActionEvent actionEvent) {
         ClientServerMessage askForSubscribers = new ClientServerMessage(103, null);
         try {
+            // Send the message to the server using the chat.accept method
             ClientGUIController.chat.accept(askForSubscribers);
         } catch (Exception e) {
             System.out.println("Error sending login message to server: " + e.getMessage());

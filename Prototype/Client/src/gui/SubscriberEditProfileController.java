@@ -18,40 +18,38 @@ import static client.ClientGUIController.navigateTo;
 public class SubscriberEditProfileController implements Initializable {
 
     private static Subscriber localSubscriber;
-
+    // FXML elements for labels
     @FXML
     private Label lblID;
     @FXML
     private Label lblName;
     @FXML
-    private Label lblLastName; // Label for displaying Last Name
+    private Label lblLastName;
     @FXML
-    private Label lblHistory; // Label for displaying History
+    private Label lblHistory;
     @FXML
-    private Label lblPhone; // Label for displaying Phone number
+    private Label lblPhone;
     @FXML
-    private Label lblEmail; // Label for displaying Email address
+    private Label lblEmail;
 
     @FXML
-    private TextField txtID; // TextField for ID input
+    private TextField txtID;
     @FXML
-    private TextField txtName; // TextField for Name input
+    private TextField txtName;
     @FXML
-    private TextField txtLastName; // TextField for Last Name input
+    private TextField txtLastName;
     @FXML
-    private TextField txtHistory; // TextField for History input
+    private TextField txtHistory;
     @FXML
-    private TextField txtPhone; // TextField for Phone input
+    private TextField txtPhone;
     @FXML
-    private TextField txtEmail; // TextField for Email input
+    private TextField txtEmail;
     @FXML
     private TextField txtPassword;
-
-    // FXML elements for buttons
     @FXML
-    private Button btnBack = null; // Button to go back to previous screen
+    private Button btnBack = null;
     @FXML
-    private Button btnUpdate = null; // Button to update the profile
+    private Button btnUpdate = null;
     /**
      * This method initializes the Subscriber edit profile screen
      */
@@ -67,7 +65,6 @@ public class SubscriberEditProfileController implements Initializable {
      * @throws Exception If there is an issue with the navigation
      */
     public void clickBackButton(ActionEvent event) throws Exception {
-        // Navigate to the desired destination using the navigateTo function
         navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
     }
 
@@ -87,7 +84,7 @@ public class SubscriberEditProfileController implements Initializable {
         String email = txtEmail.getText();
         String password = txtPassword.getText();
         boolean status = false;
-
+        // Create a new Subscriber object with the updated details
         Subscriber changedSubscriber = new Subscriber(id, name, lastName, phoneNumber, email, password, status);
 
         // Create a ClientServerMessage with the subscriber and ID 204

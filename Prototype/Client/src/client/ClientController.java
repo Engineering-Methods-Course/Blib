@@ -25,7 +25,6 @@ public class ClientController extends AbstractClient
     ChatIF clientUI;
     public static boolean awaitResponse = false;
 
-
     /**
      * Constructs an instance of the chat client.
      *
@@ -55,9 +54,10 @@ public class ClientController extends AbstractClient
             {
                 ClientServerMessage message = (ClientServerMessage) msg;
                 /*
+                 * 998 - Server closed connection
+                 * 104 - Get a list of all subscribers
                  * 202 - Get info of a specific subscriber back from the server
                  * 204 - Edit info of a specific subscriber
-                 * 104 - Get a list of all subscribers
                  */
                 switch (message.getId()){
                     // get the details of i
