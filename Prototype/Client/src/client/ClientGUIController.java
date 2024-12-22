@@ -1,9 +1,9 @@
 package client;
 
 import common.ClientServerMessage;
-import gui.*;
+import gui.PrototypeClientIPFrameController;
+import gui.SubscriberWelcomeFrameController;
 import javafx.application.Application;
-
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -15,19 +15,13 @@ import javafx.stage.Stage;
 import java.util.Objects;
 
 
-public class ClientUI extends Application {
+public class ClientGUIController extends Application {
     public static ChatClient chat; //only one instance
 
     public static void main(String[] args) throws Exception {
         launch(args);
     } // end main
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        ClientIPFrameController aFrame = new ClientIPFrameController();
-        aFrame.start(primaryStage);
-
-    }
     /**
      * Navigates to a specified FXML destination, optionally applying a CSS file and setting the title of the new stage.
      *
@@ -72,16 +66,26 @@ public class ClientUI extends Application {
 
         });
         // Show the new stage
+        newStage.setResizable(false); // Disable window resizing
         newStage.show();
+
     }
 
     private static void exitAction() throws Exception {
-        ClientServerMessage logOutMessage=new ClientServerMessage(999,null);
+        ClientServerMessage logOutMessage = new ClientServerMessage(999, null);
         try {
-            ClientUI.chat.accept(logOutMessage);
+            ClientGUIController.chat.accept(logOutMessage);
+            System.exit(0);
         } catch (Exception e) {
             System.out.println("Error sending login message to server: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        PrototypeClientIPFrameController aFrame = new PrototypeClientIPFrameController();
+        aFrame.start(primaryStage);
+
     }
 
 

@@ -1,5 +1,6 @@
 package gui;
 
+import common.ClientServerMessage;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -52,17 +53,6 @@ public class ServerMonitorFrameController {
         host.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(2)));
         status.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(3)));
 
-    }
-
-    /**
-     * This method gets the monitor button
-     *
-     * @param event The action event triggered by clicking the monitor button
-     * @throws Exception If there is an issue with the navigation
-     */
-    public void getExitBtn(ActionEvent event) throws Exception {
-        System.out.println("ServerMonitorFrameController: Exit Blib server");
-        System.exit(0);
     }
 
     /**

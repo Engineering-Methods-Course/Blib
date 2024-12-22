@@ -4,9 +4,11 @@ package client;
 
 import common.ClientServerMessage;
 import common.Subscriber;
-import gui.EditProfileController;
-import gui.LoginController;
-import gui.ViewAllController;
+import gui.SubscriberEditProfileController;
+import gui.SubscriberLoginController;
+import gui.PrototypeViewAllController;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import ocsf.client.*;
 import common.ChatIF;
 
@@ -15,22 +17,14 @@ import java.io.*;
 import java.sql.Connection;
 import java.util.ArrayList;
 
-/**
- * This class overrides some of the methods defined in the abstract
- * superclass in order to give more functionality to the client.
- */
+
 public class ClientController extends AbstractClient
 {
-    //Instance variables **********************************************
     private Connection conn;
-    /**
-     * The interface type variable.  It allows the implementation of
-     * the display method in the client.
-     */
+
     ChatIF clientUI;
     public static boolean awaitResponse = false;
 
-    //Constructors ****************************************************
 
     /**
      * Constructs an instance of the chat client.
@@ -39,7 +33,6 @@ public class ClientController extends AbstractClient
      * @param port The port number to connect on.
      * @param clientUI The interface type variable.
      */
-
     public ClientController(String host, int port, ChatIF clientUI)
             throws IOException
     {
@@ -47,9 +40,6 @@ public class ClientController extends AbstractClient
         this.clientUI = clientUI;
         openConnection();
     }
-
-
-    //Instance methods ************************************************
 
     /**
      * This method handles all data that comes in from the server.
@@ -64,7 +54,7 @@ public class ClientController extends AbstractClient
             if(msg instanceof ClientServerMessage)
             {
                 ClientServerMessage message = (ClientServerMessage) msg;
-                /**
+                /*
                  * 202 - Get info of a specific subscriber back from the server
                  * 204 - Edit info of a specific subscriber
                  * 104 - Get a list of all subscribers
@@ -74,35 +64,45 @@ public class ClientController extends AbstractClient
                     case 202:
                         if(message.getMessageContent()==null){
                             System.out.println("Wrong Username(id) or Password");
+                            Platform.runLater(() -> showErrorAlert("Login error", "Wrong Username(id) or Password"));
                         }
                         else if(message.getMessageContent() instanceof Subscriber)
                         {
                             Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
-                            LoginController.setLocalSubscriber(subscriberFromServer);
+                            SubscriberLoginController.setLocalSubscriber(subscriberFromServer);
                         }
                         break;
                     //  Edit subscriber details
                     case 204:
                         if(message.getMessageContent()==null){
                             System.out.println("Could not update");
+                            Platform.runLater(() -> showErrorAlert("Update error", "Could not update subscriber details"));
+
                         }
                         else if(message.getMessageContent() instanceof Subscriber)
                         {
                             Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
-                            LoginController.setLocalSubscriber(subscriberFromServer);
-                            EditProfileController.setLocalSubscriber(subscriberFromServer);
+                            SubscriberLoginController.setLocalSubscriber(subscriberFromServer);
+                            SubscriberEditProfileController.setLocalSubscriber(subscriberFromServer);
+                            Platform.runLater(() -> showInformationAlert("Update successful", "Subscriber details updated successfully"));
                         }
                         break;
-
+                        // Get all subscribers list
                     case 104:
                         if(message.getMessageContent()==null){
                             System.out.println("No Subscribers to show");
+                            Platform.runLater(() -> showErrorAlert("No Subscribers", "No Subscribers to show"));
                         }
                         else if(message.getMessageContent() instanceof ArrayList<?>){
                             ArrayList<Subscriber> subscribersFromServer = (ArrayList<Subscriber>) message.getMessageContent();
-                            ViewAllController.setSubscribers(subscribersFromServer);
+                            PrototypeViewAllController.setSubscribers(subscribersFromServer);
                         }
                         break;
+                        // Server closed connection
+                        case 998:
+                            System.out.println("Server closed connection");
+                            Platform.runLater(() -> showErrorAlert("Server closed connection", "Server closed connection"));
+                            break;
                     default:
                         System.out.println("Invalid command id");
                 }
@@ -141,6 +141,8 @@ public class ClientController extends AbstractClient
 
     /**
      * This method terminates the client.
+     *
+     * @throws IOException If an I/O error occurs.
      */
     public void quit()
     {
@@ -151,5 +153,32 @@ public class ClientController extends AbstractClient
         catch(IOException e) {}
         System.exit(0);
     }
+    /**
+     * This method displays an error message onto the screen.
+     *
+     * @param message The string to be displayed.
+     */
+    private void showErrorAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+        if (title.equals("Server closed connection")) {
+            System.exit(0);
+        }
+    }
+
+    /**
+     * This method displays an INFORMATION message onto the screen.
+     *
+     * @param message The string to be displayed.
+     */
+    private void showInformationAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
-//End of ClientController class

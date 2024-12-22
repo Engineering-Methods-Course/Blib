@@ -5,16 +5,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 
 import java.util.ArrayList;
 
-import static client.ClientUI.navigateTo;
+import static client.ClientGUIController.navigateTo;
 
-public class ViewAllController {
+public class PrototypeViewAllController {
 
     private static ArrayList<Subscriber> subscribers;
 
@@ -24,7 +21,6 @@ public class ViewAllController {
     // FXML elements for the subscriber table
     @FXML
     private TableView<Subscriber> subscriberTable;
-
     @FXML
     private TableColumn<Subscriber, String> idColumn;
     @FXML
@@ -42,15 +38,24 @@ public class ViewAllController {
     @FXML
     private TableColumn<Subscriber, String> historyColumn;
 
+    /**
+     * This method sets the subscribers list
+     *
+     * @param subscribersFromServer The list of subscribers to set
+     */
+    public static void setSubscribers(ArrayList<Subscriber> subscribersFromServer) {
+        subscribers = subscribersFromServer;
+    }
+
     @FXML
     private void initialize() {
         loadSubscribersIntoTable();
 
     }
-    public static void setSubscribers(ArrayList<Subscriber> subscribersFromServer) {
-        subscribers = subscribersFromServer;
-    }
 
+    /**
+     * This method loads the subscribers into the table
+     */
     private void loadSubscribersIntoTable() {
         // Ensure the subscriber list is not null
         if (subscribers != null) {
@@ -68,10 +73,12 @@ public class ViewAllController {
             historyColumn.setCellFactory(column -> new TableCell<Subscriber, String>() {
                 private final Button button = new Button("Watch History");
                 {
+                    // Set the button action
                     button.setOnAction(event -> {
-                        Subscriber subscriber = getTableView().getItems().get(getIndex());
                         // Handle button action here, e.g., show subscriber's history
-                        System.out.println("Watch history for: " + subscriber.getFirstName() + " " + subscriber.getLastName());
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Will be implemented in the future");
+                        alert.setTitle("Watch History");
+                        alert.showAndWait();
                     });
                 }
 
@@ -91,13 +98,28 @@ public class ViewAllController {
             System.out.println("Subscribers list is null!");
         }
     }
+
+    /**
+     * This method returns a string indicating whether the subscriber is frozen or active
+     *
+     * @param isFrozen The status of the subscriber
+     * @return The string indicating the status
+     */
     private String getFrozenMessage(Boolean isFrozen) {
         if (isFrozen) {
             return "Frozen";
         }
         return "Active";
     }
-    public void clickBack(ActionEvent actionEvent) throws Exception{
-        navigateTo(actionEvent, "/gui/LoginFrame.fxml", "/gui/Subscriber.css", "Login");
+
+    /**
+     * This method handles the back button click event.
+     * It navigates to the previous screen (SubscriberLoginFrame.fxml).
+     *
+     * @param actionEvent The action event triggered by clicking the back button
+     * @throws Exception If there is an issue with the navigation
+     */
+    public void clickBack(ActionEvent actionEvent) throws Exception {
+        navigateTo(actionEvent, "/gui/SubscriberLoginFrame.fxml", "/gui/Subscriber.css", "Login");
     }
 }

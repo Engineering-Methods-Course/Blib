@@ -1,16 +1,18 @@
 package gui;
 
-import javafx.event.ActionEvent;
 import common.Subscriber;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+
 import java.net.URL;
 import java.util.ResourceBundle;
-import static client.ClientUI.navigateTo;
 
-public class SubscriberWelcomeFrameController implements Initializable  {
+import static client.ClientGUIController.navigateTo;
+
+public class SubscriberWelcomeFrameController implements Initializable {
 
     private static Subscriber localSubscriber;
     @FXML
@@ -29,6 +31,14 @@ public class SubscriberWelcomeFrameController implements Initializable  {
     private Button btnSearchBook;
     @FXML
     private Button btnLogout;
+    /**
+     * This method returns the local subscriber object
+     *
+     * @return The local subscriber object
+     */
+    public static void setLocalSubscriber(Subscriber subscriberToSet) {
+        localSubscriber = subscriberToSet;
+    }
 
     /**
      * Initializes the controller class. This method is automatically called
@@ -36,7 +46,7 @@ public class SubscriberWelcomeFrameController implements Initializable  {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        localSubscriber = LoginController.getLocalSubscriber();
+        localSubscriber = SubscriberLoginController.getLocalSubscriber();
         loadSubscriberName(localSubscriber);
     }
 
@@ -54,9 +64,6 @@ public class SubscriberWelcomeFrameController implements Initializable  {
             System.out.println("lblWelcomeUserName is null or subscriber is null.");
         }
     }
-    public static void setLocalSubscriber(Subscriber subscriberToSet) {
-        localSubscriber = subscriberToSet;
-    }
 
     /**
      * This method handles the Borrow Extension button click event.
@@ -67,8 +74,9 @@ public class SubscriberWelcomeFrameController implements Initializable  {
      */
     public void clickProfileButton(ActionEvent event) throws Exception {
         System.out.println("exit Subscriber Frame");
-        navigateTo(event, "/gui/ProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
+        navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
     }
+
     /**
      * This method handles the Borrow Extension button click event.
      * It navigates to the BorrowExtensionFrame.fxml to allow the user to extend a book's borrowing period.
@@ -79,8 +87,8 @@ public class SubscriberWelcomeFrameController implements Initializable  {
     public void clickLogoutButton(ActionEvent event) throws Exception {
         System.out.println("exit Subscriber Frame");
         setLocalSubscriber(null);
-        LoginController.setLocalSubscriber(null);
-        navigateTo(event, "/gui/LoginFrame.fxml", "/gui/Subscriber.css", "Login");
+        SubscriberLoginController.setLocalSubscriber(null);
+        navigateTo(event, "/gui/SubscriberLoginFrame.fxml", "/gui/Subscriber.css", "Login");
 
     }
 

@@ -1,5 +1,6 @@
 package Server;
 
+import common.ClientServerMessage;
 import gui.ServerMonitorFrameController;
 import gui.ServerPortFrameController;
 import javafx.application.Application;
@@ -46,20 +47,14 @@ public class ServerGUI extends Application {
         Stage primaryStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
 
-        Pane root = loader.load(ServerGUI.class.getResource("/gui/ServerMonitor.fxml").openStream());
+        Pane root = loader.load(ServerGUI.class.getResource("/gui/ServerMonitorFrame.fxml").openStream());
         ServerMonitorFrameController serverMonitorController = loader.getController();
 
         Scene scene = new Scene(root);
         scene.getStylesheets().add(Objects.requireNonNull(ServerGUI.class.getResource("/gui/Server.css")).toExternalForm());
         primaryStage.setTitle("Server Monitor");
         // Set the close button to call the exit button
-        primaryStage.setOnCloseRequest(event -> {
-            try {
-                System.exit(0);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+
 
 
         primaryStage.setScene(scene);
@@ -73,6 +68,14 @@ public class ServerGUI extends Application {
         } catch (Exception ex) {
             System.out.println("ERROR - Could not listen for clients!");
         }
+        primaryStage.setOnCloseRequest(event -> {
+            try {
+                sv.sendMessagesToAllClients(new ClientServerMessage(998, null));
+                System.exit(0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**

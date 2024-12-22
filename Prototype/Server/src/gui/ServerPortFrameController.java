@@ -22,8 +22,6 @@ public class ServerPortFrameController {
     ObservableList<String> list;
     //FXML elements
     @FXML
-    private Button btnExit = null;
-    @FXML
     private Button btnDone = null;
     @FXML
     private Label lbllist;
@@ -69,34 +67,15 @@ public class ServerPortFrameController {
      * @throws Exception If there is an issue with exiting the server
      */
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/gui/ServerPort.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/gui/ServerPortFrame.fxml")));
 
         Scene scene = new Scene(root);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/gui/Server.css")).toExternalForm());
         primaryStage.setTitle("Set Port Number");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false); // Disable window resizing
-        // exit on close
-        primaryStage.setOnCloseRequest(event -> {
-            try {
-                getExitBtn(null);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        primaryStage.show();
-    }
 
-    /**
-     * This method handles the Exit button click event.
-     * It exits the server.
-     *
-     * @param event The action event triggered by clicking the Exit button
-     * @throws Exception If there is an issue with exiting the server
-     */
-    public void getExitBtn(ActionEvent event) throws Exception {
-        System.out.println("ServerPortFrameController: Exit Blib server");
-        System.exit(0);
+        primaryStage.show();
     }
 
 }

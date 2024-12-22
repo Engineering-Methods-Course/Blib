@@ -1,7 +1,7 @@
 package gui;
 
 import client.ChatClient;
-import client.ClientUI;
+import client.ClientGUIController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,39 +10,43 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import java.util.Objects;
-import static client.ClientUI.navigateTo;
 
-public class ClientIPFrameController {
+import static client.ClientGUIController.navigateTo;
 
-    @FXML
-    private TextField txtIP;  // Reference to the IP address field
+public class PrototypeClientIPFrameController {
 
     @FXML
-    private TextField txtPort;  // Reference to the port field
-
+    private TextField txtIP;
     @FXML
-    private Button btnEnter;  // Reference to the Enter button
-
+    private TextField txtPort;
     @FXML
-    private Button btnExit;  // Reference to the Exit button
+    private Button btnEnter;
+    @FXML
+    private Button btnExit;
 
     /**
      * Start the application with the ClientIPFrame as the first page.
+     *
+     * @param primaryStage The primary stage for the application
      */
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/gui/EnterClientIPFrame.fxml")));
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/gui/PrototypeEnterClientIPFrame.fxml")));
         Parent root = loader.load();
 
         Scene scene = new Scene(root);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/gui/Subscriber.css")).toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.setTitle("Enter Server Details");
+        primaryStage.setResizable(false); // Disable window resizing
         primaryStage.show();
     }
 
     /**
      * Handle the Enter button click event.
+     *
+     * @param event The action event triggered by clicking the Enter button
      */
     @FXML
     public void clickEnterButton(ActionEvent event) throws Exception {
@@ -58,9 +62,9 @@ public class ClientIPFrameController {
         // Proceed with the entered IP and Port
         try {
             int port = Integer.parseInt(portText);
-            ClientUI.chat=new ChatClient(ipAddress, port);
+            ClientGUIController.chat = new ChatClient(ipAddress, port);
             // Navigate to the next frame
-            navigateTo(event, "/gui/LoginFrame.fxml", "/gui/Subscriber.css", "Login");
+            navigateTo(event, "/gui/SubscriberLoginFrame.fxml", "/gui/Subscriber.css", "Login");
         } catch (NumberFormatException e) {
             System.out.println("Port must be a valid number.");
             throw e;
@@ -73,6 +77,8 @@ public class ClientIPFrameController {
 
     /**
      * Handle the Exit button click event.
+     *
+     * @param event The action event triggered by clicking the Exit button
      */
     @FXML
     public void clickExitButton(ActionEvent event) throws Exception {

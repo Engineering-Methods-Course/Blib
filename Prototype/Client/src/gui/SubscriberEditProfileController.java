@@ -1,32 +1,28 @@
 package gui;
 
-import client.ClientUI;
-import common.Subscriber;
+import client.ClientGUIController;
 import common.ClientServerMessage;
+import common.Subscriber;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.event.ActionEvent;
-
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static client.ClientUI.navigateTo;
-//import static gui.SubscriberWelcomeFrameController.navigateTo;
+import static client.ClientGUIController.navigateTo;
 
-public class EditProfileController implements Initializable {
+public class SubscriberEditProfileController implements Initializable {
 
-    // Subscriber object to store the profile details
     private static Subscriber localSubscriber;
 
-    // FXML elements for labels and text fields
     @FXML
-    private Label lblID; // Label for displaying ID
+    private Label lblID;
     @FXML
-    private Label lblName; // Label for displaying Name
+    private Label lblName;
     @FXML
     private Label lblLastName; // Label for displaying Last Name
     @FXML
@@ -56,19 +52,32 @@ public class EditProfileController implements Initializable {
     private Button btnBack = null; // Button to go back to previous screen
     @FXML
     private Button btnUpdate = null; // Button to update the profile
+    /**
+     * This method initializes the Subscriber edit profile screen
+     */
+    public static void setLocalSubscriber(Subscriber subscriberFromServer) {
+        localSubscriber = subscriberFromServer;
+    }
 
     /**
      * This method handles the back button click event.
-     * It navigates to the previous screen (ProfileOptionsFrame.fxml).
+     * It navigates to the previous screen (SubscriberProfileOptionsFrame.fxml).
      *
      * @param event The action event triggered by clicking the back button
      * @throws Exception If there is an issue with the navigation
      */
     public void clickBackButton(ActionEvent event) throws Exception {
         // Navigate to the desired destination using the navigateTo function
-        navigateTo(event, "/gui/ProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
+        navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
     }
 
+    /**
+     * This method handles the update button click event.
+     * It sends the updated profile details to the server for updating.
+     *
+     * @param event The action event triggered by clicking the update button
+     * @throws Exception If there is an issue with the navigation
+     */
     public void clickUpdateButton(ActionEvent event) throws Exception {
         // Retrieve the text from the TextField components
         int id = Integer.parseInt(txtID.getText());
@@ -85,15 +94,10 @@ public class EditProfileController implements Initializable {
         ClientServerMessage editedProfileMessage = new ClientServerMessage(203, changedSubscriber);
 
         try {
-            ClientUI.chat.accept(editedProfileMessage);
+            ClientGUIController.chat.accept(editedProfileMessage);
         } catch (Exception e) {
             System.out.println("Error sending login message to server: " + e.getMessage());
         }
-        navigateTo(event, "/gui/ProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
-
-    }
-    public static void setLocalSubscriber(Subscriber subscriberFromServer) {
-        localSubscriber = subscriberFromServer;
     }
 
     /**
@@ -112,15 +116,15 @@ public class EditProfileController implements Initializable {
         this.txtPassword.setText(s1.getPassword());
     }
 
-
-
     /**
      * Initializes the controller class. This method is automatically called
      * after the FXML file is loaded.
+     *
+     * @param location The location used to resolve relative paths for the root object, or null if the location is not known.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        localSubscriber = ProfileOptionsController.getLocalSubscriber();
+        localSubscriber = SubscriberProfileOptionsController.getLocalSubscriber();
         loadProfileDetails(localSubscriber);
     }
 }

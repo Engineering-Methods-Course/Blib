@@ -125,7 +125,7 @@ public class ServerController extends AbstractServer {
                         // Client disconnected
                     case 999:
                         serverMonitorController.clientDisconnected(client);
-                        client.sendToClient(null);
+                        client.sendToClient(null); // send null to client to make him stop waiting for a response
                         break;
 
                     default:
@@ -171,6 +171,18 @@ public class ServerController extends AbstractServer {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
+        }
+    }
+    /**
+     * This method sends a message to all clients connected to the server.
+     *
+     * @param message The message to be sent to all clients.
+     */
+    public void sendMessagesToAllClients(ClientServerMessage message) {
+        try {
+            sendToAllClients(message);
+        } catch (Exception e) {
+            System.out.println("Error: sending message to all clients" + e);
         }
     }
 }
