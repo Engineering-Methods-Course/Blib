@@ -79,6 +79,7 @@ public class SubscriberProfileOptionsController implements Initializable {
      * @throws Exception If there is an issue with the navigation
      */
     public void clickOnWatchHistory(ActionEvent actionEvent) throws Exception {
+        System.out.println("Watch History");
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Will be implemented in the future");
         alert.setTitle("Watch History");
         alert.showAndWait();

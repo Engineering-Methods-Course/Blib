@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.*?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="506.0" prefWidth="419.0" xmlns="http://javafx.com/javafx/21"
-      fx:controller="gui.SubscriberProfileOptionsController">
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="506.0" prefWidth="419.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberProfileOptionsController">
     <children>
         <!-- Spacer to push buttons to the center -->
-        <Region VBox.vgrow="ALWAYS"/>
+        <Region VBox.vgrow="ALWAYS" />
 
         <!-- Centered Buttons -->
-        <VBox spacing="20.0" alignment="CENTER" VBox.vgrow="NEVER">
-            <Button fx:id="btnEditProfile" onAction="#clickEditProfileButton" text="Edit profile"
-                    prefWidth="200.0" prefHeight="50.0"/>
-            <Button fx:id="btnWatchHistory" text="Watch history"
-                    prefWidth="200.0" prefHeight="50.0"/>
+        <VBox alignment="CENTER" spacing="20.0" VBox.vgrow="NEVER">
+            <Button fx:id="btnEditProfile" onAction="#clickEditProfileButton" prefHeight="50.0" prefWidth="200.0" text="Edit profile" />
+            <Button fx:id="btnWatchHistory" onAction="#clickOnWatchHistory" prefHeight="50.0" prefWidth="200.0" text="Watch history" />
         </VBox>
 
         <!-- Spacer to push Back button to the bottom -->
-        <Region VBox.vgrow="ALWAYS"/>
+        <Region VBox.vgrow="ALWAYS" />
 
         <!-- Back Button aligned to the bottom-left, smaller size -->
         <HBox alignment="BOTTOM_LEFT">
-            <Button fx:id="btnBack" onAction="#clickBackButton" text="Back"
-                    prefWidth="100.0" prefHeight="40.0"/>
+            <Button fx:id="btnBack" onAction="#clickBackButton" prefHeight="40.0" prefWidth="100.0" text="Back" />
         </HBox>
     </children>
 </VBox>

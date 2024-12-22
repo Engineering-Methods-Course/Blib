@@ -4,6 +4,7 @@ import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
@@ -90,6 +91,12 @@ public class SubscriberWelcomeFrameController implements Initializable {
         SubscriberLoginController.setLocalSubscriber(null);
         navigateTo(event, "/gui/SubscriberLoginFrame.fxml", "/gui/Subscriber.css", "Login");
 
+    }
+    public void willbeImplemented(ActionEvent event) throws Exception {
+        System.out.println("Will be implemented in the future");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Will be implemented in the future");
+        alert.setTitle("Watch History");
+        alert.showAndWait();
     }
 
 
