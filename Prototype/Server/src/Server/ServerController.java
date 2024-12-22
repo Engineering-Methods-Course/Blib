@@ -65,7 +65,7 @@ public class ServerController extends AbstractServer {
     @Override
     protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
         try {
-            if (msg instanceof ClientServerMessage message) {
+            if (msg instanceof ClientServerMessage) {
 
                 /*
                  * 103 - Get all subscribers list (return case 104)
@@ -73,6 +73,7 @@ public class ServerController extends AbstractServer {
                  * 203 - Edit info of a specific subscriber (return case 204)
                  * 999 - Client disconnected
                  */
+                ClientServerMessage message = (ClientServerMessage) msg;
                 switch (message.getId()) {
                     // Get all subscribers list
                     case 103:
@@ -124,6 +125,7 @@ public class ServerController extends AbstractServer {
                         // Client disconnected
                     case 999:
                         serverMonitorController.clientDisconnected(client);
+                        client.sendToClient(null);
                         break;
 
                     default:
