@@ -71,9 +71,8 @@ public class SubscriberLoginController implements Initializable {
      *
      */
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources) {}
 
-    }
     /**
      * This method initializes the Subscriber login screen
      *
@@ -117,6 +116,7 @@ public class SubscriberLoginController implements Initializable {
         loginDetails.add(username);
         loginDetails.add(password);
 
+        // Create a new ClientServerMessage with the login details and ID 201
         ClientServerMessage loginMessage = new ClientServerMessage(201, loginDetails);
 
         try {
@@ -128,7 +128,7 @@ public class SubscriberLoginController implements Initializable {
         if (localSubscriber != null) {
             navigateTo(event, "/gui/SubscriberWelcomeFrame.fxml", "/gui/Subscriber.css", "Subscriber Frame");
         } else {
-            System.out.println("Something went Wrong try again please: ");
+            System.out.println("Could not log in subscriber ");
         }
 
     }
@@ -149,10 +149,10 @@ public class SubscriberLoginController implements Initializable {
         }
 
         try {
-            // Use the navigateTo method from ClientGUIController to switch to the ViewAll screen
+            // Use the navigateTo method from ClientGUIController to switch to the PrototypeViewAll screen
             ClientGUIController.navigateTo(actionEvent, "/gui/PrototypeViewAllFrame.fxml", "/gui/Subscriber.css", "View All Subscribers");
         } catch (Exception e) {
-            System.out.println("Error navigating to ViewAll: " + e.getMessage());
+            System.out.println("Error navigating to PrototypeViewAll: " + e.getMessage());
             e.printStackTrace();
         }
 

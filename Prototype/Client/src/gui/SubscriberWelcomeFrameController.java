@@ -18,10 +18,8 @@ public class SubscriberWelcomeFrameController implements Initializable {
     private static Subscriber localSubscriber;
     @FXML
     private Label lblWelcome;
-
     @FXML
     private Label lblWelcomeUserName;
-
     @FXML
     private Button btnProfile;
     @FXML
@@ -32,6 +30,7 @@ public class SubscriberWelcomeFrameController implements Initializable {
     private Button btnSearchBook;
     @FXML
     private Button btnLogout;
+
     /**
      * This method returns the local subscriber object
      *

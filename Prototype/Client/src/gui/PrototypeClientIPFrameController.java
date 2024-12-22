@@ -84,6 +84,4 @@ public class PrototypeClientIPFrameController {
     public void clickExitButton(ActionEvent event) throws Exception {
         System.exit(0);
     }
-
-
 }

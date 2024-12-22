@@ -68,7 +68,6 @@ public class SubscriberProfileOptionsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         localSubscriber = SubscriberLoginController.getLocalSubscriber();
-
     }
 
     /**

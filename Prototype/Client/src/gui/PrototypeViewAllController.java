@@ -82,6 +82,7 @@ public class PrototypeViewAllController {
                     });
                 }
 
+                // Display button if the row is not empty
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);

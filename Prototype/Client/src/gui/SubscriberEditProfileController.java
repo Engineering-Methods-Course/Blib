@@ -87,13 +87,13 @@ public class SubscriberEditProfileController implements Initializable {
         // Create a new Subscriber object with the updated details
         Subscriber changedSubscriber = new Subscriber(id, name, lastName, phoneNumber, email, password, status);
 
-        // Create a ClientServerMessage with the subscriber and ID 204
+        // Create a ClientServerMessage with the subscriber and ID 203
         ClientServerMessage editedProfileMessage = new ClientServerMessage(203, changedSubscriber);
 
         try {
             ClientGUIController.chat.accept(editedProfileMessage);
         } catch (Exception e) {
-            System.out.println("Error sending login message to server: " + e.getMessage());
+            System.out.println("Error with sending the login message to the server: " + e.getMessage());
         }
     }
 

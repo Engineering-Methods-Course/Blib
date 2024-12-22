@@ -60,7 +60,7 @@ public class ClientController extends AbstractClient
                  * 204 - Edit info of a specific subscriber
                  */
                 switch (message.getId()){
-                    // get the details of i
+                    // get the details of a specific subscriber
                     case 202:
                         if(message.getMessageContent()==null){
                             System.out.println("Wrong Username(id) or Password");
@@ -75,7 +75,7 @@ public class ClientController extends AbstractClient
                     //  Edit subscriber details
                     case 204:
                         if(message.getMessageContent()==null){
-                            System.out.println("Could not update");
+                            System.out.println("Could not update subscriber details");
                             Platform.runLater(() -> showErrorAlert("Update error", "Could not update subscriber details"));
 
                         }
@@ -90,8 +90,8 @@ public class ClientController extends AbstractClient
                         // Get all subscribers list
                     case 104:
                         if(message.getMessageContent()==null){
-                            System.out.println("No Subscribers to show");
-                            Platform.runLater(() -> showErrorAlert("No Subscribers", "No Subscribers to show"));
+                            System.out.println("Unable to present Subscribers");
+                            Platform.runLater(() -> showErrorAlert("No Subscribers", "Unable to present Subscribers"));
                         }
                         else if(message.getMessageContent() instanceof ArrayList<?>){
                             ArrayList<Subscriber> subscribersFromServer = (ArrayList<Subscriber>) message.getMessageContent();
@@ -100,8 +100,8 @@ public class ClientController extends AbstractClient
                         break;
                         // Server closed connection
                         case 998:
-                            System.out.println("Server closed connection");
-                            Platform.runLater(() -> showErrorAlert("Server closed connection", "Server closed connection"));
+                            System.out.println("Server has closed its connection");
+                            Platform.runLater(() -> showErrorAlert("Server closed connection", "Server has closed its connection"));
                             break;
                     default:
                         System.out.println("Invalid command id");
@@ -164,7 +164,7 @@ public class ClientController extends AbstractClient
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-        if (title.equals("Server closed connection")) {
+        if (title.equals("Server has closed its connection")) {
             System.exit(0);
         }
     }
