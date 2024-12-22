@@ -20,7 +20,7 @@ import static client.ClientUI.navigateTo;
 public class EditProfileController implements Initializable {
 
     // Subscriber object to store the profile details
-    private Subscriber localSubscriber;
+    private static Subscriber localSubscriber;
 
     // FXML elements for labels and text fields
     @FXML
@@ -79,10 +79,10 @@ public class EditProfileController implements Initializable {
         String password = txtPassword.getText();
         boolean status = false;
 
-        Subscriber subscriber = new Subscriber(id, name, lastName, phoneNumber, email, password, status);
+        Subscriber changedSubscriber = new Subscriber(id, name, lastName, phoneNumber, email, password, status);
 
         // Create a ClientServerMessage with the subscriber and ID 204
-        ClientServerMessage editedProfileMessage = new ClientServerMessage(203, subscriber);
+        ClientServerMessage editedProfileMessage = new ClientServerMessage(203, changedSubscriber);
 
         try {
             ClientUI.chat.accept(editedProfileMessage);
@@ -92,8 +92,8 @@ public class EditProfileController implements Initializable {
         navigateTo(event, "/gui/ProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
 
     }
-    public static void setLocalSubscriber(Subscriber localSubscriber) {
-        localSubscriber = localSubscriber;
+    public static void setLocalSubscriber(Subscriber subscriberFromServer) {
+        localSubscriber = subscriberFromServer;
     }
 
     /**
@@ -104,12 +104,12 @@ public class EditProfileController implements Initializable {
      */
     public void loadProfileDetails(Subscriber s1) {
         // Set values in the text fields from the Subscriber object
-        this.txtID.setText(String.valueOf(localSubscriber.getID()));
-        this.txtName.setText(localSubscriber.getFirstName());
-        this.txtLastName.setText(localSubscriber.getLastName());
-        this.txtPhone.setText(String.valueOf(localSubscriber.getPhoneNumber()));
-        this.txtEmail.setText(localSubscriber.getEmail());
-        this.txtPassword.setText(localSubscriber.getPassword());
+        this.txtID.setText(String.valueOf(s1.getID()));
+        this.txtName.setText(s1.getFirstName());
+        this.txtLastName.setText(s1.getLastName());
+        this.txtPhone.setText(String.valueOf(s1.getPhoneNumber()));
+        this.txtEmail.setText(s1.getEmail());
+        this.txtPassword.setText(s1.getPassword());
     }
 
 

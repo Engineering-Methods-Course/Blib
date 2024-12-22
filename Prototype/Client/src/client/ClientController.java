@@ -58,17 +58,16 @@ public class ClientController extends AbstractClient
      */
     public void handleMessageFromServer(Object msg)
     {
-        awaitResponse=false; // @@@@@@@@@@ check this if necessary
+        awaitResponse=false;
         try
         {
             if(msg instanceof ClientServerMessage)
             {
                 ClientServerMessage message = (ClientServerMessage) msg;
-
                 /**
                  * 202 - Get info of a specific subscriber back from the server
                  * 204 - Edit info of a specific subscriber
-                 * 206 - Get a list of all subscribers
+                 * 104 - Get a list of all subscribers
                  */
                 switch (message.getId()){
                     // get the details of i
@@ -120,7 +119,6 @@ public class ClientController extends AbstractClient
      *
      * @param message The message from the UI.
      */
-
     public void handleMessageFromClientUI(ClientServerMessage message) {
         try {
             openConnection(); // Ensure the connection is open before sending

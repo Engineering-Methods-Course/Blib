@@ -24,17 +24,9 @@ public class ClientUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //chat = new ChatClient("localhost", 5555);
         ClientIPFrameController aFrame = new ClientIPFrameController();
         aFrame.start(primaryStage);
 
-        //chat = new ChatClient("localhost", 5555);
-        // TODO Auto-generated method stub
-
-        /*
-        LoginController aFrame = new LoginController();
-        aFrame.start(primaryStage);
-         */
     }
     /**
      * Navigates to a specified FXML destination, optionally applying a CSS file and setting the title of the new stage.
@@ -66,7 +58,7 @@ public class ClientUI extends Application {
         newStage.setTitle(stageTitle);
         newStage.setScene(scene);
         newStage.setOnCloseRequest(event1 -> {
-            // Run logOutAction() in a background thread to prevent blocking
+            // Run exitAction() in a background thread to prevent blocking
             Task<Void> logOutTask = new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
@@ -76,6 +68,8 @@ public class ClientUI extends Application {
             };
             // Start the background task
             new Thread(logOutTask).start();
+
+
         });
         // Show the new stage
         newStage.show();
@@ -85,7 +79,6 @@ public class ClientUI extends Application {
         ClientServerMessage logOutMessage=new ClientServerMessage(999,null);
         try {
             ClientUI.chat.accept(logOutMessage);
-            System.exit(0);
         } catch (Exception e) {
             System.out.println("Error sending login message to server: " + e.getMessage());
         }

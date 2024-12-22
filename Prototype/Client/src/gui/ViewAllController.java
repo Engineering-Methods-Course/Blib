@@ -67,7 +67,6 @@ public class ViewAllController {
             statusColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(getFrozenMessage(cellData.getValue().getStatusIsFrozen())));
             historyColumn.setCellFactory(column -> new TableCell<Subscriber, String>() {
                 private final Button button = new Button("Watch History");
-
                 {
                     button.setOnAction(event -> {
                         Subscriber subscriber = getTableView().getItems().get(getIndex());

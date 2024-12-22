@@ -13,15 +13,7 @@ import common.ClientServerMessage;
  */
 public class ChatClient implements ChatIF
 {
-    //Class variables *************************************************
-    //private Connection conn;
-    /**
-     * The default port to connect on.
-     */
-    public static int DEFAULT_PORT ;
-
     //Instance variables **********************************************
-
     /**
      * The instance of the client that created this ConsoleChat.
      */
