@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" prefHeight="300.0" prefWidth="300.0" spacing="20.0"
+      xmlns="http://javafx.com/javafx/23.0.1" fx:controller="gui.SubscriberLoginController">
+    <children>
+        <!-- Login label at the top -->
+        <Label style="-fx-font-size: 24px;" text="Login"/>
+
+        <!-- Username field -->
+        <TextField fx:id="txtUsername" prefWidth="200.0" promptText=" Username(ID)"/>
+
+        <!-- Password field -->
+        <PasswordField fx:id="txtPassword" prefWidth="200.0" promptText="Password(Aa123456)"/>
+
+        <!-- Login Button -->
+        <Button fx:id="btnLogin" onAction="#clickLoginButton" prefWidth="200.0" text="Login"/>
+        <Button fx:id="btnViewAll" mnemonicParsing="false" onAction="#clickViewAll" text="View All Subscribers"/>
+    </children>
+</VBox>

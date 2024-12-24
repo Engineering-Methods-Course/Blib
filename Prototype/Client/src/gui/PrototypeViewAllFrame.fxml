@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="501.0" prefWidth="1234.0"
+            xmlns="http://javafx.com/javafx/23.0.1" fx:controller="gui.PrototypeViewAllController">
+    <children>
+        <!-- TableView to display the subscribers -->
+        <TableView fx:id="subscriberTable" prefHeight="454.0" prefWidth="1234.0" AnchorPane.bottomAnchor="47.0"
+                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <columns>
+                <!-- ID Column -->
+                <TableColumn fx:id="idColumn" prefWidth="100" text="ID">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="id"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <!-- First Name Column -->
+                <TableColumn fx:id="firstNameColumn" prefWidth="150" text="First Name">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="firstName"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <!-- Last Name Column -->
+                <TableColumn fx:id="lastNameColumn" prefWidth="150" text="Last Name">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="lastName"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <!-- Phone Number Column -->
+                <TableColumn fx:id="phoneNumberColumn" prefWidth="150" text="Phone Number">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="phoneNumber"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <!-- Email Column -->
+                <TableColumn fx:id="emailColumn" prefWidth="172.0" text="Email">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="email"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <!-- Password Column -->
+                <TableColumn fx:id="passwordColumn" prefWidth="128.0" text="Password">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="password"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <!-- Status Column -->
+                <TableColumn fx:id="statusColumn" prefWidth="168.0" text="Status">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="status"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <!-- History Column with Button -->
+                <TableColumn fx:id="historyColumn" prefWidth="180.0" text="History"/>
+            </columns>
+        </TableView>
+        <Button fx:id="btnBack" layoutX="512.0" layoutY="471.0" mnemonicParsing="false" onAction="#clickBack"
+                prefHeight="33.0" prefWidth="210.0" text="Back" AnchorPane.bottomAnchor="-3.0"
+                AnchorPane.leftAnchor="512.0" AnchorPane.rightAnchor="512.0"/>
+    </children>
+</AnchorPane>
