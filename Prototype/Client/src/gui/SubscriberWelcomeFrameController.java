@@ -91,6 +91,13 @@ public class SubscriberWelcomeFrameController implements Initializable {
         navigateTo(event, "/gui/SubscriberLoginFrame.fxml", "/gui/Subscriber.css", "Login");
 
     }
+    /**
+     * This method shows an alert indicating that the feature will be implemented in the future.
+     *
+     *
+     * @param event The action event triggered by clicking the Borrow Extension button
+     * @throws Exception If there is an issue with the navigation
+     */
     public void willbeImplemented(ActionEvent event) throws Exception {
         System.out.println("Will be implemented in the future");
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Will be implemented in the future");

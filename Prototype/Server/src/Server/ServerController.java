@@ -125,7 +125,8 @@ public class ServerController extends AbstractServer {
                         // Client disconnected
                     case 999:
                         serverMonitorController.clientDisconnected(client);
-                        client.sendToClient(null); // send null to client to make him stop waiting for a response
+                        // send null to client to make him stop waiting for a response
+                        client.sendToClient(null);
                         break;
 
                     default:

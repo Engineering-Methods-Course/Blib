@@ -37,7 +37,6 @@ public class ServerGUI extends Application {
         int port = 0;
 
         try {
-            //! Set port to 5555
             port = Integer.parseInt(p);
 
         } catch (Throwable t) {
@@ -53,9 +52,6 @@ public class ServerGUI extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(Objects.requireNonNull(ServerGUI.class.getResource("/gui/Server.css")).toExternalForm());
         primaryStage.setTitle("Server Monitor");
-        // Set the close button to call the exit button
-
-
 
         primaryStage.setScene(scene);
         primaryStage.show();
