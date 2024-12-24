@@ -41,7 +41,7 @@ public class ClientController extends AbstractClient
     }
 
     /**
-     * This method handles all data that comes in from the server.
+     * This method handles all data that comes in from the server
      *
      * @param msg The message from the server.
      */
