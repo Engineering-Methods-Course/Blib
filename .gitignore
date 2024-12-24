@@ -209,3 +209,6 @@ RemoteSystemsTempFiles/
 
 # remove manifest.mf files
 *.MF
+
+# Allow to add mysql connection jar
+!mysql-connector-java-8.0.13.jar
