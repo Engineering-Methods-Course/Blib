@@ -4,52 +4,117 @@ import java.io.Serializable;
 
 public class Book implements Serializable
 {
+    private int bookSerialNumber;
     private String bookName;
     private String bookGenre;
     private String bookDescription;
-    private String bookLocation;
-    private int bookAvailableCopyNum;
+    private int bookCopyNum;
+    private int reservedCopyNum;
+    private int borrowedCopyNum;
+    private int lostCopyNum;
+
 
     /**
      * Constructor to initialize a local Book object with all necessary details from the server.
      *
-     * @param bookName             - the name of the book
-     * @param bookGenre            - the genre of the book
-     * @param bookDescription      - the description of the book
-     * @param bookLocation         - the location of the shelf the book is on
-     * @param bookAvailableCopyNum - the number of available copies of the book
+     * @param bookSerialNumber - the serial number of the book
+     * @param bookName         - the name of the book
+     * @param bookGenre        - the genre of the book
+     * @param bookDescription  - the description of the book
+     * @param bookCopyNum      - the number of copies of the book
+     * @param reservedCopyNum  - the number of reserved copies of the book
+     * @param borrowedCopyNum  - the number of borrowed copies of the book
+     * @param lostCopyNum      - the number of lost copies of the book
      */
-    public Book(String bookName, String bookGenre, String bookDescription, String bookLocation, int bookAvailableCopyNum)
+    public Book(int bookSerialNumber, String bookName, String bookGenre, String bookDescription, int bookCopyNum, int reservedCopyNum, int borrowedCopyNum, int lostCopyNum)
     {
+        this.bookSerialNumber = bookSerialNumber;
         this.bookName = bookName;
         this.bookGenre = bookGenre;
         this.bookDescription = bookDescription;
-        this.bookLocation = bookLocation;
-        this.bookAvailableCopyNum = bookAvailableCopyNum;
+        this.bookCopyNum = bookCopyNum;
+        this.reservedCopyNum = reservedCopyNum;
+        this.borrowedCopyNum = borrowedCopyNum;
+        this.lostCopyNum = lostCopyNum;
     }
 
+    /**
+     * Gets the serial number of the book.
+     *
+     * @return the serial number of the book
+     */
+    public int getBookSerialNumber()
+    {
+        return bookSerialNumber;
+    }
+
+    /**
+     * Gets the name of the book.
+     *
+     * @return the name of the book
+     */
     public String getBookName()
     {
         return bookName;
     }
 
+    /**
+     * Gets the genre of the book.
+     *
+     * @return the genre of the book
+     */
     public String getBookGenre()
     {
         return bookGenre;
     }
 
+    /**
+     * Gets the description of the book.
+     *
+     * @return the description of the book
+     */
     public String getBookDescription()
     {
         return bookDescription;
     }
 
-    public String getBookLocation()
+    /**
+     * Gets the number of copies of the book.
+     *
+     * @return the number of copies of the book
+     */
+    public int getBookCopyNum()
     {
-        return bookLocation;
+        return bookCopyNum;
     }
 
-    public int getBookAvailableCopyNum()
+    /**
+     * Gets the number of reserved copies of the book.
+     *
+     * @return the number of reserved copies of the book
+     */
+    public int getReservedCopyNum()
     {
-        return bookAvailableCopyNum;
+        return reservedCopyNum;
+    }
+
+    /**
+     * Gets the number of borrowed copies of the book.
+     *
+     * @return the number of borrowed copies of the book
+     */
+    public int getBorrowedCopyNum()
+    {
+        return borrowedCopyNum;
+    }
+
+    /**
+     * Gets the number of lost copies of the book.
+     *
+     * @return the number of lost copies of the book
+     */
+    public int getLostCopyNum()
+    {
+        return lostCopyNum;
     }
 }

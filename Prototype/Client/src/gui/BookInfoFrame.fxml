@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BookInfoFrameController">
+   <children>
+      <Text layoutX="41.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book Name:" wrappingWidth="85.0" />
+      <Text fx:id="bookName" layoutX="154.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Pull Name From DB&gt;" textAlignment="CENTER" />
+      <Text layoutX="41.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Genre:" wrappingWidth="85.0" />
+      <Text fx:id="bookGenre" layoutX="153.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Pull Genre From DB&gt;" textAlignment="CENTER" />
+      <Text layoutX="41.0" layoutY="143.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" wrappingWidth="85.0" />
+      <TextArea fx:id="bookdescription" layoutX="41.0" layoutY="155.0" prefHeight="200.0" prefWidth="533.0" text="&lt;Pull Description From DB&gt;" />
+    <Button fx:id="orderBookButton" layoutX="515.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Order" />
+       <Text layoutX="41.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Location:" wrappingWidth="85.0" />
+       <Text fx:id="bookLocation" layoutX="154.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Pull Location From DB&gt;" textAlignment="CENTER" />
+       <Text layoutX="41.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Available Copies: " wrappingWidth="113.0" />
+       <Text fx:id="bookAvailCopyNum" layoutX="154.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Pull # of Copies From DB&gt;" textAlignment="CENTER" />
+      <Button fx:id="backButton" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Back" />
+   </children>
+</AnchorPane>
