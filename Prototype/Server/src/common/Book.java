@@ -13,7 +13,6 @@ public class Book implements Serializable
     private int borrowedCopyNum;
     private int lostCopyNum;
 
-
     /**
      * Constructor to initialize a local Book object with all necessary details from the server.
      *
