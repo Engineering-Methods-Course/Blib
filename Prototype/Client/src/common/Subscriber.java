@@ -26,8 +26,7 @@ public class Subscriber implements Serializable {
     // Status to check if the subscriber is frozen (inactive)
     private boolean statusIsFrozen = false;
 
-    // Subscriber's account password
-    private String password;
+
 
     /**
      * Constructor to initialize a Subscriber object with all necessary details.
@@ -37,16 +36,15 @@ public class Subscriber implements Serializable {
      * @param lastName    Last name of the subscriber
      * @param phoneNumber Subscriber's phone number
      * @param email       Subscriber's email address
-     * @param password    Subscriber's account password
      */
-    public Subscriber(int id, String name, String lastName, String phoneNumber, String email, String password, boolean status) {
+    public Subscriber(int id, String name, String lastName, String phoneNumber, String email, boolean status, int subscriptionHistory) {
         this.id = id;
         this.firstname = name;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.password = password;
         this.statusIsFrozen = status;
+        this.subscriptionHistory = subscriptionHistory;
     }
 
     /**
@@ -165,24 +163,6 @@ public class Subscriber implements Serializable {
      */
     public void setStatusIsFrozen(boolean statusIsFrozen) {
         this.statusIsFrozen = statusIsFrozen;
-    }
-
-    /**
-     * Gets the password of the subscriber.
-     *
-     * @return the password of the subscriber
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Sets the password for the subscriber.
-     *
-     * @param password Subscriber's account password
-     */
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     /**
