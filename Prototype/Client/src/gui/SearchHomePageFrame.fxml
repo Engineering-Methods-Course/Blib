@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1 " fx:controller="gui.SearchHomePageFrameController">
+  <children>
+      <HBox prefHeight="41.0" prefWidth="900.0">
+         <children>
+            <Pane fx:id="menuPane" prefHeight="36.0" prefWidth="900.0">
+               <children>
+                  <Button fx:id="loginButton" layoutX="14.0" layoutY="10.0" mnemonicParsing="false" text="Log In" />
+                  <Button fx:id="profileButton" blendMode="HARD_LIGHT" layoutX="796.0" layoutY="6.0" mnemonicParsing="false" text="Hello: &lt;User&gt;" />
+               </children>
+            </Pane>
+         </children>
+      </HBox>
+      <AnchorPane fx:id="searchPane" prefHeight="565.0" prefWidth="900.0">
+         <children>
+            <Text layoutX="329.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search">
+               <font>
+                  <Font name="Book Antiqua Italic" size="90.0" />
+               </font>
+            </Text>
+            <RadioButton fx:id="nameRadio" layoutX="142.0" layoutY="204.0" mnemonicParsing="false" text="By Name" />
+            <RadioButton fx:id="genreRadio" layoutX="407.0" layoutY="204.0" mnemonicParsing="false" text="By Genre" />
+            <RadioButton fx:id="descriptionRadio" layoutX="705.0" layoutY="204.0" mnemonicParsing="false" text="By Description" />
+            <TextField fx:id="searchField" layoutX="137.0" layoutY="256.0" prefHeight="26.0" prefWidth="677.0" promptText="Search" />
+            <TextArea fx:id="descriptionSearch" layoutX="137.0" layoutY="256.0" prefHeight="200.0" prefWidth="678.0" promptText="describe your book:" wrapText="true" />
+            <Button fx:id="searchButton" layoutX="416.0" layoutY="500.0" mnemonicParsing="false" text="Search" />
+         </children>
+      </AnchorPane>
+  </children>
+</VBox>
