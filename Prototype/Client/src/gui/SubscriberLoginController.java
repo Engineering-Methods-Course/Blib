@@ -27,7 +27,8 @@ import static client.ClientGUIController.navigateTo;
 public class SubscriberLoginController implements Initializable {
 
     private static Subscriber localSubscriber = null;
-
+    @FXML
+    public Button backButton;
     @FXML
     private TextField txtUsername;
     @FXML

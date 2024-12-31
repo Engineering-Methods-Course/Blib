@@ -74,7 +74,7 @@ public class SubscriberWelcomeFrameController implements Initializable {
      */
     public void clickProfileButton(ActionEvent event) throws Exception {
         System.out.println("exit Subscriber Frame");
-        navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
+        navigateTo(event, "/gui/PrototypeSubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
     }
 
     /**

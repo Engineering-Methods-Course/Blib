@@ -12,33 +12,26 @@ public class SearchHomePageFrameController {
 
     @FXML
     public Pane menuPane;
-
     @FXML
     public Button loginButton;
-
     @FXML
     public Button profileButton;
-
     @FXML
     public AnchorPane searchPane;
-
     @FXML
     public RadioButton nameRadio;
-
     @FXML
     public RadioButton genreRadio;
-
     @FXML
     public RadioButton descriptionRadio;
-
     @FXML
     public TextField searchField;
-
     @FXML
     public TextArea descriptionSearch;
-
     @FXML
     public Button searchButton;
+    @FXML
+    public Button watchProfileButton;
 
     public void initialize() {
         //todo: implement

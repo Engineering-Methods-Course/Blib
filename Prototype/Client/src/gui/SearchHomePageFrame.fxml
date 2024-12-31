@@ -11,12 +11,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1 " fx:controller="gui.SearchHomePageFrameController">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SearchHomePageFrameController">
   <children>
       <HBox prefHeight="41.0" prefWidth="900.0">
          <children>
             <Pane fx:id="menuPane" prefHeight="36.0" prefWidth="900.0">
                <children>
+                  <Button fx:id="watchProfileButton" layoutX="697.0" layoutY="6.0" mnemonicParsing="false" text="Watch Profile" />
                   <Button fx:id="loginButton" layoutX="14.0" layoutY="10.0" mnemonicParsing="false" text="Log In" />
                   <Button fx:id="profileButton" blendMode="HARD_LIGHT" layoutX="796.0" layoutY="6.0" mnemonicParsing="false" text="Hello: &lt;User&gt;" />
                </children>

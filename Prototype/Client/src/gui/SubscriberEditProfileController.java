@@ -1,7 +1,5 @@
 package gui;
 
-import client.ClientGUIController;
-import common.ClientServerMessage;
 import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -59,13 +57,13 @@ public class SubscriberEditProfileController implements Initializable {
 
     /**
      * This method handles the back button click event.
-     * It navigates to the previous screen (SubscriberProfileOptionsFrame.fxml).
+     * It navigates to the previous screen (PrototypeSubscriberProfileOptionsFrame.fxml).
      *
      * @param event The action event triggered by clicking the back button
      * @throws Exception If there is an issue with the navigation
      */
     public void clickBackButton(ActionEvent event) throws Exception {
-        navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
+        navigateTo(event, "/gui/PrototypeSubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
     }
 
     /**
@@ -121,7 +119,7 @@ public class SubscriberEditProfileController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        localSubscriber = SubscriberProfileOptionsController.getLocalSubscriber();
+        localSubscriber = PrototypeSubscriberProfileOptionsController.getLocalSubscriber();
         loadProfileDetails(localSubscriber);
     }
 }
