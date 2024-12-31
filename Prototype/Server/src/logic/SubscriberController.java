@@ -77,13 +77,14 @@ public class SubscriberController {
                 status = !subscriberDetails.get(6).equals("0");
                 System.out.println("Subscriber found (Subscriber LogIn Successful)");
                 // Create the subscriber and return it
-                return new Subscriber(Integer.parseInt(subscriberDetails.get(0)), subscriberDetails.get(1), subscriberDetails.get(2), subscriberDetails.get(3), subscriberDetails.get(4), subscriberDetails.get(5), status);
+                //? return new Subscriber(Integer.parseInt(subscriberDetails.get(0)), subscriberDetails.get(1), subscriberDetails.get(2), subscriberDetails.get(3), subscriberDetails.get(4), subscriberDetails.get(5), status);
             }
         } catch (SQLException e) {
             // If an error occur
             System.out.println("Error: Login Failed" + e);
             return null;
         }
+        return null;
     }
 
     /**
@@ -107,7 +108,7 @@ public class SubscriberController {
             statement.setString(2, messageContent.getLastName());
             statement.setString(3, messageContent.getPhoneNumber());
             statement.setString(4, messageContent.getEmail());
-            statement.setString(5, messageContent.getPassword());
+            //? statement.setString(5, messageContent.getPassword());
             statement.setInt(6, messageContent.getID());
             /*
              *  Execute the update
@@ -143,12 +144,13 @@ public class SubscriberController {
             status = !editedDetails.get(6).equals("0");
             System.out.println("Subscriber Edit Successful");
             // Create the subscriber and return it
-            return new Subscriber(Integer.parseInt(editedDetails.get(0)), editedDetails.get(1), editedDetails.get(2), editedDetails.get(3), editedDetails.get(4), editedDetails.get(5), status);
+            //? return new Subscriber(Integer.parseInt(editedDetails.get(0)), editedDetails.get(1), editedDetails.get(2), editedDetails.get(3), editedDetails.get(4), editedDetails.get(5), status);
         } catch (SQLException e) {
             // If an error occur
             System.out.println("Error: With exporting new subscriber details from sql" + e);
             return null;
         }
+        return null;
     }
 }
 

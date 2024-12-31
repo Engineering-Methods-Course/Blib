@@ -32,14 +32,14 @@ public class Subscriber implements Serializable {
      * Constructor to initialize a Subscriber object with all necessary details.
      *
      * @param id          Unique identifier for the subscriber
-     * @param name        First name of the subscriber
+     * @param firstName        First name of the subscriber
      * @param lastName    Last name of the subscriber
      * @param phoneNumber Subscriber's phone number
      * @param email       Subscriber's email address
      */
-    public Subscriber(int id, String name, String lastName, String phoneNumber, String email, boolean status, int subscriptionHistory) {
+    public Subscriber(int id, String firstName, String lastName, String phoneNumber, String email, boolean status, int subscriptionHistory) {
         this.id = id;
-        this.firstname = name;
+        this.firstname = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
@@ -163,14 +163,5 @@ public class Subscriber implements Serializable {
      */
     public void setStatusIsFrozen(boolean statusIsFrozen) {
         this.statusIsFrozen = statusIsFrozen;
-    }
-
-    /**
-     * Returns a string representation of the subscriber.
-     *
-     * @return a string representation of the subscriber
-     */
-    public String toString() {
-        return "Subscriber ID: " + id + "\n" + "Name: " + firstname + " " + lastName + "\n" + "Phone Number: " + phoneNumber + "\n" + "Email: " + email + "\n" + "Password: " + password + "\n" + "Status: " + (statusIsFrozen ? "Frozen" : "Active") + "\n";
     }
 }

@@ -85,13 +85,13 @@ public class SubscriberEditProfileController implements Initializable {
         String password = txtPassword.getText();
         boolean status = false;
         // Create a new Subscriber object with the updated details
-        Subscriber changedSubscriber = new Subscriber(id, name, lastName, phoneNumber, email, password, status);
+        //? Subscriber changedSubscriber = new Subscriber(id, name, lastName, phoneNumber, email, password, status);
 
         // Create a ClientServerMessage with the subscriber and ID 203
-        ClientServerMessage editedProfileMessage = new ClientServerMessage(203, changedSubscriber);
+        // ?ClientServerMessage editedProfileMessage = new ClientServerMessage(203, changedSubscriber);
 
         try {
-            ClientGUIController.chat.accept(editedProfileMessage);
+            //? ClientGUIController.chat.accept(editedProfileMessage);
         } catch (Exception e) {
             System.out.println("Error with sending the login message to the server: " + e.getMessage());
         }
@@ -110,7 +110,7 @@ public class SubscriberEditProfileController implements Initializable {
         this.txtLastName.setText(s1.getLastName());
         this.txtPhone.setText(String.valueOf(s1.getPhoneNumber()));
         this.txtEmail.setText(s1.getEmail());
-        this.txtPassword.setText(s1.getPassword());
+        //? this.txtPassword.setText(s1.getPassword());
     }
 
     /**

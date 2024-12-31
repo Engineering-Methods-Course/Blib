@@ -164,13 +164,4 @@ public class Subscriber implements Serializable {
     public void setStatusIsFrozen(boolean statusIsFrozen) {
         this.statusIsFrozen = statusIsFrozen;
     }
-
-    /**
-     * Returns a string representation of the subscriber.
-     *
-     * @return a string representation of the subscriber
-     */
-    public String toString() {
-        return "Subscriber ID: " + id + "\n" + "Name: " + firstname + " " + lastName + "\n" + "Phone Number: " + phoneNumber + "\n" + "Email: " + email + "\n" + "Password: " + password + "\n" + "Status: " + (statusIsFrozen ? "Frozen" : "Active") + "\n";
-    }
 }
