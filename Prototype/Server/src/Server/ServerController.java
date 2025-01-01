@@ -158,8 +158,7 @@ public class ServerController extends AbstractServer {
                     case(216):
                         try {
                             if (message.getMessageContent() instanceof Subscriber) {
-                               // Subscriber editedDetails = subscriberController.editSubscriberDetails((Subscriber) message.getMessageContent(), conn);
-                                //.sendToClient(new ClientServerMessage(217, editedDetails));
+                                client.sendToClient(new ClientServerMessage(217, dbController.editSubscriberDetails((Subscriber) message.getMessageContent(), conn)));
                                 System.out.println("Updated Subscriber details was sent to client");
                             } else {
                                 System.out.println("Cannot Edit account Message is not a subscriber");

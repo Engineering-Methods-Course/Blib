@@ -51,18 +51,18 @@ public class DBController {
              * The result set is the result of the query
              */
             ResultSet userRs = userStatement.executeQuery();
-            if(userRs.next()) {
+            if (userRs.next()) {
                 String userId = userRs.getString("user_id");
                 String type = userRs.getString("type");
                 /*
                  * If the user is a subscriber, select the subscriber details
                  */
-                if(type.equals("subscriber")){
+                if (type.equals("subscriber")) {
                     String subQuery = "SELECT * FROM subscriber WHERE subscriber_id = ?";
                     PreparedStatement subStatement = conn.prepareStatement(subQuery);
                     subStatement.setString(1, userId);
                     ResultSet subRs = subStatement.executeQuery();
-                    if(subRs.next()){
+                    if (subRs.next()) {
                         userDetails.add("subscriber");
                         userDetails.add(String.valueOf(subRs.getInt("subscriber_id")));
                         userDetails.add(subRs.getString("first_name"));
@@ -70,10 +70,9 @@ public class DBController {
                         userDetails.add(subRs.getString("phone_number"));
                         userDetails.add(subRs.getString("email"));
                         status = subRs.getInt("status");
-                        if(status == 0){
+                        if (status == 0) {
                             userDetails.add("false");
-                        }
-                        else{
+                        } else {
                             userDetails.add("true");
                         }
                         userDetails.add(String.valueOf(subRs.getInt("detailed_subscription_history")));
@@ -84,12 +83,12 @@ public class DBController {
                 /*
                  * If the user is a librarian, select the librarian details
                  */
-                else{
+                else {
                     String libQuery = "SELECT type, user_id FROM users WHERE username = ? AND password = ? ";
                     PreparedStatement libStatement = conn.prepareStatement(libQuery);
                     libStatement.setString(1, userId);
                     ResultSet subRs = libStatement.executeQuery();
-                    if(subRs.next()){
+                    if (subRs.next()) {
                         userDetails.add("librarian");
                         userDetails.add(String.valueOf(subRs.getInt("librarian_id")));
                         userDetails.add(subRs.getString("first_name"));
@@ -121,8 +120,8 @@ public class DBController {
      * @param conn The connection to the database
      * @return The arraylist of all subscribers
      */
-    public ArrayList<Subscriber> viewAllSubscribers(Connection conn){
-        try{
+    public ArrayList<Subscriber> viewAllSubscribers(Connection conn) {
+        try {
             ArrayList<Subscriber> subscribersList = new ArrayList<>();
             int status;
             /*
@@ -135,7 +134,7 @@ public class DBController {
              * If the query was successful, add the values of the columns to a list
              * Add the list to the subscribers list
              */
-            while(getSubscribersRs.next()){
+            while (getSubscribersRs.next()) {
                 ArrayList<String> subscriberDetails = new ArrayList<>();
                 int subscriberId = getSubscribersRs.getInt("subscriber_id");
                 subscriberDetails.add(String.valueOf(subscriberId));
@@ -144,10 +143,9 @@ public class DBController {
                 subscriberDetails.add(getSubscribersRs.getString("phone_number"));
                 subscriberDetails.add(getSubscribersRs.getString("email"));
                 status = getSubscribersRs.getInt("status");
-                if(status == 0){
+                if (status == 0) {
                     subscriberDetails.add("false");
-                }
-                else{
+                } else {
                     subscriberDetails.add("true");
                 }
                 subscriberDetails.add(String.valueOf(getSubscribersRs.getInt("detailed_subscription_history")));
@@ -158,31 +156,92 @@ public class DBController {
                 PreparedStatement getSubscribersUserStatement = conn.prepareStatement(getSubscribersUserQuery);
                 getSubscribersUserStatement.setInt(1, subscriberId);
                 ResultSet getSubscribersUserRs = getSubscribersUserStatement.executeQuery();
-                if(getSubscribersUserRs.next()){
+                if (getSubscribersUserRs.next()) {
                     subscriberDetails.add(getSubscribersUserRs.getString("username"));
                     subscriberDetails.add(getSubscribersUserRs.getString("password"));
                 }
                 // Add the subscriber to the arraylist
-                subscribersList.add(new Subscriber(Integer.parseInt(subscriberDetails.get(0)), subscriberDetails.get(1),
-                        subscriberDetails.get(2), subscriberDetails.get(3), subscriberDetails.get(4),
-                        Boolean.parseBoolean(subscriberDetails.get(5)), Integer.parseInt(subscriberDetails.get(6)),
-                        subscriberDetails.get(7), subscriberDetails.get(8)));
+                subscribersList.add(new Subscriber(Integer.parseInt(subscriberDetails.get(0)), subscriberDetails.get(1), subscriberDetails.get(2), subscriberDetails.get(3), subscriberDetails.get(4), Boolean.parseBoolean(subscriberDetails.get(5)), Integer.parseInt(subscriberDetails.get(6)), subscriberDetails.get(7), subscriberDetails.get(8)));
             }
             // No subscriber found
-            if(subscribersList.isEmpty()){
+            if (subscribersList.isEmpty()) {
                 System.out.println("No subscribers found");
                 return null;
             }
             // Subscriber/s found
-            else{
+            else {
                 System.out.println("Subscribers list found");
                 return subscribersList;
             }
-        // If an error occur
-        }catch (SQLException e){
+            // If an error occur
+        } catch (SQLException e) {
             System.out.println("Error: With exporting subscribers from sql(getSubscribersList LibrarianController) " + e);
             return null;
         }
     }
 
+    /**
+     * case 216
+     * This method gets the list of all subscribers in the system
+     *
+     * @param messageContent the new subscriber details
+     * @param conn           The connection to the database
+     * @return array list containing true if the subscriber was added successfully and false if not with the error message
+     */
+    public ArrayList<String> editSubscriberDetails(Subscriber messageContent, Connection conn) {
+        ArrayList<String> response = new ArrayList<>();
+        try {
+            /*
+             * set auto-commit to false
+             */
+            conn.setAutoCommit(false);
+
+            /*
+             * The query updates the phone number and email of the subscriber where the id matches the given value
+             */
+            String subscriberInfoQuery = "UPDATE subscriber SET subscriber_phone_number = ?, subscriber_email = ? WHERE subscriber_id = ?";
+            PreparedStatement subscriberInfoStatement = conn.prepareStatement(subscriberInfoQuery);
+            subscriberInfoStatement.setString(1, messageContent.getPhoneNumber());
+            subscriberInfoStatement.setString(2, messageContent.getEmail());
+            subscriberInfoStatement.setInt(3, messageContent.getID());
+            subscriberInfoStatement.executeUpdate();
+            /*
+             * The query updates the username and password of the subscriber where the id matches the given value
+             */
+            String subscriberUserinfoQuery = "UPDATE users SET username = ?, password = ? WHERE user_id = ?";
+            PreparedStatement subscriberUserinfoStatement = conn.prepareStatement(subscriberUserinfoQuery);
+            subscriberUserinfoStatement.setString(1, messageContent.getUsername());
+            subscriberUserinfoStatement.setString(2, messageContent.getPassword());
+            subscriberUserinfoStatement.setInt(3, messageContent.getID());
+            subscriberUserinfoStatement.executeUpdate();
+
+            /*
+             * Commit the transaction
+             */
+            conn.commit();
+            response.add("true");
+        } catch (SQLException e) {
+            /*
+             * Rollback the transaction if an error occurs
+             */
+            try {
+                conn.rollback();
+            } catch (SQLException rollbackEx) {
+                System.out.println("Error: Rolling back transaction" + rollbackEx);
+            }
+            System.out.println("Error: Updating subscriber details" + e);
+            response.add("false");
+            response.add("Problem with updating the subscriber");
+        } finally {
+            try {
+                /*
+                 * Set auto-commit back to true
+                 */
+                conn.setAutoCommit(true);
+            } catch (SQLException ex) {
+                System.out.println("Error: Setting auto-commit back to true" + ex);
+            }
+        }
+        return response;
+    }
 }
