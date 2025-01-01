@@ -1,5 +1,3 @@
-
-
 package client;
 
 import common.ClientServerMessage;
@@ -28,8 +26,8 @@ public class ClientController extends AbstractClient
     /**
      * Constructs an instance of the chat client.
      *
-     * @param host The server to connect to.
-     * @param port The port number to connect on.
+     * @param host     The server to connect to.
+     * @param port     The port number to connect on.
      * @param clientUI The interface type variable.
      */
     public ClientController(String host, int port, ChatIF clientUI)
@@ -47,11 +45,9 @@ public class ClientController extends AbstractClient
      */
     public void handleMessageFromServer(Object msg)
     {
-        awaitResponse=false;
-        try
-        {
-            if(msg instanceof ClientServerMessage)
-            {
+        awaitResponse = false;
+        try {
+            if (msg instanceof ClientServerMessage) {
                 ClientServerMessage message = (ClientServerMessage) msg;
                 /*
                  * 998 - Server closed connection
@@ -59,57 +55,54 @@ public class ClientController extends AbstractClient
                  * 202 - Get info of a specific subscriber back from the server
                  * 204 - Edit info of a specific subscriber
                  */
-                switch (message.getId()){
+                switch (message.getId()) {
                     // get the details of a specific subscriber
                     case 202:
-                        if(message.getMessageContent()==null){
+                        if (message.getMessageContent() == null) {
                             System.out.println("Wrong Username(id) or Password");
                             Platform.runLater(() -> showErrorAlert("Login error", "Wrong Username(id) or Password"));
                         }
-                        else if(message.getMessageContent() instanceof Subscriber)
-                        {
+                        else if (message.getMessageContent() instanceof Subscriber) {
                             Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
                             SubscriberLoginController.setLocalSubscriber(subscriberFromServer);
                         }
                         break;
                     //  Edit subscriber details
                     case 204:
-                        if(message.getMessageContent()==null){
+                        if (message.getMessageContent() == null) {
                             System.out.println("Could not update subscriber details");
                             Platform.runLater(() -> showErrorAlert("Update error", "Could not update subscriber details"));
 
                         }
-                        else if(message.getMessageContent() instanceof Subscriber)
-                        {
+                        else if (message.getMessageContent() instanceof Subscriber) {
                             Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
                             SubscriberLoginController.setLocalSubscriber(subscriberFromServer);
                             SubscriberEditProfileController.setLocalSubscriber(subscriberFromServer);
                             Platform.runLater(() -> showInformationAlert("Update successful", "Subscriber details updated successfully"));
                         }
                         break;
-                        // Get all subscribers list
+                    // Get all subscribers list
                     case 104:
-                        if(message.getMessageContent()==null){
+                        if (message.getMessageContent() == null) {
                             System.out.println("Unable to present Subscribers");
                             Platform.runLater(() -> showErrorAlert("No Subscribers", "Unable to present Subscribers"));
                         }
-                        else if(message.getMessageContent() instanceof ArrayList<?>){
+                        else if (message.getMessageContent() instanceof ArrayList<?>) {
                             ArrayList<Subscriber> subscribersFromServer = (ArrayList<Subscriber>) message.getMessageContent();
                             PrototypeViewAllController.setSubscribers(subscribersFromServer);
                         }
                         break;
-                        // Server closed connection
-                        case 998:
-                            System.out.println("Server has closed its connection");
-                            Platform.runLater(() -> showErrorAlert("Server closed connection", "Server has closed its connection"));
-                            break;
+                    // Server closed connection
+                    case 998:
+                        System.out.println("Server has closed its connection");
+                        Platform.runLater(() -> showErrorAlert("Server closed connection", "Server has closed its connection"));
+                        break;
                     default:
                         System.out.println("Invalid command id");
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             System.out.println("Error: incorrect msg object type" + e);
         }
     }
@@ -119,7 +112,8 @@ public class ClientController extends AbstractClient
      *
      * @param message The message from the UI.
      */
-    public void handleMessageFromClientUI(ClientServerMessage message) {
+    public void handleMessageFromClientUI(ClientServerMessage message)
+    {
         try {
             openConnection(); // Ensure the connection is open before sending
             awaitResponse = true; // Mark as waiting for a response
@@ -128,11 +122,13 @@ public class ClientController extends AbstractClient
             while (awaitResponse) {
                 try {
                     Thread.sleep(100); // Poll for the response
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
             clientUI.display("Could not send message to server: Terminating client. " + e);
             quit();
@@ -146,19 +142,21 @@ public class ClientController extends AbstractClient
      */
     public void quit()
     {
-        try
-        {
+        try {
             closeConnection();
         }
-        catch(IOException e) {}
+        catch (IOException e) {
+        }
         System.exit(0);
     }
+
     /**
      * This method displays an error message onto the screen.
      *
      * @param message The string to be displayed.
      */
-    private void showErrorAlert(String title, String message) {
+    private void showErrorAlert(String title, String message)
+    {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -174,7 +172,8 @@ public class ClientController extends AbstractClient
      *
      * @param message The string to be displayed.
      */
-    private void showInformationAlert(String title, String message) {
+    private void showInformationAlert(String title, String message)
+    {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);

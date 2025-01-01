@@ -6,7 +6,8 @@ import common.ClientServerMessage;
 import java.io.IOException;
 
 
-public class ChatClient implements ChatIF {
+public class ChatClient implements ChatIF
+{
 
     ClientController client;
 
@@ -16,10 +17,12 @@ public class ChatClient implements ChatIF {
      * @param host The host to connect to.
      * @param port The port to connect on.
      */
-    public ChatClient(String host, int port) throws Exception {
+    public ChatClient(String host, int port) throws Exception
+    {
         try {
             client = new ClientController(host, port, this);
-        } catch (IOException exception) {
+        }
+        catch (IOException exception) {
 
             System.out.println("Error: Can't setup connection!" + " Terminating client.");
             throw exception;
@@ -33,7 +36,8 @@ public class ChatClient implements ChatIF {
      *
      * @param msg The message from the console.
      */
-    public void accept(ClientServerMessage msg) {
+    public void accept(ClientServerMessage msg)
+    {
         client.handleMessageFromClientUI(msg);
     }
 
@@ -43,7 +47,8 @@ public class ChatClient implements ChatIF {
      *
      * @param message The string to be displayed.
      */
-    public void display(String message) {
+    public void display(String message)
+    {
         System.out.println("> " + message);
     }
 }
