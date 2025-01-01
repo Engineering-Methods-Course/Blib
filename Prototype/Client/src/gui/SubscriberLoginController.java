@@ -133,7 +133,7 @@ public class SubscriberLoginController implements Initializable
         }
 
         if (localSubscriber != null) {
-            navigateTo(event, "/gui/SubscriberWelcomeFrame.fxml", "/gui/Subscriber.css", "Subscriber Frame");
+            navigateTo(event, "/gui/PrototypeSubscriberWelcomeFrame.fxml", "/gui/Subscriber.css", "Subscriber Frame");
         }
         else {
             System.out.println("Could not log in subscriber ");

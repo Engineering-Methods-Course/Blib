@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 
 import static client.ClientGUIController.navigateTo;
 
-//import static gui.SubscriberWelcomeFrameController.navigateTo;
+//import static gui.PrototypeSubscriberWelcomeFrameController.navigateTo;
 
 public class PrototypeSubscriberProfileOptionsController implements Initializable
 {
@@ -49,7 +49,7 @@ public class PrototypeSubscriberProfileOptionsController implements Initializabl
 
     /**
      * This method handles the Back button click event.
-     * It navigates back to the main Subscriber profile screen (SubscriberWelcomeFrame.fxml).
+     * It navigates back to the main Subscriber profile screen (PrototypeSubscriberWelcomeFrame.fxml).
      *
      * @param event The action event triggered by clicking the Back button
      * @throws Exception If there is an issue with the navigation
@@ -57,7 +57,7 @@ public class PrototypeSubscriberProfileOptionsController implements Initializabl
     public void clickBackButton(ActionEvent event) throws Exception
     {
         // Navigate to the desired destination using the navigateTo function
-        navigateTo(event, "/gui/SubscriberWelcomeFrame.fxml", "/gui/Subscriber.css", "Profile");
+        navigateTo(event, "/gui/PrototypeSubscriberWelcomeFrame.fxml", "/gui/Subscriber.css", "Profile");
     }
 
     /**

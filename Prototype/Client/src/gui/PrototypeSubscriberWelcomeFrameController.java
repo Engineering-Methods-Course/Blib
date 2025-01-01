@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 import static client.ClientGUIController.navigateTo;
 
-public class SubscriberWelcomeFrameController implements Initializable
+public class PrototypeSubscriberWelcomeFrameController implements Initializable
 {
 
     private static Subscriber localSubscriber;

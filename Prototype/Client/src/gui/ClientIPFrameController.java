@@ -15,7 +15,7 @@ import java.util.Objects;
 
 import static client.ClientGUIController.navigateTo;
 
-public class PrototypeClientIPFrameController
+public class ClientIPFrameController
 {
 
     @FXML
@@ -34,7 +34,7 @@ public class PrototypeClientIPFrameController
      */
     public void start(Stage primaryStage) throws Exception
     {
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/gui/PrototypeEnterClientIPFrame.fxml")));
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/gui/EnterClientIPFrame.fxml")));
         Parent root = loader.load();
 
         Scene scene = new Scene(root);

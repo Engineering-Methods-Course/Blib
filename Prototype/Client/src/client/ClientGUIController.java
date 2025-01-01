@@ -1,15 +1,14 @@
 package client;
 
 import common.ClientServerMessage;
-import gui.PrototypeClientIPFrameController;
-import gui.SubscriberWelcomeFrameController;
+import gui.ClientIPFrameController;
+import gui.PrototypeSubscriberWelcomeFrameController;
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.Objects;
@@ -39,11 +38,11 @@ public class ClientGUIController extends Application
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         // Load the destination FXML
-        Parent newRoot = FXMLLoader.load(Objects.requireNonNull(SubscriberWelcomeFrameController.class.getResource(fxmlDestination)));
+        Parent newRoot = FXMLLoader.load(Objects.requireNonNull(PrototypeSubscriberWelcomeFrameController.class.getResource(fxmlDestination)));
 
         // Optionally add a CSS file if provided
         if (cssFilePath != null && !cssFilePath.isEmpty()) {
-            newRoot.getStylesheets().add(Objects.requireNonNull(SubscriberWelcomeFrameController.class.getResource(cssFilePath)).toExternalForm());
+            newRoot.getStylesheets().add(Objects.requireNonNull(PrototypeSubscriberWelcomeFrameController.class.getResource(cssFilePath)).toExternalForm());
         }
 
         // Update the root node of the existing scene
@@ -84,7 +83,7 @@ public class ClientGUIController extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        PrototypeClientIPFrameController aFrame = new PrototypeClientIPFrameController();
+        ClientIPFrameController aFrame = new ClientIPFrameController();
         aFrame.start(primaryStage);
 
     }
