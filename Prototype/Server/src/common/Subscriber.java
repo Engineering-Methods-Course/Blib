@@ -164,4 +164,5 @@ public class Subscriber implements Serializable {
     public void setStatusIsFrozen(boolean statusIsFrozen) {
         this.statusIsFrozen = statusIsFrozen;
     }
+
 }

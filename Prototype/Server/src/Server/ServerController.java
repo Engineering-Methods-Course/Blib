@@ -68,7 +68,7 @@ public class ServerController extends AbstractServer {
 
                 /*
                  * 100 - user wants to log in to his account
-                 * 102 - user logs out of his account
+                 * 102 - user logs out of his account //! might not be needed
                  * 104 - user closed the app
                  * 200 - subscriber wants to search a book by its name
                  * 202 - subscriber wants to search a book by its genre
@@ -99,34 +99,38 @@ public class ServerController extends AbstractServer {
                             if (message.getMessageContent() instanceof ArrayList) {
                                 ArrayList<String> userDetails = dbController.userLogin((ArrayList<String>) message.getMessageContent(), conn);
                                 if(userDetails != null){
+                                    // if the user is a subscriber send the subscriber object to the client
                                     if(userDetails.get(0).equals("subscriber")){
                                         client.sendToClient( new ClientServerMessage(101, new Subscriber(Integer.parseInt(userDetails.get(1)), userDetails.get(2),
                                                 userDetails.get(3), userDetails.get(4), userDetails.get(5), Boolean.parseBoolean(userDetails.get(6)),
                                                 Integer.parseInt(userDetails.get(7)))));
                                         System.out.println("Subscriber details were sent to client");
                                     }
+                                    // if the user is a librarian send the librarian object to the client
                                     else if(userDetails.get(0).equals("librarian")){
                                         client.sendToClient(new ClientServerMessage(101, new Librarian(Integer.parseInt(userDetails.get(1)),
                                                 userDetails.get(2), userDetails.get(3))));
                                         System.out.println("Librarian details were sent to client");
                                     }
                                 }
+                                // if the user was not found in the database
                                 else{
                                     client.sendToClient(new ClientServerMessage(101, null));
-                                    System.out.println("Could not find the user in the database");
+                                    System.out.println("Could not find the user in the database (case 100)");
                                 }
                             }
+                            // message type isn't an arraylist
                             else {
                                 client.sendToClient(new ClientServerMessage(101, null));
-                                System.out.println("Cannot log in the account - message is not an ArrayList<String>");
+                                System.out.println("Cannot log in the account - message is not an ArrayList<String> (case 100)");
                             }
                             break;
                         } catch (Exception e) {
                             client.sendToClient(new ClientServerMessage(101, null));
-                            System.out.println("Error: with subscriber login method (case 100) " + e);
+                            System.out.println("Error: with user login method (case 100) " + e);
                             break;
                         }
-                    case(102):
+                    case(102): // might not be needed
                         break;
                     case(104):
                         /**
@@ -175,14 +179,18 @@ public class ServerController extends AbstractServer {
                     case(304):
                         break;
                     case(306):
+                        /**
+                         * do: librarian wants to view subscribers in the system
+                         * in: none
+                         * return: (id 307) arraylist<subscriber>
+                         */
                         try {
-//<Subscriber> subscribersList = LibrarianController.getSubscribersList(conn);
-                         //   client.sendToClient(new ClientServerMessage(306, subscribersList));
+                            client.sendToClient(new ClientServerMessage(307, dbController.viewAllSubscribers(conn)));
                             System.out.println("Subscribers list was sent to client");
                             break;
                         } catch (Exception e) {
-                            System.out.println("Error: with getting subscribers list (case103)" + e);
-                            client.sendToClient(new ClientServerMessage(306, null));
+                            System.out.println("Error: with getting subscribers list (case306)" + e);
+                            client.sendToClient(new ClientServerMessage(307, null));
                             break;
                         }
                     case(308):
