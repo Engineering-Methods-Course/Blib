@@ -30,7 +30,6 @@ public class SubscriberEditProfileController implements Initializable
     private Label lblPhone;
     @FXML
     private Label lblEmail;
-
     @FXML
     private TextField txtID;
     @FXML

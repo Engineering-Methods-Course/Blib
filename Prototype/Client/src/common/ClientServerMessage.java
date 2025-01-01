@@ -3,7 +3,8 @@ package common;
 
 import java.io.Serializable;
 
-public class ClientServerMessage implements Serializable {
+public class ClientServerMessage implements Serializable
+{
     //Instance variables
     private final int id;
     private final Object messageContent;
@@ -14,7 +15,8 @@ public class ClientServerMessage implements Serializable {
      * @param id             Unique identifier for the message
      * @param messageContent The content of the message
      */
-    public ClientServerMessage(int id, Object messageContent) {
+    public ClientServerMessage(int id, Object messageContent)
+    {
         this.id = id;
         this.messageContent = messageContent;
     }
@@ -24,7 +26,8 @@ public class ClientServerMessage implements Serializable {
      *
      * @return the id of the message
      */
-    public int getId() {
+    public int getId()
+    {
         return id;
     }
 
@@ -33,7 +36,8 @@ public class ClientServerMessage implements Serializable {
      *
      * @return the content of the message
      */
-    public Object getMessageContent() {
+    public Object getMessageContent()
+    {
         return messageContent;
     }
 }
