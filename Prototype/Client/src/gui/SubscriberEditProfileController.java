@@ -13,7 +13,8 @@ import java.util.ResourceBundle;
 
 import static client.ClientGUIController.navigateTo;
 
-public class SubscriberEditProfileController implements Initializable {
+public class SubscriberEditProfileController implements Initializable
+{
 
     private static Subscriber localSubscriber;
     // FXML elements for labels
@@ -48,10 +49,12 @@ public class SubscriberEditProfileController implements Initializable {
     private Button btnBack = null;
     @FXML
     private Button btnUpdate = null;
+
     /**
      * This method initializes the Subscriber edit profile screen
      */
-    public static void setLocalSubscriber(Subscriber subscriberFromServer) {
+    public static void setLocalSubscriber(Subscriber subscriberFromServer)
+    {
         localSubscriber = subscriberFromServer;
     }
 
@@ -62,7 +65,8 @@ public class SubscriberEditProfileController implements Initializable {
      * @param event The action event triggered by clicking the back button
      * @throws Exception If there is an issue with the navigation
      */
-    public void clickBackButton(ActionEvent event) throws Exception {
+    public void clickBackButton(ActionEvent event) throws Exception
+    {
         navigateTo(event, "/gui/PrototypeSubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
     }
 
@@ -73,7 +77,8 @@ public class SubscriberEditProfileController implements Initializable {
      * @param event The action event triggered by clicking the update button
      * @throws Exception If there is an issue with the navigation
      */
-    public void clickUpdateButton(ActionEvent event) throws Exception {
+    public void clickUpdateButton(ActionEvent event) throws Exception
+    {
         // Retrieve the text from the TextField components
         int id = Integer.parseInt(txtID.getText());
         String name = txtName.getText();
@@ -90,7 +95,8 @@ public class SubscriberEditProfileController implements Initializable {
 
         try {
             //? ClientGUIController.chat.accept(editedProfileMessage);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.out.println("Error with sending the login message to the server: " + e.getMessage());
         }
     }
@@ -101,7 +107,8 @@ public class SubscriberEditProfileController implements Initializable {
      *
      * @param s1 The Subscriber object containing profile data
      */
-    public void loadProfileDetails(Subscriber s1) {
+    public void loadProfileDetails(Subscriber s1)
+    {
         // Set values in the text fields from the Subscriber object
         this.txtID.setText(String.valueOf(s1.getID()));
         this.txtName.setText(s1.getFirstName());
@@ -118,7 +125,8 @@ public class SubscriberEditProfileController implements Initializable {
      * @param location The location used to resolve relative paths for the root object, or null if the location is not known.
      */
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources)
+    {
         localSubscriber = PrototypeSubscriberProfileOptionsController.getLocalSubscriber();
         loadProfileDetails(localSubscriber);
     }

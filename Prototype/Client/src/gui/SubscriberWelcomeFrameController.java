@@ -13,7 +13,8 @@ import java.util.ResourceBundle;
 
 import static client.ClientGUIController.navigateTo;
 
-public class SubscriberWelcomeFrameController implements Initializable {
+public class SubscriberWelcomeFrameController implements Initializable
+{
 
     private static Subscriber localSubscriber;
     @FXML
@@ -36,7 +37,8 @@ public class SubscriberWelcomeFrameController implements Initializable {
      *
      * @return The local subscriber object
      */
-    public static void setLocalSubscriber(Subscriber subscriberToSet) {
+    public static void setLocalSubscriber(Subscriber subscriberToSet)
+    {
         localSubscriber = subscriberToSet;
     }
 
@@ -45,7 +47,8 @@ public class SubscriberWelcomeFrameController implements Initializable {
      * after the FXML file is loaded.
      */
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources)
+    {
         localSubscriber = SubscriberLoginController.getLocalSubscriber();
         loadSubscriberName(localSubscriber);
     }
@@ -55,12 +58,14 @@ public class SubscriberWelcomeFrameController implements Initializable {
      *
      * @param subscriberFromLogin The Subscriber object containing user details.
      */
-    public void loadSubscriberName(Subscriber subscriberFromLogin) {
+    public void loadSubscriberName(Subscriber subscriberFromLogin)
+    {
         localSubscriber = subscriberFromLogin;
         if (lblWelcomeUserName != null && localSubscriber != null) {
             lblWelcomeUserName.setText(localSubscriber.getFirstName() + " " + localSubscriber.getLastName());
             System.out.println("Welcome text set to: " + localSubscriber.getFirstName() + " " + localSubscriber.getLastName());
-        } else {
+        }
+        else {
             System.out.println("lblWelcomeUserName is null or subscriber is null.");
         }
     }
@@ -72,7 +77,8 @@ public class SubscriberWelcomeFrameController implements Initializable {
      * @param event The action event triggered by clicking the Borrow Extension button
      * @throws Exception If there is an issue with the navigation
      */
-    public void clickProfileButton(ActionEvent event) throws Exception {
+    public void clickProfileButton(ActionEvent event) throws Exception
+    {
         System.out.println("exit Subscriber Frame");
         navigateTo(event, "/gui/PrototypeSubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
     }
@@ -84,21 +90,23 @@ public class SubscriberWelcomeFrameController implements Initializable {
      * @param event The action event triggered by clicking the Borrow Extension button
      * @throws Exception If there is an issue with the navigation
      */
-    public void clickLogoutButton(ActionEvent event) throws Exception {
+    public void clickLogoutButton(ActionEvent event) throws Exception
+    {
         System.out.println("exit Subscriber Frame");
         setLocalSubscriber(null);
         SubscriberLoginController.setLocalSubscriber(null);
         navigateTo(event, "/gui/SubscriberLoginFrame.fxml", "/gui/Subscriber.css", "Login");
 
     }
+
     /**
      * This method shows an alert indicating that the feature will be implemented in the future.
-     *
      *
      * @param event The action event triggered by clicking the Borrow Extension button
      * @throws Exception If there is an issue with the navigation
      */
-    public void willbeImplemented(ActionEvent event) throws Exception {
+    public void willbeImplemented(ActionEvent event) throws Exception
+    {
         System.out.println("Will be implemented in the future");
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Will be implemented in the future");
         alert.setTitle("Watch History");

@@ -8,7 +8,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
-public class SearchHomePageFrameController {
+public class SearchHomePageFrameController
+{
 
     @FXML
     public Pane menuPane;
@@ -33,34 +34,41 @@ public class SearchHomePageFrameController {
     @FXML
     public Button watchProfileButton;
 
-    public void initialize() {
+    public void initialize()
+    {
         //todo: implement
     }
 
-    private void searchByName() {
+    private void searchByName()
+    {
         //todo: implement
     }
 
-    private void searchByGenre() {
+    private void searchByGenre()
+    {
         //todo: implement
     }
 
     //todo: make sure searchButton moves to layoutY = 500 when option is selected
-    private void searchByDescription() {
+    private void searchByDescription()
+    {
         //todo: implement
     }
 
-    public void search() {
+    public void search()
+    {
         //todo: implement
         //todo: make sure searchButton moves to layoutY = 500 when option is selected
         //todo: use radio and either use the private methods of just send it from here
     }
 
-    public void login() {
+    public void login()
+    {
         //todo: implement
     }
 
-    public void goToProfile() {
+    public void goToProfile()
+    {
         //todo: implement
     }
 }

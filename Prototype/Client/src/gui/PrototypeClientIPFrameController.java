@@ -15,7 +15,8 @@ import java.util.Objects;
 
 import static client.ClientGUIController.navigateTo;
 
-public class PrototypeClientIPFrameController {
+public class PrototypeClientIPFrameController
+{
 
     @FXML
     private TextField txtIP;
@@ -31,7 +32,8 @@ public class PrototypeClientIPFrameController {
      *
      * @param primaryStage The primary stage for the application
      */
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws Exception
+    {
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/gui/PrototypeEnterClientIPFrame.fxml")));
         Parent root = loader.load();
 
@@ -49,7 +51,8 @@ public class PrototypeClientIPFrameController {
      * @param event The action event triggered by clicking the Enter button
      */
     @FXML
-    public void clickEnterButton(ActionEvent event) throws Exception {
+    public void clickEnterButton(ActionEvent event) throws Exception
+    {
         String ipAddress = txtIP.getText().trim();
         String portText = txtPort.getText().trim();
 
@@ -65,11 +68,13 @@ public class PrototypeClientIPFrameController {
             ClientGUIController.chat = new ChatClient(ipAddress, port);
             // Navigate to the next frame
             navigateTo(event, "/gui/SubscriberLoginFrame.fxml", "/gui/Subscriber.css", "Login");
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) {
             System.out.println("Port must be a valid number.");
             throw e;
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.out.println("Failed to initialize client: " + e.getMessage());
             throw e;
         }
@@ -81,7 +86,8 @@ public class PrototypeClientIPFrameController {
      * @param event The action event triggered by clicking the Exit button
      */
     @FXML
-    public void clickExitButton(ActionEvent event) throws Exception {
+    public void clickExitButton(ActionEvent event) throws Exception
+    {
         System.exit(0);
     }
 }

@@ -14,7 +14,8 @@ import static client.ClientGUIController.navigateTo;
 
 //import static gui.SubscriberWelcomeFrameController.navigateTo;
 
-public class PrototypeSubscriberProfileOptionsController implements Initializable {
+public class PrototypeSubscriberProfileOptionsController implements Initializable
+{
     // Subscriber object to store the profile details
     private static Subscriber localSubscriber;
     // FXML elements for buttons
@@ -28,7 +29,8 @@ public class PrototypeSubscriberProfileOptionsController implements Initializabl
     /**
      * This method initializes the Subscriber profile options screen
      */
-    public static Subscriber getLocalSubscriber() {
+    public static Subscriber getLocalSubscriber()
+    {
         return localSubscriber;
     }
 
@@ -39,7 +41,8 @@ public class PrototypeSubscriberProfileOptionsController implements Initializabl
      * @param event The action event triggered by clicking the Edit Profile button
      * @throws Exception If there is an issue with the navigation
      */
-    public void clickEditProfileButton(ActionEvent event) throws Exception {
+    public void clickEditProfileButton(ActionEvent event) throws Exception
+    {
         // Navigate to the desired destination using the navigateTo function
         navigateTo(event, "/gui/SubscriberEditProfileFrame.fxml", "/gui/Subscriber.css", "Edit Profile");
     }
@@ -51,7 +54,8 @@ public class PrototypeSubscriberProfileOptionsController implements Initializabl
      * @param event The action event triggered by clicking the Back button
      * @throws Exception If there is an issue with the navigation
      */
-    public void clickBackButton(ActionEvent event) throws Exception {
+    public void clickBackButton(ActionEvent event) throws Exception
+    {
         // Navigate to the desired destination using the navigateTo function
         navigateTo(event, "/gui/SubscriberWelcomeFrame.fxml", "/gui/Subscriber.css", "Profile");
     }
@@ -65,7 +69,8 @@ public class PrototypeSubscriberProfileOptionsController implements Initializabl
      * @throws Exception If there is an issue with the navigation
      */
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources)
+    {
         localSubscriber = SubscriberLoginController.getLocalSubscriber();
     }
 
@@ -76,7 +81,8 @@ public class PrototypeSubscriberProfileOptionsController implements Initializabl
      * @param actionEvent The action event triggered by clicking the Watch History button
      * @throws Exception If there is an issue with the navigation
      */
-    public void clickOnWatchHistory(ActionEvent actionEvent) throws Exception {
+    public void clickOnWatchHistory(ActionEvent actionEvent) throws Exception
+    {
         System.out.println("Watch History");
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Will be implemented in the future");
         alert.setTitle("Watch History");

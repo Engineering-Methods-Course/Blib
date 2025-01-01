@@ -5,7 +5,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-public class SearchResultFrameController {
+public class SearchResultFrameController
+{
 
     @FXML
     public TableView searchResultTable;
@@ -20,15 +21,18 @@ public class SearchResultFrameController {
     @FXML
     public Button backButton;
 
-    public void initialize() {
+    public void initialize()
+    {
         //todo: load search results from the database into the table
     }
 
-    public void backButtonClicked() {
+    public void backButtonClicked()
+    {
         //todo: go back to the search frame
     }
 
-    private void addBookDetailsButton() {
+    private void addBookDetailsButton()
+    {
         //todo: add a button to each row that will open a new frame with the book details in the watchDetailsColumn
     }
 }

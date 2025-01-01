@@ -6,20 +6,22 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SearchResultFrameController">
-   <children>
-      <TableView fx:id="searchResultTable" prefHeight="454.0" prefWidth="640.0">
-        <columns>
-          <TableColumn fx:id="bookNameColumn" prefWidth="116.79998779296875" text="Book Name" />
-          <TableColumn fx:id="genreColumn" prefWidth="174.4000244140625" text="Genre" />
-            <TableColumn fx:id="locationColumn" prefWidth="124.0" text="Location" />
-            <TableColumn fx:id="watchDetailsColumn" prefWidth="224.79998779296875" text="Watch Details" />
-        </columns>
-      </TableView>
-      <AnchorPane prefHeight="60.0" prefWidth="600.0">
-         <children>
-            <Button fx:id="backButton" layoutX="14.0" layoutY="9.0" mnemonicParsing="false" text="Back" />
-         </children>
-      </AnchorPane>
-   </children>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0"
+      prefWidth="640.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="gui.SearchResultFrameController">
+    <children>
+        <TableView fx:id="searchResultTable" prefHeight="454.0" prefWidth="640.0">
+            <columns>
+                <TableColumn fx:id="bookNameColumn" prefWidth="116.79998779296875" text="Book Name"/>
+                <TableColumn fx:id="genreColumn" prefWidth="174.4000244140625" text="Genre"/>
+                <TableColumn fx:id="locationColumn" prefWidth="124.0" text="Location"/>
+                <TableColumn fx:id="watchDetailsColumn" prefWidth="224.79998779296875" text="Watch Details"/>
+            </columns>
+        </TableView>
+        <AnchorPane prefHeight="60.0" prefWidth="600.0">
+            <children>
+                <Button fx:id="backButton" layoutX="14.0" layoutY="9.0" mnemonicParsing="false" text="Back"/>
+            </children>
+        </AnchorPane>
+    </children>
 </VBox>

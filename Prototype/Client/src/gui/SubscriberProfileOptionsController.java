@@ -5,7 +5,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 
-public class SubscriberProfileOptionsController {
+public class SubscriberProfileOptionsController
+{
 
     @FXML
     public Button logoutButton;
@@ -28,33 +29,40 @@ public class SubscriberProfileOptionsController {
     @FXML
     public Button searchBookButton;
 
-    public void initialize() {
+    public void initialize()
+    {
         //todo: load all the user info into the fields
         //todo: make sure to call viewHistory method here to update the history table
     }
 
-    public void logout() {
+    public void logout()
+    {
         //todo: log the user out and navigate to the login/home page
     }
 
-    public void viewProfile() {
+    public void viewProfile()
+    {
         //todo: implement (navigate back to this page)
         //todo other option: refresh the history table to make it look like it navigated
     }
 
-    public void editProfile() {
+    public void editProfile()
+    {
         //todo: send to another window (edit profile)
     }
 
-    public void extendBorrow() {
+    public void extendBorrow()
+    {
         //todo: implement
     }
 
-    public void searchBook() {
+    public void searchBook()
+    {
         //todo: navigate to the search page
     }
 
-    private void viewHistory() {
+    private void viewHistory()
+    {
         //todo: pull info about user activity from the database
     }
 }

@@ -9,51 +9,60 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberProfileOptionsController">
-   <children>
-      <AnchorPane prefHeight="66.0" prefWidth="640.0">
-         <children>
-            <Button fx:id="logoutButton" layoutX="27.0" layoutY="11.0" mnemonicParsing="false" text="Log Out" />
-            <Button fx:id="profileButton" blendMode="HARD_LIGHT" layoutX="506.0" layoutY="11.0" mnemonicParsing="false" text="Hello: &lt;Username&gt;" />
-         </children>
-      </AnchorPane>
-      <AnchorPane prefHeight="440.0" prefWidth="640.0">
-         <children>
-            <TableView fx:id="historyTable" layoutX="42.0" layoutY="238.0" prefHeight="197.0" prefWidth="556.0">
-              <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
-              </columns>
-            </TableView>
-            <Text fx:id="usernameField" layoutX="34.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Username&gt;" wrappingWidth="237.708984375">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Text>
-            <Text fx:id="phoneNumberField" layoutX="34.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Phone Number&gt;" wrappingWidth="237.708984375">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Text>
-            <Text fx:id="detailField4" layoutX="34.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Temp&gt;" wrappingWidth="237.708984375">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Text>
-            <Text fx:id="emailField" layoutX="34.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Email Address&gt;" wrappingWidth="237.708984375">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Text>
-            <HBox layoutX="42.0" layoutY="208.0" prefHeight="44.0" prefWidth="556.0" />
-            <AnchorPane layoutX="38.0" layoutY="186.0" prefHeight="44.0" prefWidth="564.0">
-               <children>
-                  <Button fx:id="editProfileButton" layoutY="10.0" mnemonicParsing="false" text="Edit Profile Details" />
-                  <Button fx:id="extendBorrowButton" layoutX="226.0" layoutY="10.0" mnemonicParsing="false" text="Extend A Borrow" />
-                  <Button fx:id="searchBookButton" layoutX="463.0" layoutY="10.0" mnemonicParsing="false" text="Search A Book" />
-               </children>
-            </AnchorPane>
-         </children>
-      </AnchorPane>
-   </children>
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="gui.SubscriberProfileOptionsController">
+    <children>
+        <AnchorPane prefHeight="66.0" prefWidth="640.0">
+            <children>
+                <Button fx:id="logoutButton" layoutX="27.0" layoutY="11.0" mnemonicParsing="false" text="Log Out"/>
+                <Button fx:id="profileButton" blendMode="HARD_LIGHT" layoutX="506.0" layoutY="11.0"
+                        mnemonicParsing="false" text="Hello: &lt;Username&gt;"/>
+            </children>
+        </AnchorPane>
+        <AnchorPane prefHeight="440.0" prefWidth="640.0">
+            <children>
+                <TableView fx:id="historyTable" layoutX="42.0" layoutY="238.0" prefHeight="197.0" prefWidth="556.0">
+                    <columns>
+                        <TableColumn prefWidth="75.0" text="C1"/>
+                        <TableColumn prefWidth="75.0" text="C2"/>
+                    </columns>
+                </TableView>
+                <Text fx:id="usernameField" layoutX="34.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="&lt;Username&gt;" wrappingWidth="237.708984375">
+                    <font>
+                        <Font size="24.0"/>
+                    </font>
+                </Text>
+                <Text fx:id="phoneNumberField" layoutX="34.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="&lt;Phone Number&gt;" wrappingWidth="237.708984375">
+                    <font>
+                        <Font size="24.0"/>
+                    </font>
+                </Text>
+                <Text fx:id="detailField4" layoutX="34.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="&lt;Temp&gt;" wrappingWidth="237.708984375">
+                    <font>
+                        <Font size="24.0"/>
+                    </font>
+                </Text>
+                <Text fx:id="emailField" layoutX="34.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="&lt;Email Address&gt;" wrappingWidth="237.708984375">
+                    <font>
+                        <Font size="24.0"/>
+                    </font>
+                </Text>
+                <HBox layoutX="42.0" layoutY="208.0" prefHeight="44.0" prefWidth="556.0"/>
+                <AnchorPane layoutX="38.0" layoutY="186.0" prefHeight="44.0" prefWidth="564.0">
+                    <children>
+                        <Button fx:id="editProfileButton" layoutY="10.0" mnemonicParsing="false"
+                                text="Edit Profile Details"/>
+                        <Button fx:id="extendBorrowButton" layoutX="226.0" layoutY="10.0" mnemonicParsing="false"
+                                text="Extend A Borrow"/>
+                        <Button fx:id="searchBookButton" layoutX="463.0" layoutY="10.0" mnemonicParsing="false"
+                                text="Search A Book"/>
+                    </children>
+                </AnchorPane>
+            </children>
+        </AnchorPane>
+    </children>
 </VBox>

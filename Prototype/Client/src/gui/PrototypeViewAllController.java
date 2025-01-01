@@ -11,7 +11,8 @@ import java.util.ArrayList;
 
 import static client.ClientGUIController.navigateTo;
 
-public class PrototypeViewAllController {
+public class PrototypeViewAllController
+{
 
     private static ArrayList<Subscriber> subscribers;
 
@@ -43,12 +44,14 @@ public class PrototypeViewAllController {
      *
      * @param subscribersFromServer The list of subscribers to set
      */
-    public static void setSubscribers(ArrayList<Subscriber> subscribersFromServer) {
+    public static void setSubscribers(ArrayList<Subscriber> subscribersFromServer)
+    {
         subscribers = subscribersFromServer;
     }
 
     @FXML
-    private void initialize() {
+    private void initialize()
+    {
         loadSubscribersIntoTable();
 
     }
@@ -56,7 +59,8 @@ public class PrototypeViewAllController {
     /**
      * This method loads the subscribers into the table
      */
-    private void loadSubscribersIntoTable() {
+    private void loadSubscribersIntoTable()
+    {
         // Ensure the subscriber list is not null
         if (subscribers != null) {
             // Add all subscribers to the ObservableList
@@ -70,8 +74,10 @@ public class PrototypeViewAllController {
             emailColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getEmail()));
             //? passwordColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getPassword()));
             statusColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(getFrozenMessage(cellData.getValue().getStatusIsFrozen())));
-            historyColumn.setCellFactory(column -> new TableCell<Subscriber, String>() {
+            historyColumn.setCellFactory(column -> new TableCell<Subscriber, String>()
+            {
                 private final Button button = new Button("Watch History");
+
                 {
                     // Set the button action
                     button.setOnAction(event -> {
@@ -84,18 +90,21 @@ public class PrototypeViewAllController {
 
                 // Display button if the row is not empty
                 @Override
-                protected void updateItem(String item, boolean empty) {
+                protected void updateItem(String item, boolean empty)
+                {
                     super.updateItem(item, empty);
                     if (empty || getTableRow() == null || getTableRow().getItem() == null) {
                         setGraphic(null);
-                    } else {
+                    }
+                    else {
                         setGraphic(button);
                     }
                 }
             });
             // Assign the ObservableList to the TableView
             subscriberTable.setItems(subscriberList);
-        } else {
+        }
+        else {
             System.out.println("Subscribers list is null!");
         }
     }
@@ -106,7 +115,8 @@ public class PrototypeViewAllController {
      * @param isFrozen The status of the subscriber
      * @return The string indicating the status
      */
-    private String getFrozenMessage(Boolean isFrozen) {
+    private String getFrozenMessage(Boolean isFrozen)
+    {
         if (isFrozen) {
             return "Frozen";
         }
@@ -120,7 +130,8 @@ public class PrototypeViewAllController {
      * @param actionEvent The action event triggered by clicking the back button
      * @throws Exception If there is an issue with the navigation
      */
-    public void clickBack(ActionEvent actionEvent) throws Exception {
+    public void clickBack(ActionEvent actionEvent) throws Exception
+    {
         navigateTo(actionEvent, "/gui/SubscriberLoginFrame.fxml", "/gui/Subscriber.css", "Login");
     }
 }
