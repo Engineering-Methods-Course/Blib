@@ -98,7 +98,7 @@ public class ServerController extends AbstractServer {
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
                                 ArrayList<String> userDetails = dbController.userLogin((ArrayList<String>) message.getMessageContent(), conn);
-                                if(userDetails != null){
+                                if(!userDetails.isEmpty()){
                                     // if the user is a subscriber send the subscriber object to the client
                                     if(userDetails.get(0).equals("subscriber")){
                                         client.sendToClient( new ClientServerMessage(101, new Subscriber(Integer.parseInt(userDetails.get(1)), userDetails.get(2),
@@ -111,6 +111,10 @@ public class ServerController extends AbstractServer {
                                         client.sendToClient(new ClientServerMessage(101, new Librarian(Integer.parseInt(userDetails.get(1)),
                                                 userDetails.get(2), userDetails.get(3), userDetails.get(4), userDetails.get(5))));
                                         System.out.println("Librarian details were sent to client");
+                                    }
+                                    else{
+                                        System.out.println("error: user type is not subscriber or librarian (case 100)");
+                                        client.sendToClient(new ClientServerMessage(101, null));
                                     }
                                 }
                                 // if the user was not found in the database
@@ -167,7 +171,7 @@ public class ServerController extends AbstractServer {
                             }
                             break;
                         } catch (Exception e) {
-                            System.out.println("Error: with Edit method (case203)" + e);
+                            System.out.println("Error: with Edit method (case 216)" + e);
                             client.sendToClient(new ClientServerMessage(217, null));
                             break;
                         }
@@ -188,7 +192,7 @@ public class ServerController extends AbstractServer {
                             System.out.println("Subscribers list was sent to client");
                             break;
                         } catch (Exception e) {
-                            System.out.println("Error: with getting subscribers list (case306)" + e);
+                            System.out.println("Error: with getting subscribers list (case 306)" + e);
                             client.sendToClient(new ClientServerMessage(307, null));
                             break;
                         }
