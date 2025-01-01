@@ -26,6 +26,12 @@ public class Subscriber implements Serializable {
     // Status to check if the subscriber is frozen (inactive)
     private boolean statusIsFrozen = false;
 
+    // Subscriber's username
+    private String username;
+
+    // Subscriber's password
+    private String password;
+
 
 
     /**
@@ -37,7 +43,7 @@ public class Subscriber implements Serializable {
      * @param phoneNumber Subscriber's phone number
      * @param email       Subscriber's email address
      */
-    public Subscriber(int id, String firstName, String lastName, String phoneNumber, String email, boolean status, int subscriptionHistory) {
+    public Subscriber(int id, String firstName, String lastName, String phoneNumber, String email, boolean status, int subscriptionHistory, String username, String password) {
         this.id = id;
         this.firstname = firstName;
         this.lastName = lastName;
@@ -45,6 +51,8 @@ public class Subscriber implements Serializable {
         this.email = email;
         this.statusIsFrozen = status;
         this.subscriptionHistory = subscriptionHistory;
+        this.username = username;
+        this.password = password;
     }
 
     /**
@@ -163,6 +171,42 @@ public class Subscriber implements Serializable {
      */
     public void setStatusIsFrozen(boolean statusIsFrozen) {
         this.statusIsFrozen = statusIsFrozen;
+    }
+
+    /**
+     * Gets the username of the subscriber.
+     *
+     * @return the username of the subscriber
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * Sets the username of the subscriber.
+     *
+     * @param username the username of the subscriber
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * Gets the password of the subscriber.
+     *
+     * @return the password of the subscriber
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Sets the password of the subscriber.
+     *
+     * @param password the password of the subscriber
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }

@@ -77,6 +77,8 @@ public class DBController {
                             userDetails.add("true");
                         }
                         userDetails.add(String.valueOf(subRs.getInt("detailed_subscription_history")));
+                        userDetails.add(messageContent.get(0));
+                        userDetails.add(messageContent.get(1));
                     }
                 }
                 /*
@@ -92,6 +94,8 @@ public class DBController {
                         userDetails.add(String.valueOf(subRs.getInt("librarian_id")));
                         userDetails.add(subRs.getString("first_name"));
                         userDetails.add(subRs.getString("last_name"));
+                        userDetails.add(messageContent.get(0));
+                        userDetails.add(messageContent.get(1));
                     }
                 }
             }
@@ -133,7 +137,8 @@ public class DBController {
              */
             while(getSubscribersRs.next()){
                 ArrayList<String> subscriberDetails = new ArrayList<>();
-                subscriberDetails.add(String.valueOf(getSubscribersRs.getInt("subscriber_id")));
+                int subscriberId = getSubscribersRs.getInt("subscriber_id");
+                subscriberDetails.add(String.valueOf(subscriberId));
                 subscriberDetails.add(getSubscribersRs.getString("first_name"));
                 subscriberDetails.add(getSubscribersRs.getString("last_name"));
                 subscriberDetails.add(getSubscribersRs.getString("phone_number"));
@@ -146,10 +151,22 @@ public class DBController {
                     subscriberDetails.add("true");
                 }
                 subscriberDetails.add(String.valueOf(getSubscribersRs.getInt("detailed_subscription_history")));
+                /*
+                 * get the username and password of the subscriber
+                 */
+                String getSubscribersUserQuery = "SELECT * FROM users WHERE user_id = ?";
+                PreparedStatement getSubscribersUserStatement = conn.prepareStatement(getSubscribersUserQuery);
+                getSubscribersUserStatement.setInt(1, subscriberId);
+                ResultSet getSubscribersUserRs = getSubscribersUserStatement.executeQuery();
+                if(getSubscribersUserRs.next()){
+                    subscriberDetails.add(getSubscribersUserRs.getString("username"));
+                    subscriberDetails.add(getSubscribersUserRs.getString("password"));
+                }
                 // Add the subscriber to the arraylist
                 subscribersList.add(new Subscriber(Integer.parseInt(subscriberDetails.get(0)), subscriberDetails.get(1),
                         subscriberDetails.get(2), subscriberDetails.get(3), subscriberDetails.get(4),
-                        Boolean.parseBoolean(subscriberDetails.get(5)), Integer.parseInt(subscriberDetails.get(6))));
+                        Boolean.parseBoolean(subscriberDetails.get(5)), Integer.parseInt(subscriberDetails.get(6)),
+                        subscriberDetails.get(7), subscriberDetails.get(8)));
             }
             // No subscriber found
             if(subscribersList.isEmpty()){

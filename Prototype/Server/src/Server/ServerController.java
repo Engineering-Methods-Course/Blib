@@ -103,13 +103,13 @@ public class ServerController extends AbstractServer {
                                     if(userDetails.get(0).equals("subscriber")){
                                         client.sendToClient( new ClientServerMessage(101, new Subscriber(Integer.parseInt(userDetails.get(1)), userDetails.get(2),
                                                 userDetails.get(3), userDetails.get(4), userDetails.get(5), Boolean.parseBoolean(userDetails.get(6)),
-                                                Integer.parseInt(userDetails.get(7)))));
+                                                Integer.parseInt(userDetails.get(7)), userDetails.get(8), userDetails.get(9))));
                                         System.out.println("Subscriber details were sent to client");
                                     }
                                     // if the user is a librarian send the librarian object to the client
                                     else if(userDetails.get(0).equals("librarian")){
                                         client.sendToClient(new ClientServerMessage(101, new Librarian(Integer.parseInt(userDetails.get(1)),
-                                                userDetails.get(2), userDetails.get(3))));
+                                                userDetails.get(2), userDetails.get(3), userDetails.get(4), userDetails.get(5))));
                                         System.out.println("Librarian details were sent to client");
                                     }
                                 }
