@@ -1,7 +1,9 @@
 package Server;
 
 
-import common.*;
+import common.ClientServerMessage;
+import common.Librarian;
+import common.Subscriber;
 import gui.ServerMonitorFrameController;
 import logic.DBController;
 import ocsf.server.AbstractServer;
@@ -89,7 +91,7 @@ public class ServerController extends AbstractServer {
                  */
                 ClientServerMessage message = (ClientServerMessage) msg;
                 switch (message.getId()) {
-                    case(100):
+                    case (100):
                         /**
                          * do: user wants to log in to his account
                          * in: arraylist<username,password>
@@ -98,27 +100,23 @@ public class ServerController extends AbstractServer {
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
                                 ArrayList<String> userDetails = dbController.userLogin((ArrayList<String>) message.getMessageContent(), conn);
-                                if(!userDetails.isEmpty()){
+                                if (!userDetails.isEmpty()) {
                                     // if the user is a subscriber send the subscriber object to the client
-                                    if(userDetails.get(0).equals("subscriber")){
-                                        client.sendToClient( new ClientServerMessage(101, new Subscriber(Integer.parseInt(userDetails.get(1)), userDetails.get(2),
-                                                userDetails.get(3), userDetails.get(4), userDetails.get(5), Boolean.parseBoolean(userDetails.get(6)),
-                                                Integer.parseInt(userDetails.get(7)), userDetails.get(8), userDetails.get(9))));
+                                    if (userDetails.get(0).equals("subscriber")) {
+                                        client.sendToClient(new ClientServerMessage(101, new Subscriber(Integer.parseInt(userDetails.get(1)), userDetails.get(2), userDetails.get(3), userDetails.get(4), userDetails.get(5), Boolean.parseBoolean(userDetails.get(6)), Integer.parseInt(userDetails.get(7)), userDetails.get(8), userDetails.get(9))));
                                         System.out.println("Subscriber details were sent to client");
                                     }
                                     // if the user is a librarian send the librarian object to the client
-                                    else if(userDetails.get(0).equals("librarian")){
-                                        client.sendToClient(new ClientServerMessage(101, new Librarian(Integer.parseInt(userDetails.get(1)),
-                                                userDetails.get(2), userDetails.get(3), userDetails.get(4), userDetails.get(5))));
+                                    else if (userDetails.get(0).equals("librarian")) {
+                                        client.sendToClient(new ClientServerMessage(101, new Librarian(Integer.parseInt(userDetails.get(1)), userDetails.get(2), userDetails.get(3), userDetails.get(4), userDetails.get(5))));
                                         System.out.println("Librarian details were sent to client");
-                                    }
-                                    else{
+                                    } else {
                                         System.out.println("error: user type is not subscriber or librarian (case 100)");
                                         client.sendToClient(new ClientServerMessage(101, null));
                                     }
                                 }
                                 // if the user was not found in the database
-                                else{
+                                else {
                                     client.sendToClient(new ClientServerMessage(101, null));
                                     System.out.println("Could not find the user in the database (case 100)");
                                 }
@@ -134,32 +132,37 @@ public class ServerController extends AbstractServer {
                             System.out.println("Error: with user login method (case 100) " + e);
                             break;
                         }
-                    case(102): // might not be needed
+                    case (102): // might not be needed
                         break;
-                    case(104):
+                    case (104):
                         /**
                          * Do: disconnect client from server
                          */
                         serverMonitorController.clientDisconnected(client);
                         client.sendToClient(null); // send null to client to make him stop waiting for a response
                         break;
-                    case(200):
+                    case (200):
                         break;
-                    case(202):
+                    case (202):
                         break;
-                    case(204):
+                    case (204):
                         break;
-                    case(206):
+                    case (206):
                         break;
-                    case(208):
+                    case (208):
                         break;
-                    case(210):
+                    case (210):
                         break;
-                    case(212):
+                    case (212):
                         break;
-                    case(214):
+                    case (214):
                         break;
-                    case(216):
+                    case (216):
+                        /**
+                         * do: subscriber wants to edit his personal information
+                         * in: subscriber
+                         * return: (id 217) arraylist<string> {success/fail, error message}
+                         */
                         try {
                             if (message.getMessageContent() instanceof Subscriber) {
                                 client.sendToClient(new ClientServerMessage(217, dbController.editSubscriberDetails((Subscriber) message.getMessageContent(), conn)));
@@ -167,7 +170,6 @@ public class ServerController extends AbstractServer {
                             } else {
                                 System.out.println("Cannot Edit account Message is not a subscriber");
                                 client.sendToClient(new ClientServerMessage(217, null));
-
                             }
                             break;
                         } catch (Exception e) {
@@ -175,13 +177,13 @@ public class ServerController extends AbstractServer {
                             client.sendToClient(new ClientServerMessage(217, null));
                             break;
                         }
-                    case(300):
+                    case (300):
                         break;
-                    case(302):
+                    case (302):
                         break;
-                    case(304):
+                    case (304):
                         break;
-                    case(306):
+                    case (306):
                         /**
                          * do: librarian wants to view subscribers in the system
                          * in: none
@@ -196,9 +198,9 @@ public class ServerController extends AbstractServer {
                             client.sendToClient(new ClientServerMessage(307, null));
                             break;
                         }
-                    case(308):
+                    case (308):
                         break;
-                    case(310):
+                    case (310):
                         break;
                     default:
                         System.out.println("Invalid command id(handleMessageFromClient ServerController)");
@@ -245,6 +247,7 @@ public class ServerController extends AbstractServer {
             System.out.println("VendorError: " + ex.getErrorCode());
         }
     }
+
     /**
      * This method sends a message to all clients connected to the server.
      *
