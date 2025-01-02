@@ -166,15 +166,21 @@ public class ServerController extends AbstractServer {
                         try {
                             if (message.getMessageContent() instanceof Subscriber) {
                                 client.sendToClient(new ClientServerMessage(217, dbController.editSubscriberDetails((Subscriber) message.getMessageContent(), conn)));
-                                System.out.println("Updated Subscriber details was sent to client");
+                                System.out.println("Subscriber details were edited");
                             } else {
                                 System.out.println("Cannot Edit account Message is not a subscriber");
-                                client.sendToClient(new ClientServerMessage(217, null));
+                                client.sendToClient(new ClientServerMessage(217, new ArrayList<String>() {{
+                                    add("fail");
+                                    add("Cannot Edit account Message is not a subscriber");
+                                }}));
                             }
                             break;
                         } catch (Exception e) {
                             System.out.println("Error: with Edit method (case 216)" + e);
-                            client.sendToClient(new ClientServerMessage(217, null));
+                            client.sendToClient(new ClientServerMessage(217, new ArrayList<String>() {{
+                                add("fail");
+                                add("Server Error");
+                            }}));
                             break;
                         }
                     case (300):
