@@ -34,7 +34,7 @@ public class ClientIPFrameController
      */
     public void start(Stage primaryStage) throws Exception
     {
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/gui/EnterClientIPFrame.fxml")));
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/gui/ClientIPFrame.fxml")));
         Parent root = loader.load();
 
         Scene scene = new Scene(root);

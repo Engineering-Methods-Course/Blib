@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 import static client.ClientGUIController.navigateTo;
 
-public class SubscriberEditProfileController implements Initializable
+public class SubscriberEditProfileFrameController implements Initializable
 {
 
     private static Subscriber localSubscriber = null;
