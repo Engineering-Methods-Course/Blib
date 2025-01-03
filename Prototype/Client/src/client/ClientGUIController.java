@@ -85,7 +85,6 @@ public class ClientGUIController extends Application
     {
         ClientIPFrameController aFrame = new ClientIPFrameController();
         aFrame.start(primaryStage);
-
     }
 
 

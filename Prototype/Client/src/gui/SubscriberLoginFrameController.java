@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 import static client.ClientGUIController.navigateTo;
 
 
-public class SubscriberLoginController implements Initializable
+public class SubscriberLoginFrameController implements Initializable
 {
 
     private static Subscriber localSubscriber = null;

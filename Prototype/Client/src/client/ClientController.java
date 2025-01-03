@@ -2,8 +2,7 @@ package client;
 
 import common.ClientServerMessage;
 import common.Subscriber;
-import gui.SubscriberEditProfileController;
-import gui.SubscriberProfileOptionsFrameController;
+import gui.SubscriberEditProfileFrameController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import ocsf.client.*;
@@ -76,7 +75,7 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof Subscriber) {
                             Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
                             Subscriber.setLocalSubscriber(subscriberFromServer);
-                            SubscriberEditProfileController.setLocalSubscriber(subscriberFromServer);
+                            SubscriberEditProfileFrameController.setLocalSubscriber(subscriberFromServer);
                             Platform.runLater(() -> showInformationAlert("Update successful", "Subscriber details updated successfully"));
                         }
                         break;

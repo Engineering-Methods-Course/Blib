@@ -9,7 +9,7 @@
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
       prefHeight="800.0" prefWidth="1280.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberLoginController">
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberLoginFrameController">
     <children>
         <AnchorPane prefHeight="818.0" prefWidth="1280.0">
             <children>

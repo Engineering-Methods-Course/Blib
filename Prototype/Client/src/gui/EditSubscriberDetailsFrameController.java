@@ -7,7 +7,7 @@ import javafx.scene.control.TextField;
 
 import static client.ClientGUIController.navigateTo;
 
-public class EditSubscriberDetailsController
+public class EditSubscriberDetailsFrameController
 {
     @FXML
     public TextField phoneNumberBox;
