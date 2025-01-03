@@ -19,11 +19,11 @@
             <children>
                 <Pane fx:id="menuPane" prefHeight="41.0" prefWidth="1307.0">
                     <children>
-                        <Button fx:id="watchProfileButton" layoutX="1077.0" layoutY="10.0" mnemonicParsing="false"
+                        <Button fx:id="watchProfileButton" onAction="#goToProfile" layoutX="1077.0" layoutY="10.0" mnemonicParsing="false"
                                 text="Watch Profile"/>
-                        <Button fx:id="loginButton" layoutX="14.0" layoutY="10.0" mnemonicParsing="false"
+                        <Button fx:id="loginButton" onAction="#login" layoutX="14.0" layoutY="10.0" mnemonicParsing="false"
                                 text="Log In"/>
-                        <Button fx:id="profileButton" blendMode="HARD_LIGHT" layoutX="1176.0" layoutY="10.0"
+                        <Button fx:id="profileButton" onAction="#goToProfile" blendMode="HARD_LIGHT" layoutX="1176.0" layoutY="10.0"
                                 mnemonicParsing="false" text="Hello: &lt;User&gt;"/>
                     </children>
                 </Pane>
