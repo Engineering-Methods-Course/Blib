@@ -68,7 +68,7 @@ public class ClientGUIController extends Application
         currentStage.show();
     }
 
-    private static void exitAction() throws Exception
+    private static void exitAction()
     {
         ClientServerMessage logOutMessage = new ClientServerMessage(999, null);
         try {

@@ -28,8 +28,8 @@ public class EditSubscriberDetailsFrameController
 
     /**
      * This method handles the submitButton click event to submit the subscriber details and return to the subscriber page
-     * @param event
-     * @throws Exception
+     * @param event      The action event triggered by clicking the submit button
+     * @throws Exception If there is an issue with the navigation
      */
     public void submitButtonClicked(ActionEvent event) throws Exception
     {
@@ -39,8 +39,8 @@ public class EditSubscriberDetailsFrameController
 
     /**
      * This method handles the backButton click event to return to the subscriber page
-     * @param event
-     * @throws Exception
+     * @param event      The action event triggered by clicking the back button
+     * @throws Exception If there is an issue with the navigation
      */
     public void backButtonClicked(ActionEvent event) throws Exception
     {

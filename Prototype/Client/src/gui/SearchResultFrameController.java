@@ -31,8 +31,8 @@ public class SearchResultFrameController
 
     /**
      * This method handles the backButton click event to navigate back to the previous frame
-     * @param event
-     * @throws Exception
+     * @param event      The action event triggered by clicking the back button
+     * @throws Exception If there is an issue with the navigation
      */
     public void backButtonClicked(ActionEvent event) throws Exception
     {
@@ -49,8 +49,8 @@ public class SearchResultFrameController
 
     /**
      * This method handles the watchDetailsButton click event to navigate to the book info page
-     * @param event
-     * @throws Exception
+     * @param event      The action event triggered by clicking the watch details button
+     * @throws Exception If there is an issue with the navigation
      */
     public void watchDetailsButtonClicked(ActionEvent event) throws Exception
     {

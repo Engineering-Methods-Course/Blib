@@ -59,8 +59,8 @@ public class BookInfoFrameController
 
     /**
      * This method handles the orderBookButton click event to order the book
-     * @param event The ActionEvent triggered by the user's interaction (e.g., button click).
-     * @throws Exception
+     * @param event      The ActionEvent triggered by the user's interaction (e.g., button click).
+     * @throws Exception If there is an issue with the navigation
      */
     public void orderBookButtonClicked(ActionEvent event) throws Exception
     {
@@ -71,8 +71,8 @@ public class BookInfoFrameController
 
     /**
      * This method handles the backButton click event to return to the previous page
-     * @param event The ActionEvent triggered by the user's interaction (e.g., button click).
-     * @throws Exception
+     * @param event      The ActionEvent triggered by the user's interaction (e.g., button click).
+     * @throws Exception If there is an issue with the navigation
      */
     public void backButtonClicked(ActionEvent event) throws Exception
     {

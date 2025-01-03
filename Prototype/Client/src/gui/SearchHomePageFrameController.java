@@ -51,26 +51,28 @@ public class SearchHomePageFrameController
     }
 
     /**
-     *
-     * @param event
-     * @throws Exception
+     * This method changes the search configuration to search by name
+     * @param event     The ActionEvent triggered by the button click
      */
-    private void searchByName(ActionEvent event) throws Exception
+    private void searchByName(ActionEvent event)
     {
         searchType = SearchType.NAME;
     }
 
-    private void searchByGenre(ActionEvent event) throws Exception
+    /**
+     * This method changes the search configuration to search by genre
+     * @param event     The ActionEvent triggered by the button click
+     */
+    private void searchByGenre(ActionEvent event)
     {
         searchType = SearchType.GENRE;
     }
 
     /**
      * This method changes the search configuration to search by description
-     * @param event
-     * @throws Exception
+     * @param event     The ActionEvent triggered by the button click
      */
-    private void searchByDescription(ActionEvent event) throws Exception
+    private void searchByDescription(ActionEvent event)
     {
         searchType = SearchType.DESCRIPTION;
         searchButton.setLayoutY(500);
@@ -80,8 +82,8 @@ public class SearchHomePageFrameController
 
     /**
      * This method handles the searchButton click event to search for books
-     * @param event
-     * @throws Exception
+     * @param event      The ActionEvent triggered by the search button click
+     * @throws Exception if there is an issue with the search
      */
     public void search(ActionEvent event) throws Exception
     {
@@ -91,8 +93,8 @@ public class SearchHomePageFrameController
 
     /**
      * This method handles the loginButton click event to navigate to the login page
-     * @param event the ActionEvent triggered by the login button click
-     * @throws Exception
+     * @param event      The ActionEvent triggered by the login button click
+     * @throws Exception if there is an issue with the navigation
      */
     public void login(ActionEvent event) throws Exception
     {
@@ -101,8 +103,8 @@ public class SearchHomePageFrameController
 
     /**
      * This method handles the profileButton click event to navigate to the profile page
-     * @param event the ActionEvent triggered by the profile button click
-     * @throws Exception
+     * @param event      the ActionEvent triggered by the profile button click
+     * @throws Exception if there is an issue with the navigation
      */
     public void goToProfile(ActionEvent event) throws Exception
     {

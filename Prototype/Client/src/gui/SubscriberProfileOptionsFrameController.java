@@ -41,9 +41,9 @@ public class SubscriberProfileOptionsFrameController
     }
 
     /**
-     *
-     * @param event
-     * @throws Exception
+     * This method handles the logoutButton click event to navigate to the search home page
+     * @param event      The action event triggered by clicking the logout button
+     * @throws Exception If there is an issue with the navigation
      */
     public void logoutButtonClicked(ActionEvent event) throws Exception
     {
@@ -52,9 +52,9 @@ public class SubscriberProfileOptionsFrameController
     }
 
     /**
-     *
-     * @param event
-     * @throws Exception
+     * This method handles the viewProfileButton click event to navigate to the subscriber profile options frame
+     * @param event      The action event triggered by clicking the view profile button
+     * @throws Exception If there is an issue with the navigation
      */
     public void viewProfileButtonClicked(ActionEvent event) throws Exception
     {
@@ -64,9 +64,9 @@ public class SubscriberProfileOptionsFrameController
     }
 
     /**
-     *
-     * @param event
-     * @throws Exception
+     * This method handles the editProfileButton click event to navigate to the edit subscriber details frame
+     * @param event      The action event triggered by clicking the edit profile button
+     * @throws Exception If there is an issue with the navigation
      */
     public void editProfileButtonCLicked(ActionEvent event) throws Exception
     {
@@ -74,9 +74,9 @@ public class SubscriberProfileOptionsFrameController
     }
 
     /**
-     *
-     * @param event
-     * @throws Exception
+     * This method handles the extendBorrowButton click event to navigate to the borrow extension frame
+     * @param event      The action event triggered by clicking the extend borrow button
+     * @throws Exception If there is an issue with the navigation
      */
     public void extendBorrowButtonClicked(ActionEvent event) throws Exception
     {
@@ -84,9 +84,9 @@ public class SubscriberProfileOptionsFrameController
     }
 
     /**
-     *
-     * @param event
-     * @throws Exception
+     * This method handles the searchBookButton click event to navigate to the search home page
+     * @param event      The action event triggered by clicking the search book button
+     * @throws Exception If there is an issue with the navigation
      */
     public void searchBookButtonClicked(ActionEvent event) throws Exception
     {

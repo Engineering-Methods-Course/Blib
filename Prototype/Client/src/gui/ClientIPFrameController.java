@@ -28,9 +28,10 @@ public class ClientIPFrameController
     private Button btnExit;
 
     /**
-     * Start the application with the ClientIPFrame as the first page.
+     * This method initializes the Client IP Frame
      *
-     * @param primaryStage The primary stage for the application
+     * @param primaryStage The primary stage of the application
+     * @throws Exception   If there is an issue with the navigation
      */
     public void start(Stage primaryStage) throws Exception
     {
@@ -48,7 +49,8 @@ public class ClientIPFrameController
     /**
      * Handle the Enter button click event.
      *
-     * @param event The action event triggered by clicking the Enter button
+     * @param event      The action event triggered by clicking the Enter button
+     * @throws Exception If there is an issue with the navigation
      */
     @FXML
     public void clickEnterButton(ActionEvent event) throws Exception
@@ -83,10 +85,10 @@ public class ClientIPFrameController
     /**
      * Handle the Exit button click event.
      *
-     * @param event The action event triggered by clicking the Exit button
+     * @param event      The action event triggered by clicking the Exit button
      */
     @FXML
-    public void clickExitButton(ActionEvent event) throws Exception
+    public void clickExitButton(ActionEvent event)
     {
         System.exit(0);
     }
