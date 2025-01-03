@@ -3,8 +3,7 @@ package client;
 import common.ClientServerMessage;
 import common.Subscriber;
 import gui.SubscriberEditProfileController;
-import gui.SubscriberLoginController;
-import gui.PrototypeViewAllController;
+import gui.SubscriberProfileOptionsFrameController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import ocsf.client.*;
@@ -64,7 +63,7 @@ public class ClientController extends AbstractClient
                         }
                         else if (message.getMessageContent() instanceof Subscriber) {
                             Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
-                            SubscriberLoginController.setLocalSubscriber(subscriberFromServer);
+                            SubscriberProfileOptionsFrameController.setLocalSubscriber(subscriberFromServer);
                         }
                         break;
                     //  Edit subscriber details
@@ -76,7 +75,7 @@ public class ClientController extends AbstractClient
                         }
                         else if (message.getMessageContent() instanceof Subscriber) {
                             Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
-                            SubscriberLoginController.setLocalSubscriber(subscriberFromServer);
+                            SubscriberProfileOptionsFrameController.setLocalSubscriber(subscriberFromServer);
                             SubscriberEditProfileController.setLocalSubscriber(subscriberFromServer);
                             Platform.runLater(() -> showInformationAlert("Update successful", "Subscriber details updated successfully"));
                         }
@@ -89,7 +88,7 @@ public class ClientController extends AbstractClient
                         }
                         else if (message.getMessageContent() instanceof ArrayList<?>) {
                             ArrayList<Subscriber> subscribersFromServer = (ArrayList<Subscriber>) message.getMessageContent();
-                            PrototypeViewAllController.setSubscribers(subscribersFromServer);
+                            //?PrototypeViewAllController.setSubscribers(subscribersFromServer);
                         }
                         break;
                     // Server closed connection

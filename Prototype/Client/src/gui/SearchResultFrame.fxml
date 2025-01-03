@@ -20,7 +20,7 @@
         </TableView>
         <AnchorPane prefHeight="60.0" prefWidth="600.0">
             <children>
-                <Button fx:id="backButton" layoutX="14.0" layoutY="9.0" mnemonicParsing="false" text="Back"
+                <Button fx:id="backButton" onAction="#backButtonClicked" layoutX="14.0" layoutY="9.0" mnemonicParsing="false" text="Back"
                         AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="1225.0"
                         AnchorPane.topAnchor="9.0"/>
             </children>

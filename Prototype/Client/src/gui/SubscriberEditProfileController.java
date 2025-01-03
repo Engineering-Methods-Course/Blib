@@ -16,7 +16,7 @@ import static client.ClientGUIController.navigateTo;
 public class SubscriberEditProfileController implements Initializable
 {
 
-    private static Subscriber localSubscriber;
+    private static Subscriber localSubscriber = null;
     // FXML elements for labels
     @FXML
     private Label lblID;
@@ -66,7 +66,7 @@ public class SubscriberEditProfileController implements Initializable
      */
     public void clickBackButton(ActionEvent event) throws Exception
     {
-        navigateTo(event, "/gui/PrototypeSubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Options");
+        navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "My profile");
     }
 
     /**
@@ -126,7 +126,7 @@ public class SubscriberEditProfileController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        localSubscriber = PrototypeSubscriberProfileOptionsController.getLocalSubscriber();
+        localSubscriber = SubscriberProfileOptionsFrameController.getLocalSubscriber();
         loadProfileDetails(localSubscriber);
     }
 }

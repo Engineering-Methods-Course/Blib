@@ -2,7 +2,6 @@ package client;
 
 import common.ClientServerMessage;
 import gui.ClientIPFrameController;
-import gui.PrototypeSubscriberWelcomeFrameController;
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;

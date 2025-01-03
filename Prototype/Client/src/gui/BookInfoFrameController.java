@@ -1,10 +1,13 @@
 package gui;
 
 import common.Book;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
+
+import static client.ClientGUIController.navigateTo;
 
 public class BookInfoFrameController
 {
@@ -56,23 +59,29 @@ public class BookInfoFrameController
 
     /**
      * This method handles the orderBookButton click event to order the book
+     * @param event The ActionEvent triggered by the user's interaction (e.g., button click).
+     * @throws Exception
      */
-    public void orderBookButtonClicked()
+    public void orderBookButtonClicked(ActionEvent event) throws Exception
     {
-        //todo: implement the orderBookButton click event to order the book
+        //todo: implement the order book system
+
+        navigateTo(event, "/gui/SearchResultsFrame.fxml", "/gui/Subscriber.css", "Search Results");
     }
 
     /**
-     * This method handles the backBookButton click event to navigate to the previous page
+     * This method handles the backButton click event to return to the previous page
+     * @param event The ActionEvent triggered by the user's interaction (e.g., button click).
+     * @throws Exception
      */
-    public void backButtonClicked()
+    public void backButtonClicked(ActionEvent event) throws Exception
     {
-        //todo: navigate back to the previous page
+        navigateTo(event, "/gui/SearchResultsFrame.fxml", "/gui/Subscriber.css", "Search Results");
     }
 
-    //todo: implement loadBookInfo
     private void loadBookInfo()
     {
+        //todo: implement loadBookInfo
 
         bookName.setText(localBook.getBookName());
         bookGenre.setText(localBook.getBookGenre());

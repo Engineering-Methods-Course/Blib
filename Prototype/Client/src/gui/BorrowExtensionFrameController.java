@@ -6,6 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
+import static client.ClientGUIController.navigateTo;
+
 public class BorrowExtensionFrameController
 {
 
@@ -22,18 +24,28 @@ public class BorrowExtensionFrameController
     @FXML
     public TableColumn extendButtonColumn;
 
+    /**
+     * This method initializes the Borrow Extension Frame
+     */
     public void initialize()
     {
-        //todo: implement
+        //todo: implement loading of the borrowed books
+        //todo: generating the extension buttons
+        //todo: connect the borrow extension button to the extendButtonClicked method
     }
 
-    public void backButtonClicked(ActionEvent actionEvent)
+    /**
+     * This method handles the backButton click event to navigate back to the previous frame
+     * @param event
+     * @throws Exception
+     */
+    public void backButtonClicked(ActionEvent event) throws Exception
     {
-        //todo: navigate back to the previous frame
+        navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "My Profile");
     }
 
-    public void extendButtonClicked(ActionEvent actionEvent)
+    public void extendButtonClicked(ActionEvent event) throws Exception
     {
-        //todo: implement
+        //todo: implement the extension mechanics
     }
 }
