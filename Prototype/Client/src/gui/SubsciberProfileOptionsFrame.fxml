@@ -10,14 +10,14 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
       prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="gui.SubscriberProfileOptionsController">
+      fx:controller="gui.SubscriberProfileOptionsFrameController">
     <children>
         <AnchorPane prefHeight="43.0" prefWidth="1280.0">
             <children>
-                <Button fx:id="logoutButton" layoutX="27.0" layoutY="11.0" mnemonicParsing="false" text="Log Out"
+                <Button fx:id="logoutButton" onAction="#logoutButtonClicked" layoutX="27.0" layoutY="11.0" mnemonicParsing="false" text="Log Out"
                         AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="1194.0"
                         AnchorPane.topAnchor="11.0"/>
-                <Button fx:id="profileButton" blendMode="HARD_LIGHT" layoutX="1134.0" layoutY="11.0"
+                <Button fx:id="profileButton" onAction="#viewProfileButtonClicked" blendMode="HARD_LIGHT" layoutX="1134.0" layoutY="11.0"
                         mnemonicParsing="false" text="Hello: &lt;Username&gt;" AnchorPane.bottomAnchor="7.0"
                         AnchorPane.leftAnchor="1134.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="11.0"/>
             </children>
@@ -58,13 +58,13 @@
                 </Text>
                 <AnchorPane layoutX="45.0" layoutY="300.0" prefHeight="44.0" prefWidth="564.0">
                     <children>
-                        <Button fx:id="editProfileButton" layoutY="10.0" mnemonicParsing="false"
+                        <Button fx:id="editProfileButton" onAction="#editProfileButtonCLicked" layoutY="10.0" mnemonicParsing="false"
                                 text="Edit Profile Details" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="0.0"
                                 AnchorPane.rightAnchor="451.0" AnchorPane.topAnchor="10.0"/>
-                        <Button fx:id="extendBorrowButton" layoutX="226.0" layoutY="10.0" mnemonicParsing="false"
+                        <Button fx:id="extendBorrowButton" onAction="#extendBorrowButtonClicked" layoutX="226.0" layoutY="10.0" mnemonicParsing="false"
                                 text="Extend A Borrow" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="226.0"
                                 AnchorPane.rightAnchor="233.0" AnchorPane.topAnchor="10.0"/>
-                        <Button fx:id="searchBookButton" layoutX="463.0" layoutY="10.0" mnemonicParsing="false"
+                        <Button fx:id="searchBookButton" onAction="#searchBookButtonClicked" layoutX="463.0" layoutY="10.0" mnemonicParsing="false"
                                 text="Search A Book" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="463.0"
                                 AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="10.0"/>
                     </children>

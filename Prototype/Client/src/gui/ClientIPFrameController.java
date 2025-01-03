@@ -67,7 +67,7 @@ public class ClientIPFrameController
             int port = Integer.parseInt(portText);
             ClientGUIController.chat = new ChatClient(ipAddress, port);
             // Navigate to the next frame
-            navigateTo(event, "/gui/SubscriberLoginFrame.fxml", "/gui/Subscriber.css", "Login");
+            navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
         }
         catch (NumberFormatException e) {
             System.out.println("Port must be a valid number.");

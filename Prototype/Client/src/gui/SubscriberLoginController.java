@@ -5,19 +5,14 @@ import common.ClientServerMessage;
 import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static client.ClientGUIController.navigateTo;
@@ -27,6 +22,7 @@ public class SubscriberLoginController implements Initializable
 {
 
     private static Subscriber localSubscriber = null;
+
     @FXML
     public Button backButton;
     @FXML
@@ -39,35 +35,6 @@ public class SubscriberLoginController implements Initializable
     /**
      * This method initializes the Subscriber login screen
      * not used
-     */
-    public SubscriberLoginController()
-    {
-
-    }
-
-    /**
-     * This method returns the local subscriber object
-     *
-     * @return The local subscriber object
-     */
-    public static Subscriber getLocalSubscriber()
-    {
-        return localSubscriber;
-    }
-
-    /**
-     * This method sets the local subscriber object
-     *
-     * @param subscriberToSet The subscriber object to set
-     */
-    public static void setLocalSubscriber(Subscriber subscriberToSet)
-    {
-        localSubscriber = subscriberToSet;
-    }
-
-    /**
-     * This method initializes the Subscriber login screen
-     * not used
      *
      * @param location  The primary stage to set the scene
      * @param resources The primary stage to set the scene
@@ -75,28 +42,7 @@ public class SubscriberLoginController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-    }
-
-    /**
-     * This method initializes the Subscriber login screen
-     *
-     * @param primaryStage The primary stage to set the scene
-     */
-    public void start(Stage primaryStage) throws Exception
-    {
-        // Use FXMLLoader to load the FXML
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/gui/SubscriberLoginFrame.fxml")));
-        Parent root = loader.load();
-
-        // Get the controller instance from the FXMLLoader
-        SubscriberLoginController subscriberLoginController = loader.getController();
-        // Set up the scene and stage
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/gui/Subscriber.css")).toExternalForm());
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Subscriber Frame");
-        primaryStage.show();
-
+        //todo: implement this method
     }
 
     /**
@@ -138,35 +84,18 @@ public class SubscriberLoginController implements Initializable
         else {
             System.out.println("Could not log in subscriber ");
         }
-
     }
 
     /**
-     * This method handles the view all button click event.
-     * It sends a request to the server to retrieve all subscribers.
+     * This method handles the back button click event.
+     * It navigates to the previous screen (PrototypeWelcomeFrame.fxml).
      *
-     * @param actionEvent The action event triggered by clicking the view all button
+     * @param event The action event triggered by clicking the back button
+     * @throws Exception If there is an issue with the navigation
      */
-    public void clickViewAll(ActionEvent actionEvent)
+    public void backButtonClicked(ActionEvent event) throws Exception
     {
-        ClientServerMessage askForSubscribers = new ClientServerMessage(103, null);
-        try {
-            // Send the message to the server using the chat.accept method
-            ClientGUIController.chat.accept(askForSubscribers);
-        }
-        catch (Exception e) {
-            System.out.println("Error sending login message to server: " + e.getMessage());
-        }
-
-        try {
-            // Use the navigateTo method from ClientGUIController to switch to the PrototypeViewAll screen
-            ClientGUIController.navigateTo(actionEvent, "/gui/PrototypeViewAllFrame.fxml", "/gui/Subscriber.css", "View All Subscribers");
-        }
-        catch (Exception e) {
-            System.out.println("Error navigating to PrototypeViewAll: " + e.getMessage());
-            e.printStackTrace();
-        }
-
+        navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
     }
 }
 

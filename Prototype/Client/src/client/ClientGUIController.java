@@ -2,7 +2,7 @@ package client;
 
 import common.ClientServerMessage;
 import gui.ClientIPFrameController;
-import gui.PrototypeSubscriberWelcomeFrameController;
+import gui.SearchHomePageFrameController;
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -38,11 +38,11 @@ public class ClientGUIController extends Application
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         // Load the destination FXML
-        Parent newRoot = FXMLLoader.load(Objects.requireNonNull(PrototypeSubscriberWelcomeFrameController.class.getResource(fxmlDestination)));
+        Parent newRoot = FXMLLoader.load(Objects.requireNonNull(SearchHomePageFrameController.class.getResource(fxmlDestination)));
 
         // Optionally add a CSS file if provided
         if (cssFilePath != null && !cssFilePath.isEmpty()) {
-            newRoot.getStylesheets().add(Objects.requireNonNull(PrototypeSubscriberWelcomeFrameController.class.getResource(cssFilePath)).toExternalForm());
+            newRoot.getStylesheets().add(Objects.requireNonNull(SearchHomePageFrameController.class.getResource(cssFilePath)).toExternalForm());
         }
 
         // Update the root node of the existing scene
