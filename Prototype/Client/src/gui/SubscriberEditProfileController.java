@@ -126,7 +126,7 @@ public class SubscriberEditProfileController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        localSubscriber = SubscriberProfileOptionsFrameController.getLocalSubscriber();
+        localSubscriber = Subscriber.getLocalSubscriber();
         loadProfileDetails(localSubscriber);
     }
 }

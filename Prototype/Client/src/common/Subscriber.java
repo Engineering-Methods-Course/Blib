@@ -6,6 +6,9 @@ import java.io.Serializable;
 public class Subscriber implements Serializable
 {
 
+    // Subscriber object to store the profile details
+    private static Subscriber localSubscriber;
+
     // Unique identifier for the subscriber
     private int id;
 
@@ -33,6 +36,23 @@ public class Subscriber implements Serializable
     // Subscriber's password
     private String password;
 
+    /**
+     * This method gets the local subscriber object
+     * @return The local subscriber object
+     */
+    public static Subscriber getLocalSubscriber()
+    {
+        return localSubscriber;
+    }
+
+    /**
+     * This method sets the local subscriber object
+     * @param subscriberFromServer The subscriber object to set
+     */
+    public static void setLocalSubscriber(Subscriber subscriberFromServer)
+    {
+        localSubscriber = subscriberFromServer;
+    }
 
     /**
      * Constructor to initialize a Subscriber object with all necessary details.

@@ -11,10 +11,6 @@ import static client.ClientGUIController.navigateTo;
 
 public class SubscriberProfileOptionsFrameController
 {
-
-    // Subscriber object to store the profile details
-    private static Subscriber localSubscriber;
-
     @FXML
     public Button logoutButton;
     @FXML
@@ -36,23 +32,7 @@ public class SubscriberProfileOptionsFrameController
     @FXML
     public Button searchBookButton;
 
-    /**
-     * This method gets the local subscriber object
-     * @return The local subscriber object
-     */
-    public static Subscriber getLocalSubscriber()
-    {
-        return localSubscriber;
-    }
 
-    /**
-     * This method sets the local subscriber object
-     * @param subscriberFromServer The subscriber object to set
-     */
-    public static void setLocalSubscriber(Subscriber subscriberFromServer)
-    {
-        localSubscriber = subscriberFromServer;
-    }
 
     public void initialize()
     {

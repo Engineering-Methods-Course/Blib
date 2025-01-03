@@ -63,7 +63,7 @@ public class ClientController extends AbstractClient
                         }
                         else if (message.getMessageContent() instanceof Subscriber) {
                             Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
-                            SubscriberProfileOptionsFrameController.setLocalSubscriber(subscriberFromServer);
+                            Subscriber.setLocalSubscriber(subscriberFromServer);
                         }
                         break;
                     //  Edit subscriber details
@@ -75,7 +75,7 @@ public class ClientController extends AbstractClient
                         }
                         else if (message.getMessageContent() instanceof Subscriber) {
                             Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
-                            SubscriberProfileOptionsFrameController.setLocalSubscriber(subscriberFromServer);
+                            Subscriber.setLocalSubscriber(subscriberFromServer);
                             SubscriberEditProfileController.setLocalSubscriber(subscriberFromServer);
                             Platform.runLater(() -> showInformationAlert("Update successful", "Subscriber details updated successfully"));
                         }
