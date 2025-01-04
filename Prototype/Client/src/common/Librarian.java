@@ -5,21 +5,11 @@ import java.io.Serializable;
 public class Librarian extends User implements Serializable {
 
     private static Librarian localLibrarian = null;
-
-    private  int librarianID;
+    private final int librarianID;
     private String firstName;
     private String lastName;
 
-    public static Librarian getLocalLibrarian() {
-        return localLibrarian;
-    }
-
-    public static void setLocalLibrarian(Librarian localLibrarian) {
-        Librarian.localLibrarian = localLibrarian;
-    }
-
     /**
-     * °
      * Constructor to initialize a local Librarian object with all necessary details from the server.
      *
      * @param librarianID - the ID of the librarian
@@ -29,6 +19,24 @@ public class Librarian extends User implements Serializable {
     public Librarian(int librarianID, String firstName, String lastName) {
         super(firstName, lastName);
         this.librarianID = librarianID;
+    }
+
+    /**
+     * Gets the local librarian object.
+     *
+     * @return the local librarian object
+     */
+    public static Librarian getLocalLibrarian() {
+        return localLibrarian;
+    }
+
+    /**
+     * Sets the local librarian object.
+     *
+     * @param localLibrarian the local librarian object
+     */
+    public static void setLocalLibrarian(Librarian localLibrarian) {
+        Librarian.localLibrarian = localLibrarian;
     }
 
     /**

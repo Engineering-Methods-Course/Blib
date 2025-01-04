@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 public class Subscriber extends User implements Serializable {
 
+    private static Subscriber localSubscriber = null;
     // Unique identifier for the subscriber
     private int id;
 
@@ -15,7 +16,7 @@ public class Subscriber extends User implements Serializable {
     private String lastName;
 
     // Subscription history (e.g., the number of subscriptions)
-    private int subscriptionHistory;
+    private final int subscriptionHistory;
 
     // Subscriber's phone number
     private String phoneNumber;
@@ -42,6 +43,24 @@ public class Subscriber extends User implements Serializable {
         this.email = email;
         this.statusIsFrozen = status;
         this.subscriptionHistory = subscriptionHistory;
+    }
+
+    /**
+     * Gets the local subscriber object.
+     *
+     * @return the local subscriber object
+     */
+    public static Subscriber getLocalSubscriber() {
+        return localSubscriber;
+    }
+
+    /**
+     * Sets the local subscriber object.
+     *
+     * @param localSubscriber the local subscriber object
+     */
+    public static void setLocalSubscriber(Subscriber localSubscriber) {
+        Subscriber.localSubscriber = localSubscriber;
     }
 
     /**
