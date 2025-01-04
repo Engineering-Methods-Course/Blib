@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 public class Subscriber extends User implements Serializable {
 
+    private static Subscriber localSubscriber = null;
     // Unique identifier for the subscriber
     private int id;
 
@@ -25,6 +26,15 @@ public class Subscriber extends User implements Serializable {
 
     // Status to check if the subscriber is frozen (inactive)
     private boolean statusIsFrozen = false;
+
+
+    public static Subscriber getLocalSubscriber() {
+        return localSubscriber;
+    }
+
+    public static void setLocalSubscriber(Subscriber localSubscriber) {
+        Subscriber.localSubscriber = localSubscriber;
+    }
 
     /**
      * Constructor to initialize a Subscriber object with all necessary details.

@@ -3,10 +3,20 @@ package common;
 import java.io.Serializable;
 
 public class Librarian extends User implements Serializable {
+
+    private static Librarian localLibrarian = null;
+
     private  int librarianID;
     private String firstName;
     private String lastName;
 
+    public static Librarian getLocalLibrarian() {
+        return localLibrarian;
+    }
+
+    public static void setLocalLibrarian(Librarian localLibrarian) {
+        Librarian.localLibrarian = localLibrarian;
+    }
 
     /**
      * °
