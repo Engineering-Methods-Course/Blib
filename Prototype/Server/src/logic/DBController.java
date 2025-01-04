@@ -166,6 +166,7 @@ public class DBController {
             System.out.println("Error: With updating the subscriber (editSubscriberDetails) " + e);
             return response;
         }
+        //! need to add to log
     }
 
     /**
@@ -197,6 +198,7 @@ public class DBController {
             System.out.println("Error: With updating the subscriber (editSubscriberDetails) " + e);
             return response;
         }
+        //! need to add to log
     }
 
     /**
@@ -376,6 +378,7 @@ public class DBController {
             }
         }
         return response;
+        //! need to add to log
     }
 
     /**
@@ -489,5 +492,91 @@ public class DBController {
             }
         }
         return response;
+        //! need to add to log
+    }
+
+    /**
+     * case 304
+     * This method returns a book from a subscriber
+     *
+     * @param messageContent Array list containing the subscriber ID and the book ID
+     * @param conn           The connection to the database
+     * @return Array list containing true if the book was returned successfully and false if not with the error message
+     */
+    public ArrayList<String> returnBookFromSubscriber(ArrayList<String> messageContent, Connection conn) {
+        ArrayList<String> response = new ArrayList<>();
+        try {
+            /*
+             * Created a date object to get the current date
+             */
+            Date returnDate = new Date(System.currentTimeMillis());
+
+            conn.setAutoCommit(false);
+
+            /*
+             * The query updates the status of the book_copy to available (1)
+             */
+            String updateCopyQuery = "UPDATE book_copy SET available = ? WHERE copy_id = ?";
+            PreparedStatement updateCopyStatement = conn.prepareStatement(updateCopyQuery);
+            updateCopyStatement.setInt(1, 1);
+            updateCopyStatement.setInt(2, Integer.parseInt(messageContent.get(2)));
+            updateCopyStatement.executeUpdate();
+
+            /*
+             * The query updates the amount of borrowed books in the book table
+             */
+            String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies - 1" +
+                    "WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+            PreparedStatement updateBookStatement = conn.prepareStatement(updateBookQuery);
+            updateBookStatement.setInt(1, Integer.parseInt(messageContent.get(2))); // copy_id
+            updateBookStatement.executeUpdate();
+
+
+
+            /*
+             * The query selects from borrow table subscriber_id where copy_id matches the given value
+             * and the status is borrowed
+            */
+            String getSubscriberQuery = "SELECT subscriber_id FROM borrow WHERE copy_id = ? AND status = 'borrowed'";
+            PreparedStatement getSubscriberStatement = conn.prepareStatement(getSubscriberQuery);
+            getSubscriberStatement.setInt(1, Integer.parseInt(messageContent.get(2)));
+            ResultSet getSubscriberRs = getSubscriberStatement.executeQuery();
+
+            /*
+             * If the query was successful, add the values of the columns to a list
+             */
+            String returnQuery = "UPDATE borrow SET status = ?, return_date = ? WHERE subscriber_id = ? AND copy_id = ?";
+            PreparedStatement returnStatement = conn.prepareStatement(returnQuery);
+            returnStatement.setString(1, "returned");
+            returnStatement.setDate(2, returnDate);
+            returnStatement.setInt(3, Integer.parseInt(messageContent.get(1)));
+            returnStatement.setInt(4, Integer.parseInt(messageContent.get(2)));
+            returnStatement.executeUpdate();
+
+            /*
+             * Commit the transaction
+             */
+            conn.commit();
+            response.add("true");
+
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException rollbackEx) {
+                System.out.println("Error: Rolling back transaction" + rollbackEx);
+            }
+            System.out.println("Error: Returning book" + e);
+            response.add("false");
+            response.add("Problem with returning the book");
+
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException ex) {
+                System.out.println("Error: Setting auto-commit back to true" + ex);
+            }
+        }
+        return response;
+        //! need to add to log
     }
 }
