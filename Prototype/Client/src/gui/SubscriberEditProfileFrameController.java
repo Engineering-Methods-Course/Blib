@@ -16,7 +16,6 @@ import static client.ClientGUIController.navigateTo;
 public class SubscriberEditProfileFrameController implements Initializable
 {
 
-    private static Subscriber localSubscriber = null;
     // FXML elements for labels
     @FXML
     private Label lblID;
@@ -48,14 +47,6 @@ public class SubscriberEditProfileFrameController implements Initializable
     private Button btnBack = null;
     @FXML
     private Button btnUpdate = null;
-
-    /**
-     * This method initializes the Subscriber edit profile screen
-     */
-    public static void setLocalSubscriber(Subscriber subscriberFromServer)
-    {
-        localSubscriber = subscriberFromServer;
-    }
 
     /**
      * This method handles the back button click event.
@@ -126,7 +117,6 @@ public class SubscriberEditProfileFrameController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        localSubscriber = Subscriber.getLocalSubscriber();
-        loadProfileDetails(localSubscriber);
+        loadProfileDetails(Subscriber.getLocalSubscriber());
     }
 }
