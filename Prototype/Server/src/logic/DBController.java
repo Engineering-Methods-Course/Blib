@@ -1,6 +1,9 @@
 package logic;
 
+import common.Book;
+import common.Librarian;
 import common.Subscriber;
+import common.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,10 +39,8 @@ public class DBController {
      * @param conn           The connection to the database
      * @return The user
      */
-    public ArrayList<String> userLogin(ArrayList<String> messageContent, Connection conn) {
+    public User userLogin(ArrayList<String> messageContent, Connection conn) {
         try {
-            ArrayList<String> userDetails = new ArrayList<>();
-            int status;
             /*
              * The query selects all columns from the user table where the username matches a given value
              */
@@ -63,21 +64,8 @@ public class DBController {
                     subStatement.setString(1, userId);
                     ResultSet subRs = subStatement.executeQuery();
                     if (subRs.next()) {
-                        userDetails.add("subscriber");
-                        userDetails.add(String.valueOf(subRs.getInt("subscriber_id")));
-                        userDetails.add(subRs.getString("first_name"));
-                        userDetails.add(subRs.getString("last_name"));
-                        userDetails.add(subRs.getString("phone_number"));
-                        userDetails.add(subRs.getString("email"));
-                        status = subRs.getInt("status");
-                        if (status == 0) {
-                            userDetails.add("false");
-                        } else {
-                            userDetails.add("true");
-                        }
-                        userDetails.add(String.valueOf(subRs.getInt("detailed_subscription_history")));
-                        userDetails.add(messageContent.get(0));
-                        userDetails.add(messageContent.get(1));
+                        Subscriber subscriber = new Subscriber(subRs.getInt("subscriber_id"), subRs.getString("first_name"), subRs.getString("last_name"), subRs.getString("phone_number"), subRs.getString("email"), subRs.getInt("status") == 1, subRs.getInt("detailed_subscription_history"));
+                        return subscriber;
                     }
                 }
                 /*
@@ -89,26 +77,17 @@ public class DBController {
                     libStatement.setString(1, userId);
                     ResultSet subRs = libStatement.executeQuery();
                     if (subRs.next()) {
-                        userDetails.add("librarian");
-                        userDetails.add(String.valueOf(subRs.getInt("librarian_id")));
-                        userDetails.add(subRs.getString("first_name"));
-                        userDetails.add(subRs.getString("last_name"));
-                        userDetails.add(messageContent.get(0));
-                        userDetails.add(messageContent.get(1));
+                        Librarian librarian = new Librarian(subRs.getInt("librarian_id"), subRs.getString("first_name"), subRs.getString("last_name"));
+                        return librarian;
                     }
                 }
             }
             // No subscriber found
-            if (!userDetails.isEmpty()) {
-                System.out.println("User found");
-                return userDetails;
-            }
-            System.out.println("No user found(Subscriber LogIn Failed)");
+            System.out.println("No user found (userLogin)");
             return null;
-
         } catch (SQLException e) {
             // If an error occur
-            System.out.println("Error: Login Failed" + e);
+            System.out.println("Error: Login Failed (userLogin) " + e);
             return null;
         }
     }
@@ -123,7 +102,6 @@ public class DBController {
     public ArrayList<Subscriber> viewAllSubscribers(Connection conn) {
         try {
             ArrayList<Subscriber> subscribersList = new ArrayList<>();
-            int status;
             /*
              * The query selects all columns from the subscriber table
              */
@@ -135,113 +113,190 @@ public class DBController {
              * Add the list to the subscribers list
              */
             while (getSubscribersRs.next()) {
-                ArrayList<String> subscriberDetails = new ArrayList<>();
-                int subscriberId = getSubscribersRs.getInt("subscriber_id");
-                subscriberDetails.add(String.valueOf(subscriberId));
-                subscriberDetails.add(getSubscribersRs.getString("first_name"));
-                subscriberDetails.add(getSubscribersRs.getString("last_name"));
-                subscriberDetails.add(getSubscribersRs.getString("phone_number"));
-                subscriberDetails.add(getSubscribersRs.getString("email"));
-                status = getSubscribersRs.getInt("status");
-                if (status == 0) {
-                    subscriberDetails.add("false");
-                } else {
-                    subscriberDetails.add("true");
-                }
-                subscriberDetails.add(String.valueOf(getSubscribersRs.getInt("detailed_subscription_history")));
-                /*
-                 * get the username and password of the subscriber
-                 */
-                String getSubscribersUserQuery = "SELECT * FROM users WHERE user_id = ?";
-                PreparedStatement getSubscribersUserStatement = conn.prepareStatement(getSubscribersUserQuery);
-                getSubscribersUserStatement.setInt(1, subscriberId);
-                ResultSet getSubscribersUserRs = getSubscribersUserStatement.executeQuery();
-                if (getSubscribersUserRs.next()) {
-                    subscriberDetails.add(getSubscribersUserRs.getString("username"));
-                    subscriberDetails.add(getSubscribersUserRs.getString("password"));
-                }
-                // Add the subscriber to the arraylist
-                subscribersList.add(new Subscriber(Integer.parseInt(subscriberDetails.get(0)), subscriberDetails.get(1), subscriberDetails.get(2), subscriberDetails.get(3), subscriberDetails.get(4), Boolean.parseBoolean(subscriberDetails.get(5)), Integer.parseInt(subscriberDetails.get(6)), subscriberDetails.get(7), subscriberDetails.get(8)));
-            }
-            // No subscriber found
-            if (subscribersList.isEmpty()) {
-                System.out.println("No subscribers found");
-                return null;
+                Subscriber subscriber = new Subscriber(getSubscribersRs.getInt("subscriber_id"), getSubscribersRs.getString("first_name"), getSubscribersRs.getString("last_name"), getSubscribersRs.getString("phone_number"), getSubscribersRs.getString("email"), getSubscribersRs.getInt("status") == 1, getSubscribersRs.getInt("detailed_subscription_history"));
+                subscribersList.add(subscriber);
             }
             // Subscriber/s found
-            else {
-                System.out.println("Subscribers list found");
+            if (!subscribersList.isEmpty()) {
+                System.out.println("Subscribers list found (viewAllSubscribers)");
                 return subscribersList;
+
+            }
+            // No subscriber found
+            else {
+                System.out.println("No subscribers found (viewAllSubscribers)");
+                return null;
             }
             // If an error occur
         } catch (SQLException e) {
-            System.out.println("Error: With exporting subscribers from sql(getSubscribersList LibrarianController) " + e);
+            System.out.println("Error: With exporting subscribers from sql(viewAllSubscribers) " + e);
             return null;
         }
     }
 
     /**
      * case 216
-     * This method gets the list of all subscribers in the system
+     * This method edits the subscriber details
      *
      * @param messageContent the new subscriber details
      * @param conn           The connection to the database
-     * @return array list containing true if the subscriber was added successfully and false if not with the error message
+     * @return array list containing true if the subscriber was edited successfully and false if not with the error message
      */
-    public ArrayList<String> editSubscriberDetails(Subscriber messageContent, Connection conn) {
+    public ArrayList<String> editSubscriberDetails(ArrayList<String> messageContent, Connection conn) {
         ArrayList<String> response = new ArrayList<>();
         try {
-            /*
-             * set auto-commit to false
-             */
-            conn.setAutoCommit(false);
-
             /*
              * The query updates the phone number and email of the subscriber where the id matches the given value
              */
             String subscriberInfoQuery = "UPDATE subscriber SET subscriber_phone_number = ?, subscriber_email = ? WHERE subscriber_id = ?";
             PreparedStatement subscriberInfoStatement = conn.prepareStatement(subscriberInfoQuery);
-            subscriberInfoStatement.setString(1, messageContent.getPhoneNumber());
-            subscriberInfoStatement.setString(2, messageContent.getEmail());
-            subscriberInfoStatement.setInt(3, messageContent.getID());
+            subscriberInfoStatement.setString(1, messageContent.get(1));
+            subscriberInfoStatement.setString(2, messageContent.get(2));
+            subscriberInfoStatement.setInt(3, Integer.parseInt(messageContent.get(0)));
             subscriberInfoStatement.executeUpdate();
+            response.add("True");
+            return response;
+        } catch (SQLException e) {
+            // If an error occur
+            response.add("False");
+            response.add("Problem with updating the subscriber");
+            System.out.println("Error: With updating the subscriber (editSubscriberDetails) " + e);
+            return response;
+        }
+    }
+
+    /**
+     * case 218
+     * This method edits the subscriber login details
+     *
+     * @param messageContent the new subscriber details
+     * @param conn           The connection to the database
+     * @return array list containing true if the subscriber was edited successfully and false if not with the error message
+     */
+    public ArrayList<String> editSubscriberLoginDetails(ArrayList<String> messageContent, Connection conn) {
+        ArrayList<String> response = new ArrayList<>();
+        try {
             /*
              * The query updates the username and password of the subscriber where the id matches the given value
              */
             String subscriberUserinfoQuery = "UPDATE users SET username = ?, password = ? WHERE user_id = ?";
             PreparedStatement subscriberUserinfoStatement = conn.prepareStatement(subscriberUserinfoQuery);
-            subscriberUserinfoStatement.setString(1, messageContent.getUsername());
-            subscriberUserinfoStatement.setString(2, messageContent.getPassword());
-            subscriberUserinfoStatement.setInt(3, messageContent.getID());
+            subscriberUserinfoStatement.setString(1, messageContent.get(1));
+            subscriberUserinfoStatement.setString(2, messageContent.get(2));
+            subscriberUserinfoStatement.setInt(3, Integer.parseInt(messageContent.get(3)));
             subscriberUserinfoStatement.executeUpdate();
+            response.add("True");
+            return response;
+        } catch (SQLException e) {
+            // If an error occur
+            response.add("False");
+            response.add("Problem with updating the subscriber");
+            System.out.println("Error: With updating the subscriber (editSubscriberDetails) " + e);
+            return response;
+        }
+    }
+
+    /**
+     * case 200
+     * This method searches for books by a partial name match
+     *
+     * @param bookName The partial name of the book
+     * @param conn     The connection to the database
+     * @return The list of books that match the partial name
+     */
+    public ArrayList<Book> searchBookByName(String bookName, Connection conn) {
+        try {
+            ArrayList<Book> books = new ArrayList<>();
+            /*
+             * The query selects all columns from the book table where the name matches a given value
+             */
+            String findBookQuery = "SELECT * FROM book WHERE name LIKE ?";
+            PreparedStatement findBookStatement = conn.prepareStatement(findBookQuery);
+            findBookStatement.setString(1, "%" + bookName + "%");
+
+            ResultSet rs = findBookStatement.executeQuery();
 
             /*
-             * Commit the transaction
+             * If the query was successful, add the values of the book to a list
              */
-            conn.commit();
-            response.add("true");
+            while (rs.next()) {
+                Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("available_copies"), rs.getInt("lost_copies"));
+                books.add(book);
+            }
+            System.out.println("Books found (searchBookByName)");
+            return books;
         } catch (SQLException e) {
-            /*
-             * Rollback the transaction if an error occurs
-             */
-            try {
-                conn.rollback();
-            } catch (SQLException rollbackEx) {
-                System.out.println("Error: Rolling back transaction" + rollbackEx);
-            }
-            System.out.println("Error: Updating subscriber details" + e);
-            response.add("false");
-            response.add("Problem with updating the subscriber");
-        } finally {
-            try {
-                /*
-                 * Set auto-commit back to true
-                 */
-                conn.setAutoCommit(true);
-            } catch (SQLException ex) {
-                System.out.println("Error: Setting auto-commit back to true" + ex);
-            }
+            System.out.println("Error: With exporting books from sql (searchBookByName) " + e);
+            return null;
         }
-        return response;
+    }
+
+    /**
+     * case 202
+     * This method searches for books by a genre match
+     *
+     * @param bookGenre The partial genre of the book
+     * @param conn      The connection to the database
+     * @return The list of books that match the partial genre
+     */
+    public ArrayList<Book> searchBookByGenre(String bookGenre, Connection conn) {
+        try {
+            ArrayList<Book> books = new ArrayList<>();
+            /*
+             * The query selects all columns from the book table where the genre matches a given value
+             */
+            String findBookQuery = "SELECT * FROM book WHERE main_genre = ?";
+            PreparedStatement findbookStatement = conn.prepareStatement(findBookQuery);
+            findbookStatement.setString(1, bookGenre);
+
+            ResultSet rs = findbookStatement.executeQuery();
+
+            /*
+             * If the query was successful, add the values of the book to a list
+             */
+            while (rs.next()) {
+                Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("available_copies"), rs.getInt("lost_copies"));
+                books.add(book);
+            }
+            System.out.println("Books found (searchBookByGenre)");
+            return books;
+        } catch (SQLException e) {
+            System.out.println("Error: With exporting books from sql (searchBookByGenre) " + e);
+            return null;
+        }
+    }
+
+    /**
+     * case 204
+     * This method gets the list of all books in the system by description
+     *
+     * @param conn The connection to the database
+     * @return The arraylist of all books
+     */
+    public ArrayList<Book> searchBookByDescription(String text, Connection conn) {
+        try {
+            ArrayList<Book> books = new ArrayList<>();
+            /*
+             * The query selects all columns from the book table where the description matches a given value
+             */
+            String findBookQuery = "SELECT * FROM book WHERE MATCH(description) AGAINST(? IN NATURAL LANGUAGE MODE)";
+            PreparedStatement findbookStatement = conn.prepareStatement(findBookQuery);
+            findbookStatement.setString(1, text);
+
+            ResultSet rs = findbookStatement.executeQuery();
+
+            /*
+             * If the query was successful, add the values of the book to a list
+             */
+            while (rs.next()) {
+                Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("available_copies"), rs.getInt("lost_copies"));
+                books.add(book);
+            }
+            System.out.println("Books found (searchBookByDescription)");
+            return books;
+        } catch (SQLException e) {
+            System.out.println("Error: With exporting books from sql (searchBookByDescription) " + e);
+            return null;
+        }
     }
 }

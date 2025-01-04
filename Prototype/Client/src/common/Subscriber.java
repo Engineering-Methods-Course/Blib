@@ -3,11 +3,7 @@ package common;
 import java.io.Serializable;
 
 
-public class Subscriber implements Serializable
-{
-
-    // Subscriber object to store the profile details
-    private static Subscriber localSubscriber;
+public class Subscriber extends User implements Serializable {
 
     // Unique identifier for the subscriber
     private int id;
@@ -30,30 +26,6 @@ public class Subscriber implements Serializable
     // Status to check if the subscriber is frozen (inactive)
     private boolean statusIsFrozen = false;
 
-    // Subscriber's username
-    private String username;
-
-    // Subscriber's password
-    private String password;
-
-    /**
-     * This method gets the local subscriber object
-     * @return The local subscriber object
-     */
-    public static Subscriber getLocalSubscriber()
-    {
-        return localSubscriber;
-    }
-
-    /**
-     * This method sets the local subscriber object
-     * @param subscriberFromServer The subscriber object to set
-     */
-    public static void setLocalSubscriber(Subscriber subscriberFromServer)
-    {
-        localSubscriber = subscriberFromServer;
-    }
-
     /**
      * Constructor to initialize a Subscriber object with all necessary details.
      *
@@ -63,17 +35,13 @@ public class Subscriber implements Serializable
      * @param phoneNumber Subscriber's phone number
      * @param email       Subscriber's email address
      */
-    public Subscriber(int id, String firstName, String lastName, String phoneNumber, String email, boolean status, int subscriptionHistory, String username, String password)
-    {
+    public Subscriber(int id, String firstName, String lastName, String phoneNumber, String email, boolean status, int subscriptionHistory) {
+        super(firstName, lastName);
         this.id = id;
-        this.firstname = firstName;
-        this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.statusIsFrozen = status;
         this.subscriptionHistory = subscriptionHistory;
-        this.username = username;
-        this.password = password;
     }
 
     /**
@@ -81,8 +49,7 @@ public class Subscriber implements Serializable
      *
      * @return the id of the subscriber
      */
-    public int getID()
-    {
+    public int getID() {
         return id;
     }
 
@@ -91,8 +58,7 @@ public class Subscriber implements Serializable
      *
      * @param id Unique identifier for the subscriber
      */
-    public void setId(int id)
-    {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -101,8 +67,7 @@ public class Subscriber implements Serializable
      *
      * @return the name of the subscriber
      */
-    public String getFirstName()
-    {
+    public String getFirstName() {
         return firstname;
     }
 
@@ -111,8 +76,7 @@ public class Subscriber implements Serializable
      *
      * @param name First name of the subscriber
      */
-    public void setFirstName(String name)
-    {
+    public void setFirstName(String name) {
         this.firstname = name;
     }
 
@@ -121,8 +85,7 @@ public class Subscriber implements Serializable
      *
      * @return the last name of the subscriber
      */
-    public String getLastName()
-    {
+    public String getLastName() {
         return lastName;
     }
 
@@ -131,8 +94,7 @@ public class Subscriber implements Serializable
      *
      * @param lastName Last name of the subscriber
      */
-    public void setLastName(String lastName)
-    {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
@@ -141,8 +103,7 @@ public class Subscriber implements Serializable
      *
      * @return the subscription history count
      */
-    public int getSubscriptionHistory()
-    {
+    public int getSubscriptionHistory() {
         return subscriptionHistory;
     }
 
@@ -151,8 +112,7 @@ public class Subscriber implements Serializable
      *
      * @return the phone number of the subscriber
      */
-    public String getPhoneNumber()
-    {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
@@ -161,8 +121,7 @@ public class Subscriber implements Serializable
      *
      * @param phoneNumber Subscriber's phone number
      */
-    public void setPhoneNumber(String phoneNumber)
-    {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -171,8 +130,7 @@ public class Subscriber implements Serializable
      *
      * @return the email address of the subscriber
      */
-    public String getEmail()
-    {
+    public String getEmail() {
         return email;
     }
 
@@ -181,8 +139,7 @@ public class Subscriber implements Serializable
      *
      * @param email Subscriber's email address
      */
-    public void setEmail(String email)
-    {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -191,8 +148,7 @@ public class Subscriber implements Serializable
      *
      * @return true if the account is frozen, false otherwise
      */
-    public boolean getStatusIsFrozen()
-    {
+    public boolean getStatusIsFrozen() {
         return statusIsFrozen;
     }
 
@@ -202,49 +158,8 @@ public class Subscriber implements Serializable
      *
      * @param statusIsFrozen true if the account should be frozen, false otherwise
      */
-    public void setStatusIsFrozen(boolean statusIsFrozen)
-    {
+    public void setStatusIsFrozen(boolean statusIsFrozen) {
         this.statusIsFrozen = statusIsFrozen;
-    }
-
-    /**
-     * Gets the username of the subscriber.
-     *
-     * @return the username of the subscriber
-     */
-    public String getUsername()
-    {
-        return username;
-    }
-
-    /**
-     * Sets the username of the subscriber.
-     *
-     * @param username the username of the subscriber
-     */
-    public void setUsername(String username)
-    {
-        this.username = username;
-    }
-
-    /**
-     * Gets the password of the subscriber.
-     *
-     * @return the password of the subscriber
-     */
-    public String getPassword()
-    {
-        return password;
-    }
-
-    /**
-     * Sets the password of the subscriber.
-     *
-     * @param password the password of the subscriber
-     */
-    public void setPassword(String password)
-    {
-        this.password = password;
     }
 
 }
