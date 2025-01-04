@@ -21,8 +21,6 @@ import static client.ClientGUIController.navigateTo;
 public class SubscriberLoginFrameController implements Initializable
 {
 
-    private static final Subscriber localSubscriber = null;
-
     @FXML
     public Button backButton;
     @FXML
@@ -78,8 +76,8 @@ public class SubscriberLoginFrameController implements Initializable
             System.out.println("Error sending login message to server: " + e.getMessage());
         }
 
-        if (localSubscriber != null) {
-            navigateTo(event, "/gui/PrototypeSubscriberWelcomeFrame.fxml", "/gui/Subscriber.css", "Subscriber Frame");
+        if (Subscriber.getLocalSubscriber() != null) {
+            navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Page");
         }
         else {
             System.out.println("Could not log in subscriber ");

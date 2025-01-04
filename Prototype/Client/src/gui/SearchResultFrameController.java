@@ -36,7 +36,7 @@ public class SearchResultFrameController
      */
     public void backButtonClicked(ActionEvent event) throws Exception
     {
-        navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Search Home Page");
+        navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
     }
 
     /**

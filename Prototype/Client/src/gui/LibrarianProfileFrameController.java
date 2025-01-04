@@ -57,6 +57,7 @@ public class LibrarianProfileFrameController
         navigateTo(event, "BorrowBookFrame.fxml", "Subscriber.css", "Borrow Book");
     }
 
+    //todo: create the frame for returning a book
     /**
      * This method is called when the return button is clicked
      * @param event      The event that triggered this method
@@ -74,9 +75,10 @@ public class LibrarianProfileFrameController
      */
     public void searchButtonClicked(ActionEvent event) throws Exception
     {
-        navigateTo(event, "SearchBookFrame.fxml", "Subscriber.css", "Home Page");
+        navigateTo(event, "SearchHomePageFrame.fxml", "Subscriber.css", "Home Page");
     }
 
+    //todo: create the frame for viewing all subscribers
     /**
      * This method is called when the view all subscribers button is clicked
      * @param event      The event that triggered this method
@@ -87,6 +89,7 @@ public class LibrarianProfileFrameController
         navigateTo(event, "ViewAllSubscribersFrame.fxml", "Subscriber.css", "All Subscribers");
     }
 
+    //todo: create the frame for viewing reports
     /**
      * This method is called when the view reports button is clicked
      * @param event      The event that triggered this method
@@ -97,6 +100,7 @@ public class LibrarianProfileFrameController
         navigateTo(event, "ViewReportsFrame.fxml", "Subscriber.css", "Reports");
     }
 
+    //todo: create the frame for registering a member
     /**
      * This method is called when the register member button is clicked
      * @param event      The event that triggered this method
@@ -107,6 +111,7 @@ public class LibrarianProfileFrameController
         navigateTo(event, "RegisterMemberFrame.fxml", "Subscriber.css", "Register Member");
     }
 
+    //todo: create the frame for viewing messages
     /**
      * This method is called when the view messages button is clicked
      * @param event      The event that triggered this method

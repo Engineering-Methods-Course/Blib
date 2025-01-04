@@ -47,12 +47,7 @@ public class ClientController extends AbstractClient
         try {
             if (msg instanceof ClientServerMessage) {
                 ClientServerMessage message = (ClientServerMessage) msg;
-                /*
-                 * 998 - Server closed connection
-                 * 104 - Get a list of all subscribers
-                 * 202 - Get info of a specific subscriber back from the server
-                 * 204 - Edit info of a specific subscriber
-                 */
+
                 switch (message.getId()) {
                     // get the details of a specific subscriber
                     case 202:
