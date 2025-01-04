@@ -503,8 +503,9 @@ public class DBController {
      * @param conn           The connection to the database
      * @return Array list containing true if the book was returned successfully and false if not with the error message
      */
-    public ArrayList<String> returnBookFromSubscriber(ArrayList<String> messageContent, Connection conn) {
+    public ArrayList<String> returnBookFromSubscriber(String messageContent, Connection conn) {
         ArrayList<String> response = new ArrayList<>();
+        int subscriberId = 0;
         try {
             /*
              * Created a date object to get the current date
@@ -519,7 +520,7 @@ public class DBController {
             String updateCopyQuery = "UPDATE book_copy SET available = ? WHERE copy_id = ?";
             PreparedStatement updateCopyStatement = conn.prepareStatement(updateCopyQuery);
             updateCopyStatement.setInt(1, 1);
-            updateCopyStatement.setInt(2, Integer.parseInt(messageContent.get(2)));
+            updateCopyStatement.setInt(2, Integer.parseInt(messageContent));
             updateCopyStatement.executeUpdate();
 
             /*
@@ -528,10 +529,8 @@ public class DBController {
             String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies - 1" +
                     "WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
             PreparedStatement updateBookStatement = conn.prepareStatement(updateBookQuery);
-            updateBookStatement.setInt(1, Integer.parseInt(messageContent.get(2))); // copy_id
+            updateBookStatement.setInt(1, Integer.parseInt(messageContent)); // copy_id
             updateBookStatement.executeUpdate();
-
-
 
             /*
              * The query selects from borrow table subscriber_id where copy_id matches the given value
@@ -539,18 +538,21 @@ public class DBController {
             */
             String getSubscriberQuery = "SELECT subscriber_id FROM borrow WHERE copy_id = ? AND status = 'borrowed'";
             PreparedStatement getSubscriberStatement = conn.prepareStatement(getSubscriberQuery);
-            getSubscriberStatement.setInt(1, Integer.parseInt(messageContent.get(2)));
+            getSubscriberStatement.setInt(1, Integer.parseInt(messageContent));
             ResultSet getSubscriberRs = getSubscriberStatement.executeQuery();
+            if (getSubscriberRs.next()) {
+                subscriberId = getSubscriberRs.getInt("subscriber_id");
+            }
 
             /*
-             * If the query was successful, add the values of the columns to a list
+             * The query updates the status of the borrow table to returned and the return date to the current date
              */
             String returnQuery = "UPDATE borrow SET status = ?, return_date = ? WHERE subscriber_id = ? AND copy_id = ?";
             PreparedStatement returnStatement = conn.prepareStatement(returnQuery);
             returnStatement.setString(1, "returned");
             returnStatement.setDate(2, returnDate);
-            returnStatement.setInt(3, Integer.parseInt(messageContent.get(1)));
-            returnStatement.setInt(4, Integer.parseInt(messageContent.get(2)));
+            returnStatement.setInt(3, subscriberId);
+            returnStatement.setInt(4, Integer.parseInt(messageContent));
             returnStatement.executeUpdate();
 
             /*

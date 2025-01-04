@@ -289,7 +289,27 @@ public class ServerController extends AbstractServer {
                             break;
                         }
                     case (304):
-                        break;
+                        /**
+                         * do: librarian returns a book of a subscriber to the library
+                         * in: String {book id}
+                         * return: (id 305) ArrayList<String> {success/fail, error message}
+                         */
+                        try {
+                            if (message.getMessageContent() instanceof String) {
+                                client.sendToClient(new ClientServerMessage(305, dbController.returnBookFromSubscriber((String) message.getMessageContent(), conn)));
+                                System.out.println("Book was returned from subscriber");
+                            } else {
+                                System.out.println("Cannot return book Message is not a String");
+                                client.sendToClient(new ClientServerMessage(305, new ArrayList<String>() {{
+                                    add("fail");
+                                    add("Cannot return book Message is not a String");
+                                }}));
+                            }
+                            break;
+                            } catch (Exception e) {
+                            System.out.println("Error: with return method (case 304)" + e);
+                            break;
+                        }
                     case (306):
                         /**
                          * do: librarian wants to view subscribers in the system
