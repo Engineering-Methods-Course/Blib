@@ -10,6 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class DBController {
     private static DBController instance = null;
@@ -298,5 +301,193 @@ public class DBController {
             System.out.println("Error: With exporting books from sql (searchBookByDescription) " + e);
             return null;
         }
+    }
+
+    /**
+     * case 300
+     * This method registers a new subscriber in the system
+     *
+     * @param messageContent the new subscriber details
+     * @param conn           The connection to the database
+     * @return array list containing true if the subscriber was added successfully and false if not with the error message
+     */
+    public ArrayList<String> registerNewSubscriber(ArrayList<String> messageContent, Connection conn) {
+        /*
+         * The response array list
+         */
+        ArrayList<String> response = new ArrayList<>();
+        int newId = 0;
+        try {
+            conn.setAutoCommit(false);
+            /*
+             * The query inserts the subscriber details into the subscriber table
+             */
+            String subscriberQuery = "INSERT INTO subscriber (first_name, last_name, phone_number, email, status) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement subscriberStatement = conn.prepareStatement(subscriberQuery);
+            subscriberStatement.setString(1, messageContent.get(0));
+            subscriberStatement.setString(2, messageContent.get(1));
+            subscriberStatement.setString(3, messageContent.get(2));
+            subscriberStatement.setString(4, messageContent.get(3));
+            subscriberStatement.setInt(5, Integer.parseInt(messageContent.get(4)));
+            subscriberStatement.executeUpdate();
+
+            /*
+             * Get the new subscriber ID
+             */
+            ResultSet subscriberKey = subscriberStatement.getGeneratedKeys();
+            if (subscriberKey.next()) {
+                newId = subscriberKey.getInt(1);
+                System.out.println("New subscriber ID: " + newId);
+            } else {
+                System.out.println("Error: Getting new subscriber ID");
+                throw new SQLException();
+            }
+
+            /*
+             * The query inserts the user details into the user table
+             */
+            String userQuery = "INSERT INTO users (username, password, type, user_id) VALUES (?, ?, ?, ?)";
+            PreparedStatement userStatement = conn.prepareStatement(userQuery);
+            userStatement.setString(1, messageContent.get(5));
+            userStatement.setString(2, messageContent.get(6));
+            userStatement.setString(3, "subscriber");
+            userStatement.setInt(4, newId);
+            userStatement.executeUpdate();
+
+            /*
+             * Commit the transaction
+             */
+            conn.commit();
+            response.add("true");
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException rollbackEx) {
+                System.out.println("Error: Rolling back transaction" + rollbackEx);
+            }
+            System.out.println("Error: Registering new subscriber" + e);
+            response.add("false");
+            response.add("Problem with registering the subscriber");
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException ex) {
+                System.out.println("Error: Setting auto-commit back to true" + ex);
+            }
+        }
+        return response;
+    }
+
+    /**
+     * case 302
+     * This method borrows a book to a subscriber
+     *
+     * @param messageContent Array list containing the subscriber ID and the book ID and return date
+     * @param conn           The connection to the database
+     * @return Array list containing true if the book was borrowed successfully and false if not with the error message
+     */
+    public ArrayList<String> borrowBookToSubscriber(ArrayList<String> messageContent, Connection conn) {
+        ArrayList<String> response = new ArrayList<>();
+        try {
+            Date returnDate;
+            /*
+             * This query selects the status of the book where the book ID matches the given value
+             * and checks if subscriber is not frozen
+             */
+            String checkSubscriberQuery = "SELECT status FROM subscriber WHERE subscriber_id = ?";
+            PreparedStatement checkSubscriberStatement = conn.prepareStatement(checkSubscriberQuery);
+            checkSubscriberStatement.setInt(1, Integer.parseInt(messageContent.get(0)));
+            ResultSet checkSubscriberRs = checkSubscriberStatement.executeQuery();
+            if (checkSubscriberRs.next()) {
+                if (checkSubscriberRs.getInt("status") == 0) {
+                    response.add("false");
+                    response.add("Subscriber is frozen");
+                    return response;
+                }
+            }
+
+            /*
+            * This query checks whether the book is available
+             */
+            String checkBookQuery = "SELECT status FROM book_copy WHERE copy_id = ?";
+            PreparedStatement checkBookStatement = conn.prepareStatement(checkBookQuery);
+            checkBookStatement.setInt(1, Integer.parseInt(messageContent.get(2)));
+            ResultSet checkBookRs = checkBookStatement.executeQuery();
+            if (checkBookRs.next()) {
+                if (checkBookRs.getInt("available") == 0) {
+                    response.add("false");
+                    response.add("Book is not available at the moment");
+                    return response;
+                }
+            }
+
+            conn.setAutoCommit(false);
+
+            /*
+             * Created a date object to convert the string date to sql date
+             */
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                java.util.Date parsed = format.parse(messageContent.get(3));
+                returnDate = new Date(parsed.getTime());
+            } catch (ParseException e) {
+                System.out.println("Error: Parsing date" + e);
+                response.add("false");
+                response.add("Problem with parsing the return date");
+                return response;
+            }
+
+            /*
+             * The query updates the status of the book_copy to unavailable (0)
+             */
+            String updateCopyQuery = "UPDATE book_copy SET available = ? WHERE copy_id = ?";
+            PreparedStatement updateCopyStatement = conn.prepareStatement(updateCopyQuery);
+            updateCopyStatement.setInt(1, 0);
+            updateCopyStatement.executeUpdate();
+
+            /*
+             * The query update the amount of borrowed books in the book table
+             */
+            String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies + 1" +
+                    "WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+            PreparedStatement updateBookStatement = conn.prepareStatement(updateBookQuery);
+            updateBookStatement.setInt(1, Integer.parseInt(messageContent.get(2))); // copy_id
+            updateBookStatement.executeUpdate();
+
+            /*
+             * The query inserts the book details into the borrow table
+             */
+            String borrowQuery = "INSERT INTO borrow (subscriber_id, copy_id, expected_return_date, status) VALUES (?, ?, ?, ?)";
+            PreparedStatement borrowStatement = conn.prepareStatement(borrowQuery);
+            borrowStatement.setInt(1, Integer.parseInt(messageContent.get(1)));
+            borrowStatement.setInt(2, Integer.parseInt(messageContent.get(2)));
+            borrowStatement.setDate(3, returnDate);
+            borrowStatement.setString(4, "borrowed");
+            borrowStatement.executeUpdate();
+
+            /*
+             * Commit the transaction
+             */
+            conn.commit();
+            response.add("true");
+
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException rollbackEx) {
+                System.out.println("Error: Rolling back transaction" + rollbackEx);
+            }
+            System.out.println("Error: Borrowing book" + e);
+            response.add("false");
+            response.add("Problem with borrowing the book");
+
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException ex) {
+                System.out.println("Error: Setting auto-commit back to true" + ex);
+            }
+        }
+        return response;
     }
 }

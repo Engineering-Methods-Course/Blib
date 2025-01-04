@@ -240,9 +240,54 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (300):
-                        break;
+                        /**
+                         * do: librarian wants to register a new subscriber into the system
+                         * in: ArrayList<String> {subscriber details}
+                         * return: (id 301) ArrayList<String> {success/fail, error message}
+                         */
+                        try {
+                            if (message.getMessageContent() instanceof ArrayList) {
+                                client.sendToClient(new ClientServerMessage(301, dbController.registerNewSubscriber((ArrayList<String>) message.getMessageContent(), conn)));
+                                System.out.println("Subscriber was registered");
+                            } else {
+                                System.out.println("Cannot register account Message is not an ArrayList<String>");
+                                client.sendToClient(new ClientServerMessage(301, new ArrayList<String>() {{
+                                    add("fail");
+                                    add("Cannot register account Message is not an ArrayList<String>");
+                                }}));
+
+                            }
+                            break;
+                        }catch (Exception e) {
+                            System.out.println("Error: with register method (case 300)" + e);
+                            client.sendToClient(new ClientServerMessage(301, new ArrayList<String>() {{
+                                add("fail");
+                                add("Server Error");
+                            }}));
+                            break;
+                        }
                     case (302):
-                        break;
+                        /**
+                         * do: librarian borrows a book to a subscriber
+                         * in: ArrayList<String> {subscriber id, book id, return date}
+                         * return: (id 303) ArrayList<String> {success/fail, error message}
+                         */
+                        try {
+                            if (message.getMessageContent() instanceof ArrayList) {
+                                client.sendToClient(new ClientServerMessage(303, dbController.borrowBookToSubscriber((ArrayList<String>) message.getMessageContent(), conn)));
+                                System.out.println("Book was borrowed to subscriber");
+                            } else {
+                                System.out.println("Cannot borrow book Message is not an ArrayList<String>");
+                                client.sendToClient(new ClientServerMessage(303, new ArrayList<String>() {{
+                                    add("fail");
+                                    add("Cannot borrow book Message is not an ArrayList<String>");
+                                }}));
+                            }
+                            break;
+                            } catch (Exception e) {
+                                System.out.println("Error: with borrow method (case 302)" + e);
+                            break;
+                        }
                     case (304):
                         break;
                     case (306):
