@@ -140,6 +140,24 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (202):
+                        /**
+                         * do: subscriber wants to search a book by its genre
+                         * in: string
+                         * return: (id 201) arraylist<book>
+                         */
+                        try {
+                            if (message.getMessageContent() instanceof String) {
+                                client.sendToClient(new ClientServerMessage(201, dbController.searchBookByGenre((String) message.getMessageContent(), conn)));
+                                System.out.println("Books search by genre was sent to client");
+                            } else {
+                                System.out.println("Cannot search book by genre - message is not a string (case 202)");
+                                client.sendToClient(new ClientServerMessage(201, null));
+                            }
+                        } catch (Exception e)
+                        {
+                            System.out.println("Error: with getting book search by genre (case 202)" + e);
+                            client.sendToClient(new ClientServerMessage(201, null));
+                        }
                         break;
                     case (204):
                         /**
