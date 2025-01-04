@@ -153,8 +153,7 @@ public class ServerController extends AbstractServer {
                                 System.out.println("Cannot search book by genre - message is not a string (case 202)");
                                 client.sendToClient(new ClientServerMessage(201, null));
                             }
-                        } catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             System.out.println("Error: with getting book search by genre (case 202)" + e);
                             client.sendToClient(new ClientServerMessage(201, null));
                         }
@@ -211,21 +210,20 @@ public class ServerController extends AbstractServer {
                                 add("fail");
                                 add("Server Error");
                             }}));
-
                         }
                         break;
                     case (218):
                         /**
-                         * do: subscriber wants to view his personal information
+                         * do: subscriber wants to edit his login information
                          * in: int
                          * return: (id 217) arraylist<string> {success/fail, error message}
                          */
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
-                                client.sendToClient(new ClientServerMessage(217, dbController.editSubscriberLoginDetails((ArrayList<String>) message.getMessageContent(), conn)));
+                                client.sendToClient(new ClientServerMessage(219, dbController.editSubscriberLoginDetails((ArrayList<String>) message.getMessageContent(), conn)));
                                 System.out.println("Subscriber login details were edited");
                             } else {
-                                client.sendToClient(new ClientServerMessage(217, new ArrayList<String>() {{
+                                client.sendToClient(new ClientServerMessage(219, new ArrayList<String>() {{
                                     add("False");
                                     add("Cannot view account Message is not an ArrayList<String>");
                                 }}));
@@ -233,7 +231,7 @@ public class ServerController extends AbstractServer {
                             }
                         } catch (Exception e) {
                             System.out.println("Error: with Edit method (case 218)" + e);
-                            client.sendToClient(new ClientServerMessage(217, new ArrayList<String>() {{
+                            client.sendToClient(new ClientServerMessage(219, new ArrayList<String>() {{
                                 add("fail");
                                 add("Server Error");
                             }}));
@@ -258,7 +256,7 @@ public class ServerController extends AbstractServer {
 
                             }
                             break;
-                        }catch (Exception e) {
+                        } catch (Exception e) {
                             System.out.println("Error: with register method (case 300)" + e);
                             client.sendToClient(new ClientServerMessage(301, new ArrayList<String>() {{
                                 add("fail");
@@ -283,11 +281,10 @@ public class ServerController extends AbstractServer {
                                     add("Cannot borrow book Message is not an ArrayList<String>");
                                 }}));
                             }
-                            break;
-                            } catch (Exception e) {
-                                System.out.println("Error: with borrow method (case 302)" + e);
-                            break;
+                        } catch (Exception e) {
+                            System.out.println("Error: with borrow method (case 302)" + e);
                         }
+                        break;
                     case (304):
                         /**
                          * do: librarian returns a book of a subscriber to the library
@@ -305,11 +302,10 @@ public class ServerController extends AbstractServer {
                                     add("Cannot return book Message is not a String");
                                 }}));
                             }
-                            break;
-                            } catch (Exception e) {
+                        } catch (Exception e) {
                             System.out.println("Error: with return method (case 304)" + e);
-                            break;
                         }
+                        break;
                     case (306):
                         /**
                          * do: librarian wants to view subscribers in the system

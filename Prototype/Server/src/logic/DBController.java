@@ -5,14 +5,10 @@ import common.Librarian;
 import common.Subscriber;
 import common.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.sql.Date;
+import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class DBController {
     private static DBController instance = null;
@@ -93,112 +89,6 @@ public class DBController {
             System.out.println("Error: Login Failed (userLogin) " + e);
             return null;
         }
-    }
-
-    /**
-     * case 306
-     * This method gets the list of all subscribers in the system
-     *
-     * @param conn The connection to the database
-     * @return The arraylist of all subscribers
-     */
-    public ArrayList<Subscriber> viewAllSubscribers(Connection conn) {
-        try {
-            ArrayList<Subscriber> subscribersList = new ArrayList<>();
-            /*
-             * The query selects all columns from the subscriber table
-             */
-            String getSubscribersQuery = "SELECT * FROM subscriber";
-            PreparedStatement getSubscribersStatement = conn.prepareStatement(getSubscribersQuery);
-            ResultSet getSubscribersRs = getSubscribersStatement.executeQuery();
-            /*
-             * If the query was successful, add the values of the columns to a list
-             * Add the list to the subscribers list
-             */
-            while (getSubscribersRs.next()) {
-                Subscriber subscriber = new Subscriber(getSubscribersRs.getInt("subscriber_id"), getSubscribersRs.getString("first_name"), getSubscribersRs.getString("last_name"), getSubscribersRs.getString("phone_number"), getSubscribersRs.getString("email"), getSubscribersRs.getInt("status") == 1, getSubscribersRs.getInt("detailed_subscription_history"));
-                subscribersList.add(subscriber);
-            }
-            // Subscriber/s found
-            if (!subscribersList.isEmpty()) {
-                System.out.println("Subscribers list found (viewAllSubscribers)");
-                return subscribersList;
-
-            }
-            // No subscriber found
-            else {
-                System.out.println("No subscribers found (viewAllSubscribers)");
-                return null;
-            }
-            // If an error occur
-        } catch (SQLException e) {
-            System.out.println("Error: With exporting subscribers from sql(viewAllSubscribers) " + e);
-            return null;
-        }
-    }
-
-    /**
-     * case 216
-     * This method edits the subscriber details
-     *
-     * @param messageContent the new subscriber details
-     * @param conn           The connection to the database
-     * @return array list containing true if the subscriber was edited successfully and false if not with the error message
-     */
-    public ArrayList<String> editSubscriberDetails(ArrayList<String> messageContent, Connection conn) {
-        ArrayList<String> response = new ArrayList<>();
-        try {
-            /*
-             * The query updates the phone number and email of the subscriber where the id matches the given value
-             */
-            String subscriberInfoQuery = "UPDATE subscriber SET subscriber_phone_number = ?, subscriber_email = ? WHERE subscriber_id = ?";
-            PreparedStatement subscriberInfoStatement = conn.prepareStatement(subscriberInfoQuery);
-            subscriberInfoStatement.setString(1, messageContent.get(1));
-            subscriberInfoStatement.setString(2, messageContent.get(2));
-            subscriberInfoStatement.setInt(3, Integer.parseInt(messageContent.get(0)));
-            subscriberInfoStatement.executeUpdate();
-            response.add("True");
-            return response;
-        } catch (SQLException e) {
-            // If an error occur
-            response.add("False");
-            response.add("Problem with updating the subscriber");
-            System.out.println("Error: With updating the subscriber (editSubscriberDetails) " + e);
-            return response;
-        }
-        //! need to add to log
-    }
-
-    /**
-     * case 218
-     * This method edits the subscriber login details
-     *
-     * @param messageContent the new subscriber details
-     * @param conn           The connection to the database
-     * @return array list containing true if the subscriber was edited successfully and false if not with the error message
-     */
-    public ArrayList<String> editSubscriberLoginDetails(ArrayList<String> messageContent, Connection conn) {
-        ArrayList<String> response = new ArrayList<>();
-        try {
-            /*
-             * The query updates the username and password of the subscriber where the id matches the given value
-             */
-            String subscriberUserinfoQuery = "UPDATE users SET username = ?, password = ? WHERE user_id = ?";
-            PreparedStatement subscriberUserinfoStatement = conn.prepareStatement(subscriberUserinfoQuery);
-            subscriberUserinfoStatement.setString(1, messageContent.get(1));
-            subscriberUserinfoStatement.setString(2, messageContent.get(2));
-            subscriberUserinfoStatement.setInt(3, Integer.parseInt(messageContent.get(3)));
-            subscriberUserinfoStatement.executeUpdate();
-            response.add("True");
-            return response;
-        } catch (SQLException e) {
-            // If an error occur
-            response.add("False");
-            response.add("Problem with updating the subscriber");
-            System.out.println("Error: With updating the subscriber (editSubscriberDetails) " + e);
-            return response;
-        }
-        //! need to add to log
     }
 
     /**
@@ -306,6 +196,70 @@ public class DBController {
     }
 
     /**
+     * case 216
+     * This method edits the subscriber details
+     *
+     * @param messageContent the new subscriber details
+     * @param conn           The connection to the database
+     * @return array list containing true if the subscriber was edited successfully and false if not with the error message
+     */
+    public ArrayList<String> editSubscriberDetails(ArrayList<String> messageContent, Connection conn) {
+        ArrayList<String> response = new ArrayList<>();
+        try {
+            /*
+             * The query updates the phone number and email of the subscriber where the id matches the given value
+             */
+            String subscriberInfoQuery = "UPDATE subscriber SET subscriber_phone_number = ?, subscriber_email = ? WHERE subscriber_id = ?";
+            PreparedStatement subscriberInfoStatement = conn.prepareStatement(subscriberInfoQuery);
+            subscriberInfoStatement.setString(1, messageContent.get(1));
+            subscriberInfoStatement.setString(2, messageContent.get(2));
+            subscriberInfoStatement.setInt(3, Integer.parseInt(messageContent.get(0)));
+            subscriberInfoStatement.executeUpdate();
+            response.add("True");
+            return response;
+        } catch (SQLException e) {
+            // If an error occur
+            response.add("False");
+            response.add("Problem with updating the subscriber");
+            System.out.println("Error: With updating the subscriber (editSubscriberDetails) " + e);
+            return response;
+        }
+        //! need to add to log
+    }
+
+    /**
+     * case 218
+     * This method edits the subscriber login details
+     *
+     * @param messageContent the new subscriber details
+     * @param conn           The connection to the database
+     * @return array list containing true if the subscriber was edited successfully and false if not with the error message
+     */
+    public ArrayList<String> editSubscriberLoginDetails(ArrayList<String> messageContent, Connection conn) {
+        ArrayList<String> response = new ArrayList<>();
+        try {
+            /*
+             * The query updates the username and password of the subscriber where the id matches the given value
+             */
+            String subscriberUserinfoQuery = "UPDATE users SET username = ?, password = ? WHERE user_id = ?";
+            PreparedStatement subscriberUserinfoStatement = conn.prepareStatement(subscriberUserinfoQuery);
+            subscriberUserinfoStatement.setString(1, messageContent.get(1));
+            subscriberUserinfoStatement.setString(2, messageContent.get(2));
+            subscriberUserinfoStatement.setInt(3, Integer.parseInt(messageContent.get(3)));
+            subscriberUserinfoStatement.executeUpdate();
+            response.add("True");
+            return response;
+        } catch (SQLException e) {
+            // If an error occur
+            response.add("False");
+            response.add("Problem with updating the subscriber");
+            System.out.println("Error: With updating the subscriber (editSubscriberDetails) " + e);
+            return response;
+        }
+        //! need to add to log
+    }
+
+    /**
      * case 300
      * This method registers a new subscriber in the system
      *
@@ -318,19 +272,34 @@ public class DBController {
          * The response array list
          */
         ArrayList<String> response = new ArrayList<>();
-        int newId = 0;
         try {
+            int subscriberId = 0;
+            int historyId = 0;
             conn.setAutoCommit(false);
+            /*
+             * The query inserts the subscription details into the subscription_history table
+             */
+            String historyQuery = "INSERT INTO subscription_hisotory";
+            PreparedStatement historyStatement = conn.prepareStatement(historyQuery);
+            historyStatement.executeUpdate();
+            ResultSet generatedKeys = historyStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                historyId = generatedKeys.getInt(1);
+            } else {
+                System.out.println("Error: Getting new history ID");
+                throw new SQLException();
+            }
             /*
              * The query inserts the subscriber details into the subscriber table
              */
-            String subscriberQuery = "INSERT INTO subscriber (first_name, last_name, phone_number, email, status) VALUES (?, ?, ?, ?, ?)";
+            String subscriberQuery = "INSERT INTO subscriber (first_name, last_name, phone_number, email, status, detailed_subscription_history) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement subscriberStatement = conn.prepareStatement(subscriberQuery);
             subscriberStatement.setString(1, messageContent.get(0));
             subscriberStatement.setString(2, messageContent.get(1));
             subscriberStatement.setString(3, messageContent.get(2));
             subscriberStatement.setString(4, messageContent.get(3));
-            subscriberStatement.setInt(5, Integer.parseInt(messageContent.get(4)));
+            subscriberStatement.setInt(5, 0);
+            subscriberStatement.setInt(6, historyId);
             subscriberStatement.executeUpdate();
 
             /*
@@ -338,8 +307,8 @@ public class DBController {
              */
             ResultSet subscriberKey = subscriberStatement.getGeneratedKeys();
             if (subscriberKey.next()) {
-                newId = subscriberKey.getInt(1);
-                System.out.println("New subscriber ID: " + newId);
+                subscriberId = subscriberKey.getInt(1);
+                System.out.println("New subscriber ID: " + subscriberId);
             } else {
                 System.out.println("Error: Getting new subscriber ID");
                 throw new SQLException();
@@ -351,9 +320,9 @@ public class DBController {
             String userQuery = "INSERT INTO users (username, password, type, user_id) VALUES (?, ?, ?, ?)";
             PreparedStatement userStatement = conn.prepareStatement(userQuery);
             userStatement.setString(1, messageContent.get(5));
-            userStatement.setString(2, messageContent.get(6));
+            userStatement.setString(2, "Aa123456");
             userStatement.setString(3, "subscriber");
-            userStatement.setInt(4, newId);
+            userStatement.setInt(4, subscriberId);
             userStatement.executeUpdate();
 
             /*
@@ -378,7 +347,8 @@ public class DBController {
             }
         }
         return response;
-        //! need to add to log
+        //! need to add to log both to subscriber to general log
+
     }
 
     /**
@@ -410,7 +380,7 @@ public class DBController {
             }
 
             /*
-            * This query checks whether the book is available
+             * This query checks whether the book is available
              */
             String checkBookQuery = "SELECT status FROM book_copy WHERE copy_id = ?";
             PreparedStatement checkBookStatement = conn.prepareStatement(checkBookQuery);
@@ -451,8 +421,7 @@ public class DBController {
             /*
              * The query update the amount of borrowed books in the book table
              */
-            String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies + 1" +
-                    "WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+            String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies + 1" + "WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
             PreparedStatement updateBookStatement = conn.prepareStatement(updateBookQuery);
             updateBookStatement.setInt(1, Integer.parseInt(messageContent.get(2))); // copy_id
             updateBookStatement.executeUpdate();
@@ -526,8 +495,7 @@ public class DBController {
             /*
              * The query updates the amount of borrowed books in the book table
              */
-            String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies - 1" +
-                    "WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+            String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies - 1" + "WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
             PreparedStatement updateBookStatement = conn.prepareStatement(updateBookQuery);
             updateBookStatement.setInt(1, Integer.parseInt(messageContent)); // copy_id
             updateBookStatement.executeUpdate();
@@ -535,7 +503,7 @@ public class DBController {
             /*
              * The query selects from borrow table subscriber_id where copy_id matches the given value
              * and the status is borrowed
-            */
+             */
             String getSubscriberQuery = "SELECT subscriber_id FROM borrow WHERE copy_id = ? AND status = 'borrowed'";
             PreparedStatement getSubscriberStatement = conn.prepareStatement(getSubscriberQuery);
             getSubscriberStatement.setInt(1, Integer.parseInt(messageContent));
@@ -580,5 +548,47 @@ public class DBController {
         }
         return response;
         //! need to add to log
+    }
+
+    /**
+     * case 306
+     * This method gets the list of all subscribers in the system
+     *
+     * @param conn The connection to the database
+     * @return The arraylist of all subscribers
+     */
+    public ArrayList<Subscriber> viewAllSubscribers(Connection conn) {
+        try {
+            ArrayList<Subscriber> subscribersList = new ArrayList<>();
+            /*
+             * The query selects all columns from the subscriber table
+             */
+            String getSubscribersQuery = "SELECT * FROM subscriber";
+            PreparedStatement getSubscribersStatement = conn.prepareStatement(getSubscribersQuery);
+            ResultSet getSubscribersRs = getSubscribersStatement.executeQuery();
+            /*
+             * If the query was successful, add the values of the columns to a list
+             * Add the list to the subscribers list
+             */
+            while (getSubscribersRs.next()) {
+                Subscriber subscriber = new Subscriber(getSubscribersRs.getInt("subscriber_id"), getSubscribersRs.getString("first_name"), getSubscribersRs.getString("last_name"), getSubscribersRs.getString("phone_number"), getSubscribersRs.getString("email"), getSubscribersRs.getInt("status") == 1, getSubscribersRs.getInt("detailed_subscription_history"));
+                subscribersList.add(subscriber);
+            }
+            // Subscriber/s found
+            if (!subscribersList.isEmpty()) {
+                System.out.println("Subscribers list found (viewAllSubscribers)");
+                return subscribersList;
+
+            }
+            // No subscriber found
+            else {
+                System.out.println("No subscribers found (viewAllSubscribers)");
+                return null;
+            }
+            // If an error occur
+        } catch (SQLException e) {
+            System.out.println("Error: With exporting subscribers from sql(viewAllSubscribers) " + e);
+            return null;
+        }
     }
 }
