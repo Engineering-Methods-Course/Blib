@@ -591,4 +591,45 @@ public class DBController {
             return null;
         }
     }
+
+    /**
+     * case 308
+     * This method returns a specific subscriber's details to the librarian by the subscriber ID
+     * @param subscriberId The subscriber ID
+     * @param conn The connection to the database
+     * @return The subscriber
+     */
+    //! ask or about if needed
+    public Subscriber viewSubscriberDetails(int subscriberId, Connection conn) {
+        try {
+            /*
+             * The query selects all columns from the subscriber table where the subscriber ID matches the given value
+             */
+            String getSubscriberQuery = "SELECT * FROM subscriber WHERE subscriber_id = ?";
+            PreparedStatement getSubscriberStatement = conn.prepareStatement(getSubscriberQuery);
+            getSubscriberStatement.setInt(1, subscriberId);
+            ResultSet getSubscriberRs = getSubscriberStatement.executeQuery();
+            /*
+             * If the query was successful, add the values of the columns to a list
+             */
+            if (getSubscriberRs.next()) {
+                Subscriber subscriber = new Subscriber(getSubscriberRs.getInt("subscriber_id"), getSubscriberRs.getString("first_name"),
+                        getSubscriberRs.getString("last_name"), getSubscriberRs.getString("phone_number"),
+                        getSubscriberRs.getString("email"), getSubscriberRs.getInt("status") == 1,
+                        getSubscriberRs.getInt("detailed_subscription_history"));
+                System.out.println("Subscriber found (viewSubscriberDetails)");
+                return subscriber;
+            }
+            // No subscriber found
+            else {
+                System.out.println("No subscriber found (viewSubscriberDetails)");
+                return null;
+            }
+            // If an error occur
+        } catch (SQLException e) {
+            System.out.println("Error: With exporting subscriber from sql(viewSubscriberDetails) " + e);
+            return null;
+        }
+    }
+
 }

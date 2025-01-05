@@ -322,6 +322,24 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (308):
+                        /**
+                         * do: librarian wants to view details of a specific subscriber
+                         * in: Int {subscriber id}
+                         * return: (id 309) subscriber
+                         */
+                        try {
+                            if (message.getMessageContent() instanceof Integer) {
+                                client.sendToClient(new ClientServerMessage(309, dbController.viewSubscriberDetails((Integer) message.getMessageContent(), conn)));
+                                System.out.println("Subscriber details were sent to client");
+                            } else {
+                                System.out.println("Input is not an instance of Integer");
+                                client.sendToClient(new ClientServerMessage(309, null));
+                            }
+                            break;
+                        } catch (Exception e) {
+                            System.out.println("Error: with getting subscriber details (case 308)" + e);
+                            client.sendToClient(new ClientServerMessage(309, null));
+                        }
                         break;
                     case (310):
                         break;
