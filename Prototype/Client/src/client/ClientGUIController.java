@@ -64,7 +64,7 @@ public class ClientGUIController extends Application
         });
 
         // Show the updated stage
-        currentStage.setResizable(false); // Disable window resizing
+        currentStage.setResizable(true); // Disable window resizing
         currentStage.show();
     }
 
