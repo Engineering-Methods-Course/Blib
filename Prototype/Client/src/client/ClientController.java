@@ -2,6 +2,7 @@ package client;
 
 import common.ClientServerMessage;
 import common.Subscriber;
+import gui.SearchHomePageFrameController;
 import gui.SubscriberEditProfileFrameController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -79,6 +80,16 @@ public class ClientController extends AbstractClient {
                     //search book response
                     case 201:
                         //todo: handle search book response
+                        System.out.println(message.getMessageContent());
+                        if (message.getMessageContent() == null) {
+                            System.out.println("Book not found");
+                            SearchHomePageFrameController.changeCanSearch(false);
+                            //make it better
+                            Platform.runLater(() -> showErrorAlert("Book Not Found", "There aren't any books like that"));
+                        }
+                        else{
+                            SearchHomePageFrameController.changeCanSearch(true);
+                            }
                         break;
                     //Show book details response
                     case 207:

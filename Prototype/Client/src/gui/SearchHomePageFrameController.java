@@ -1,5 +1,7 @@
 package gui;
 
+import client.ClientGUIController;
+import common.ClientServerMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -45,16 +47,23 @@ public class SearchHomePageFrameController
     @FXML
     public Button watchProfileButton;
 
+    private static boolean canSearch=false;
+
     public void initialize()
     {
         //todo: implement
+    }
+    //allows the system to change the ability to allow search process
+    public static void changeCanSearch(Boolean bool)
+    {
+        canSearch=bool;
     }
 
     /**
      * This method changes the search configuration to search by name
      * @param event     The ActionEvent triggered by the button click
      */
-    private void searchByName(ActionEvent event)
+    public void searchByName(ActionEvent event)
     {
         searchType = SearchType.NAME;
     }
@@ -63,7 +72,7 @@ public class SearchHomePageFrameController
      * This method changes the search configuration to search by genre
      * @param event     The ActionEvent triggered by the button click
      */
-    private void searchByGenre(ActionEvent event)
+    public void searchByGenre(ActionEvent event)
     {
         searchType = SearchType.GENRE;
     }
@@ -72,7 +81,7 @@ public class SearchHomePageFrameController
      * This method changes the search configuration to search by description
      * @param event     The ActionEvent triggered by the button click
      */
-    private void searchByDescription(ActionEvent event)
+    public void searchByDescription(ActionEvent event)
     {
         searchType = SearchType.DESCRIPTION;
         searchButton.setLayoutY(500);
@@ -89,6 +98,45 @@ public class SearchHomePageFrameController
     {
         //todo: implement
         //todo: use radio and either use the private methods of just send it from here
+        int messageCode=0 ;
+        String messageContent ="";
+
+        /// Switch case for which option of search was chosen
+        /// sets the message code and content according to it
+        switch(searchType)
+        {
+            case NAME:
+                messageCode = 200;
+                messageContent = descriptionSearch.getText();
+                break;
+            case GENRE:
+                messageCode = 202;
+                messageContent = searchField.getText();
+                break;
+            case DESCRIPTION:
+                messageCode = 204;
+                messageContent = descriptionSearch.getText();
+                break;
+            default:
+                System.out.println("choose a category");
+                return;
+        }
+
+        ClientServerMessage searchMessage = new ClientServerMessage(messageCode,messageContent);
+        System.out.println(searchMessage.getMessageContent()+"1");
+        try {
+            ClientGUIController.chat.sendToServer(searchMessage);//will be changed accept->something else
+        }
+        catch (Exception e) {
+            System.out.println("Error sending search message to server: " + e.getMessage());
+        }
+        System.out.println(canSearch);
+        if(canSearch)
+        {
+            navigateTo(event, "/gui/SearchResultFrame.fxml","/gui/Subscriber.css", "Search results");
+        }
+
+
     }
 
     /**
@@ -98,7 +146,7 @@ public class SearchHomePageFrameController
      */
     public void login(ActionEvent event) throws Exception
     {
-        navigateTo(event, "/gui/LoginFrame.fxml", "/gui/Subscriber.css", "Login");
+        navigateTo(event, "/gui/SearchResultFrame.fxml", "/gui/Subscriber.css", "Login");
     }
 
     /**

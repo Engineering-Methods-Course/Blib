@@ -115,7 +115,7 @@ public class DBController {
              * If the query was successful, add the values of the book to a list
              */
             while (rs.next()) {
-                Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("available_copies"), rs.getInt("lost_copies"));
+                Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("borrowed_copies"), rs.getInt("lost_copies"));
                 books.add(book);
             }
             if(books.isEmpty()){
