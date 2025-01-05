@@ -3,11 +3,15 @@ package gui;
 import client.ClientGUIController;
 import common.ClientServerMessage;
 import common.Subscriber;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
+//import com.opencsv.bean.CsvToBean;
+//import com.opencsv.bean.CsvToBeanBuilder;
 
 import static client.ClientGUIController.navigateTo;
 
@@ -33,15 +37,24 @@ public class SubscriberProfileOptionsFrameController
     public Button extendBorrowButton;
     @FXML
     public Button searchBookButton;
-
+    @FXML
+    public Text userIDField;
+    @FXML
+    public TableColumn actionDateColumn;
+    @FXML
+    public TableColumn actionTypeColumn;
+    @FXML
+    public TableColumn detailsColumn;
 
     public void initialize()
     {
         //loads all the user info into the fields
         usernameField.setText("Hello: " + Subscriber.getLocalSubscriber().getFirstName() + " " + Subscriber.getLocalSubscriber().getLastName());
-        phoneNumberField.setText(Subscriber.getLocalSubscriber().getPhoneNumber());
-        emailField.setText(Subscriber.getLocalSubscriber().getEmail());
-        statusTextField.setText(Subscriber.getLocalSubscriber().getStatusIsFrozen() ? "Frozen" : "Active");
+        phoneNumberField.setText("Phone number: " + Subscriber.getLocalSubscriber().getPhoneNumber());
+        emailField.setText("Email: " + Subscriber.getLocalSubscriber().getEmail());
+        statusTextField.setText("Account Status: " + (Subscriber.getLocalSubscriber().getStatusIsFrozen() ? "Frozen" : "Active"));
+        profileButton.setText("Hello: " + Subscriber.getLocalSubscriber().getFirstName() + " " + Subscriber.getLocalSubscriber().getLastName());
+        userIDField.setText("User ID: " + Subscriber.getLocalSubscriber().getID());
 
         //calls the viewHistory method to update the history table
         viewHistory();
