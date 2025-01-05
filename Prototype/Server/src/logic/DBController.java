@@ -243,9 +243,9 @@ public class DBController {
              */
             String subscriberUserinfoQuery = "UPDATE users SET username = ?, password = ? WHERE user_id = ?";
             PreparedStatement subscriberUserinfoStatement = conn.prepareStatement(subscriberUserinfoQuery);
-            subscriberUserinfoStatement.setString(1, messageContent.get(1));
-            subscriberUserinfoStatement.setString(2, messageContent.get(2));
-            subscriberUserinfoStatement.setInt(3, Integer.parseInt(messageContent.get(3)));
+            subscriberUserinfoStatement.setString(1, messageContent.get(0));
+            subscriberUserinfoStatement.setString(2, messageContent.get(1));
+            subscriberUserinfoStatement.setInt(3, Integer.parseInt(messageContent.get(2)));
             subscriberUserinfoStatement.executeUpdate();
             response.add("True");
             return response;
@@ -384,7 +384,7 @@ public class DBController {
              */
             String checkBookQuery = "SELECT status FROM book_copy WHERE copy_id = ?";
             PreparedStatement checkBookStatement = conn.prepareStatement(checkBookQuery);
-            checkBookStatement.setInt(1, Integer.parseInt(messageContent.get(2)));
+            checkBookStatement.setInt(1, Integer.parseInt(messageContent.get(1)));
             ResultSet checkBookRs = checkBookStatement.executeQuery();
             if (checkBookRs.next()) {
                 if (checkBookRs.getInt("available") == 0) {
@@ -401,7 +401,7 @@ public class DBController {
              */
             try {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                java.util.Date parsed = format.parse(messageContent.get(3));
+                java.util.Date parsed = format.parse(messageContent.get(2));
                 returnDate = new Date(parsed.getTime());
             } catch (ParseException e) {
                 System.out.println("Error: Parsing date" + e);
@@ -423,7 +423,7 @@ public class DBController {
              */
             String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies + 1" + "WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
             PreparedStatement updateBookStatement = conn.prepareStatement(updateBookQuery);
-            updateBookStatement.setInt(1, Integer.parseInt(messageContent.get(2))); // copy_id
+            updateBookStatement.setInt(1, Integer.parseInt(messageContent.get(1))); // copy_id
             updateBookStatement.executeUpdate();
 
             /*
@@ -431,8 +431,8 @@ public class DBController {
              */
             String borrowQuery = "INSERT INTO borrow (subscriber_id, copy_id, expected_return_date, status) VALUES (?, ?, ?, ?)";
             PreparedStatement borrowStatement = conn.prepareStatement(borrowQuery);
-            borrowStatement.setInt(1, Integer.parseInt(messageContent.get(1)));
-            borrowStatement.setInt(2, Integer.parseInt(messageContent.get(2)));
+            borrowStatement.setInt(1, Integer.parseInt(messageContent.get(0)));
+            borrowStatement.setInt(2, Integer.parseInt(messageContent.get(1)));
             borrowStatement.setDate(3, returnDate);
             borrowStatement.setString(4, "borrowed");
             borrowStatement.executeUpdate();

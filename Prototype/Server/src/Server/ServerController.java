@@ -332,7 +332,7 @@ public class ServerController extends AbstractServer {
                                 client.sendToClient(new ClientServerMessage(309, dbController.viewSubscriberDetails((Integer) message.getMessageContent(), conn)));
                                 System.out.println("Subscriber details were sent to client");
                             } else {
-                                System.out.println("Input is not an instance of Integer");
+                                System.out.println("Input is not an instance of Integer (case 308)");
                                 client.sendToClient(new ClientServerMessage(309, null));
                             }
                             break;
