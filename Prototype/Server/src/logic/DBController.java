@@ -118,6 +118,10 @@ public class DBController {
                 Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("available_copies"), rs.getInt("lost_copies"));
                 books.add(book);
             }
+            if(books.isEmpty()){
+                System.out.println("No books found (searchBookByName)");
+                return null;
+            }
             System.out.println("Books found (searchBookByName)");
             return books;
         } catch (SQLException e) {
@@ -153,6 +157,10 @@ public class DBController {
                 Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("available_copies"), rs.getInt("lost_copies"));
                 books.add(book);
             }
+            if(books.isEmpty()){
+                System.out.println("No books found (searchBookByName)");
+                return null;
+            }
             System.out.println("Books found (searchBookByGenre)");
             return books;
         } catch (SQLException e) {
@@ -186,6 +194,10 @@ public class DBController {
             while (rs.next()) {
                 Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("available_copies"), rs.getInt("lost_copies"));
                 books.add(book);
+            }
+            if(books.isEmpty()){
+                System.out.println("No books found (searchBookByName)");
+                return null;
             }
             System.out.println("Books found (searchBookByDescription)");
             return books;
