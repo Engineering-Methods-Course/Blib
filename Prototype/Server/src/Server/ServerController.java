@@ -7,6 +7,7 @@ import logic.DBController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -72,7 +73,7 @@ public class ServerController extends AbstractServer {
                  * 200 - subscriber wants to search a book by its name
                  * 202 - subscriber wants to search a book by its genre
                  * 204 - subscriber wants to search a book by its description
-                 * 206 - subscriber wants to see details of a specific book
+                 * 206 - subscriber wants to see details of a specific book !!! MAYBE DELETE THIS
                  * 208 - subscriber wants to order a book
                  * 210 - subscriber wants to see his borrowed book list
                  * 212 - subscriber wants to extend his borrow time
@@ -177,7 +178,7 @@ public class ServerController extends AbstractServer {
                             client.sendToClient(new ClientServerMessage(201, null));
                         }
                         break;
-                    case (206):
+                    case (206)://! MAYBE DELETE THIS
                         break;
                     case (208):
                         break;
@@ -270,18 +271,26 @@ public class ServerController extends AbstractServer {
                          * in: ArrayList<String> {subscriber id, book id, return date}
                          * return: (id 303) ArrayList<String> {success/fail, error message}
                          */
+                        ArrayList<String> response = null;
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
-                                client.sendToClient(new ClientServerMessage(303, dbController.borrowBookToSubscriber((ArrayList<String>) message.getMessageContent(), conn)));
-                                System.out.println("Book was borrowed to subscriber");
+                                response = dbController.borrowBookToSubscriber((ArrayList<String>) message.getMessageContent(), conn);
+                                client.sendToClient(new ClientServerMessage(303, response));
+                                System.out.println("message was sent to client (case 302)" + response);
                             } else {
-                                System.out.println("Cannot borrow book Message is not an ArrayList<String>");
-                                client.sendToClient(new ClientServerMessage(303, new ArrayList<String>() {{
+                                response = new ArrayList<String>() {{
                                     add("fail");
                                     add("Cannot borrow book Message is not an ArrayList<String>");
-                                }}));
+                                }};
+                                client.sendToClient(new ClientServerMessage(303, response));
+                                System.out.println("message was sent to client (case 302)" + response);
                             }
                         } catch (Exception e) {
+                            response = new ArrayList<String>() {{
+                                add("fail");
+                                add("Server Error");
+                            }};
+                            client.sendToClient(new ClientServerMessage(303, response));
                             System.out.println("Error: with borrow method (case 302)" + e);
                         }
                         break;

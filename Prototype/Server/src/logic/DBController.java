@@ -118,7 +118,7 @@ public class DBController {
                 Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("borrowed_copies"), rs.getInt("lost_copies"));
                 books.add(book);
             }
-            if(books.isEmpty()){
+            if (books.isEmpty()) {
                 System.out.println("No books found (searchBookByName)");
                 return null;
             }
@@ -157,7 +157,7 @@ public class DBController {
                 Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("available_copies"), rs.getInt("lost_copies"));
                 books.add(book);
             }
-            if(books.isEmpty()){
+            if (books.isEmpty()) {
                 System.out.println("No books found (searchBookByName)");
                 return null;
             }
@@ -195,7 +195,7 @@ public class DBController {
                 Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("available_copies"), rs.getInt("lost_copies"));
                 books.add(book);
             }
-            if(books.isEmpty()){
+            if (books.isEmpty()) {
                 System.out.println("No books found (searchBookByName)");
                 return null;
             }
@@ -280,17 +280,21 @@ public class DBController {
      * @return array list containing true if the subscriber was added successfully and false if not with the error message
      */
     public ArrayList<String> registerNewSubscriber(ArrayList<String> messageContent, Connection conn) {
+
         /*
          * The response array list
          */
+
         ArrayList<String> response = new ArrayList<>();
         try {
             int subscriberId = 0;
             int historyId = 0;
             conn.setAutoCommit(false);
+
             /*
              * The query inserts the subscription details into the subscription_history table
              */
+
             String historyQuery = "INSERT INTO subscription_hisotory";
             PreparedStatement historyStatement = conn.prepareStatement(historyQuery);
             historyStatement.executeUpdate();
@@ -301,9 +305,11 @@ public class DBController {
                 System.out.println("Error: Getting new history ID");
                 throw new SQLException();
             }
+
             /*
              * The query inserts the subscriber details into the subscriber table
              */
+
             String subscriberQuery = "INSERT INTO subscriber (first_name, last_name, phone_number, email, status, detailed_subscription_history) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement subscriberStatement = conn.prepareStatement(subscriberQuery);
             subscriberStatement.setString(1, messageContent.get(0));
@@ -317,6 +323,7 @@ public class DBController {
             /*
              * Get the new subscriber ID
              */
+
             ResultSet subscriberKey = subscriberStatement.getGeneratedKeys();
             if (subscriberKey.next()) {
                 subscriberId = subscriberKey.getInt(1);
@@ -329,6 +336,7 @@ public class DBController {
             /*
              * The query inserts the user details into the user table
              */
+
             String userQuery = "INSERT INTO users (username, password, type, user_id) VALUES (?, ?, ?, ?)";
             PreparedStatement userStatement = conn.prepareStatement(userQuery);
             userStatement.setString(1, messageContent.get(5));
@@ -340,6 +348,7 @@ public class DBController {
             /*
              * Commit the transaction
              */
+
             conn.commit();
             response.add("true");
         } catch (SQLException e) {
@@ -359,7 +368,7 @@ public class DBController {
             }
         }
         return response;
-        //! need to add to log both to subscriber to general log
+        //! need to add to log
 
     }
 
@@ -374,14 +383,18 @@ public class DBController {
     public ArrayList<String> borrowBookToSubscriber(ArrayList<String> messageContent, Connection conn) {
         ArrayList<String> response = new ArrayList<>();
         try {
+            int subscriberId = Integer.parseInt(messageContent.get(0));
+            int copyId = Integer.parseInt(messageContent.get(1));
             Date returnDate;
+
             /*
              * This query selects the status of the book where the book ID matches the given value
              * and checks if subscriber is not frozen
              */
+
             String checkSubscriberQuery = "SELECT status FROM subscriber WHERE subscriber_id = ?";
             PreparedStatement checkSubscriberStatement = conn.prepareStatement(checkSubscriberQuery);
-            checkSubscriberStatement.setInt(1, Integer.parseInt(messageContent.get(0)));
+            checkSubscriberStatement.setInt(1, subscriberId);
             ResultSet checkSubscriberRs = checkSubscriberStatement.executeQuery();
             if (checkSubscriberRs.next()) {
                 if (checkSubscriberRs.getInt("status") == 0) {
@@ -394,9 +407,10 @@ public class DBController {
             /*
              * This query checks whether the book is available
              */
+
             String checkBookQuery = "SELECT status FROM book_copy WHERE copy_id = ?";
             PreparedStatement checkBookStatement = conn.prepareStatement(checkBookQuery);
-            checkBookStatement.setInt(1, Integer.parseInt(messageContent.get(1)));
+            checkBookStatement.setInt(1, copyId);
             ResultSet checkBookRs = checkBookStatement.executeQuery();
             if (checkBookRs.next()) {
                 if (checkBookRs.getInt("available") == 0) {
@@ -406,11 +420,51 @@ public class DBController {
                 }
             }
 
+            /*
+             * check if the subscriber had reserved the book
+             */
+
+            boolean wasReserved = false;
+            String bookReservedByTheSubscriberQuery = "SELECT subscriber_id FROM reserve WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?) ORDER BY reservation_date ASC LIMIT 1";
+            PreparedStatement bookReservedByTheSubscriberStatement = conn.prepareStatement(bookReservedByTheSubscriberQuery);
+            bookReservedByTheSubscriberStatement.setInt(1, copyId);
+            ResultSet bookReservedByTheSubscriberRs = bookReservedByTheSubscriberStatement.executeQuery();
+            if (bookReservedByTheSubscriberRs.next()) {
+                int firstSubscriberId = bookReservedByTheSubscriberRs.getInt("subscriber_id");
+                if (firstSubscriberId == subscriberId) {
+                    // The subscriber was the first one to reserve the book
+                    String deleteReservationQuery = "DELETE FROM reserve WHERE subscriber_id = ? AND serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+                    PreparedStatement deleteReservationStatement = conn.prepareStatement(deleteReservationQuery);
+                    deleteReservationStatement.setInt(1, subscriberId);
+                    deleteReservationStatement.setInt(2, copyId);
+                    deleteReservationStatement.executeUpdate();
+                    wasReserved = true;
+                }
+            }
+            // The subscriber was the first to reserve the book or the book was not reserved
+            if(!wasReserved) {
+                String checkReservedQuery = "SELECT copies, reserved_copies, borrowed_coppies  FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+                PreparedStatement checkReservedStatement = conn.prepareStatement(checkReservedQuery);
+                checkReservedStatement.setInt(1, copyId);
+                ResultSet checkReservedRs = checkReservedStatement.executeQuery();
+                if (checkReservedRs.next()) {
+                    int copies = checkReservedRs.getInt("copies");
+                    int reservedCopies = checkReservedRs.getInt("reserved_copies");
+                    int borrowedCopies = checkReservedRs.getInt("borrowed_coppies");
+                    if (copies <= (reservedCopies + borrowedCopies)) {
+                        response.add("false");
+                        response.add("Book is reserved");
+                        return response;
+                    }
+                }
+            }
+
             conn.setAutoCommit(false);
 
             /*
              * Created a date object to convert the string date to sql date
              */
+
             try {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                 java.util.Date parsed = format.parse(messageContent.get(2));
@@ -425,6 +479,7 @@ public class DBController {
             /*
              * The query updates the status of the book_copy to unavailable (0)
              */
+
             String updateCopyQuery = "UPDATE book_copy SET available = ? WHERE copy_id = ?";
             PreparedStatement updateCopyStatement = conn.prepareStatement(updateCopyQuery);
             updateCopyStatement.setInt(1, 0);
@@ -433,25 +488,29 @@ public class DBController {
             /*
              * The query update the amount of borrowed books in the book table
              */
+
             String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies + 1" + "WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
             PreparedStatement updateBookStatement = conn.prepareStatement(updateBookQuery);
-            updateBookStatement.setInt(1, Integer.parseInt(messageContent.get(1))); // copy_id
+            updateBookStatement.setInt(1, copyId); // copy_id
             updateBookStatement.executeUpdate();
 
             /*
              * The query inserts the book details into the borrow table
              */
+
             String borrowQuery = "INSERT INTO borrow (subscriber_id, copy_id, expected_return_date, status) VALUES (?, ?, ?, ?)";
             PreparedStatement borrowStatement = conn.prepareStatement(borrowQuery);
-            borrowStatement.setInt(1, Integer.parseInt(messageContent.get(0)));
-            borrowStatement.setInt(2, Integer.parseInt(messageContent.get(1)));
+            borrowStatement.setInt(1, copyId);
+            borrowStatement.setInt(2, subscriberId);
             borrowStatement.setDate(3, returnDate);
             borrowStatement.setString(4, "borrowed");
             borrowStatement.executeUpdate();
 
+
             /*
              * Commit the transaction
              */
+
             conn.commit();
             response.add("true");
 
@@ -607,8 +666,9 @@ public class DBController {
     /**
      * case 308
      * This method returns a specific subscriber's details to the librarian by the subscriber ID
+     *
      * @param subscriberId The subscriber ID
-     * @param conn The connection to the database
+     * @param conn         The connection to the database
      * @return The subscriber
      */
     //! ask or about if needed
@@ -625,10 +685,7 @@ public class DBController {
              * If the query was successful, add the values of the columns to a list
              */
             if (getSubscriberRs.next()) {
-                Subscriber subscriber = new Subscriber(getSubscriberRs.getInt("subscriber_id"), getSubscriberRs.getString("first_name"),
-                        getSubscriberRs.getString("last_name"), getSubscriberRs.getString("phone_number"),
-                        getSubscriberRs.getString("email"), getSubscriberRs.getInt("status") == 1,
-                        getSubscriberRs.getInt("detailed_subscription_history"));
+                Subscriber subscriber = new Subscriber(getSubscriberRs.getInt("subscriber_id"), getSubscriberRs.getString("first_name"), getSubscriberRs.getString("last_name"), getSubscriberRs.getString("phone_number"), getSubscriberRs.getString("email"), getSubscriberRs.getInt("status") == 1, getSubscriberRs.getInt("detailed_subscription_history"));
                 System.out.println("Subscriber found (viewSubscriberDetails)");
                 return subscriber;
             }
