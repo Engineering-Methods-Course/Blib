@@ -70,7 +70,7 @@ public class SubscriberLoginFrameController implements Initializable
         ClientServerMessage loginMessage = new ClientServerMessage(201, loginDetails);
 
         try {
-            ClientGUIController.chat.accept(loginMessage);
+            ClientGUIController.chat.sendToServer(loginMessage);
         }
         catch (Exception e) {
             System.out.println("Error sending login message to server: " + e.getMessage());

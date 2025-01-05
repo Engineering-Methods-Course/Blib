@@ -1,5 +1,7 @@
 package gui;
 
+import client.ClientGUIController;
+import common.ClientServerMessage;
 import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,7 +24,7 @@ public class SubscriberProfileOptionsFrameController
     @FXML
     public Text phoneNumberField;
     @FXML
-    public Text detailField4;
+    public Text statusTextField;
     @FXML
     public Text emailField;
     @FXML
@@ -33,11 +35,16 @@ public class SubscriberProfileOptionsFrameController
     public Button searchBookButton;
 
 
-
     public void initialize()
     {
-        //todo: load all the user info into the fields
-        //todo: make sure to call viewHistory method here to update the history table
+        //loads all the user info into the fields
+        usernameField.setText("Hello: " + Subscriber.getLocalSubscriber().getFirstName() + " " + Subscriber.getLocalSubscriber().getLastName());
+        phoneNumberField.setText(Subscriber.getLocalSubscriber().getPhoneNumber());
+        emailField.setText(Subscriber.getLocalSubscriber().getEmail());
+        statusTextField.setText(Subscriber.getLocalSubscriber().getStatusIsFrozen() ? "Frozen" : "Active");
+
+        //calls the viewHistory method to update the history table
+        viewHistory();
     }
 
     /**
@@ -47,7 +54,8 @@ public class SubscriberProfileOptionsFrameController
      */
     public void logoutButtonClicked(ActionEvent event) throws Exception
     {
-        //todo: log the user out
+        //sets the local subscriber to null
+        Subscriber.setLocalSubscriber(null);
         navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
     }
 
@@ -59,8 +67,6 @@ public class SubscriberProfileOptionsFrameController
     public void viewProfileButtonClicked(ActionEvent event) throws Exception
     {
         navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "My Profile");
-
-        //todo(optional): refresh the history table to make it look like it navigated
     }
 
     /**
@@ -93,8 +99,14 @@ public class SubscriberProfileOptionsFrameController
         navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
     }
 
-    private void viewHistory()
+    /**
+     * This method handles the viewHistoryButton click event to view the user's activity history
+     */
+    //todo: implement viewHistory method after the server infrastructure is in place
+    public void viewHistory()
     {
-        //todo: pull info about user activity from the database
+        //pulls info about user activity from the database
+        ClientServerMessage message = new ClientServerMessage(214, Subscriber.getLocalSubscriber().getID());
+        ClientGUIController.chat.sendToServer(message);
     }
 }

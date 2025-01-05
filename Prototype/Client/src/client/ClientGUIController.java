@@ -72,7 +72,7 @@ public class ClientGUIController extends Application
     {
         ClientServerMessage logOutMessage = new ClientServerMessage(999, null);
         try {
-            ClientGUIController.chat.accept(logOutMessage);
+            ClientGUIController.chat.sendToServer(logOutMessage);
             System.exit(0);
         }
         catch (Exception e) {

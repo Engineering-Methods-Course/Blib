@@ -36,7 +36,7 @@ public class ChatClient implements ChatIF
      *
      * @param msg The message from the console.
      */
-    public void accept(ClientServerMessage msg)
+    public void sendToServer(ClientServerMessage msg)
     {
         client.handleMessageFromClientUI(msg);
     }
