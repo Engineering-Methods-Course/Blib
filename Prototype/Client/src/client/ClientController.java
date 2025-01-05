@@ -1,8 +1,10 @@
 package client;
 
+import common.Book;
 import common.ClientServerMessage;
 import common.Subscriber;
 import gui.SearchHomePageFrameController;
+import gui.SearchResultFrameController;
 import gui.SubscriberEditProfileFrameController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -80,7 +82,6 @@ public class ClientController extends AbstractClient {
                     //search book response
                     case 201:
                         //todo: handle search book response
-                        System.out.println(message.getMessageContent());
                         if (message.getMessageContent() == null) {
                             System.out.println("Book not found");
                             SearchHomePageFrameController.changeCanSearch(false);
@@ -89,6 +90,10 @@ public class ClientController extends AbstractClient {
                         }
                         else{
                             SearchHomePageFrameController.changeCanSearch(true);
+                            System.out.println("bob3");
+                            ArrayList<Book> booklst =(ArrayList<Book>)message.getMessageContent();
+                            System.out.println("bob4");
+                            SearchResultFrameController.setBookArray(booklst);
                             }
                         break;
                     //Show book details response

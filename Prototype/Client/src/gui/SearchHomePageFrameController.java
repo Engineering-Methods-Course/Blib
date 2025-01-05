@@ -123,14 +123,12 @@ public class SearchHomePageFrameController
         }
 
         ClientServerMessage searchMessage = new ClientServerMessage(messageCode,messageContent);
-        System.out.println(searchMessage.getMessageContent()+"1");
         try {
             ClientGUIController.chat.sendToServer(searchMessage);//will be changed accept->something else
         }
         catch (Exception e) {
             System.out.println("Error sending search message to server: " + e.getMessage());
         }
-        System.out.println(canSearch);
         if(canSearch)
         {
             navigateTo(event, "/gui/SearchResultFrame.fxml","/gui/Subscriber.css", "Search results");

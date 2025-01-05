@@ -1,10 +1,18 @@
 package gui;
 
+import common.Book;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static client.ClientGUIController.navigateTo;
 
@@ -12,21 +20,78 @@ public class SearchResultFrameController
 {
 
     @FXML
-    public TableView searchResultTable;
+    public TableView<List<String>>  searchResultTable;
     @FXML
-    public TableColumn bookNameColumn;
+    public TableColumn<List<String>,String> bookNameColumn;
     @FXML
-    public TableColumn genreColumn;
+    public TableColumn<List<String>,String> genreColumn;
+    //@FXML
+    //public TableColumn locationColumn;
     @FXML
-    public TableColumn locationColumn;
-    @FXML
-    public TableColumn watchDetailsColumn;
+    public TableColumn<List<String>,String> watchDetailsColumn;
     @FXML
     public Button backButton;
 
+    private final ObservableList<List<String>> BookList = FXCollections.observableArrayList();
+    private final Property<ObservableList<List<String>>> BookListProperty = new SimpleObjectProperty<>(BookList);
+
+    private static ArrayList<Book> books;
+
+    /**
+     * initializes the table with the books that were found
+     */
+    @FXML
     public void initialize()
     {
         //todo: load search results from the database into the table
+        //searchResultTable = new TableView<>();
+        searchResultTable.itemsProperty().bind(BookListProperty);
+        searchResultTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        bookNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
+        genreColumn.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().get(1))));
+        //watchDetailsColumn.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().get(2)))); // Adjust property name
+        watchDetailsColumn.setCellFactory(column -> new TableCell<List<String>, String>() {
+            private final Button button = new Button("Watch History");
+            {
+                // Set the button action
+                button.setOnAction(event -> {
+                    // Handle button action here, e.g., show subscriber's history
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Will be implemented in the future");
+                    alert.setTitle("Watch History");
+                    alert.showAndWait();
+                });
+            }
+            // Display button if the row is not empty
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty ||  getTableRow() == null || getTableRow().getItem() == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(button);
+                }
+            }
+        });
+
+        //runs on the book list and adds each book to the table
+        for(Book book : books)
+        {
+            List<String> row = new ArrayList<>();
+            System.out.println("book: " + book.getBookName()+"genre: "+book.getBookGenre());
+            row.add(book.getBookName());
+            row.add(book.getBookGenre());
+            this.BookList.add(row);
+        }
+    }
+
+    /**
+     * Sets the book list to the input
+     * @param bookslst - the book list we want to set it to
+     */
+    public static void setBookArray(ArrayList<Book> bookslst)
+    {
+        books = bookslst;
     }
 
     /**
