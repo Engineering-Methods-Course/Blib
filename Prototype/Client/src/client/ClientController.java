@@ -142,10 +142,10 @@ public class ClientController extends AbstractClient
                             Platform.runLater(() -> showErrorAlert("Update error", "Could not update subscriber details"));
 
                         }
-                        else if (message.getMessageContent() instanceof Subscriber)
+                        else if (message.getMessageContent() instanceof ArrayList)
                         {
-                            Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
-                            Subscriber.setLocalSubscriber(subscriberFromServer);
+                            ArrayList<String> newDetails = (ArrayList<String>) message.getMessageContent();
+                            updateSubscriberDetails(newDetails);
                             Platform.runLater(() -> showInformationAlert("Update successful", "Subscriber details updated successfully"));
                         }
                         break;

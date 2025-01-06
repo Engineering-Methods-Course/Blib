@@ -89,7 +89,7 @@ public class SubscriberProfileOptionsFrameController
      */
     public void editProfileButtonCLicked(ActionEvent event) throws Exception
     {
-        navigateTo(event, "/gui/EditSubscriberDetailsFrame.fxml", "/gui/Subscriber.css", "Edit Profile");
+        navigateTo(event, "/gui/SubscriberEditProfileFrame.fxml", "/gui/Subscriber.css", "Edit Profile");
     }
 
     /**

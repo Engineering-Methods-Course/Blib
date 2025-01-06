@@ -151,7 +151,7 @@ public class SearchHomePageFrameController
      */
     public void login(ActionEvent event) throws Exception
     {
-        navigateTo(event, "/gui/SubscriberLoginFrame.fxml", "/gui/Subscriber.css", "Login");
+        navigateTo(event, "/gui/UserLoginFrame.fxml", "/gui/Subscriber.css", "Login");
     }
 
     /**

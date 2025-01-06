@@ -1,5 +1,7 @@
 package gui;
 
+import client.ClientGUIController;
+import common.ClientServerMessage;
 import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static client.ClientGUIController.navigateTo;
@@ -18,35 +21,13 @@ public class SubscriberEditProfileFrameController implements Initializable
 
     // FXML elements for labels
     @FXML
-    private Label lblID;
+    public TextField txtLastName;
     @FXML
-    private Label lblName;
-    @FXML
-    private Label lblLastName;
-    @FXML
-    private Label lblHistory;
-    @FXML
-    private Label lblPhone;
-    @FXML
-    private Label lblEmail;
-    @FXML
-    private TextField txtID;
-    @FXML
-    private TextField txtName;
-    @FXML
-    private TextField txtLastName;
-    @FXML
-    private TextField txtHistory;
+    public TextField txtFirstName;
     @FXML
     private TextField txtPhone;
     @FXML
     private TextField txtEmail;
-    @FXML
-    private TextField txtPassword;
-    @FXML
-    private Button btnBack = null;
-    @FXML
-    private Button btnUpdate = null;
 
     /**
      * This method handles the back button click event.
@@ -69,43 +50,34 @@ public class SubscriberEditProfileFrameController implements Initializable
      */
     public void clickUpdateButton(ActionEvent event) throws Exception
     {
-        // Retrieve the text from the TextField components
-        int id = Integer.parseInt(txtID.getText());
-        String name = txtName.getText();
-        String lastName = txtLastName.getText();
-        String phoneNumber = txtPhone.getText();
-        String email = txtEmail.getText();
-        String password = txtPassword.getText();
-        boolean status = false;
         // Create a new Subscriber object with the updated details
-        //? Subscriber changedSubscriber = new Subscriber(id, name, lastName, phoneNumber, email, password, status);
+        ArrayList<String> changedSubscriber = new ArrayList<>();
+        changedSubscriber.add(String.valueOf(Subscriber.getLocalSubscriber().getID()));
+        changedSubscriber.add(txtPhone.getText());
+        changedSubscriber.add(txtEmail.getText());
+        changedSubscriber.add(txtFirstName.getText());
+        changedSubscriber.add(txtLastName.getText());
 
+        System.out.println(changedSubscriber);
         // Create a ClientServerMessage with the subscriber and ID 203
-        // ?ClientServerMessage editedProfileMessage = new ClientServerMessage(203, changedSubscriber);
+        ClientServerMessage message = new ClientServerMessage(216, changedSubscriber);
 
-        try {
-            //? ClientGUIController.chat.accept(editedProfileMessage);
-        }
-        catch (Exception e) {
-            System.out.println("Error with sending the login message to the server: " + e.getMessage());
-        }
+        // Send the message to the server
+        ClientGUIController.chat.sendToServer(message);
+
+        // Navigate to the previous screen
+        navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Page");
     }
 
     /**
      * This method loads the profile details into the respective text fields.
      * It sets the values from the Subscriber object into the text fields.
-     *
-     * @param s1 The Subscriber object containing profile data
      */
-    public void loadProfileDetails(Subscriber s1)
+    public void loadProfileDetails()
     {
         // Set values in the text fields from the Subscriber object
-        this.txtID.setText(String.valueOf(s1.getID()));
-        this.txtName.setText(s1.getFirstName());
-        this.txtLastName.setText(s1.getLastName());
-        this.txtPhone.setText(String.valueOf(s1.getPhoneNumber()));
-        this.txtEmail.setText(s1.getEmail());
-        //? this.txtPassword.setText(s1.getPassword());
+        this.txtPhone.setText(Subscriber.getLocalSubscriber().getPhoneNumber());
+        this.txtEmail.setText(Subscriber.getLocalSubscriber().getEmail());
     }
 
     /**
@@ -117,6 +89,6 @@ public class SubscriberEditProfileFrameController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        loadProfileDetails(Subscriber.getLocalSubscriber());
+        loadProfileDetails();
     }
 }
