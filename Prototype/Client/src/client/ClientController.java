@@ -3,7 +3,6 @@ package client;
 import common.*;
 import gui.SearchHomePageFrameController;
 import gui.SearchResultFrameController;
-import gui.SubscriberEditProfileFrameController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import ocsf.client.*;
@@ -157,13 +156,14 @@ public class ClientController extends AbstractClient {
                         break;
                     // Get all subscribers list
                     case 307:
-                        if (message.getMessageContent() == null) {
-                            System.out.println("Unable to present Subscribers");
-                            Platform.runLater(() -> showErrorAlert("No Subscribers", "Unable to present Subscribers"));
-                        } else if (message.getMessageContent() instanceof ArrayList<?>) {
-                            ArrayList<Subscriber> subscribersFromServer = (ArrayList<Subscriber>) message.getMessageContent();
-                            //?PrototypeViewAllController.setSubscribers(subscribersFromServer);
-                        }
+//                        if (message.getMessageContent() == null) {
+//                            System.out.println("Unable to present Subscribers");
+//                            Platform.runLater(() -> showErrorAlert("No Subscribers", "Unable to present Subscribers"));
+//                        } else if (message.getMessageContent() instanceof ArrayList<?>) {
+//                            ArrayList<Subscriber> subscribersFromServer = (ArrayList<Subscriber>) message.getMessageContent();
+//                            //?PrototypeViewAllController.setSubscribers(subscribersFromServer);
+//                        }
+                        //todo: handle get all subscribers list
                         break;
                     // Watch subscriber details response
                     case 309:
@@ -213,13 +213,12 @@ public class ClientController extends AbstractClient {
 
     /**
      * This method terminates the client.
-     *
-     * @throws IOException If an I/O error occurs.
      */
     public void quit() {
         try {
             closeConnection();
         } catch (IOException e) {
+            e.printStackTrace();
         }
         System.exit(0);
     }
