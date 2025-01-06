@@ -7,6 +7,7 @@ import gui.SubscriberEditProfileFrameController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import ocsf.client.*;
+import common.ChatIF;
 
 
 import java.io.*;

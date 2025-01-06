@@ -47,11 +47,18 @@ public class SearchHomePageFrameController
     @FXML
     public Button watchProfileButton;
 
-    private static boolean canSearch=false;
+    private static boolean canSearch=false; //Variable to check if we got results from the search
+    private final String userType="user";
 
     public void initialize()
     {
         //todo: implement
+        //need to check what user (user/client/librarian) enters the search
+        profileButton.setDisable(!userType.equals("user"));
+        profileButton.setVisible(!userType.equals("user"));
+        watchProfileButton.setDisable(!userType.equals("user"));
+        watchProfileButton.setVisible(!userType.equals("user"));
+
     }
     //allows the system to change the ability to allow search process
     public static void changeCanSearch(Boolean bool)
@@ -144,7 +151,7 @@ public class SearchHomePageFrameController
      */
     public void login(ActionEvent event) throws Exception
     {
-        navigateTo(event, "/gui/SearchResultFrame.fxml", "/gui/Subscriber.css", "Login");
+        navigateTo(event, "/gui/SubscriberLoginFrame.fxml", "/gui/Subscriber.css", "Login");
     }
 
     /**
@@ -155,5 +162,6 @@ public class SearchHomePageFrameController
     public void goToProfile(ActionEvent event) throws Exception
     {
         //todo: implement logic to check if there's a user logged in and navigate to the appropriate page
+        //check the instance of the current user and according to it navigate
     }
 }
