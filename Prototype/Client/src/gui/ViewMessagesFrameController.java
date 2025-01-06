@@ -13,8 +13,6 @@ public class ViewMessagesFrameController {
 
     @FXML
     private Button backButton;
-    @FXML
-    private TextField messageTextField;
 
     public void ViewAllMessages()
     {
