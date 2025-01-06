@@ -718,4 +718,104 @@ public class DBController {
         }
     }
 
+    /**
+     * case 310
+     * This method extends the return date of a borrowed book
+     *
+     * @param messageContent Array list containing the subscriber ID and the book ID and the new return date
+     * @param conn           The connection to the database
+     * @return Array list containing true if the book was reserved successfully and false if not with the error message
+     */
+    public ArrayList<String> extendBookBorrowTime(ArrayList<String> messageContent, Connection conn) {
+        ArrayList<String> response = new ArrayList<>();
+        try {
+            Date newReturnDate;
+
+            /*
+            * Checks if the subscriber is frozen
+             */
+            String checkSubscriberQuery = "SELECT status FROM subscriber WHERE subscriber_id = ?";
+            PreparedStatement checkSubscriberStatement = conn.prepareStatement(checkSubscriberQuery);
+            checkSubscriberStatement.setInt(1, Integer.parseInt(messageContent.get(0)));
+            ResultSet checkSubscriberRs = checkSubscriberStatement.executeQuery();
+            if (checkSubscriberRs.next()) {
+                if (checkSubscriberRs.getInt("status") == 0) {
+                    response.add("false");
+                    response.add("Subscriber is frozen");
+                    return response;
+                }
+            }
+
+            /*
+            * Checks if less than a week is left for the book to be returned (book can be extended only if less than a week is left)
+             */
+            String checkReturnDateQuery = "SELECT expected_return_date FROM borrow WHERE subscriber_id = ? AND copy_id = ?";
+            PreparedStatement checkReturnDateStatement = conn.prepareStatement(checkReturnDateQuery);
+            checkReturnDateStatement.setInt(1, Integer.parseInt(messageContent.get(0)));
+            checkReturnDateStatement.setInt(2, Integer.parseInt(messageContent.get(1)));
+            ResultSet checkReturnDateRs = checkReturnDateStatement.executeQuery();
+            if (checkReturnDateRs.next()) {
+                Date expectedReturnDate = checkReturnDateRs.getDate("expected_return_date");
+                long diff = expectedReturnDate.getTime() - System.currentTimeMillis();
+                long diffDays = diff / (24 * 60 * 60 * 1000); // convert to days
+                if (diffDays > 7) {
+                    response.add("false");
+                    response.add("Cannot extend the return date due to having more than a week left");
+                    return response;
+                }
+            }
+
+            /*
+             * Checks if the book is reserved (ordered)
+             */
+            String checkReservedQuery = "SELECT copies, reserved_copies, borrowed_copies, lost_copies  FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+            PreparedStatement checkReservedStatement = conn.prepareStatement(checkReservedQuery);
+            checkReservedStatement.setInt(1, Integer.parseInt(messageContent.get(1)));
+            ResultSet checkReservedRs = checkReservedStatement.executeQuery();
+            if (checkReservedRs.next()) {
+                int copies = checkReservedRs.getInt("copies");
+                int reservedCopies = checkReservedRs.getInt("reserved_copies");
+                int borrowedCopies = checkReservedRs.getInt("borrowed_copies");
+                int lostCopies = checkReservedRs.getInt("lost_copies");
+                if (copies == (reservedCopies + borrowedCopies + lostCopies)) { // if all copies are reserved or borrowed or lost then the book is reserved
+                    response.add("false");
+                    response.add("Book is reserved");
+                    return response;
+                }
+            }
+
+            /*
+             * Created a date object to convert the string date to sql date
+             */
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                java.util.Date parsed = format.parse(messageContent.get(2));
+                newReturnDate = new Date(parsed.getTime());
+            } catch (ParseException e) {
+                System.out.println("Error: Parsing date" + e);
+                response.add("false");
+                response.add("Problem with parsing the return date");
+                return response;
+            }
+
+            /*
+             * The query updates the expected return date of the borrow table where the subscriber ID and the book ID matches the given values
+             */
+            String extendQuery = "UPDATE borrow SET expected_return_date = ? WHERE subscriber_id = ? AND copy_id = ?";
+            PreparedStatement extendStatement = conn.prepareStatement(extendQuery);
+            extendStatement.setDate(1, newReturnDate);
+            extendStatement.setInt(2, Integer.parseInt(messageContent.get(0)));
+            extendStatement.setInt(3, Integer.parseInt(messageContent.get(1)));
+            extendStatement.executeUpdate();
+            response.add("true");
+            return response;
+        } catch (SQLException e) {
+            // If an error occur
+            response.add("false");
+            response.add("Problem with extending the return date");
+            System.out.println("Error: With extending the return date (extendReturnDate) " + e);
+            return response;
+        }
+        //! need to add to log
+    }
 }
