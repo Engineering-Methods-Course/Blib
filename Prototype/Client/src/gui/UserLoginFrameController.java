@@ -39,6 +39,22 @@ public class UserLoginFrameController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //todo: make it check if there is a user logged in and navigate to the correct page
+        try
+        {
+            if (Subscriber.getLocalSubscriber() != null)
+            {
+                navigateTo(null, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Page");
+            }
+            else if (Librarian.getLocalLibrarian() != null)
+            {
+                navigateTo(null, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Librarian Menu");
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error initializing login screen: " + e.getMessage());
+        }
     }
 
     /**
@@ -74,12 +90,12 @@ public class UserLoginFrameController implements Initializable {
 
         if (Subscriber.getLocalSubscriber() != null) {
             System.out.println("Subscriber logged in" + Subscriber.getLocalSubscriber());
-            System.out.println(event);
             navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", null, "Profile Page");
         }
         else if (Librarian.getLocalLibrarian() != null)
         {
-            navigateTo(event, "/gui/LibrarianProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Librarian Menu");
+            System.out.println("Librarian logged in" + Librarian.getLocalLibrarian());
+            navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Librarian Menu");
         }
         else
         {

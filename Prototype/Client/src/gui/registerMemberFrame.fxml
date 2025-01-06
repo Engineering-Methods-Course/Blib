@@ -27,14 +27,14 @@
         <VBox alignment="CENTER" prefHeight="451.0" prefWidth="1280.0" spacing="20.0">
             <!-- ID -->
             <HBox alignment="CENTER" prefWidth="1280.0" spacing="10.0">
-                <Label fx:id="lblUserName" prefWidth="100.0" text="ID:"/>
-                <TextField fx:id="txtID" prefWidth="200.0"/>
+                <Label fx:id="lblUserName" prefWidth="100.0" text="Username:"/>
+                <TextField fx:id="txtUsername" prefWidth="200.0"/>
             </HBox>
 
             <!-- Name -->
             <HBox alignment="CENTER" spacing="10.0">
                 <Label fx:id="lblName" prefWidth="100.0" text="Name:"/>
-                <TextField fx:id="txtName" prefWidth="200.0"/>
+                <TextField fx:id="txtFirstName" prefWidth="200.0"/>
             </HBox>
 
             <!-- Last Name -->
@@ -53,12 +53,6 @@
             <HBox alignment="CENTER" spacing="10.0">
                 <Label fx:id="lblEmail" prefWidth="100.0" text="Email:"/>
                 <TextField fx:id="txtEmail" prefWidth="200.0"/>
-            </HBox>
-
-            <!-- Password -->
-            <HBox alignment="CENTER" spacing="10.0">
-                <Label fx:id="lblPassword" prefWidth="100.0" text="Password:"/>
-                <TextField fx:id="txtPassword" prefWidth="200.0"/>
             </HBox>
 
             <!-- Register Button -->

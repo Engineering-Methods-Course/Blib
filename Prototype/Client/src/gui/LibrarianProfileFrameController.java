@@ -32,7 +32,7 @@ public class LibrarianProfileFrameController
     public void initialize()
     {
         //updates the username text field to display the librarian's name
-        usernameTextField.setText("Welcome, " + Librarian.getLocalLibrarian().getFirstName() + " " + Librarian.getLocalLibrarian().getLastName());
+        usernameTextField.setText(Librarian.getLocalLibrarian().getFirstName() + " " + Librarian.getLocalLibrarian().getLastName());
     }
 
     /**

@@ -1,5 +1,7 @@
 package gui;
 
+import client.ClientGUIController;
+import common.ClientServerMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -7,66 +9,70 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+import java.util.ArrayList;
+
 import static client.ClientGUIController.navigateTo;
 
-public class RegisterMemberFrameController {
+public class RegisterMemberFrameController
+{
 
     @FXML
-    private TextField txtID;
+    private TextField txtUsername;
     @FXML
-    private TextField txtName;
+    private TextField txtFirstName;
     @FXML
     private TextField txtLastName;
     @FXML
     private TextField txtPhone;
     @FXML
     private TextField txtEmail;
-    @FXML
-    private TextField txtPassword;
-    @FXML
-    private Button RegisterButton;
-    @FXML
-    private Button BackButton;
-
 
     /**
      * Handles the Register button click event.
+     *
      * @param event The ActionEvent triggered by clicking the button.
      */
-    public void clickRegisterButton(ActionEvent event)
+    public void clickRegisterButton(ActionEvent event) throws Exception
     {
-        //todo: make new member and save him in DB
-
         // Collect data from the form fields
-        String id = txtID.getText();
-        String name = txtName.getText();
+        String username = txtUsername.getText();
+        String name = txtFirstName.getText();
         String lastName = txtLastName.getText();
         String phone = txtPhone.getText();
         String email = txtEmail.getText();
-        String password = txtPassword.getText();
 
-
-        //alerts
-
-        if (id.isEmpty() || name.isEmpty() || lastName.isEmpty() || phone.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        // alerts the user if any of the fields are empty
+        if (username.isEmpty() || name.isEmpty() || lastName.isEmpty() || phone.isEmpty() || email.isEmpty())
+        {
             showAlert(AlertType.WARNING, "Input Error", "Please fill all fields.");
-        } else {
-            // Code to handle saving member to the system
-            // After successful registration
-            showAlert(AlertType.INFORMATION, "Success", "Member registered successfully.");
         }
 
+        ArrayList<String> messageContent = new ArrayList<>();
+        messageContent.add(username);
+        messageContent.add(name);
+        messageContent.add(lastName);
+        messageContent.add(email);
+        messageContent.add(phone);
 
+        ClientServerMessage message = new ClientServerMessage(300, messageContent);
+
+        // Send the message to the server
+        ClientGUIController.chat.sendToServer(message);
+
+        // navigate to the librarian profile page
+        navigateTo(event, "LibrarianProfileFrame.fxml", "Subscriber.css", "Librarian Page");
     }
 
 
     /**
      * Show an alert to the user with a given type, title, and message.
-     * @param type The type of the alert (e.g., ERROR, WARNING, INFORMATION)
-     * @param title The title of the alert
+     *
+     * @param type    The type of the alert (e.g., ERROR, WARNING, INFORMATION)
+     * @param title   The title of the alert
      * @param message The message to be displayed
      */
-    private void showAlert(AlertType type, String title, String message) {
+    private void showAlert(AlertType type, String title, String message)
+    {
 
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -77,10 +83,12 @@ public class RegisterMemberFrameController {
 
     /**
      * Handles the Back button click event.
+     *
      * @param event The ActionEvent triggered by clicking the button.
      * @throws Exception If an error occurs during navigation.
      */
-    public void backButtonClicked(ActionEvent event) throws Exception {
+    public void backButtonClicked(ActionEvent event) throws Exception
+    {
         navigateTo(event, "LibrarianProfileFrame.fxml", "Subscriber.css", "Register Member");
     }
 }
