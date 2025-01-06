@@ -134,7 +134,6 @@ public class ClientController extends AbstractClient {
                         } else if (message.getMessageContent() instanceof Subscriber) {
                             Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
                             Subscriber.setLocalSubscriber(subscriberFromServer);
-                            Subscriber.setLocalSubscriber(subscriberFromServer);
                             Platform.runLater(() -> showInformationAlert("Update successful", "Subscriber details updated successfully"));
                         }
                         break;

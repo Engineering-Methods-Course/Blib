@@ -7,10 +7,10 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ViewMessagesFrameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ViewMessagesFrameController">
 
     <!-- Title -->
-    <Text fx:id="messageTextField" layoutX="544.0" layoutY="63.0" text="Messages">
+    <Text layoutX="544.0" layoutY="63.0" text="Messages" AnchorPane.bottomAnchor="728.63671875" AnchorPane.leftAnchor="544.0" AnchorPane.rightAnchor="613.01171875" AnchorPane.topAnchor="23.64453125">
         <font>
             <Font name="Agency FB" size="40.0" />
         </font>
