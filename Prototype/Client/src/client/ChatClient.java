@@ -19,10 +19,12 @@ public class ChatClient implements ChatIF
      */
     public ChatClient(String host, int port) throws Exception
     {
-        try {
+        try
+        {
             client = new ClientController(host, port, this);
         }
-        catch (IOException exception) {
+        catch (IOException exception)
+        {
 
             System.out.println("Error: Can't setup connection!" + " Terminating client.");
             throw exception;

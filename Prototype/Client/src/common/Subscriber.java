@@ -3,7 +3,8 @@ package common;
 import java.io.Serializable;
 
 
-public class Subscriber extends User implements Serializable {
+public class Subscriber extends User implements Serializable
+{
 
     private static Subscriber localSubscriber = null;
     // Unique identifier for the subscriber
@@ -36,7 +37,8 @@ public class Subscriber extends User implements Serializable {
      * @param phoneNumber Subscriber's phone number
      * @param email       Subscriber's email address
      */
-    public Subscriber(int id, String firstName, String lastName, String phoneNumber, String email, boolean status, int subscriptionHistory) {
+    public Subscriber(int id, String firstName, String lastName, String phoneNumber, String email, boolean status, int subscriptionHistory)
+    {
         super(firstName, lastName);
         this.id = id;
         this.phoneNumber = phoneNumber;
@@ -50,7 +52,8 @@ public class Subscriber extends User implements Serializable {
      *
      * @return the local subscriber object
      */
-    public static Subscriber getLocalSubscriber() {
+    public static Subscriber getLocalSubscriber()
+    {
         return localSubscriber;
     }
 
@@ -59,7 +62,8 @@ public class Subscriber extends User implements Serializable {
      *
      * @param localSubscriber the local subscriber object
      */
-    public static void setLocalSubscriber(Subscriber localSubscriber) {
+    public static void setLocalSubscriber(Subscriber localSubscriber)
+    {
         Subscriber.localSubscriber = localSubscriber;
     }
 
@@ -68,7 +72,8 @@ public class Subscriber extends User implements Serializable {
      *
      * @return the id of the subscriber
      */
-    public int getID() {
+    public int getID()
+    {
         return id;
     }
 
@@ -77,7 +82,8 @@ public class Subscriber extends User implements Serializable {
      *
      * @param id Unique identifier for the subscriber
      */
-    public void setId(int id) {
+    public void setId(int id)
+    {
         this.id = id;
     }
 
@@ -86,7 +92,8 @@ public class Subscriber extends User implements Serializable {
      *
      * @return the name of the subscriber
      */
-    public String getFirstName() {
+    public String getFirstName()
+    {
         return firstname;
     }
 
@@ -95,7 +102,8 @@ public class Subscriber extends User implements Serializable {
      *
      * @param name First name of the subscriber
      */
-    public void setFirstName(String name) {
+    public void setFirstName(String name)
+    {
         this.firstname = name;
     }
 
@@ -104,7 +112,8 @@ public class Subscriber extends User implements Serializable {
      *
      * @return the last name of the subscriber
      */
-    public String getLastName() {
+    public String getLastName()
+    {
         return lastName;
     }
 
@@ -113,7 +122,8 @@ public class Subscriber extends User implements Serializable {
      *
      * @param lastName Last name of the subscriber
      */
-    public void setLastName(String lastName) {
+    public void setLastName(String lastName)
+    {
         this.lastName = lastName;
     }
 
@@ -122,7 +132,8 @@ public class Subscriber extends User implements Serializable {
      *
      * @return the subscription history count
      */
-    public int getSubscriptionHistory() {
+    public int getSubscriptionHistory()
+    {
         return subscriptionHistory;
     }
 
@@ -131,7 +142,8 @@ public class Subscriber extends User implements Serializable {
      *
      * @return the phone number of the subscriber
      */
-    public String getPhoneNumber() {
+    public String getPhoneNumber()
+    {
         return phoneNumber;
     }
 
@@ -140,7 +152,8 @@ public class Subscriber extends User implements Serializable {
      *
      * @param phoneNumber Subscriber's phone number
      */
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(String phoneNumber)
+    {
         this.phoneNumber = phoneNumber;
     }
 
@@ -149,7 +162,8 @@ public class Subscriber extends User implements Serializable {
      *
      * @return the email address of the subscriber
      */
-    public String getEmail() {
+    public String getEmail()
+    {
         return email;
     }
 
@@ -158,7 +172,8 @@ public class Subscriber extends User implements Serializable {
      *
      * @param email Subscriber's email address
      */
-    public void setEmail(String email) {
+    public void setEmail(String email)
+    {
         this.email = email;
     }
 
@@ -167,7 +182,8 @@ public class Subscriber extends User implements Serializable {
      *
      * @return true if the account is frozen, false otherwise
      */
-    public boolean getStatusIsFrozen() {
+    public boolean getStatusIsFrozen()
+    {
         return statusIsFrozen;
     }
 
@@ -177,7 +193,8 @@ public class Subscriber extends User implements Serializable {
      *
      * @param statusIsFrozen true if the account should be frozen, false otherwise
      */
-    public void setStatusIsFrozen(boolean statusIsFrozen) {
+    public void setStatusIsFrozen(boolean statusIsFrozen)
+    {
         this.statusIsFrozen = statusIsFrozen;
     }
 
