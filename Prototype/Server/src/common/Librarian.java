@@ -6,8 +6,7 @@ public class Librarian extends User implements Serializable {
 
     private static Librarian localLibrarian = null;
     private final int librarianID;
-    private String firstName;
-    private String lastName;
+
 
     /**
      * Constructor to initialize a local Librarian object with all necessary details from the server.

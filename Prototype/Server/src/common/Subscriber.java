@@ -9,12 +9,6 @@ public class Subscriber extends User implements Serializable {
     // Unique identifier for the subscriber
     private int id;
 
-    // First name of the subscriber
-    private String firstname;
-
-    // Last name of the subscriber
-    private String lastName;
-
     // Subscription history (e.g., the number of subscriptions)
     private final int subscriptionHistory;
 
@@ -87,7 +81,7 @@ public class Subscriber extends User implements Serializable {
      * @return the name of the subscriber
      */
     public String getFirstName() {
-        return firstname;
+        return firstName;
     }
 
     /**
@@ -96,7 +90,7 @@ public class Subscriber extends User implements Serializable {
      * @param name First name of the subscriber
      */
     public void setFirstName(String name) {
-        this.firstname = name;
+        this.firstName = name;
     }
 
     /**

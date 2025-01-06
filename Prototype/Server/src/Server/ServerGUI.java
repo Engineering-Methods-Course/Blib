@@ -66,7 +66,7 @@ public class ServerGUI extends Application {
         }
         primaryStage.setOnCloseRequest(event -> {
             try {
-                sv.sendMessagesToAllClients(new ClientServerMessage(998, null));
+                sv.sendMessagesToAllClients(new ClientServerMessage(999, null));
                 System.exit(0);
             } catch (Exception e) {
                 e.printStackTrace();

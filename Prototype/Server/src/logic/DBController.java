@@ -63,7 +63,7 @@ public class DBController {
              */
             ResultSet userRs = userStatement.executeQuery();
             if (userRs.next()) {
-                String userId = userRs.getString("user_id");
+                int userId = userRs.getInt("user_id");
                 String type = userRs.getString("type");
                 /*
                  * If the user is a subscriber, select the subscriber details
@@ -71,7 +71,7 @@ public class DBController {
                 if (type.equals("subscriber")) {
                     String subQuery = "SELECT * FROM subscriber WHERE subscriber_id = ?";
                     PreparedStatement subStatement = conn.prepareStatement(subQuery);
-                    subStatement.setString(1, userId);
+                    subStatement.setInt(1, userId);
                     ResultSet subRs = subStatement.executeQuery();
                     if (subRs.next()) {
                         Subscriber subscriber = new Subscriber(subRs.getInt("subscriber_id"), subRs.getString("first_name"), subRs.getString("last_name"), subRs.getString("phone_number"), subRs.getString("email"), subRs.getInt("status") == 1, subRs.getInt("detailed_subscription_history"));
@@ -84,11 +84,10 @@ public class DBController {
                 else {
                     String libQuery = "SELECT * FROM librarian WHERE librarian_id = ?";
                     PreparedStatement libStatement = conn.prepareStatement(libQuery);
-                    libStatement.setString(1, userId);
+                    libStatement.setInt(1, userId);
                     ResultSet subRs = libStatement.executeQuery();
                     if (subRs.next()) {
-                        Librarian librarian = new Librarian(subRs.getInt("librarian_id"), subRs.getString("first_name"), subRs.getString("last_name"));
-                        return librarian;
+                        return new Librarian(subRs.getInt("librarian_id"), subRs.getString("first_name"), subRs.getString("last_name"));
                     }
                 }
             }
