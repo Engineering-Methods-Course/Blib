@@ -57,11 +57,12 @@ public class SearchResultFrameController
             {
                 // Set the button action
                 button.setOnAction(event -> {
-                    // Handle button action here, e.g., show subscriber's history
+                    // Handle button action here, e.g., show the book's details
                     /*Alert alert = new Alert(Alert.AlertType.INFORMATION, "Will be implemented in the future");
                     alert.setTitle("View Details");
                     alert.showAndWait();*/
                     try {
+                        System.out.println(getTableView().getItems().get(getIndex()));
                         navigateTo(event, "/gui/BookInfoFrame.fxml","/gui/Subscriber.css", "Book information");
                     } catch (Exception e) {
                         throw new RuntimeException(e);
@@ -101,6 +102,10 @@ public class SearchResultFrameController
         books = bookslst;
     }
 
+    private void getBookCopy(List<String> listFromRow)
+    {
+
+    }
     /**
      * This method handles the backButton click event to navigate back to the previous frame
      * @param event      The action event triggered by clicking the back button

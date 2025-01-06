@@ -170,9 +170,11 @@ public class SearchHomePageFrameController
                 messageContent = descriptionSearch.getText();
                 break;
             default:
-                System.out.println("choose a category");
                 return;
         }
+
+        //checks if we are trying to search with empty messageContent and stops it from advancing
+        if (messageContent.isEmpty()) return;
 
         ClientServerMessage searchMessage = new ClientServerMessage(messageCode,messageContent);
         try {
@@ -181,6 +183,7 @@ public class SearchHomePageFrameController
         catch (Exception e) {
             System.out.println("Error sending search message to server: " + e.getMessage());
         }
+        //if there were was a result from the server, go to searchResultFrame
         if(canSearch)
         {
             navigateTo(event, "/gui/SearchResultFrame.fxml","/gui/Subscriber.css", "Search results");
