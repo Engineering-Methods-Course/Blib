@@ -2,6 +2,8 @@ package gui;
 
 import client.ClientGUIController;
 import common.ClientServerMessage;
+import common.Librarian;
+import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,6 +23,13 @@ public class SearchHomePageFrameController
         NAME,
         GENRE,
         DESCRIPTION
+    }
+
+    private enum UserType
+    {
+        Subscriber,
+        Librarian,
+        User
     }
 
     private SearchType searchType;
@@ -48,16 +57,36 @@ public class SearchHomePageFrameController
     public Button watchProfileButton;
 
     private static boolean canSearch=false; //Variable to check if we got results from the search
-    private final String userType="user";
+    private UserType user_type = UserType.User;
 
     public void initialize()
     {
-        //todo: implement
+        String name="";
         //need to check what user (user/client/librarian) enters the search
-        profileButton.setDisable(!userType.equals("user"));
-        profileButton.setVisible(!userType.equals("user"));
-        watchProfileButton.setDisable(!userType.equals("user"));
-        watchProfileButton.setVisible(!userType.equals("user"));
+        if(Subscriber.getLocalSubscriber()!=null)
+        {
+            user_type = UserType.Subscriber;
+            name = Subscriber.getLocalSubscriber().getFirstName();
+        }
+        else if(Librarian.getLocalLibrarian()!=null)
+        {
+            user_type = UserType.Librarian;
+            name = Librarian.getLocalLibrarian().getFirstName();
+        }
+
+        profileButton.setDisable(!user_type.equals(UserType.User));
+        profileButton.setVisible(!user_type.equals(UserType.User));
+        profileButton.setText("Hello "+name);
+        watchProfileButton.setDisable(!user_type.equals(UserType.User));
+        watchProfileButton.setVisible(!user_type.equals(UserType.User));
+        //watchProfileButton.setVisible()
+
+        //set search by name to be the default search when opening the window
+        nameRadio.setSelected(true);
+        searchType = SearchType.NAME;
+
+        searchField.setVisible(true);
+        descriptionSearch.setVisible(false);
 
     }
     //allows the system to change the ability to allow search process
@@ -73,6 +102,10 @@ public class SearchHomePageFrameController
     public void searchByName(ActionEvent event)
     {
         searchType = SearchType.NAME;
+        changeAllRadioSelected(true,false,false);
+        searchField.setVisible(true);
+        descriptionSearch.setVisible(false);
+
     }
 
     /**
@@ -82,6 +115,9 @@ public class SearchHomePageFrameController
     public void searchByGenre(ActionEvent event)
     {
         searchType = SearchType.GENRE;
+        changeAllRadioSelected(false,true,false);
+        searchField.setVisible(true);
+        descriptionSearch.setVisible(false);
     }
 
     /**
@@ -94,6 +130,15 @@ public class SearchHomePageFrameController
         searchButton.setLayoutY(500);
         searchField.setVisible(false);
         descriptionSearch.setVisible(true);
+
+        changeAllRadioSelected(false,false,true);
+    }
+
+    private void changeAllRadioSelected(Boolean name, Boolean genre, boolean desc)
+    {
+        nameRadio.setSelected(name);
+        genreRadio.setSelected(genre);
+        descriptionRadio.setSelected(desc);
     }
 
     /**
@@ -114,7 +159,7 @@ public class SearchHomePageFrameController
         {
             case NAME:
                 messageCode = 200;
-                messageContent = descriptionSearch.getText();
+                messageContent = searchField.getText();
                 break;
             case GENRE:
                 messageCode = 202;
@@ -131,7 +176,7 @@ public class SearchHomePageFrameController
 
         ClientServerMessage searchMessage = new ClientServerMessage(messageCode,messageContent);
         try {
-            ClientGUIController.chat.sendToServer(searchMessage);//will be changed accept->something else
+            ClientGUIController.chat.sendToServer(searchMessage);
         }
         catch (Exception e) {
             System.out.println("Error sending search message to server: " + e.getMessage());

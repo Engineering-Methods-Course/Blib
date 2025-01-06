@@ -108,11 +108,16 @@ public class ClientController extends AbstractClient
                         else
                         {
                             SearchHomePageFrameController.changeCanSearch(true);
-                            System.out.println("bob3");
-                            ArrayList<Book> booklst = (ArrayList<Book>) message.getMessageContent();
-                            System.out.println("bob4");
-                            SearchResultFrameController.setBookArray(booklst);
-                        }
+                            if(message.getMessageContent() instanceof ArrayList)
+                            {
+                                ArrayList<Book> booklst =(ArrayList<Book>)message.getMessageContent();
+                                SearchResultFrameController.setBookArray(booklst);
+                            }
+                            else
+                            {
+                                SearchHomePageFrameController.changeCanSearch(false);
+                            }
+                            }
                         break;
                     //Show book details response
                     case 207:
