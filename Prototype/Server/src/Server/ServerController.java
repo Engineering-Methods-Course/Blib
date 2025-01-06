@@ -1,6 +1,7 @@
 package Server;
 
 
+import com.sun.security.ntlm.Client;
 import common.ClientServerMessage;
 import gui.ServerMonitorFrameController;
 import logic.DBController;
@@ -354,6 +355,8 @@ public class ServerController extends AbstractServer {
                         break;
                     default:
                         System.out.println("Invalid command id(handleMessageFromClient ServerController)");
+                        client.sendToClient(null);
+                        break;
                 }
             }
         } catch (Exception e) {

@@ -3,7 +3,6 @@ package gui;
 import client.ClientGUIController;
 import common.ClientServerMessage;
 import common.Subscriber;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -24,7 +23,7 @@ public class SubscriberProfileOptionsFrameController
     @FXML
     public TableView historyTable;
     @FXML
-    public Text usernameField;
+    public Text nameField;
     @FXML
     public Text phoneNumberField;
     @FXML
@@ -48,8 +47,9 @@ public class SubscriberProfileOptionsFrameController
 
     public void initialize()
     {
+        System.out.println("bob");
         //loads all the user info into the fields
-        usernameField.setText("Hello: " + Subscriber.getLocalSubscriber().getFirstName() + " " + Subscriber.getLocalSubscriber().getLastName());
+        nameField.setText("Hello: " + Subscriber.getLocalSubscriber().getFirstName() + " " + Subscriber.getLocalSubscriber().getLastName());
         phoneNumberField.setText("Phone number: " + Subscriber.getLocalSubscriber().getPhoneNumber());
         emailField.setText("Email: " + Subscriber.getLocalSubscriber().getEmail());
         statusTextField.setText("Account Status: " + (Subscriber.getLocalSubscriber().getStatusIsFrozen() ? "Frozen" : "Active"));
@@ -57,7 +57,7 @@ public class SubscriberProfileOptionsFrameController
         userIDField.setText("User ID: " + Subscriber.getLocalSubscriber().getID());
 
         //calls the viewHistory method to update the history table
-        viewHistory();
+        //viewHistory();
     }
 
     /**

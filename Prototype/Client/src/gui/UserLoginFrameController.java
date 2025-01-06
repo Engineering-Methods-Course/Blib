@@ -63,8 +63,8 @@ public class UserLoginFrameController implements Initializable {
         loginDetails.add(username);
         loginDetails.add(password);
 
-        // Create a new ClientServerMessage with the login details and ID 101
-        ClientServerMessage loginMessage = new ClientServerMessage(101, loginDetails);
+        // Create a new ClientServerMessage with the login details and ID 100
+        ClientServerMessage loginMessage = new ClientServerMessage(100, loginDetails);
 
         try {
             ClientGUIController.chat.sendToServer(loginMessage);
@@ -73,11 +73,13 @@ public class UserLoginFrameController implements Initializable {
         }
 
         if (Subscriber.getLocalSubscriber() != null) {
-            navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Page");
+            System.out.println("Subscriber logged in" + Subscriber.getLocalSubscriber());
+            System.out.println(event);
+            navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", null, "Profile Page");
         }
         else if (Librarian.getLocalLibrarian() != null)
         {
-            navigateTo(event, "/gui/LibrarianProfileOptionsFrame.fxml", "/gui/Librarian.css", "Librarian Menu");
+            navigateTo(event, "/gui/LibrarianProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Librarian Menu");
         }
         else
         {
@@ -92,9 +94,8 @@ public class UserLoginFrameController implements Initializable {
      * @param event The action event triggered by clicking the back button
      * @throws Exception If there is an issue with the navigation
      */
-    public void backButtonClicked(ActionEvent event) throws Exception {
+    public void backButtonClicked(ActionEvent event) throws Exception
+    {
         navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
     }
 }
-
-

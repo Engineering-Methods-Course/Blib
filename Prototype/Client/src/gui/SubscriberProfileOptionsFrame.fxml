@@ -25,7 +25,7 @@
                   <TableColumn fx:id="detailsColumn" prefWidth="964.0" text="Details" />
                     </columns>
                 </TableView>
-                <Text fx:id="usernameField" layoutX="45.0" layoutY="39.8984375" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;First Name + Last Name&gt;" wrappingWidth="300.708984375" AnchorPane.bottomAnchor="679.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="14.0">
+                <Text fx:id="nameField" layoutX="45.0" layoutY="39.8984375" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;First Name + Last Name&gt;" wrappingWidth="300.708984375" AnchorPane.bottomAnchor="679.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="14.0">
                     <font>
                         <Font size="24.0" />
                     </font>
