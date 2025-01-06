@@ -54,7 +54,7 @@ public class BookInfoFrameController
      */
     public void initialize()
     {
-        loadBookInfo();
+        //loadBookInfo();
     }
 
     /**

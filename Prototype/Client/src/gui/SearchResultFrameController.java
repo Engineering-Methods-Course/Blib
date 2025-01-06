@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -52,14 +53,19 @@ public class SearchResultFrameController
         genreColumn.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().get(1))));
         //watchDetailsColumn.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().get(2)))); // Adjust property name
         watchDetailsColumn.setCellFactory(column -> new TableCell<List<String>, String>() {
-            private final Button button = new Button("Watch History");
+            private final Button button = new Button("View Details");
             {
                 // Set the button action
                 button.setOnAction(event -> {
                     // Handle button action here, e.g., show subscriber's history
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Will be implemented in the future");
-                    alert.setTitle("Watch History");
-                    alert.showAndWait();
+                    /*Alert alert = new Alert(Alert.AlertType.INFORMATION, "Will be implemented in the future");
+                    alert.setTitle("View Details");
+                    alert.showAndWait();*/
+                    try {
+                        navigateTo(event, "/gui/BookInfoFrame.fxml","/gui/Subscriber.css", "Book information");
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                 });
             }
             // Display button if the row is not empty
@@ -70,6 +76,7 @@ public class SearchResultFrameController
                     setGraphic(null);
                 } else {
                     setGraphic(button);
+                    setAlignment(Pos.CENTER);
                 }
             }
         });
