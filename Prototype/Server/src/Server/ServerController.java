@@ -235,6 +235,7 @@ public class ServerController extends AbstractServer {
                                 add("fail");
                                 add("Server Error (case 216)");
                             }}));
+                            break;
                         }
                         break;
                     case (218):
@@ -271,14 +272,13 @@ public class ServerController extends AbstractServer {
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
                                 client.sendToClient(new ClientServerMessage(301, dbController.registerNewSubscriber((ArrayList<String>) message.getMessageContent(), conn)));
-                                System.out.println("Subscriber was registered");
                             } else {
                                 System.out.println("Cannot register account Message is not an ArrayList<String> (case 300)");
                                 client.sendToClient(new ClientServerMessage(301, new ArrayList<String>() {{
                                     add("fail");
                                     add("Cannot register account Message is not an ArrayList<String> (case 300)");
                                 }}));
-
+                            break;
                             }
                         } catch (Exception e) {
                             System.out.println("Error: with register method (case 300)" + e);
@@ -288,6 +288,7 @@ public class ServerController extends AbstractServer {
                             }}));
                             break;
                         }
+                        break;
                     case (302):
                         /**
                          * do: librarian borrows a book to a subscriber

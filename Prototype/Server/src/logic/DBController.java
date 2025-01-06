@@ -1,5 +1,6 @@
 package logic;
 
+import com.mysql.cj.jdbc.Blob;
 import common.Book;
 import common.Librarian;
 import common.Subscriber;
@@ -51,23 +52,29 @@ public class DBController {
         try {
             String username = messageContent.get(0);
             String password = messageContent.get(1);
+
             /*
              * The query selects all columns from the user table where the username matches a given value
              */
+
             String userQuery = "SELECT type, user_id FROM users WHERE username = ? AND password = ? ";
             PreparedStatement userStatement = conn.prepareStatement(userQuery);
             userStatement.setString(1, username);
             userStatement.setString(2, password);
+
             /*
              * The result set is the result of the query
              */
+
             ResultSet userRs = userStatement.executeQuery();
             if (userRs.next()) {
                 int userId = userRs.getInt("user_id");
                 String type = userRs.getString("type");
+
                 /*
                  * If the user is a subscriber, select the subscriber details
                  */
+
                 if (type.equals("subscriber")) {
                     String subQuery = "SELECT * FROM subscriber WHERE subscriber_id = ?";
                     PreparedStatement subStatement = conn.prepareStatement(subQuery);
@@ -78,9 +85,11 @@ public class DBController {
                         return subscriber;
                     }
                 }
+
                 /*
                  * If the user is a librarian, select the librarian details
                  */
+
                 else {
                     String libQuery = "SELECT * FROM librarian WHERE librarian_id = ?";
                     PreparedStatement libStatement = conn.prepareStatement(libQuery);
@@ -112,9 +121,11 @@ public class DBController {
     public ArrayList<Book> searchBookByName(String bookName, Connection conn) {
         try {
             ArrayList<Book> books = new ArrayList<>();
+
             /*
              * The query selects all columns from the book table where the name matches a given value
              */
+
             String findBookQuery = "SELECT * FROM book WHERE name LIKE ?";
             PreparedStatement findBookStatement = conn.prepareStatement(findBookQuery);
             findBookStatement.setString(1, "%" + bookName + "%");
@@ -124,6 +135,7 @@ public class DBController {
             /*
              * If the query was successful, add the values of the book to a list
              */
+
             while (rs.next()) {
                 Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("borrowed_copies"), rs.getInt("lost_copies"));
                 books.add(book);
@@ -151,9 +163,11 @@ public class DBController {
     public ArrayList<Book> searchBookByGenre(String bookGenre, Connection conn) {
         try {
             ArrayList<Book> books = new ArrayList<>();
+
             /*
              * The query selects all columns from the book table where the genre matches a given value
              */
+
             String findBookQuery = "SELECT * FROM book WHERE main_genre = ?";
             PreparedStatement findbookStatement = conn.prepareStatement(findBookQuery);
             findbookStatement.setString(1, bookGenre);
@@ -163,6 +177,7 @@ public class DBController {
             /*
              * If the query was successful, add the values of the book to a list
              */
+
             while (rs.next()) {
                 Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("borrowed_copies"), rs.getInt("lost_copies"));
                 books.add(book);
@@ -189,9 +204,11 @@ public class DBController {
     public ArrayList<Book> searchBookByDescription(String text, Connection conn) {
         try {
             ArrayList<Book> books = new ArrayList<>();
+
             /*
              * The query selects all columns from the book table where the description matches a given value
              */
+
             String findBookQuery = "SELECT * FROM book WHERE MATCH(description) AGAINST(? IN NATURAL LANGUAGE MODE)";
             PreparedStatement findbookStatement = conn.prepareStatement(findBookQuery);
             findbookStatement.setString(1, text);
@@ -201,6 +218,7 @@ public class DBController {
             /*
              * If the query was successful, add the values of the book to a list
              */
+
             while (rs.next()) {
                 Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("borrowed_copies"), rs.getInt("lost_copies"));
                 books.add(book);
@@ -323,10 +341,12 @@ public class DBController {
             String subscriberPhoneNumber = messageContent.get(2);
             String subscriberFirstName = messageContent.get(3);
             String subscriberLastName = messageContent.get(4);
+
             /*
              * The query updates the phone number and email of the subscriber where the id matches the given value
              */
-            String subscriberInfoQuery = "UPDATE subscriber SET subscriber_phone_number = ?, subscriber_email = ?, first_name = ?, last_name = ?  WHERE subscriber_id = ?";
+
+            String subscriberInfoQuery = "UPDATE subscriber SET phone_number = ?, email = ?, first_name = ?, last_name = ?  WHERE subscriber_id = ?";
             PreparedStatement subscriberInfoStatement = conn.prepareStatement(subscriberInfoQuery);
             subscriberInfoStatement.setString(1, subscriberPhoneNumber);
             subscriberInfoStatement.setString(2, subscriberEmail);
@@ -367,6 +387,7 @@ public class DBController {
             /*
              * The query updates the username and password of the subscriber where the id matches the given value
              */
+
             String subscriberUserinfoQuery = "UPDATE users SET password = ? WHERE user_id = ?";
             PreparedStatement subscriberUserinfoStatement = conn.prepareStatement(subscriberUserinfoQuery);
             subscriberUserinfoStatement.setString(1, password);
@@ -394,20 +415,12 @@ public class DBController {
      * @return array list containing true if the subscriber was added successfully and false if not with the error message
      */
     public ArrayList<String> registerNewSubscriber(ArrayList<String> messageContent, Connection conn) {
-
-        /*
-         * The response array list
-         */
-
         ArrayList<String> response = new ArrayList<>();
         try {
             int subscriberId = 0;
             int historyId = 0;
 
-            /*
-             *  Check if the username already exists
-             */
-
+            // Check if the username already exists
             String checkUserQuery = "SELECT COUNT(*) FROM users WHERE username = ?";
             PreparedStatement checkUserStatement = conn.prepareStatement(checkUserQuery);
             checkUserStatement.setString(1, messageContent.get(0));
@@ -420,44 +433,42 @@ public class DBController {
 
             conn.setAutoCommit(false);
 
-            /*
-             * The query inserts the subscription details into the subscription_history table
-             */
+            // Insert into subscription_history table
+            String historyQuery = "INSERT INTO subscription_history  (details) VALUES (?)"; // Adjust columns as needed
+            PreparedStatement historyStatement = conn.prepareStatement(historyQuery, Statement.RETURN_GENERATED_KEYS);
+            //! CHANGE THIS
+            // Generate a random byte array
+            byte[] randomBytes = new byte[10]; // Adjust the size as needed
+            new java.util.Random().nextBytes(randomBytes);
 
-            String historyQuery = "INSERT INTO subscription_hisotory";
-            PreparedStatement historyStatement = conn.prepareStatement(historyQuery);
+            // Create a Blob from the random byte array
+            Blob randomBlob = (Blob) conn.createBlob();
+            randomBlob.setBytes(1, randomBytes);
+            //! CHANGE THIS
+            historyStatement.setBlob(1, randomBlob); // Adjust values as needed
             historyStatement.executeUpdate();
             ResultSet generatedKeysHistoryId = historyStatement.getGeneratedKeys();
             if (generatedKeysHistoryId.next()) {
-                historyId = generatedKeysHistoryId.getInt("subscription_history_id");
+                historyId = generatedKeysHistoryId.getInt(1);
             } else {
-                System.out.println("Error: Getting new history ID");
-                throw new SQLException();
+                throw new SQLException("Error: Getting new history ID");
             }
 
-            /*
-             * The query inserts the user details into the user table
-             */
-
-            String userQuery = "INSERT INTO users (username, password, type, user_id) VALUES (?, ?, ?, ?)";
-            PreparedStatement userStatement = conn.prepareStatement(userQuery);
+            // Insert into users table
+            String userQuery = "INSERT INTO users (username, password, type) VALUES (?, ?, ?)";
+            PreparedStatement userStatement = conn.prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, messageContent.get(0));
             userStatement.setString(2, "Aa123456");
             userStatement.setString(3, "subscriber");
             userStatement.executeUpdate();
-            ResultSet generatedKeysUserId = historyStatement.getGeneratedKeys();
+            ResultSet generatedKeysUserId = userStatement.getGeneratedKeys();
             if (generatedKeysUserId.next()) {
-                subscriberId = generatedKeysUserId.getInt("user_id");
+                subscriberId = generatedKeysUserId.getInt(1);
             } else {
-                System.out.println("Error: Getting new history ID");
-                throw new SQLException();
+                throw new SQLException("Error: Getting new user ID");
             }
 
-
-            /*
-             * The query inserts the subscriber details into the subscriber table
-             */
-
+            // Insert into subscriber table
             String subscriberQuery = "INSERT INTO subscriber (subscriber_id, first_name, last_name, phone_number, email, status, detailed_subscription_history) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement subscriberStatement = conn.prepareStatement(subscriberQuery);
             subscriberStatement.setInt(1, subscriberId);
@@ -469,13 +480,12 @@ public class DBController {
             subscriberStatement.setInt(7, historyId);
             subscriberStatement.executeUpdate();
 
-            /*
-             * Commit the transaction
-             */
-
+            // Commit the transaction
             conn.commit();
             response.add("true");
-            response.add(String.format("%s %s was registered successfully\n ID: %s\n Username: %s temporary password: %s", messageContent.get(1), messageContent.get(2)) + subscriberId + messageContent.get(0) + "Aa123456");
+            String registerInfo= String.format("%s %s was registered successfully\n ID: %s\n Username: %s temporary password: %s", messageContent.get(1), messageContent.get(2), subscriberId, messageContent.get(0), "Aa123456");
+            response.add(registerInfo);
+            System.out.println(registerInfo);
         } catch (SQLException e) {
             try {
                 conn.rollback();
@@ -492,6 +502,7 @@ public class DBController {
                 System.out.println("Error: Setting auto-commit back to true" + ex);
             }
         }
+
         return response;
         //! need to add to log
 
@@ -793,9 +804,11 @@ public class DBController {
     //! ask or about if needed
     public Subscriber viewSubscriberDetails(int subscriberId, Connection conn) {
         try {
+
             /*
              * The query selects all columns from the subscriber table where the subscriber ID matches the given value
              */
+
             String getSubscriberQuery = "SELECT * FROM subscriber WHERE subscriber_id = ?";
             PreparedStatement getSubscriberStatement = conn.prepareStatement(getSubscriberQuery);
             getSubscriberStatement.setInt(1, subscriberId);
@@ -803,6 +816,7 @@ public class DBController {
             /*
              * If the query was successful, add the values of the columns to a list
              */
+
             if (getSubscriberRs.next()) {
                 Subscriber subscriber = new Subscriber(getSubscriberRs.getInt("subscriber_id"), getSubscriberRs.getString("first_name"), getSubscriberRs.getString("last_name"), getSubscriberRs.getString("phone_number"), getSubscriberRs.getString("email"), getSubscriberRs.getInt("status") == 1, getSubscriberRs.getInt("detailed_subscription_history"));
                 System.out.println("Subscriber found (viewSubscriberDetails)");
