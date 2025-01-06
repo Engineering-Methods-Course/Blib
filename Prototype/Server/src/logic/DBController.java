@@ -6,8 +6,8 @@ import common.Subscriber;
 import common.User;
 
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class DBController {
@@ -219,6 +219,96 @@ public class DBController {
     }
 
     /**
+     * case 212
+     * This method extends the return date of a borrowed book
+     *
+     * @param messageContent Array list containing the subscriber ID and the book ID and the new return date
+     * @param conn           The connection to the database
+     * @return Array list containing true if the book was reserved successfully and false if not with the error message
+     */
+    public ArrayList<String> extendBookBorrowTimeSubscriber(ArrayList<String> messageContent, Connection conn) {
+        ArrayList<String> response = new ArrayList<>();
+        int subscriberId = Integer.parseInt(messageContent.get(0));
+        int copyId = Integer.parseInt(messageContent.get(1));
+        Timestamp newReturnDate = null;
+        try {
+
+            /*
+             * Checks if the subscriber is frozen
+             */
+
+            String checkSubscriberQuery = "SELECT status FROM subscriber WHERE subscriber_id = ?";
+            PreparedStatement checkSubscriberStatement = conn.prepareStatement(checkSubscriberQuery);
+            checkSubscriberStatement.setInt(1, subscriberId);
+            ResultSet checkSubscriberRs = checkSubscriberStatement.executeQuery();
+            if (checkSubscriberRs.next()) {
+                if (checkSubscriberRs.getInt("status") == 0) {
+                    response.add("false");
+                    response.add("Subscriber is frozen");
+                    return response;
+                }
+            }
+
+            /*
+             * Checks if less than a week is left for the book to be returned (book can be extended only if less than a week is left)
+             */
+
+            String checkReturnDateQuery = "SELECT DATEDIFF(expected_return_date, NOW()) AS days_diff , expected_return_date FROM borrow WHERE subscriber_id = ? AND copy_id = ?";
+            PreparedStatement checkReturnDateStatement = conn.prepareStatement(checkReturnDateQuery);
+            checkReturnDateStatement.setInt(1, subscriberId);
+            checkReturnDateStatement.setInt(2, copyId);
+            ResultSet checkReturnDateRs = checkReturnDateStatement.executeQuery();
+            if (checkReturnDateRs.next()) {
+                LocalDateTime localDateTime = checkReturnDateRs.getTimestamp("expected_return_date").toLocalDateTime().plusDays(7);
+                newReturnDate = Timestamp.valueOf(localDateTime);
+                int daysDiff = checkReturnDateRs.getInt("days_diff");
+                if (daysDiff > 7) {
+                    response.add("false");
+                    response.add("Cannot extend the return date due to having more than a week left");
+                    return response;
+                }
+            }
+
+            /*
+             * Checks if the book is reserved (ordered)
+             */
+
+            String checkReservedQuery = "SELECT reserved_copies  FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+            PreparedStatement checkReservedStatement = conn.prepareStatement(checkReservedQuery);
+            checkReservedStatement.setInt(1, copyId);
+            ResultSet checkReservedRs = checkReservedStatement.executeQuery();
+            if (checkReservedRs.next()) {
+                if (checkReservedRs.getInt("reserved_copies") != 0) {
+                    response.add("false");
+                    response.add("the book had been reserved");
+                    return response;
+                }
+            }
+
+            /*
+             * The query updates the expected return date of the borrow table where the subscriber ID and the book ID matches the given values
+             */
+
+            String extendQuery = "UPDATE borrow SET expected_return_date = ? WHERE subscriber_id = ? AND copy_id = ?";
+            PreparedStatement extendStatement = conn.prepareStatement(extendQuery);
+            extendStatement.setTimestamp(1, newReturnDate);
+            extendStatement.setInt(2, Integer.parseInt(messageContent.get(0)));
+            extendStatement.setInt(3, Integer.parseInt(messageContent.get(1)));
+            extendStatement.executeUpdate();
+
+            response.add("true");
+            return response;
+        } catch (SQLException e) {
+            // If an error occur
+            response.add("false");
+            response.add("Problem with extending the return date");
+            System.out.println("Error: With extending the return date (extendReturnDate) " + e);
+            return response;
+        }
+        //! need to add to log
+    }
+
+    /**
      * case 216
      * This method edits the subscriber details
      *
@@ -229,24 +319,32 @@ public class DBController {
     public ArrayList<String> editSubscriberDetails(ArrayList<String> messageContent, Connection conn) {
         ArrayList<String> response = new ArrayList<>();
         try {
-            String subscriberId = messageContent.get(0);
+            int subscriberId = Integer.parseInt(messageContent.get(0));
             String subscriberEmail = messageContent.get(1);
-            int subscriberPhoneNumber = Integer.parseInt(messageContent.get(0));
+            String subscriberPhoneNumber = messageContent.get(2);
+            String subscriberFirstName = messageContent.get(3);
+            String subscriberLastName = messageContent.get(4);
             /*
              * The query updates the phone number and email of the subscriber where the id matches the given value
              */
-            String subscriberInfoQuery = "UPDATE subscriber SET subscriber_phone_number = ?, subscriber_email = ? WHERE subscriber_id = ?";
+            String subscriberInfoQuery = "UPDATE subscriber SET subscriber_phone_number = ?, subscriber_email = ?, first_name = ?, last_name = ?  WHERE subscriber_id = ?";
             PreparedStatement subscriberInfoStatement = conn.prepareStatement(subscriberInfoQuery);
-            subscriberInfoStatement.setString(1, subscriberId);
+            subscriberInfoStatement.setString(1, subscriberPhoneNumber);
             subscriberInfoStatement.setString(2, subscriberEmail);
-            subscriberInfoStatement.setInt(3, subscriberPhoneNumber);
+            subscriberInfoStatement.setString(3, subscriberFirstName);
+            subscriberInfoStatement.setString(4, subscriberLastName);
+            subscriberInfoStatement.setInt(5, subscriberId);
             subscriberInfoStatement.executeUpdate();
-            response.add("True");
+            response.add("true");
+            response.add(subscriberPhoneNumber);
+            response.add(subscriberEmail);
+            response.add(subscriberFirstName);
+            response.add(subscriberLastName);
             return response;
         } catch (SQLException e) {
             // If an error occur
-            response.add("False");
-            response.add("Problem with updating the subscriber");
+            response.add("false");
+            response.add("Problem with updating the subscriber details");
             System.out.println("Error: With updating the subscriber (editSubscriberDetails) " + e);
             return response;
         }
@@ -261,32 +359,32 @@ public class DBController {
      * @param conn           The connection to the database
      * @return array list containing true if the subscriber was edited successfully and false if not with the error message
      */
-    public ArrayList<String> editSubscriberLoginDetails(ArrayList<String> messageContent, Connection conn) {
+    public ArrayList<String> editSubscriberPassword(ArrayList<String> messageContent, Connection conn) {
         ArrayList<String> response = new ArrayList<>();
         try {
-            String username = messageContent.get(0);
+            int subscriberId = Integer.parseInt(messageContent.get(0));
             String password = messageContent.get(1);
-            int subscriberId = Integer.parseInt(messageContent.get(2));
+
             /*
              * The query updates the username and password of the subscriber where the id matches the given value
              */
-            String subscriberUserinfoQuery = "UPDATE users SET username = ?, password = ? WHERE user_id = ?";
+            String subscriberUserinfoQuery = "UPDATE users SET password = ? WHERE user_id = ?";
             PreparedStatement subscriberUserinfoStatement = conn.prepareStatement(subscriberUserinfoQuery);
-            subscriberUserinfoStatement.setString(1, username); //! need to chack if the user in not already exist
-            subscriberUserinfoStatement.setString(2, password);
-            subscriberUserinfoStatement.setInt(3, subscriberId);
+            subscriberUserinfoStatement.setString(1, password);
+            subscriberUserinfoStatement.setInt(2, subscriberId);
             subscriberUserinfoStatement.executeUpdate();
-            response.add("True");
+            response.add("true");
             return response;
         } catch (SQLException e) {
             // If an error occur
-            response.add("False");
-            response.add("Problem with updating the subscriber");
+            response.add("false");
+            response.add("Problem with updating the subscriber password");
             System.out.println("Error: With updating the subscriber (editSubscriberDetails) " + e);
             return response;
         }
         //! need to add to log
     }
+
 
     /**
      * case 300
@@ -306,6 +404,21 @@ public class DBController {
         try {
             int subscriberId = 0;
             int historyId = 0;
+
+            /*
+             *  Check if the username already exists
+             */
+
+            String checkUserQuery = "SELECT COUNT(*) FROM users WHERE username = ?";
+            PreparedStatement checkUserStatement = conn.prepareStatement(checkUserQuery);
+            checkUserStatement.setString(1, messageContent.get(0));
+            ResultSet checkUserRs = checkUserStatement.executeQuery();
+            if (checkUserRs.next() && checkUserRs.getInt(1) > 0) {
+                response.add("false");
+                response.add("Username already exists");
+                return response;
+            }
+
             conn.setAutoCommit(false);
 
             /*
@@ -315,38 +428,11 @@ public class DBController {
             String historyQuery = "INSERT INTO subscription_hisotory";
             PreparedStatement historyStatement = conn.prepareStatement(historyQuery);
             historyStatement.executeUpdate();
-            ResultSet generatedKeys = historyStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                historyId = generatedKeys.getInt(1);
+            ResultSet generatedKeysHistoryId = historyStatement.getGeneratedKeys();
+            if (generatedKeysHistoryId.next()) {
+                historyId = generatedKeysHistoryId.getInt("subscription_history_id");
             } else {
                 System.out.println("Error: Getting new history ID");
-                throw new SQLException();
-            }
-
-            /*
-             * The query inserts the subscriber details into the subscriber table
-             */
-
-            String subscriberQuery = "INSERT INTO subscriber (first_name, last_name, phone_number, email, status, detailed_subscription_history) VALUES (?, ?, ?, ?, ?, ?)";
-            PreparedStatement subscriberStatement = conn.prepareStatement(subscriberQuery);
-            subscriberStatement.setString(1, messageContent.get(0));
-            subscriberStatement.setString(2, messageContent.get(1));
-            subscriberStatement.setString(3, messageContent.get(2));
-            subscriberStatement.setString(4, messageContent.get(3));
-            subscriberStatement.setInt(5, 0);
-            subscriberStatement.setInt(6, historyId);
-            subscriberStatement.executeUpdate();
-
-            /*
-             * Get the new subscriber ID
-             */
-
-            ResultSet subscriberKey = subscriberStatement.getGeneratedKeys();
-            if (subscriberKey.next()) {
-                subscriberId = subscriberKey.getInt(1);
-                System.out.println("New subscriber ID: " + subscriberId);
-            } else {
-                System.out.println("Error: Getting new subscriber ID");
                 throw new SQLException();
             }
 
@@ -356,11 +442,33 @@ public class DBController {
 
             String userQuery = "INSERT INTO users (username, password, type, user_id) VALUES (?, ?, ?, ?)";
             PreparedStatement userStatement = conn.prepareStatement(userQuery);
-            userStatement.setString(1, messageContent.get(5));
+            userStatement.setString(1, messageContent.get(0));
             userStatement.setString(2, "Aa123456");
             userStatement.setString(3, "subscriber");
-            userStatement.setInt(4, subscriberId);
             userStatement.executeUpdate();
+            ResultSet generatedKeysUserId = historyStatement.getGeneratedKeys();
+            if (generatedKeysUserId.next()) {
+                subscriberId = generatedKeysUserId.getInt("user_id");
+            } else {
+                System.out.println("Error: Getting new history ID");
+                throw new SQLException();
+            }
+
+
+            /*
+             * The query inserts the subscriber details into the subscriber table
+             */
+
+            String subscriberQuery = "INSERT INTO subscriber (subscriber_id, first_name, last_name, phone_number, email, status, detailed_subscription_history) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement subscriberStatement = conn.prepareStatement(subscriberQuery);
+            subscriberStatement.setInt(1, subscriberId);
+            subscriberStatement.setString(2, messageContent.get(1));
+            subscriberStatement.setString(3, messageContent.get(2));
+            subscriberStatement.setString(4, messageContent.get(3));
+            subscriberStatement.setString(5, messageContent.get(4));
+            subscriberStatement.setInt(6, 0);
+            subscriberStatement.setInt(7, historyId);
+            subscriberStatement.executeUpdate();
 
             /*
              * Commit the transaction
@@ -368,6 +476,7 @@ public class DBController {
 
             conn.commit();
             response.add("true");
+            response.add(String.format("%s %s was registered successfully\n ID: %s\n Username: %s temporary password: %s", messageContent.get(1), messageContent.get(2)) + subscriberId + messageContent.get(0) + "Aa123456");
         } catch (SQLException e) {
             try {
                 conn.rollback();
@@ -402,7 +511,10 @@ public class DBController {
         try {
             int subscriberId = Integer.parseInt(messageContent.get(0));
             int copyId = Integer.parseInt(messageContent.get(1));
-            Date returnDate;
+            // get the return date
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime localDateTime = LocalDateTime.parse(messageContent.get(2), formatter);
+            Timestamp returnDate = Timestamp.valueOf(localDateTime);
 
             /*
              * This query selects the status of the book where the book ID matches the given value
@@ -432,13 +544,13 @@ public class DBController {
             if (checkBookRs.next()) {
                 if (checkBookRs.getInt("available") == 0) {
                     response.add("false");
-                    response.add("Book is not available at the moment");
+                    response.add("Book is not available at the moment in the system need to preform return first");
                     return response;
                 }
             }
 
             /*
-             * check if the subscriber had reserved the book
+             * check if the subscriber had reserved the book or if its reserved by someone else
              */
 
             boolean wasReserved = false;
@@ -458,8 +570,8 @@ public class DBController {
                     wasReserved = true;
                 }
             }
-            // The subscriber was the first to reserve the book or the book was not reserved
-            if(!wasReserved) {
+            // check if the book is reserved by someone else
+            if (!wasReserved) {
                 String checkReservedQuery = "SELECT copies, reserved_copies, borrowed_coppies  FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
                 PreparedStatement checkReservedStatement = conn.prepareStatement(checkReservedQuery);
                 checkReservedStatement.setInt(1, copyId);
@@ -478,20 +590,6 @@ public class DBController {
 
             conn.setAutoCommit(false);
 
-            /*
-             * Created a date object to convert the string date to sql date
-             */
-
-            try {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                java.util.Date parsed = format.parse(messageContent.get(2));
-                returnDate = new Date(parsed.getTime());
-            } catch (ParseException e) {
-                System.out.println("Error: Parsing date" + e);
-                response.add("false");
-                response.add("Problem with parsing the return date");
-                return response;
-            }
 
             /*
              * The query updates the status of the book_copy to unavailable (0)
@@ -519,7 +617,7 @@ public class DBController {
             PreparedStatement borrowStatement = conn.prepareStatement(borrowQuery);
             borrowStatement.setInt(1, copyId);
             borrowStatement.setInt(2, subscriberId);
-            borrowStatement.setDate(3, returnDate);
+            borrowStatement.setTimestamp(3, returnDate);
             borrowStatement.setString(4, "borrowed");
             borrowStatement.executeUpdate();
 
@@ -530,7 +628,6 @@ public class DBController {
 
             conn.commit();
             response.add("true");
-
         } catch (SQLException e) {
             try {
                 conn.rollback();
@@ -563,29 +660,33 @@ public class DBController {
     public ArrayList<String> returnBookFromSubscriber(String messageContent, Connection conn) {
         ArrayList<String> response = new ArrayList<>();
         int subscriberId = 0;
+        int copyId = Integer.parseInt(messageContent);
+
         try {
+
             /*
              * Created a date object to get the current date
              */
-            Date returnDate = new Date(System.currentTimeMillis());
 
             conn.setAutoCommit(false);
 
             /*
              * The query updates the status of the book_copy to available (1)
              */
+
             String updateCopyQuery = "UPDATE book_copy SET available = ? WHERE copy_id = ?";
             PreparedStatement updateCopyStatement = conn.prepareStatement(updateCopyQuery);
             updateCopyStatement.setInt(1, 1);
-            updateCopyStatement.setInt(2, Integer.parseInt(messageContent));
+            updateCopyStatement.setInt(2, copyId);
             updateCopyStatement.executeUpdate();
 
             /*
              * The query updates the amount of borrowed books in the book table
              */
+
             String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies - 1" + "WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
             PreparedStatement updateBookStatement = conn.prepareStatement(updateBookQuery);
-            updateBookStatement.setInt(1, Integer.parseInt(messageContent)); // copy_id
+            updateBookStatement.setInt(1, copyId);
             updateBookStatement.executeUpdate();
 
             /*
@@ -606,14 +707,15 @@ public class DBController {
             String returnQuery = "UPDATE borrow SET status = ?, return_date = ? WHERE subscriber_id = ? AND copy_id = ?";
             PreparedStatement returnStatement = conn.prepareStatement(returnQuery);
             returnStatement.setString(1, "returned");
-            returnStatement.setDate(2, returnDate);
+            returnStatement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
             returnStatement.setInt(3, subscriberId);
-            returnStatement.setInt(4, Integer.parseInt(messageContent));
+            returnStatement.setInt(4, copyId);
             returnStatement.executeUpdate();
 
             /*
              * Commit the transaction
              */
+
             conn.commit();
             response.add("true");
 
@@ -634,8 +736,9 @@ public class DBController {
                 System.out.println("Error: Setting auto-commit back to true" + ex);
             }
         }
-        return response;
+        //! notify reservation if needed
         //! need to add to log
+        return response;
     }
 
     /**
@@ -718,104 +821,5 @@ public class DBController {
         }
     }
 
-    /**
-     * case 310
-     * This method extends the return date of a borrowed book
-     *
-     * @param messageContent Array list containing the subscriber ID and the book ID and the new return date
-     * @param conn           The connection to the database
-     * @return Array list containing true if the book was reserved successfully and false if not with the error message
-     */
-    public ArrayList<String> extendBookBorrowTime(ArrayList<String> messageContent, Connection conn) {
-        ArrayList<String> response = new ArrayList<>();
-        try {
-            Date newReturnDate;
 
-            /*
-            * Checks if the subscriber is frozen
-             */
-            String checkSubscriberQuery = "SELECT status FROM subscriber WHERE subscriber_id = ?";
-            PreparedStatement checkSubscriberStatement = conn.prepareStatement(checkSubscriberQuery);
-            checkSubscriberStatement.setInt(1, Integer.parseInt(messageContent.get(0)));
-            ResultSet checkSubscriberRs = checkSubscriberStatement.executeQuery();
-            if (checkSubscriberRs.next()) {
-                if (checkSubscriberRs.getInt("status") == 0) {
-                    response.add("false");
-                    response.add("Subscriber is frozen");
-                    return response;
-                }
-            }
-
-            /*
-            * Checks if less than a week is left for the book to be returned (book can be extended only if less than a week is left)
-             */
-            String checkReturnDateQuery = "SELECT expected_return_date FROM borrow WHERE subscriber_id = ? AND copy_id = ?";
-            PreparedStatement checkReturnDateStatement = conn.prepareStatement(checkReturnDateQuery);
-            checkReturnDateStatement.setInt(1, Integer.parseInt(messageContent.get(0)));
-            checkReturnDateStatement.setInt(2, Integer.parseInt(messageContent.get(1)));
-            ResultSet checkReturnDateRs = checkReturnDateStatement.executeQuery();
-            if (checkReturnDateRs.next()) {
-                Date expectedReturnDate = checkReturnDateRs.getDate("expected_return_date");
-                long diff = expectedReturnDate.getTime() - System.currentTimeMillis();
-                long diffDays = diff / (24 * 60 * 60 * 1000); // convert to days
-                if (diffDays > 7) {
-                    response.add("false");
-                    response.add("Cannot extend the return date due to having more than a week left");
-                    return response;
-                }
-            }
-
-            /*
-             * Checks if the book is reserved (ordered)
-             */
-            String checkReservedQuery = "SELECT copies, reserved_copies, borrowed_copies, lost_copies  FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
-            PreparedStatement checkReservedStatement = conn.prepareStatement(checkReservedQuery);
-            checkReservedStatement.setInt(1, Integer.parseInt(messageContent.get(1)));
-            ResultSet checkReservedRs = checkReservedStatement.executeQuery();
-            if (checkReservedRs.next()) {
-                int copies = checkReservedRs.getInt("copies");
-                int reservedCopies = checkReservedRs.getInt("reserved_copies");
-                int borrowedCopies = checkReservedRs.getInt("borrowed_copies");
-                int lostCopies = checkReservedRs.getInt("lost_copies");
-                if (copies == (reservedCopies + borrowedCopies + lostCopies)) { // if all copies are reserved or borrowed or lost then the book is reserved
-                    response.add("false");
-                    response.add("Book is reserved");
-                    return response;
-                }
-            }
-
-            /*
-             * Created a date object to convert the string date to sql date
-             */
-            try {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                java.util.Date parsed = format.parse(messageContent.get(2));
-                newReturnDate = new Date(parsed.getTime());
-            } catch (ParseException e) {
-                System.out.println("Error: Parsing date" + e);
-                response.add("false");
-                response.add("Problem with parsing the return date");
-                return response;
-            }
-
-            /*
-             * The query updates the expected return date of the borrow table where the subscriber ID and the book ID matches the given values
-             */
-            String extendQuery = "UPDATE borrow SET expected_return_date = ? WHERE subscriber_id = ? AND copy_id = ?";
-            PreparedStatement extendStatement = conn.prepareStatement(extendQuery);
-            extendStatement.setDate(1, newReturnDate);
-            extendStatement.setInt(2, Integer.parseInt(messageContent.get(0)));
-            extendStatement.setInt(3, Integer.parseInt(messageContent.get(1)));
-            extendStatement.executeUpdate();
-            response.add("true");
-            return response;
-        } catch (SQLException e) {
-            // If an error occur
-            response.add("false");
-            response.add("Problem with extending the return date");
-            System.out.println("Error: With extending the return date (extendReturnDate) " + e);
-            return response;
-        }
-        //! need to add to log
-    }
 }

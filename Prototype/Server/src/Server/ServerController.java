@@ -179,13 +179,36 @@ public class ServerController extends AbstractServer {
                             client.sendToClient(new ClientServerMessage(201, null));
                         }
                         break;
-                    case (206)://! MAYBE DELETE THIS
+                    case (206):
                         break;
                     case (208):
                         break;
                     case (210):
                         break;
                     case (212):
+                        /**
+                         * do: subscriber wants to extend his borrow time
+                         * in: ArrayList<String> {subscriber id, copy id}
+                         * return: (id 213) ArrayList<String> {success/fail, error message}
+                         */
+                        try {
+                            if (message.getMessageContent() instanceof ArrayList) {
+                                client.sendToClient(new ClientServerMessage(213, dbController.extendBookBorrowTimeSubscriber((ArrayList<String>) message.getMessageContent(), conn)));
+                                System.out.println("Borrow time was extended");
+                            } else {
+                                client.sendToClient(new ClientServerMessage(213, new ArrayList<String>() {{
+                                    add("fail");
+                                    add("Cannot extend borrow time Message is not an ArrayList<String>");
+                                }}));
+                                System.out.println("Cannot extend borrow time Message is not an ArrayList<String> (case 212)");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error: with extend borrow time method (case 212)" + e);
+                            client.sendToClient(new ClientServerMessage(213, new ArrayList<String>() {{
+                                add("fail");
+                                add("Server Error");
+                            }}));
+                        }
                         break;
                     case (214):
                         break;
@@ -222,7 +245,7 @@ public class ServerController extends AbstractServer {
                          */
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
-                                client.sendToClient(new ClientServerMessage(219, dbController.editSubscriberLoginDetails((ArrayList<String>) message.getMessageContent(), conn)));
+                                client.sendToClient(new ClientServerMessage(219, dbController.editSubscriberPassword((ArrayList<String>) message.getMessageContent(), conn)));
                                 System.out.println("Subscriber login details were edited");
                             } else {
                                 client.sendToClient(new ClientServerMessage(219, new ArrayList<String>() {{
@@ -351,27 +374,10 @@ public class ServerController extends AbstractServer {
                     case (310):
                         /**
                          * do: librarian wants to extend the borrow time for a book that was borrowed by a subscriber
-                         * in: ArrayList<String> {subscriber id, book id, return date}
+                         * in: ArrayList<String> {subscriber id, book id, return date(yyyy-MM-dd HH:mm:ss)}
                          * return: (id 311) ArrayList<String> {success/fail, error message}
                          */
-                        try {
-                            if (message.getMessageContent() instanceof ArrayList) {
-                                client.sendToClient(new ClientServerMessage(311, dbController.extendBookBorrowTime((ArrayList<String>) message.getMessageContent(), conn)));
-                                System.out.println("Borrow time was extended");
-                            } else {
-                                System.out.println("Cannot extend borrow time Message is not an ArrayList<String> (case 310)");
-                                client.sendToClient(new ClientServerMessage(311, new ArrayList<String>() {{
-                                    add("fail");
-                                    add("Cannot extend borrow time Message is not an ArrayList<String> (case 310)");
-                                }}));
-                            }
-                        } catch (Exception e) {
-                            System.out.println("Error: with extend borrow time method (case 310)" + e);
-                            client.sendToClient(new ClientServerMessage(311, new ArrayList<String>() {{
-                                add("fail");
-                                add("Server Error (case 310)");
-                            }}));
-                        }
+
                         break;
                     default:
                         System.out.println("Invalid command id(handleMessageFromClient ServerController)");
