@@ -30,6 +30,15 @@ public class DBController {
         return instance;
     }
 
+    public static DBController getInstance(Connection connection) {
+        if (instance == null) {
+            System.out.println("DBController was created successfully");
+            instance = new DBController();
+
+        }
+        return instance;
+    }
+
     /**
      * case 100
      * This method logs in the user in to the system
@@ -40,13 +49,15 @@ public class DBController {
      */
     public User userLogin(ArrayList<String> messageContent, Connection conn) {
         try {
+            String username = messageContent.get(0);
+            String password = messageContent.get(1);
             /*
              * The query selects all columns from the user table where the username matches a given value
              */
             String userQuery = "SELECT type, user_id FROM users WHERE username = ? AND password = ? ";
             PreparedStatement userStatement = conn.prepareStatement(userQuery);
-            userStatement.setString(1, messageContent.get(0));
-            userStatement.setString(2, messageContent.get(1));
+            userStatement.setString(1, username);
+            userStatement.setString(2, password);
             /*
              * The result set is the result of the query
              */
@@ -218,14 +229,17 @@ public class DBController {
     public ArrayList<String> editSubscriberDetails(ArrayList<String> messageContent, Connection conn) {
         ArrayList<String> response = new ArrayList<>();
         try {
+            String subscriberId = messageContent.get(0);
+            String subscriberEmail = messageContent.get(1);
+            int subscriberPhoneNumber = Integer.parseInt(messageContent.get(0));
             /*
              * The query updates the phone number and email of the subscriber where the id matches the given value
              */
             String subscriberInfoQuery = "UPDATE subscriber SET subscriber_phone_number = ?, subscriber_email = ? WHERE subscriber_id = ?";
             PreparedStatement subscriberInfoStatement = conn.prepareStatement(subscriberInfoQuery);
-            subscriberInfoStatement.setString(1, messageContent.get(1));
-            subscriberInfoStatement.setString(2, messageContent.get(2));
-            subscriberInfoStatement.setInt(3, Integer.parseInt(messageContent.get(0)));
+            subscriberInfoStatement.setString(1, subscriberId);
+            subscriberInfoStatement.setString(2, subscriberEmail);
+            subscriberInfoStatement.setInt(3, subscriberPhoneNumber);
             subscriberInfoStatement.executeUpdate();
             response.add("True");
             return response;
@@ -250,14 +264,17 @@ public class DBController {
     public ArrayList<String> editSubscriberLoginDetails(ArrayList<String> messageContent, Connection conn) {
         ArrayList<String> response = new ArrayList<>();
         try {
+            String username = messageContent.get(0);
+            String password = messageContent.get(1);
+            int subscriberId = Integer.parseInt(messageContent.get(2));
             /*
              * The query updates the username and password of the subscriber where the id matches the given value
              */
             String subscriberUserinfoQuery = "UPDATE users SET username = ?, password = ? WHERE user_id = ?";
             PreparedStatement subscriberUserinfoStatement = conn.prepareStatement(subscriberUserinfoQuery);
-            subscriberUserinfoStatement.setString(1, messageContent.get(0));
-            subscriberUserinfoStatement.setString(2, messageContent.get(1));
-            subscriberUserinfoStatement.setInt(3, Integer.parseInt(messageContent.get(2)));
+            subscriberUserinfoStatement.setString(1, username); //! need to chack if the user in not already exist
+            subscriberUserinfoStatement.setString(2, password);
+            subscriberUserinfoStatement.setInt(3, subscriberId);
             subscriberUserinfoStatement.executeUpdate();
             response.add("True");
             return response;
