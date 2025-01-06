@@ -82,7 +82,7 @@ public class DBController {
                  * If the user is a librarian, select the librarian details
                  */
                 else {
-                    String libQuery = "SELECT type, user_id FROM users WHERE username = ? AND password = ? ";
+                    String libQuery = "SELECT * FROM librarian WHERE librarian_id = ?";
                     PreparedStatement libStatement = conn.prepareStatement(libQuery);
                     libStatement.setString(1, userId);
                     ResultSet subRs = libStatement.executeQuery();
