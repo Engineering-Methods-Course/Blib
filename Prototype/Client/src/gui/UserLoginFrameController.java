@@ -2,6 +2,7 @@ package gui;
 
 import client.ClientGUIController;
 import common.ClientServerMessage;
+import common.Librarian;
 import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,8 +19,7 @@ import java.util.ResourceBundle;
 import static client.ClientGUIController.navigateTo;
 
 
-public class SubscriberLoginFrameController implements Initializable
-{
+public class UserLoginFrameController implements Initializable {
 
     @FXML
     public Button backButton;
@@ -38,9 +38,7 @@ public class SubscriberLoginFrameController implements Initializable
      * @param resources The primary stage to set the scene
      */
     @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
-        //todo: implement this method
+    public void initialize(URL location, ResourceBundle resources) {
     }
 
     /**
@@ -51,8 +49,7 @@ public class SubscriberLoginFrameController implements Initializable
      * @throws Exception If there is an issue with the navigation
      */
     @FXML
-    public void clickLoginButton(ActionEvent event) throws Exception
-    {
+    public void clickLoginButton(ActionEvent event) throws Exception {
         String username = txtUsername.getText();
         String password = txtPassword.getText();
 
@@ -66,20 +63,24 @@ public class SubscriberLoginFrameController implements Initializable
         loginDetails.add(username);
         loginDetails.add(password);
 
-        // Create a new ClientServerMessage with the login details and ID 201
-        ClientServerMessage loginMessage = new ClientServerMessage(201, loginDetails);
+        // Create a new ClientServerMessage with the login details and ID 101
+        ClientServerMessage loginMessage = new ClientServerMessage(101, loginDetails);
 
         try {
             ClientGUIController.chat.sendToServer(loginMessage);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Error sending login message to server: " + e.getMessage());
         }
 
         if (Subscriber.getLocalSubscriber() != null) {
             navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Page");
         }
-        else {
+        else if (Librarian.getLocalLibrarian() != null)
+        {
+            navigateTo(event, "/gui/LibrarianProfileOptionsFrame.fxml", "/gui/Librarian.css", "Librarian Menu");
+        }
+        else
+        {
             System.out.println("Could not log in subscriber ");
         }
     }
@@ -91,8 +92,7 @@ public class SubscriberLoginFrameController implements Initializable
      * @param event The action event triggered by clicking the back button
      * @throws Exception If there is an issue with the navigation
      */
-    public void backButtonClicked(ActionEvent event) throws Exception
-    {
+    public void backButtonClicked(ActionEvent event) throws Exception {
         navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
     }
 }

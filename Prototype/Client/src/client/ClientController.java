@@ -1,15 +1,12 @@
 package client;
 
-import common.Book;
-import common.ClientServerMessage;
-import common.Subscriber;
+import common.*;
 import gui.SearchHomePageFrameController;
 import gui.SearchResultFrameController;
 import gui.SubscriberEditProfileFrameController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import ocsf.client.*;
-import common.ChatIF;
 
 
 import java.io.*;
@@ -78,6 +75,11 @@ public class ClientController extends AbstractClient {
                             Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
                             Subscriber.setLocalSubscriber(subscriberFromServer);
                         }
+                        else if(message.getMessageContent() instanceof Librarian)
+                        {
+                            Librarian librarianFromServer = (Librarian) message.getMessageContent();
+                            Librarian.setLocalLibrarian(librarianFromServer);
+                        }
                         break;
                     //search book response
                     case 201:
@@ -85,7 +87,7 @@ public class ClientController extends AbstractClient {
                         if (message.getMessageContent() == null) {
                             System.out.println("Book not found");
                             SearchHomePageFrameController.changeCanSearch(false);
-                            //make it better
+                            //todo: make it better
                             Platform.runLater(() -> showErrorAlert("Book Not Found", "There aren't any books like that"));
                         }
                         else{
