@@ -71,15 +71,22 @@ public class ClientController extends AbstractClient {
                         if (message.getMessageContent() == null) {
                             System.out.println("Wrong Username(id) or Password");
                             Platform.runLater(() -> showErrorAlert("Login error", "Wrong Username(id) or Password"));
-                        } else if (message.getMessageContent() instanceof Subscriber) {
-                            Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
-                            Subscriber.setLocalSubscriber(subscriberFromServer);
                         }
-                        else if(message.getMessageContent() instanceof Librarian)
+                        else if(message.getMessageContent() instanceof User)
                         {
-                            Librarian librarianFromServer = (Librarian) message.getMessageContent();
-                            Librarian.setLocalLibrarian(librarianFromServer);
+                            User user = (User) message.getMessageContent();
+                            if (user instanceof Subscriber)
+                            {
+                                Subscriber subscriberFromServer = (Subscriber) user;
+                                Subscriber.setLocalSubscriber(subscriberFromServer);
+                            }
+                            else if (user instanceof Librarian)
+                            {
+                                Librarian librarianFromServer = (Librarian) user;
+                                Librarian.setLocalLibrarian(librarianFromServer);
+                            }
                         }
+
                         break;
                     //search book response
                     case 201:
