@@ -136,6 +136,7 @@ public class LibrarianProfileFrameController
         navigateTo(event, "ViewMessagesFrame.fxml", "Subscriber.css", "View Messages");
     }
 
-    public void clickSearchSubscriber(ActionEvent actionEvent) {
+    public void clickSearchSubscriber(ActionEvent event) throws Exception{
+        navigateTo(event, "SearchSubscriberFrame.fxml", "Subscriber.css", "Search Subscriber");
     }
 }

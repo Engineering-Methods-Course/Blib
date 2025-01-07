@@ -5,6 +5,7 @@ import gui.BorrowBookFrameController;
 import gui.ReturnBookFrameController;
 import gui.SearchHomePageFrameController;
 import gui.SearchResultFrameController;
+import gui.SearchSubscriberFrameController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import ocsf.client.*;
@@ -206,7 +207,17 @@ public class ClientController extends AbstractClient
                         break;
                     // Watch subscriber details response
                     case 309:
-                        //todo: handle watch subscriber details response
+                        if (message.getMessageContent() instanceof ArrayList<?>) {
+                            @SuppressWarnings("unchecked")
+                            ArrayList<String> response = (ArrayList<String>) message.getMessageContent();
+
+                            // Call the showWatchProfileResponse method to handle and display the response
+                            SearchSubscriberFrameController.WatchProfileResponse(response);
+                        } else {
+                            // Log an error or display an error message if the response format is unexpected
+                            System.err.println("Unexpected format for Watch Subscriber Details response: " + message.getMessageContent());
+                            Platform.runLater(() -> showErrorAlert("Watch Subscriber Error", "Invalid response format from the server."));
+                        }
                         break;
                     // Extend borrow - librarian response
                     case 311:
