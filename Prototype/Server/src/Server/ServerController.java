@@ -263,6 +263,25 @@ public class ServerController extends AbstractServer {
                             }}));
                         }
                         break;
+                    case(220):
+                        /**
+                         * do: Returns an array list of all of the book copies of a specific book
+                         * in: String {copyID}
+                         * return: (id 221) ArrayList<BookCopy> {book copies}
+                         */
+                        try {
+                            if (message.getMessageContent() instanceof String) {
+                                client.sendToClient(new ClientServerMessage(221, dbController.getBookCopies((String) message.getMessageContent(), conn)));
+                                System.out.println("Book copies were sent to client");
+                            } else {
+                                System.out.println("Cannot get book copies Message is not a String (case 220)");
+                                client.sendToClient(new ClientServerMessage(221, null));
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error: with getting book copies (case 220)" + e);
+                            client.sendToClient(new ClientServerMessage(221, null));
+                        }
+                        break;
                     case (300):
                         /**
                          * do: librarian wants to register a new subscriber into the system

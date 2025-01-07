@@ -1,10 +1,8 @@
 package logic;
 
 import java.sql.Blob;
-import common.Book;
-import common.Librarian;
-import common.Subscriber;
-import common.User;
+
+import common.*;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.*;
@@ -561,6 +559,46 @@ public class DBController {
     }
 
     /**
+     * case 220
+     * This return an array list of all the copies of a specific book
+     *
+     * @param messageContent Array list containing the copyID
+     * @param conn           The connection to the database
+     * @return Array list containing the book copies if successful and null if not
+     */
+     public ArrayList<BookCopy> getBookCopies(String messageContent, Connection conn) {
+        try {
+            ArrayList<BookCopy> bookCopies = new ArrayList<>();
+            int copyID = Integer.parseInt(messageContent);
+
+            /*
+             * The query selects all columns from the book_copy table where the serial number matches a given value
+             */
+
+            String findBookCopyQuery = "SELECT * FROM book_copy WHERE copy_id = ?";
+            PreparedStatement findBookCopyStatement = conn.prepareStatement(findBookCopyQuery);
+            findBookCopyStatement.setInt(1, copyID);
+            ResultSet rs = findBookCopyStatement.executeQuery();
+
+            /*
+             * If the query was successful, add the values of the book to a list
+             */
+            while (rs.next()) {
+                BookCopy bookCopy = new BookCopy(rs.getInt("copy_id"), rs.getInt("serial_number"), rs.getString("available"), rs.getString("shelf_location"));
+                bookCopies.add(bookCopy);
+            }
+            if (bookCopies.isEmpty()) {
+                System.out.println("No book copies found (getBookCopies)");
+                return null;
+            }
+            System.out.println("Book copies found (getBookCopies)");
+            return bookCopies;
+        } catch (SQLException e) {
+            System.out.println("Error: With exporting book copies from sql (getBookCopies) " + e);
+            return null;
+        }
+     }
+     /**
      * case 300
      * This method registers a new subscriber in the system
      *
