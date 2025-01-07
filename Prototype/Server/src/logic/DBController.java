@@ -366,7 +366,6 @@ public class DBController {
             /*
              * The query updates the expected return date of the borrow table where the subscriber ID and the book ID matches the given values
              */
-
             String extendQuery = "UPDATE borrow SET expected_return_date = ? WHERE subscriber_id = ? AND copy_id = ?";
             PreparedStatement extendStatement = conn.prepareStatement(extendQuery);
             extendStatement.setTimestamp(1, newReturnDate);
@@ -629,7 +628,7 @@ public class DBController {
              * This query checks whether the book is available
              */
 
-            String checkBookQuery = "SELECT status FROM book_copy WHERE copy_id = ?";
+            String checkBookQuery = "SELECT available FROM book_copy WHERE copy_id = ?";
             PreparedStatement checkBookStatement = conn.prepareStatement(checkBookQuery);
             checkBookStatement.setInt(1, copyId);
             ResultSet checkBookRs = checkBookStatement.executeQuery();
@@ -646,7 +645,7 @@ public class DBController {
              */
 
             boolean wasReserved = false;
-            String bookReservedByTheSubscriberQuery = "SELECT subscriber_id FROM reserve WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?) ORDER BY reservation_date ASC LIMIT 1";
+            String bookReservedByTheSubscriberQuery = "SELECT subscriber_id FROM reservation WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?) ORDER BY reservation_date ASC LIMIT 1";
             PreparedStatement bookReservedByTheSubscriberStatement = conn.prepareStatement(bookReservedByTheSubscriberQuery);
             bookReservedByTheSubscriberStatement.setInt(1, copyId);
             ResultSet bookReservedByTheSubscriberRs = bookReservedByTheSubscriberStatement.executeQuery();
@@ -664,14 +663,14 @@ public class DBController {
             }
             // check if the book is reserved by someone else
             if (!wasReserved) {
-                String checkReservedQuery = "SELECT copies, reserved_copies, borrowed_coppies  FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+                String checkReservedQuery = "SELECT copies, reserved_copies, borrowed_copies  FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
                 PreparedStatement checkReservedStatement = conn.prepareStatement(checkReservedQuery);
                 checkReservedStatement.setInt(1, copyId);
                 ResultSet checkReservedRs = checkReservedStatement.executeQuery();
                 if (checkReservedRs.next()) {
                     int copies = checkReservedRs.getInt("copies");
                     int reservedCopies = checkReservedRs.getInt("reserved_copies");
-                    int borrowedCopies = checkReservedRs.getInt("borrowed_coppies");
+                    int borrowedCopies = checkReservedRs.getInt("borrowed_copies");
                     if (copies <= (reservedCopies + borrowedCopies)) {
                         response.add("false");
                         response.add("Book is reserved");
