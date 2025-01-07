@@ -27,7 +27,7 @@ public class BorrowBookFrameController
     @FXML
     public DatePicker returnDatePicker;
     @FXML
-    public Button backButton;
+    public Button btnBack;
     @FXML
     public Button borrowButton;
 
@@ -47,7 +47,7 @@ public class BorrowBookFrameController
      */
     public void backButtonClicked(ActionEvent event) throws Exception
     {
-        navigateTo(event, "LibrarianProfileFrame.fxml", "Librarian.css", "Librarian Profile");
+        navigateTo(event,"LibrarianProfileFrame.fxml", "Subscriber.css", "Librarian Profile");
     }
 
     /**

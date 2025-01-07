@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BorrowBookFrameController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BorrowBookFrameController">
     <children>
         <Region prefHeight="63.0" prefWidth="600.0" />
         <AnchorPane prefHeight="104.0" prefWidth="1280.0">
@@ -63,7 +63,7 @@
         <Region prefHeight="107.0" prefWidth="1280.0" />
         <AnchorPane prefHeight="81.0" prefWidth="1280.0">
             <children>
-                <Button fx:id="backButton" layoutX="21.0" layoutY="16.0" mnemonicParsing="false" text="Back" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="1182.0" AnchorPane.topAnchor="16.0">
+                <Button fx:id="btnBack" layoutX="21.0" layoutY="16.0" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="1182.0" AnchorPane.topAnchor="16.0">
                     <font>
                         <Font size="23.0" />
                     </font>

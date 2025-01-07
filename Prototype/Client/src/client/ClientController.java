@@ -2,6 +2,7 @@ package client;
 
 import common.*;
 import gui.BorrowBookFrameController;
+import gui.ReturnBookFrameController;
 import gui.SearchHomePageFrameController;
 import gui.SearchResultFrameController;
 import javafx.application.Platform;
@@ -180,7 +181,17 @@ public class ClientController extends AbstractClient
                         break;
                     //Return book response
                     case 305:
-                        //todo: handle return book response
+                        if (message.getMessageContent() instanceof ArrayList<?>) {
+                            @SuppressWarnings("unchecked")
+                            ArrayList<String> response = (ArrayList<String>) message.getMessageContent();
+
+                            // Use the showReturnMessageResponse method to display the response
+                            ReturnBookFrameController.showReturnMessageResponse(response);
+                        } else {
+                            // Log an error or display an error message if the response format is unexpected
+                            System.err.println("Unexpected format for Return book response: " + message.getMessageContent());
+                            Platform.runLater(() -> showErrorAlert("Return Book Error", "Invalid response format from the server."));
+                        }
                         break;
                     // Get all subscribers list
                     case 307:
