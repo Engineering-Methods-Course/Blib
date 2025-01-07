@@ -1,6 +1,7 @@
 package client;
 
 import common.*;
+import gui.BorrowBookFrameController;
 import gui.SearchHomePageFrameController;
 import gui.SearchResultFrameController;
 import javafx.application.Platform;
@@ -164,7 +165,18 @@ public class ClientController extends AbstractClient
                         break;
                     //Borrow book response
                     case 303:
-                        //todo: handle Borrow book response
+                        Object messageContent = message.getMessageContent();
+                        if (messageContent instanceof ArrayList<?>) {
+                            @SuppressWarnings("unchecked")
+                            ArrayList<String> response = (ArrayList<String>) messageContent;
+
+                            // Use the showBorrowMessageResponse method to display the response
+                            BorrowBookFrameController.showBorrowMessageResponse(response);
+                        } else {
+                            // Log an error or display an error message if the response format is unexpected
+                            System.err.println("Unexpected format for Borrow book response: " + messageContent);
+                            Platform.runLater(() -> showErrorAlert("Borrow Book Error", "Invalid response format from the server."));
+                        }
                         break;
                     //Return book response
                     case 305:

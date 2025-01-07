@@ -28,6 +28,8 @@ public class LibrarianProfileFrameController
     public Button registerMemberButton;
     @FXML
     public Button viewMessagesButton;
+    @FXML
+    public Button btnSearchSubscriber;
 
     public void initialize()
     {
@@ -132,5 +134,8 @@ public class LibrarianProfileFrameController
     {
         //navigates to the view messages frame
         navigateTo(event, "ViewMessagesFrame.fxml", "Subscriber.css", "View Messages");
+    }
+
+    public void clickSearchSubscriber(ActionEvent actionEvent) {
     }
 }
