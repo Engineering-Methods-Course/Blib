@@ -773,7 +773,7 @@ public class DBController {
              * The query updates the amount of borrowed books in the book table
              */
 
-            String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies - 1" + "WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+            String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies - 1" + " WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
             PreparedStatement updateBookStatement = conn.prepareStatement(updateBookQuery);
             updateBookStatement.setInt(1, copyId);
             updateBookStatement.executeUpdate();
