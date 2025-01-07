@@ -111,16 +111,16 @@ public class ClientController extends AbstractClient
                         else
                         {
                             SearchHomePageFrameController.changeCanSearch(true);
-                            if(message.getMessageContent() instanceof ArrayList)
+                            if (message.getMessageContent() instanceof ArrayList)
                             {
-                                ArrayList<Book> booklst =(ArrayList<Book>)message.getMessageContent();
+                                ArrayList<Book> booklst = (ArrayList<Book>) message.getMessageContent();
                                 SearchResultFrameController.setBookArray(booklst);
                             }
                             else
                             {
                                 SearchHomePageFrameController.changeCanSearch(false);
                             }
-                            }
+                        }
                         break;
                     //Show book details response
                     case 207:
@@ -159,7 +159,23 @@ public class ClientController extends AbstractClient
                         break;
                     //Edit login details response
                     case 219:
-                        //todo: handle edit login details response
+                        if (message.getMessageContent() == null)
+                        {
+                            System.out.println("Could not update login details");
+                            Platform.runLater(() -> showErrorAlert("Update error", "Could not update login details"));
+                        }
+                        else if (message.getMessageContent() instanceof ArrayList)
+                        {
+                            ArrayList<String> serverResponse = (ArrayList<String>) message.getMessageContent();
+                            if (Boolean.parseBoolean(serverResponse.get(0)))
+                            {
+                                Platform.runLater(() -> showInformationAlert("Update successful", "Login details updated successfully"));
+                            }
+                            else
+                            {
+                                Platform.runLater(() -> showErrorAlert("Error", serverResponse.get(1)));
+                            }
+                        }
                         break;
                     //Register new subscriber response
                     case 301:
@@ -168,13 +184,16 @@ public class ClientController extends AbstractClient
                     //Borrow book response
                     case 303:
                         Object messageContent = message.getMessageContent();
-                        if (messageContent instanceof ArrayList<?>) {
+                        if (messageContent instanceof ArrayList<?>)
+                        {
                             @SuppressWarnings("unchecked")
                             ArrayList<String> response = (ArrayList<String>) messageContent;
 
                             // Use the showBorrowMessageResponse method to display the response
                             BorrowBookFrameController.showBorrowMessageResponse(response);
-                        } else {
+                        }
+                        else
+                        {
                             // Log an error or display an error message if the response format is unexpected
                             System.err.println("Unexpected format for Borrow book response: " + messageContent);
                             Platform.runLater(() -> showErrorAlert("Borrow Book Error", "Invalid response format from the server."));
@@ -182,13 +201,16 @@ public class ClientController extends AbstractClient
                         break;
                     //Return book response
                     case 305:
-                        if (message.getMessageContent() instanceof ArrayList<?>) {
+                        if (message.getMessageContent() instanceof ArrayList<?>)
+                        {
                             @SuppressWarnings("unchecked")
                             ArrayList<String> response = (ArrayList<String>) message.getMessageContent();
 
                             // Use the showReturnMessageResponse method to display the response
                             ReturnBookFrameController.showReturnMessageResponse(response);
-                        } else {
+                        }
+                        else
+                        {
                             // Log an error or display an error message if the response format is unexpected
                             System.err.println("Unexpected format for Return book response: " + message.getMessageContent());
                             Platform.runLater(() -> showErrorAlert("Return Book Error", "Invalid response format from the server."));
@@ -207,13 +229,16 @@ public class ClientController extends AbstractClient
                         break;
                     // Watch subscriber details response
                     case 309:
-                        if (message.getMessageContent() instanceof ArrayList<?>) {
+                        if (message.getMessageContent() instanceof ArrayList<?>)
+                        {
                             @SuppressWarnings("unchecked")
                             ArrayList<String> response = (ArrayList<String>) message.getMessageContent();
 
                             // Call the showWatchProfileResponse method to handle and display the response
                             SearchSubscriberFrameController.WatchProfileResponse(response);
-                        } else {
+                        }
+                        else
+                        {
                             // Log an error or display an error message if the response format is unexpected
                             System.err.println("Unexpected format for Watch Subscriber Details response: " + message.getMessageContent());
                             Platform.runLater(() -> showErrorAlert("Watch Subscriber Error", "Invalid response format from the server."));

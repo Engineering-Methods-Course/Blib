@@ -8,53 +8,84 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SubscriberProfileOptionsFrameController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
+      prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="gui.SubscriberProfileOptionsFrameController">
     <children>
         <AnchorPane prefHeight="43.0" prefWidth="1280.0">
             <children>
-                <Button fx:id="logoutButton" layoutX="27.0" layoutY="11.0" mnemonicParsing="false" onAction="#logoutButtonClicked" prefHeight="26.0" prefWidth="73.0" text="Log Out" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="1180.0" AnchorPane.topAnchor="11.0" />
-                <Button fx:id="profileButton" blendMode="HARD_LIGHT" layoutX="1134.0" layoutY="11.0" mnemonicParsing="false" onAction="#viewProfileButtonClicked" text="Hello: &lt;Username&gt;" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="1134.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="11.0" />
+                <Button fx:id="logoutButton" layoutX="27.0" layoutY="11.0" mnemonicParsing="false"
+                        onAction="#logoutButtonClicked" prefHeight="26.0" prefWidth="73.0" text="Log Out"
+                        AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="1180.0"
+                        AnchorPane.topAnchor="11.0"/>
+                <Button fx:id="profileButton" blendMode="HARD_LIGHT" layoutX="1134.0" layoutY="11.0"
+                        mnemonicParsing="false" onAction="#viewProfileButtonClicked" text="Hello: &lt;Username&gt;"
+                        AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="1134.0" AnchorPane.rightAnchor="26.0"
+                        AnchorPane.topAnchor="11.0"/>
             </children>
         </AnchorPane>
         <AnchorPane prefHeight="759.0" prefWidth="1280.0">
             <children>
-                <TableView fx:id="historyTable" layoutX="42.0" layoutY="371.0" prefHeight="366.0" prefWidth="1199.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="42.0" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="371.0">
+                <TableView fx:id="historyTable" layoutX="42.0" layoutY="371.0" prefHeight="366.0" prefWidth="1199.0"
+                           AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="42.0" AnchorPane.rightAnchor="39.0"
+                           AnchorPane.topAnchor="371.0">
                     <columns>
-                        <TableColumn fx:id="actionDateColumn" prefWidth="131.0" text="Date" />
-                        <TableColumn fx:id="actionTypeColumn" prefWidth="103.0" text="Type" />
-                  <TableColumn fx:id="detailsColumn" prefWidth="964.0" text="Details" />
+                        <TableColumn fx:id="actionDateColumn" prefWidth="131.0" text="Date"/>
+                        <TableColumn fx:id="actionTypeColumn" prefWidth="103.0" text="Type"/>
+                        <TableColumn fx:id="detailsColumn" prefWidth="964.0" text="Details"/>
                     </columns>
                 </TableView>
-                <Text fx:id="nameField" layoutX="45.0" layoutY="39.8984375" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;First Name + Last Name&gt;" wrappingWidth="300.708984375" AnchorPane.bottomAnchor="679.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="14.0">
+                <Text fx:id="nameField" layoutX="45.0" layoutY="39.8984375" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="&lt;First Name + Last Name&gt;" wrappingWidth="300.708984375"
+                      AnchorPane.bottomAnchor="679.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="14.0">
                     <font>
-                        <Font size="24.0" />
+                        <Font size="24.0"/>
                     </font>
                 </Text>
-                <Text fx:id="phoneNumberField" layoutX="34.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Phone Number&gt;" wrappingWidth="237.708984375" AnchorPane.bottomAnchor="628.878125" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="95.1015625">
+                <Text fx:id="phoneNumberField" layoutX="34.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="&lt;Phone Number&gt;" wrappingWidth="237.708984375" AnchorPane.bottomAnchor="628.878125"
+                      AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="95.1015625">
                     <font>
-                        <Font size="24.0" />
+                        <Font size="24.0"/>
                     </font>
                 </Text>
-                <Text fx:id="statusTextField" layoutX="45.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Status&gt;" wrappingWidth="237.708984375" AnchorPane.bottomAnchor="546.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="176.0">
+                <Text fx:id="statusTextField" layoutX="45.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="&lt;Status&gt;" wrappingWidth="237.708984375" AnchorPane.bottomAnchor="546.0"
+                      AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="176.0">
                     <font>
-                        <Font size="24.0" />
+                        <Font size="24.0"/>
                     </font>
                 </Text>
-                <Text fx:id="emailField" layoutX="34.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Email Address&gt;" wrappingWidth="237.708984375" AnchorPane.bottomAnchor="668.878125" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="55.1015625">
+                <Text fx:id="emailField" layoutX="34.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="&lt;Email Address&gt;" wrappingWidth="237.708984375" AnchorPane.bottomAnchor="668.878125"
+                      AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="55.1015625">
                     <font>
-                        <Font size="24.0" />
+                        <Font size="24.0"/>
                     </font>
                 </Text>
-                <AnchorPane layoutX="45.0" layoutY="300.0" prefHeight="44.0" prefWidth="564.0">
+                <AnchorPane layoutX="45.0" layoutY="300.0" prefHeight="45.0" prefWidth="725.0">
                     <children>
-                        <Button fx:id="editProfileButton" layoutY="10.0" mnemonicParsing="false" onAction="#editProfileButtonCLicked" text="Edit Profile Details" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="451.0" AnchorPane.topAnchor="10.0" />
-                        <Button fx:id="extendBorrowButton" layoutX="226.0" layoutY="10.0" mnemonicParsing="false" onAction="#extendBorrowButtonClicked" text="Extend A Borrow" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="226.0" AnchorPane.rightAnchor="233.0" AnchorPane.topAnchor="10.0" />
-                        <Button fx:id="searchBookButton" layoutX="463.0" layoutY="10.0" mnemonicParsing="false" onAction="#searchBookButtonClicked" text="Search A Book" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="463.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="10.0" />
+                        <Button fx:id="editProfileButton" layoutY="10.0" mnemonicParsing="false"
+                                onAction="#editProfileButtonCLicked" text="Edit Profile Details"
+                                AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="10.0"/>
+                        <Button fx:id="extendBorrowButton" layoutX="226.0" layoutY="10.0" mnemonicParsing="false"
+                                onAction="#extendBorrowButtonClicked" text="Extend A Borrow"
+                                AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="226.0"
+                                AnchorPane.topAnchor="10.0"/>
+                        <Button fx:id="searchBookButton" layoutX="463.0" layoutY="10.0" mnemonicParsing="false"
+                                onAction="#searchBookButtonClicked" text="Search A Book" AnchorPane.bottomAnchor="10.0"
+                                AnchorPane.leftAnchor="452.0" AnchorPane.topAnchor="10.0"/>
+                        <Button fx:id="changePasswordButton" layoutX="632.0" layoutY="10.0" mnemonicParsing="false"
+                                onAction="#changePasswordButtonClicked" text="Change Password"
+                                AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="678.0"
+                                AnchorPane.topAnchor="10.0"/>
                     </children>
                 </AnchorPane>
-                <Text fx:id="userIDField" layoutX="45.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;User ID&gt;" wrappingWidth="237.708984375" AnchorPane.bottomAnchor="589.078125" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="136.1015625">
+                <Text fx:id="userIDField" layoutX="45.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="&lt;User ID&gt;" wrappingWidth="237.708984375" AnchorPane.bottomAnchor="589.078125"
+                      AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="136.1015625">
                     <font>
-                        <Font size="24.0" />
+                        <Font size="24.0"/>
                     </font>
                 </Text>
             </children>

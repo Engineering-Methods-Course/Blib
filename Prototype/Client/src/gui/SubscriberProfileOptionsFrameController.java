@@ -44,6 +44,7 @@ public class SubscriberProfileOptionsFrameController
     public TableColumn actionTypeColumn;
     @FXML
     public TableColumn detailsColumn;
+    public Button changePasswordButton;
 
     public void initialize()
     {
@@ -121,5 +122,15 @@ public class SubscriberProfileOptionsFrameController
         //pulls info about user activity from the database
         ClientServerMessage message = new ClientServerMessage(214, Subscriber.getLocalSubscriber().getID());
         ClientGUIController.chat.sendToServer(message);
+    }
+
+    /**
+     * This method handles the changePasswordButton click event to navigate to the change password frame
+     * @param event      The action event triggered by clicking the change password button
+     * @throws Exception If there is an issue with the navigation
+     */
+    public void changePasswordButtonClicked(ActionEvent event) throws Exception
+    {
+        navigateTo(event, "/gui/ChangePasswordFrame.fxml", "/gui/Subscriber.css", "Change Password");
     }
 }
