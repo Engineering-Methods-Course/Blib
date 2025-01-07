@@ -83,7 +83,7 @@ public class DBController {
      * @param csvFilePath The path to the CSV file
      */
     public void writeDataToCSV(String csvFilePath, String data) throws IOException {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(csvFilePath, false))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(csvFilePath, true))) {
             writer.println(data);
         }
     }
@@ -98,6 +98,45 @@ public class DBController {
             System.out.println("File deleted successfully");
         } else {
             System.out.println("Failed to delete the file");
+        }
+    }
+    /**
+     * This method updates the history of a subscriber
+     *
+     * @param conn         The connection to the database
+     * @param subscriberId The ID of the subscriber
+     * @param action       The action that was performed
+     * @param details      The details of the action
+     */
+    public void updateHistory(Connection conn, int subscriberId,String action ,String details) {
+        {
+            try {
+                String csvFile = String.format("History.csv");
+                // get the current history from the database
+                String getHistoryQuery = "SELECT details from subscription_history WHERE subscription_history_id = (SELECT detailed_subscription_history FROM subscriber WHERE subscriber_id = ?)";
+                PreparedStatement getHistoryStatement = conn.prepareStatement(getHistoryQuery);
+                getHistoryStatement.setInt(1, subscriberId);
+                ResultSet getHistoryRs = getHistoryStatement.executeQuery();
+                if (getHistoryRs.next()) {
+                    Blob historyBlob = getHistoryRs.getBlob("details");
+                    convertBlobToCSV(historyBlob, csvFile);
+                    // add the new history to the csv file
+                    writeDataToCSV(csvFile, String.format("%s,%s,%s", LocalDateTime.now(), action, details));
+                }
+                // convert the csv file to a blob
+                Blob csvBlob = convertCSVToBlob(csvFile);
+                // update the history in the database
+                String updateHistoryQuery = "UPDATE subscription_history SET details = ? WHERE subscription_history_id = (SELECT detailed_subscription_history FROM subscriber WHERE subscriber_id = ?)";
+                PreparedStatement updateHistoryStatement = conn.prepareStatement(updateHistoryQuery);
+                updateHistoryStatement.setBlob(1, csvBlob);
+                updateHistoryStatement.setInt(2, subscriberId);
+                updateHistoryStatement.executeUpdate();
+                // delete the csv file
+                deleteFile(csvFile);
+            } catch (SQLException | IOException e) {
+                System.out.println("Error: Updating the history" + e);
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -310,11 +349,11 @@ public class DBController {
         int copyId = Integer.parseInt(messageContent.get(1));
         Timestamp newReturnDate = null;
         try {
+            conn.setAutoCommit(false);
 
             /*
-             * Checks if the subscriber is frozen
+             *Checks if the subscriber is frozen
              */
-
             String checkSubscriberQuery = "SELECT status FROM subscriber WHERE subscriber_id = ?";
             PreparedStatement checkSubscriberStatement = conn.prepareStatement(checkSubscriberQuery);
             checkSubscriberStatement.setInt(1, subscriberId);
@@ -328,7 +367,7 @@ public class DBController {
             }
 
             /*
-             * Checks if less than a week is left for the book to be returned (book can be extended only if less than a week is left)
+            *Checks if less than a week is left for the book to be returned (book can be extended only if less than a week is left)
              */
 
             String checkReturnDateQuery = "SELECT DATEDIFF(expected_return_date, NOW()) AS days_diff , expected_return_date FROM borrow WHERE subscriber_id = ? AND copy_id = ?";
@@ -348,10 +387,10 @@ public class DBController {
             }
 
             /*
-             * Checks if the book is reserved (ordered)
+             *Checks if the book is reserved (ordered)
              */
 
-            String checkReservedQuery = "SELECT reserved_copies  FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+            String checkReservedQuery = "SELECT reserved_copies FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
             PreparedStatement checkReservedStatement = conn.prepareStatement(checkReservedQuery);
             checkReservedStatement.setInt(1, copyId);
             ResultSet checkReservedRs = checkReservedStatement.executeQuery();
@@ -364,25 +403,62 @@ public class DBController {
             }
 
             /*
-             * The query updates the expected return date of the borrow table where the subscriber ID and the book ID matches the given values
+             *The query updates the expected return date of the borrow table where the subscriber ID and the book ID matches the given values
              */
-            String extendQuery = "UPDATE borrow SET expected_return_date = ? WHERE subscriber_id = ? AND copy_id = ?";
+            String extendQuery = "UPDATE borrow SET expected_return_date = ?, notify = ? WHERE subscriber_id = ? AND copy_id = ?";
             PreparedStatement extendStatement = conn.prepareStatement(extendQuery);
             extendStatement.setTimestamp(1, newReturnDate);
-            extendStatement.setInt(2, Integer.parseInt(messageContent.get(0)));
-            extendStatement.setInt(3, Integer.parseInt(messageContent.get(1)));
+            extendStatement.setInt(2, 0);
+            extendStatement.setInt(3, subscriberId);
+            extendStatement.setInt(4, copyId);
             extendStatement.executeUpdate();
 
+            /*
+             *get book name
+             */
+            String getBookNameQuery = "SELECT name FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+            PreparedStatement getBookNameStatement = conn.prepareStatement(getBookNameQuery);
+            getBookNameStatement.setInt(1, copyId);
+            ResultSet getBookNameRs = getBookNameStatement.executeQuery();
+            String bookName = "";
+            if (getBookNameRs.next()) {
+                bookName = getBookNameRs.getString("name");
+            }
+
+            /*
+             *Update subscriber history
+             */
+            updateHistory(conn, subscriberId, "extended", "the return date for the book " + bookName + " was extended for an extra week");
+
+            /*
+                * send notification to the librarian
+             */
+            String notifyQuery = "Insert into messages_for_librarians (message_date, message_info) values (?, ?)";
+            PreparedStatement notifyStatement = conn.prepareStatement(notifyQuery);
+            notifyStatement.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+            notifyStatement.setString(2, "Subscriber with ID: " + subscriberId + " has extended the return date for the book " + bookName + " for an extra week" + "book copy ID: " + copyId);
+            notifyStatement.executeUpdate();
+
+            // Commit the transaction
+            conn.commit();
             response.add("true");
-            return response;
-        } catch (SQLException e) {
-            // If an error occur
+        }catch (Exception e) {
+            try {
+                conn.rollback();
+            } catch (SQLException rollbackEx) {
+                System.out.println("Error: Rolling back transaction" + rollbackEx);
+            }
             response.add("false");
             response.add("Problem with extending the return date");
             System.out.println("Error: With extending the return date (extendReturnDate) " + e);
-            return response;
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException ex) {
+                System.out.println("Error: Setting auto-commit back to true" + ex);
+            }
         }
-        //! need to add to log
+        return response;
     }
 
     /**
@@ -396,6 +472,8 @@ public class DBController {
     public ArrayList<String> editSubscriberDetails(ArrayList<String> messageContent, Connection conn) {
         ArrayList<String> response = new ArrayList<>();
         try {
+            conn.setAutoCommit(false);
+
             int subscriberId = Integer.parseInt(messageContent.get(0));
             String subscriberEmail = messageContent.get(1);
             String subscriberPhoneNumber = messageContent.get(2);
@@ -403,10 +481,10 @@ public class DBController {
             String subscriberLastName = messageContent.get(4);
 
             /*
-             * The query updates the phone number and email of the subscriber where the id matches the given value
+             *The query updates the phone number and email of the subscriber where the id matches the given value
              */
 
-            String subscriberInfoQuery = "UPDATE subscriber SET phone_number = ?, email = ?, first_name = ?, last_name = ?  WHERE subscriber_id = ?";
+            String subscriberInfoQuery = "UPDATE subscriber SET phone_number = ?, email = ?, first_name = ?, last_name = ? WHERE subscriber_id = ?";
             PreparedStatement subscriberInfoStatement = conn.prepareStatement(subscriberInfoQuery);
             subscriberInfoStatement.setString(1, subscriberPhoneNumber);
             subscriberInfoStatement.setString(2, subscriberEmail);
@@ -414,20 +492,37 @@ public class DBController {
             subscriberInfoStatement.setString(4, subscriberLastName);
             subscriberInfoStatement.setInt(5, subscriberId);
             subscriberInfoStatement.executeUpdate();
+
+            /*
+            *Update subscriber history
+             */
+
+            updateHistory(conn, subscriberId, "edited", "subscriber details were edited");
+
             response.add("true");
             response.add(subscriberPhoneNumber);
             response.add(subscriberEmail);
             response.add(subscriberFirstName);
             response.add(subscriberLastName);
-            return response;
-        } catch (SQLException e) {
-            // If an error occur
+            // Commit the transaction
+            conn.commit();
+        } catch (Exception e) {
+            try {
+                conn.rollback();
+            } catch (SQLException rollbackEx) {
+                System.out.println("Error: Rolling back transaction" + rollbackEx);
+            }
             response.add("false");
             response.add("Problem with updating the subscriber details");
             System.out.println("Error: With updating the subscriber (editSubscriberDetails) " + e);
-            return response;
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException ex) {
+                System.out.println("Error: Setting auto-commit back to true" + ex);
+            }
         }
-        //! need to add to log
+        return response;
     }
 
     /**
