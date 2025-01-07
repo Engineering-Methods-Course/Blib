@@ -689,6 +689,7 @@ public class DBController {
             String updateCopyQuery = "UPDATE book_copy SET available = ? WHERE copy_id = ?";
             PreparedStatement updateCopyStatement = conn.prepareStatement(updateCopyQuery);
             updateCopyStatement.setInt(1, 0);
+            updateCopyStatement.setInt(2, copyId);
             updateCopyStatement.executeUpdate();
 
             /*
