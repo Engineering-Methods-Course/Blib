@@ -617,7 +617,7 @@ public class DBController {
             checkSubscriberStatement.setInt(1, subscriberId);
             ResultSet checkSubscriberRs = checkSubscriberStatement.executeQuery();
             if (checkSubscriberRs.next()) {
-                if (checkSubscriberRs.getInt("status") == 0) {
+                if (checkSubscriberRs.getInt("status") == 1) {
                     response.add("false");
                     response.add("Subscriber is frozen");
                     return response;
@@ -653,7 +653,7 @@ public class DBController {
                 int firstSubscriberId = bookReservedByTheSubscriberRs.getInt("subscriber_id");
                 if (firstSubscriberId == subscriberId) {
                     // The subscriber was the first one to reserve the book
-                    String deleteReservationQuery = "DELETE FROM reserve WHERE subscriber_id = ? AND serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+                    String deleteReservationQuery = "DELETE FROM reservation WHERE subscriber_id = ? AND serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
                     PreparedStatement deleteReservationStatement = conn.prepareStatement(deleteReservationQuery);
                     deleteReservationStatement.setInt(1, subscriberId);
                     deleteReservationStatement.setInt(2, copyId);
