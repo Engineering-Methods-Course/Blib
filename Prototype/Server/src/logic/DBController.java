@@ -685,7 +685,6 @@ public class DBController {
             /*
              * The query updates the status of the book_copy to unavailable (0)
              */
-
             String updateCopyQuery = "UPDATE book_copy SET available = ? WHERE copy_id = ?";
             PreparedStatement updateCopyStatement = conn.prepareStatement(updateCopyQuery);
             updateCopyStatement.setInt(1, 0);
@@ -695,8 +694,7 @@ public class DBController {
             /*
              * The query update the amount of borrowed books in the book table
              */
-
-            String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies + 1" + "WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+            String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies + 1" + " WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
             PreparedStatement updateBookStatement = conn.prepareStatement(updateBookQuery);
             updateBookStatement.setInt(1, copyId); // copy_id
             updateBookStatement.executeUpdate();
@@ -704,8 +702,7 @@ public class DBController {
             /*
              * The query inserts the book details into the borrow table
              */
-
-            String borrowQuery = "INSERT INTO borrow (subscriber_id, copy_id, expected_return_date, status) VALUES (?, ?, ?, ?)";
+            String borrowQuery = "INSERT INTO borrow (copy_id, subscriber_id, expected_return_date, status) VALUES (?, ?, ?, ?)";
             PreparedStatement borrowStatement = conn.prepareStatement(borrowQuery);
             borrowStatement.setInt(1, copyId);
             borrowStatement.setInt(2, subscriberId);
