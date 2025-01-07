@@ -1,11 +1,13 @@
 package logic;
 
-import com.mysql.cj.jdbc.Blob;
+import java.sql.Blob;
 import common.Book;
 import common.Librarian;
 import common.Subscriber;
 import common.User;
 
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -38,6 +40,65 @@ public class DBController {
 
         }
         return instance;
+    }
+
+    /**
+     * This method converts a CSV file to a Blob
+     *
+     * @param csvFilePath The path to the CSV file
+     * @return Blob
+     * @throws IOException  If an error occurs
+     * @throws SQLException If an error occurs
+     */
+    public static Blob convertCSVToBlob(String csvFilePath) throws IOException, SQLException {
+        File csvFile = new File(csvFilePath);
+        byte[] fileContent = new byte[(int) csvFile.length()];
+
+        try (FileInputStream fis = new FileInputStream(csvFile); BufferedInputStream bis = new BufferedInputStream(fis)) {
+            bis.read(fileContent, 0, fileContent.length);
+        }
+
+        return new SerialBlob(fileContent);
+    }
+    /**
+     * This method converts a Blob to a CSV file
+     *
+     * @param blob        The Blob
+     * @param csvFilePath The path to the CSV file
+     * @throws IOException  If an error occurs
+     * @throws SQLException If an error occurs
+     */
+    public void convertBlobToCSV(Blob blob, String csvFilePath) throws IOException, SQLException {
+        byte[] blobBytes = blob.getBytes(1, (int) blob.length());
+        File csvFile = new File(csvFilePath);
+
+        try (FileOutputStream fos = new FileOutputStream(csvFile);
+             BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+            bos.write(blobBytes);
+        }
+    }
+
+    /**
+     * This method writes data to a CSV file
+     * @param csvFilePath The path to the CSV file
+     */
+    public void writeDataToCSV(String csvFilePath, String data) throws IOException {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(csvFilePath, true))) {
+            writer.println(data);
+        }
+    }
+    /**
+     * This method deletes a file
+     *
+     * @param filePath The path to the file
+     */
+    public void deleteFile(String filePath) {
+        File file = new File(filePath);
+        if (file.delete()) {
+            System.out.println("File deleted successfully");
+        } else {
+            System.out.println("Failed to delete the file");
+        }
     }
 
     /**
@@ -405,7 +466,6 @@ public class DBController {
         //! need to add to log
     }
 
-
     /**
      * case 300
      * This method registers a new subscriber in the system
@@ -420,7 +480,12 @@ public class DBController {
             int subscriberId = 0;
             int historyId = 0;
 
-            // Check if the username already exists
+            String csvFile = String.format("%s_History.csv", messageContent.get(0));
+
+            /*
+             * Check if the username already exists
+             */
+
             String checkUserQuery = "SELECT COUNT(*) FROM users WHERE username = ?";
             PreparedStatement checkUserStatement = conn.prepareStatement(checkUserQuery);
             checkUserStatement.setString(1, messageContent.get(0));
@@ -431,21 +496,26 @@ public class DBController {
                 return response;
             }
 
+            /*
+             * Create a CSV history file for the subscriber
+             */
+
+            writeDataToCSV(csvFile, String.format("%s,registered,account was created", LocalDateTime.now()));
+
+            /*
+             * Turn the CSV file into a Blob
+             */
+
+            Blob csvBlob = convertCSVToBlob(csvFile);
             conn.setAutoCommit(false);
 
-            // Insert into subscription_history table
+            /*
+             * create a new history record for the new subscriber
+             */
+
             String historyQuery = "INSERT INTO subscription_history  (details) VALUES (?)"; // Adjust columns as needed
             PreparedStatement historyStatement = conn.prepareStatement(historyQuery, Statement.RETURN_GENERATED_KEYS);
-            //! CHANGE THIS
-            // Generate a random byte array
-            byte[] randomBytes = new byte[10]; // Adjust the size as needed
-            new java.util.Random().nextBytes(randomBytes);
-
-            // Create a Blob from the random byte array
-            Blob randomBlob = (Blob) conn.createBlob();
-            randomBlob.setBytes(1, randomBytes);
-            //! CHANGE THIS
-            historyStatement.setBlob(1, randomBlob); // Adjust values as needed
+            historyStatement.setBlob(1, csvBlob);
             historyStatement.executeUpdate();
             ResultSet generatedKeysHistoryId = historyStatement.getGeneratedKeys();
             if (generatedKeysHistoryId.next()) {
@@ -454,7 +524,10 @@ public class DBController {
                 throw new SQLException("Error: Getting new history ID");
             }
 
-            // Insert into users table
+            /*
+             * create a new user record for the new subscriber
+             */
+
             String userQuery = "INSERT INTO users (username, password, type) VALUES (?, ?, ?)";
             PreparedStatement userStatement = conn.prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, messageContent.get(0));
@@ -468,25 +541,33 @@ public class DBController {
                 throw new SQLException("Error: Getting new user ID");
             }
 
-            // Insert into subscriber table
-            String subscriberQuery = "INSERT INTO subscriber (subscriber_id, first_name, last_name, phone_number, email, status, detailed_subscription_history) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            /*
+             * create a new subscriber record for the new subscriber
+             */
+
+            String subscriberQuery = "INSERT INTO subscriber (subscriber_id, first_name, last_name, phone_number, email, detailed_subscription_history) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement subscriberStatement = conn.prepareStatement(subscriberQuery);
             subscriberStatement.setInt(1, subscriberId);
             subscriberStatement.setString(2, messageContent.get(1));
             subscriberStatement.setString(3, messageContent.get(2));
             subscriberStatement.setString(4, messageContent.get(3));
             subscriberStatement.setString(5, messageContent.get(4));
-            subscriberStatement.setInt(6, 0);
-            subscriberStatement.setInt(7, historyId);
+            subscriberStatement.setInt(6, historyId);
             subscriberStatement.executeUpdate();
 
-            // Commit the transaction
+            // Delete the CSV file
+            deleteFile(csvFile);
+
+            /*
+                * Commit the transaction
+             */
+
             conn.commit();
             response.add("true");
-            String registerInfo= String.format("%s %s was registered successfully\n ID: %s\n Username: %s temporary password: %s", messageContent.get(1), messageContent.get(2), subscriberId, messageContent.get(0), "Aa123456");
+            String registerInfo = String.format("%s %s was registered successfully\n ID: %s\n Username: %s temporary password: %s", messageContent.get(1), messageContent.get(2), subscriberId, messageContent.get(0), "Aa123456");
             response.add(registerInfo);
-            System.out.println(registerInfo);
         } catch (SQLException e) {
+            // If an error occur rollback the transaction
             try {
                 conn.rollback();
             } catch (SQLException rollbackEx) {
@@ -495,8 +576,11 @@ public class DBController {
             System.out.println("Error: Registering new subscriber" + e);
             response.add("false");
             response.add("Problem with registering the subscriber");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         } finally {
             try {
+                // Set auto-commit back to true
                 conn.setAutoCommit(true);
             } catch (SQLException ex) {
                 System.out.println("Error: Setting auto-commit back to true" + ex);
@@ -504,8 +588,6 @@ public class DBController {
         }
 
         return response;
-        //! need to add to log
-
     }
 
     /**
@@ -833,6 +915,5 @@ public class DBController {
             return null;
         }
     }
-
 
 }
