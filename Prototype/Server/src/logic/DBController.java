@@ -83,7 +83,7 @@ public class DBController {
      * @param csvFilePath The path to the CSV file
      */
     public void writeDataToCSV(String csvFilePath, String data) throws IOException {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(csvFilePath, true))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(csvFilePath, false))) {
             writer.println(data);
         }
     }
