@@ -645,7 +645,7 @@ public class DBController {
              */
 
             boolean wasReserved = false;
-            String bookReservedByTheSubscriberQuery = "SELECT subscriber_id FROM reservation WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?) ORDER BY reservation_date ASC LIMIT 1";
+            String bookReservedByTheSubscriberQuery = "SELECT subscriber_id FROM reservation WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?) ORDER BY reserve_date ASC LIMIT 1";
             PreparedStatement bookReservedByTheSubscriberStatement = conn.prepareStatement(bookReservedByTheSubscriberQuery);
             bookReservedByTheSubscriberStatement.setInt(1, copyId);
             ResultSet bookReservedByTheSubscriberRs = bookReservedByTheSubscriberStatement.executeQuery();
@@ -653,7 +653,7 @@ public class DBController {
                 int firstSubscriberId = bookReservedByTheSubscriberRs.getInt("subscriber_id");
                 if (firstSubscriberId == subscriberId) {
                     // The subscriber was the first one to reserve the book
-                    String deleteReservationQuery = "DELETE FROM reservation WHERE subscriber_id = ? AND serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+                    String deleteReservationQuery = "DELETE FROM reserve WHERE subscriber_id = ? AND serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
                     PreparedStatement deleteReservationStatement = conn.prepareStatement(deleteReservationQuery);
                     deleteReservationStatement.setInt(1, subscriberId);
                     deleteReservationStatement.setInt(2, copyId);
