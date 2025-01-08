@@ -1,5 +1,6 @@
 package logic;
 
+import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,8 +28,15 @@ public class WatchProfileFrameController
 
     public void initialize()
     {
-
+        fillFields();
+        //todo:add borrow history into table
     }
+
+    public void fillFields(){
+        Subscriber subscriber = Subscriber.getWatchProfileSubscriber();
+        //todo:fill the field
+    }
+
 
     /**
      * Handles the Back button click event.
@@ -38,6 +46,7 @@ public class WatchProfileFrameController
      */
     public void backButtonClicked(ActionEvent event) throws Exception
     {
+        Subscriber.setWatchProfileSubscriber(null);
         navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Return");
     }
 }

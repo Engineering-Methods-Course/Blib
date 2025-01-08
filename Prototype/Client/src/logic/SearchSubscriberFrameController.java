@@ -28,7 +28,6 @@ public class SearchSubscriberFrameController
             System.out.println("Please enter a valid Copy ID.");
             return;
         }
-
         int userID;
         try {
             userID = Integer.parseInt(userIDText);
