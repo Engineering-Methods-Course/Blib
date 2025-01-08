@@ -11,7 +11,6 @@ public class Book implements Serializable
     private int bookCopyNum;
     private int reservedCopyNum;
     private int borrowedCopyNum;
-    private int lostCopyNum;
 
     /**
      * Constructor to initialize a local Book object with all necessary details from the server.
@@ -23,9 +22,8 @@ public class Book implements Serializable
      * @param bookCopyNum      - the number of copies of the book
      * @param reservedCopyNum  - the number of reserved copies of the book
      * @param borrowedCopyNum  - the number of borrowed copies of the book
-     * @param lostCopyNum      - the number of lost copies of the book
      */
-    public Book(int bookSerialNumber, String bookName, String bookGenre, String bookDescription, int bookCopyNum, int reservedCopyNum, int borrowedCopyNum, int lostCopyNum)
+    public Book(int bookSerialNumber, String bookName, String bookGenre, String bookDescription, int bookCopyNum, int reservedCopyNum, int borrowedCopyNum)
     {
         this.bookSerialNumber = bookSerialNumber;
         this.bookName = bookName;
@@ -34,7 +32,6 @@ public class Book implements Serializable
         this.bookCopyNum = bookCopyNum;
         this.reservedCopyNum = reservedCopyNum;
         this.borrowedCopyNum = borrowedCopyNum;
-        this.lostCopyNum = lostCopyNum;
     }
 
     /**
@@ -105,15 +102,5 @@ public class Book implements Serializable
     public int getBorrowedCopyNum()
     {
         return borrowedCopyNum;
-    }
-
-    /**
-     * Gets the number of lost copies of the book.
-     *
-     * @return the number of lost copies of the book
-     */
-    public int getLostCopyNum()
-    {
-        return lostCopyNum;
     }
 }
