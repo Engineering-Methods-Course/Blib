@@ -41,7 +41,8 @@ public class ClientGUIController extends Application
         Parent newRoot = FXMLLoader.load(Objects.requireNonNull(SearchHomePageFrameController.class.getResource(fxmlDestination)));
 
         // Optionally add a CSS file if provided
-        if (cssFilePath != null && !cssFilePath.isEmpty()) {
+        if (cssFilePath != null && !cssFilePath.isEmpty())
+        {
             newRoot.getStylesheets().add(Objects.requireNonNull(SearchHomePageFrameController.class.getResource(cssFilePath)).toExternalForm());
         }
 
@@ -71,11 +72,13 @@ public class ClientGUIController extends Application
     private static void exitAction()
     {
         ClientServerMessage logOutMessage = new ClientServerMessage(102, null);
-        try {
+        try
+        {
             ClientGUIController.chat.sendToServer(logOutMessage);
             System.exit(0);
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             System.out.println("Error sending login message to server: " + e.getMessage());
         }
     }
