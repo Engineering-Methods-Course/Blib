@@ -65,7 +65,7 @@ public class SearchSubscriberFrameController
      */
     public void backButtonClicked(ActionEvent event) throws Exception
     {
-        navigateTo(event, "LibrarianProfileFrame.fxml", "Subscriber.css", "Return");
+        navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Return");
     }
 
     /**
@@ -88,7 +88,7 @@ public class SearchSubscriberFrameController
                 // Navigate to the next window (assume appropriate navigation logic)
                 try
                 {
-                    navigateTo(null, "watchProfileFrame.fxml", "Subscriber.css", "Watch Profile");
+                    navigateTo(null, "/gui/WatchProfileFrame.fxml", "/gui/Subscriber.css", "Watch Profile");
                 }
                 catch (Exception e)
                 {

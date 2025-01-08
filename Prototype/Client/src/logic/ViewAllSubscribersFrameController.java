@@ -53,6 +53,6 @@ public class ViewAllSubscribersFrameController
      */
     public void backButtonClicked(ActionEvent event) throws Exception
     {
-        navigateTo(event, "LibrarianProfileFrame.fxml", "Subscriber.css", "All Subscribers");
+        navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "All Subscribers");
     }
 }

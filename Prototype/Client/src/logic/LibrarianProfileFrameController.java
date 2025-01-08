@@ -49,7 +49,7 @@ public class LibrarianProfileFrameController
         Librarian.setLocalLibrarian(null);
 
         //navigates to the home page
-        navigateTo(event, "SearchHomePageFrame.fxml", "Subscriber.css", "Home Page");
+        navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
     }
 
     /**
@@ -61,7 +61,7 @@ public class LibrarianProfileFrameController
     public void borrowButtonClicked(ActionEvent event) throws Exception
     {
         //navigates to the borrow book frame
-        navigateTo(event, "BorrowBookFrame.fxml", "Subscriber.css", "Borrow Book");
+        navigateTo(event, "/gui/BorrowBookFrame.fxml", "/gui/Subscriber.css", "Borrow Book");
     }
 
     /**
@@ -73,7 +73,7 @@ public class LibrarianProfileFrameController
     public void returnBookButtonClicked(ActionEvent event) throws Exception
     {
         //navigates to the return book frame
-        navigateTo(event, "ReturnBookFrame.fxml", "Subscriber.css", "Return Book");
+        navigateTo(event, "/gui/ReturnBookFrame.fxml", "/gui/Subscriber.css", "Return Book");
     }
 
     /**
@@ -85,7 +85,7 @@ public class LibrarianProfileFrameController
     public void searchButtonClicked(ActionEvent event) throws Exception
     {
         //navigates to the search home page frame
-        navigateTo(event, "SearchHomePageFrame.fxml", "Subscriber.css", "Home Page");
+        navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
     }
 
     /**
@@ -97,7 +97,7 @@ public class LibrarianProfileFrameController
     public void viewAllSubscribersButtonClicked(ActionEvent event) throws Exception
     {
         //navigates to the view all subscribers frame
-        navigateTo(event, "ViewAllSubscribersFrame.fxml", "Subscriber.css", "All Subscribers");
+        navigateTo(event, "/gui/ViewAllSubscribersFrame.fxml", "/gui/Subscriber.css", "All Subscribers");
     }
 
     /**
@@ -109,7 +109,7 @@ public class LibrarianProfileFrameController
     public void viewReportsButtonClicked(ActionEvent event) throws Exception
     {
         //navigates to the view reports frame
-        navigateTo(event, "ViewReportsFrame.fxml", "Subscriber.css", "View Reports");
+        navigateTo(event, "/gui/ViewReportsFrame.fxml", "/gui/Subscriber.css", "View Reports");
     }
 
     /**
@@ -121,7 +121,7 @@ public class LibrarianProfileFrameController
     public void registerMemberButtonClicked(ActionEvent event) throws Exception
     {
         //navigates to the register member frame
-        navigateTo(event, "RegisterMemberFrame.fxml", "Subscriber.css", "Register Member");
+        navigateTo(event, "/gui/RegisterMemberFrame.fxml", "/gui/Subscriber.css", "Register Member");
     }
 
     /**
@@ -133,7 +133,7 @@ public class LibrarianProfileFrameController
     public void viewMessagesButtonClicked(ActionEvent event) throws Exception
     {
         //navigates to the view messages frame
-        navigateTo(event, "ViewMessagesFrame.fxml", "Subscriber.css", "View Messages");
+        navigateTo(event, "/gui/ViewMessagesFrame.fxml", "/gui/Subscriber.css", "View Messages");
     }
 
     /**
@@ -144,6 +144,6 @@ public class LibrarianProfileFrameController
      */
     public void clickSearchSubscriber(ActionEvent event) throws Exception
     {
-        navigateTo(event, "SearchSubscriberFrame.fxml", "Subscriber.css", "Search Subscriber");
+        navigateTo(event, "/gui/SearchSubscriberFrame.fxml", "/gui/Subscriber.css", "Search Subscriber");
     }
 }

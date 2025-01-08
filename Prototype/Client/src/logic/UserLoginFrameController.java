@@ -97,7 +97,7 @@ public class UserLoginFrameController implements Initializable
         if (Subscriber.getLocalSubscriber() != null)
         {
             System.out.println("Subscriber logged in" + Subscriber.getLocalSubscriber());
-            navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", null, "Profile Page");
+            navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber", "Profile Page");
         }
         else if (Librarian.getLocalLibrarian() != null)
         {

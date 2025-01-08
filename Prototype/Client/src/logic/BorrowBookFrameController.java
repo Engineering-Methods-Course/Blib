@@ -47,7 +47,7 @@ public class BorrowBookFrameController
      */
     public void backButtonClicked(ActionEvent event) throws Exception
     {
-        navigateTo(event,"LibrarianProfileFrame.fxml", "Subscriber.css", "Librarian Profile");
+        navigateTo(event,"/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Librarian Profile");
     }
 
     /**

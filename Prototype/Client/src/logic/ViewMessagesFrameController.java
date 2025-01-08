@@ -25,6 +25,6 @@ public class ViewMessagesFrameController
     public void backButtonClicked(ActionEvent actionEvent) throws Exception
     {
         // Navigate back to the previous screen (you can change the target screen as needed)
-        navigateTo(actionEvent, "LibrarianProfileFrame.fxml", "Subscriber.css", "Messages");
+        navigateTo(actionEvent, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Messages");
     }
 }

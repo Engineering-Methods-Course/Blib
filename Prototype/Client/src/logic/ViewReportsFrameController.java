@@ -69,6 +69,6 @@ public class ViewReportsFrameController
      */
     public void backButtonClicked(ActionEvent event) throws Exception
     {
-        navigateTo(event, "LibrarianProfileFrame.fxml", "Subscriber.css", "Reports");
+        navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Reports");
     }
 }

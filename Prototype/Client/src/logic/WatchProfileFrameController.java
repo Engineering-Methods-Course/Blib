@@ -38,6 +38,6 @@ public class WatchProfileFrameController
      */
     public void backButtonClicked(ActionEvent event) throws Exception
     {
-        navigateTo(event, "LibrarianProfileFrame.fxml", "Subscriber.css", "Return");
+        navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Return");
     }
 }

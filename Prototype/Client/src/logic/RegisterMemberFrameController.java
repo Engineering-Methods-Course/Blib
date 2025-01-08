@@ -58,7 +58,7 @@ public class RegisterMemberFrameController
         ClientGUIController.chat.sendToServer(message);
 
         // navigate to the librarian profile page
-        navigateTo(event, "LibrarianProfileFrame.fxml", "Subscriber.css", "Librarian Page");
+        navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Librarian Page");
     }
 
     /**
@@ -86,6 +86,6 @@ public class RegisterMemberFrameController
      */
     public void backButtonClicked(ActionEvent event) throws Exception
     {
-        navigateTo(event, "LibrarianProfileFrame.fxml", "Subscriber.css", "Register Member");
+        navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Register Member");
     }
 }
