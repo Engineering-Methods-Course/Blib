@@ -1,10 +1,9 @@
-package gui;
+package logic;
 
 import client.ClientGUIController;
 import common.ClientServerMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -15,7 +14,6 @@ import static client.ClientGUIController.navigateTo;
 
 public class RegisterMemberFrameController
 {
-
     @FXML
     private TextField txtUsername;
     @FXML
@@ -62,7 +60,6 @@ public class RegisterMemberFrameController
         // navigate to the librarian profile page
         navigateTo(event, "LibrarianProfileFrame.fxml", "Subscriber.css", "Librarian Page");
     }
-
 
     /**
      * Show an alert to the user with a given type, title, and message.

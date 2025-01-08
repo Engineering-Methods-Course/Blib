@@ -1,4 +1,4 @@
-package gui;
+package logic;
 
 import client.ClientGUIController;
 import common.Book;
@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 import static client.ClientGUIController.navigateTo;
 
-public class ReturnBookFrameController {
-
+public class ReturnBookFrameController
+{
     @FXML
     private TextField idTextField;
     @FXML
@@ -32,21 +32,22 @@ public class ReturnBookFrameController {
     /**
      * Initializes the table and sets up column bindings.
      */
-    public void initialize() {
+    public void initialize()
+    {
         //todo:
 
     }
 
-
     /**
      * Handles the Back button click event.
+     *
      * @param event The ActionEvent triggered by clicking the button.
      * @throws Exception If an error occurs during navigation.
      */
-    public void backButtonClicked(ActionEvent event) throws Exception {
+    public void backButtonClicked(ActionEvent event) throws Exception
+    {
         navigateTo(event, "LibrarianProfileFrame.fxml", "Subscriber.css", "Return");
     }
-
 
     /**
      * Handles the Return button click event.
@@ -55,12 +56,14 @@ public class ReturnBookFrameController {
      *
      * @param actionEvent The ActionEvent triggered by the Return button.
      */
-    public void returnButtonClicked(ActionEvent actionEvent) {
+    public void returnButtonClicked(ActionEvent actionEvent)
+    {
         // Extract data from the text field
         String copyID = idTextField.getText().trim();
 
         // Validate fields
-        if (copyID.isEmpty()) {
+        if (copyID.isEmpty())
+        {
             // Handle missing data (e.g., show an error dialog)
             System.out.println("Please enter a valid Copy ID.");
             return;
@@ -69,28 +72,41 @@ public class ReturnBookFrameController {
         // Create the ClientServerMessage object with code 304 and the copy ID as the message content
         ClientServerMessage message = new ClientServerMessage(304, copyID);
 
-        try {
+        try
+        {
             // Send the message to the server
             ClientGUIController.chat.sendToServer(message);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             System.out.println("Error sending return request to the server: " + e.getMessage());
         }
     }
 
-    public static void showReturnMessageResponse(ArrayList<String> msg) {
+    /**
+     * @param msg
+     */
+    public static void showReturnMessageResponse(ArrayList<String> msg)
+    {
         Platform.runLater(() -> {
-            if (msg == null || msg.isEmpty()) {
+            if (msg == null || msg.isEmpty())
+            {
                 showAlert(Alert.AlertType.ERROR, "Error", "No response from server.");
                 return;
             }
 
             String status = msg.get(0);
-            if ("true".equals(status)) {
+            if ("true".equals(status))
+            {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "The book was returned successfully!");
-            } else if ("false".equals(status)) {
+            }
+            else if ("false".equals(status))
+            {
                 String explanation = msg.size() > 1 ? msg.get(1) : "Unknown error occurred.";
                 showAlert(Alert.AlertType.ERROR, "Return Failed", "Reason: " + explanation);
-            } else {
+            }
+            else
+            {
                 showAlert(Alert.AlertType.ERROR, "Error", "Unexpected response format from server.");
             }
         });
@@ -103,7 +119,8 @@ public class ReturnBookFrameController {
      * @param title     The title of the alert
      * @param message   The message to display in the alert
      */
-    private static void showAlert(Alert.AlertType alertType, String title, String message) {
+    private static void showAlert(Alert.AlertType alertType, String title, String message)
+    {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);

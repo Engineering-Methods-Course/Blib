@@ -1,4 +1,4 @@
-package gui;
+package logic;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -6,12 +6,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 import static client.ClientGUIController.navigateTo;
 
-public class ViewAllSubscribersFrameController {
-
+public class ViewAllSubscribersFrameController
+{
     @FXML
     private ComboBox<String> filterComboBox;
     @FXML
@@ -21,11 +20,11 @@ public class ViewAllSubscribersFrameController {
     @FXML
     private Button backButton;
 
-
     /**
      * Handles the Apply Filter button click event.
      * This will allow users to apply the filter based on the selected option.
      * Currently, the filter logic is not implemented.
+     *
      * @param actionEvent The ActionEvent triggered by clicking the Apply Filter button.
      */
     public void applyFilter(ActionEvent actionEvent)
@@ -38,6 +37,7 @@ public class ViewAllSubscribersFrameController {
      * Handles the Filter button click event.
      * This method will apply the filter logic when the user clicks the filter button.
      * Currently, the filter logic is not implemented.
+     *
      * @param actionEvent The ActionEvent triggered by clicking the Filter button.
      */
     public void onFilterButtonClicked(ActionEvent actionEvent)
@@ -47,6 +47,7 @@ public class ViewAllSubscribersFrameController {
 
     /**
      * Handles the Back button click event.
+     *
      * @param event The ActionEvent triggered by clicking the button.
      * @throws Exception If an error occurs during navigation.
      */
@@ -54,5 +55,4 @@ public class ViewAllSubscribersFrameController {
     {
         navigateTo(event, "LibrarianProfileFrame.fxml", "Subscriber.css", "All Subscribers");
     }
-
 }

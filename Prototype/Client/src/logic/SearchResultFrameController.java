@@ -1,4 +1,4 @@
-package gui;
+package logic;
 
 import common.Book;
 import javafx.beans.property.Property;
@@ -10,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,6 @@ import static client.ClientGUIController.navigateTo;
 
 public class SearchResultFrameController
 {
-
     @FXML
     public TableView<List<String>>  searchResultTable;
     @FXML
@@ -102,10 +100,16 @@ public class SearchResultFrameController
         books = bookslst;
     }
 
+    /**
+     *
+     *
+     * @param listFromRow
+     */
     private void getBookCopy(List<String> listFromRow)
     {
 
     }
+
     /**
      * This method handles the backButton click event to navigate back to the previous frame
      * @param event      The action event triggered by clicking the back button

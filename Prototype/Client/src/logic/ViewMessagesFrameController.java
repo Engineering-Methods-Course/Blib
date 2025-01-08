@@ -1,16 +1,13 @@
-package gui;
+package logic;
 
-import common.Book;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextField;
 
 import static client.ClientGUIController.navigateTo;
 
-public class ViewMessagesFrameController {
-
+public class ViewMessagesFrameController
+{
     @FXML
     private Button backButton;
 
@@ -21,10 +18,12 @@ public class ViewMessagesFrameController {
 
     /**
      * Handles the Back button click event.
+     *
      * @param actionEvent The ActionEvent triggered by clicking the button.
      * @throws Exception If an error occurs during navigation.
      */
-    public void backButtonClicked(ActionEvent actionEvent) throws Exception {
+    public void backButtonClicked(ActionEvent actionEvent) throws Exception
+    {
         // Navigate back to the previous screen (you can change the target screen as needed)
         navigateTo(actionEvent, "LibrarianProfileFrame.fxml", "Subscriber.css", "Messages");
     }

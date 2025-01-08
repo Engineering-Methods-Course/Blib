@@ -1,8 +1,8 @@
 package client;
 
 import common.ClientServerMessage;
-import gui.ClientIPFrameController;
-import gui.SearchHomePageFrameController;
+import logic.ClientIPFrameController;
+import logic.SearchHomePageFrameController;
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;

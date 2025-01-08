@@ -1,4 +1,4 @@
-package gui;
+package logic;
 
 import client.ClientGUIController;
 import common.ClientServerMessage;
@@ -17,7 +17,6 @@ import static client.ClientGUIController.navigateTo;
 
 public class SearchHomePageFrameController
 {
-
     private enum SearchType
     {
         NAME,
@@ -56,19 +55,19 @@ public class SearchHomePageFrameController
     @FXML
     public Button watchProfileButton;
 
-    private static boolean canSearch=false; //Variable to check if we got results from the search
+    private static boolean canSearch = false; //Variable to check if we got results from the search
     private UserType user_type = UserType.User;
 
     public void initialize()
     {
-        String name="";
+        String name = "";
         //need to check what user (user/client/librarian) enters the search
-        if(Subscriber.getLocalSubscriber()!=null)
+        if (Subscriber.getLocalSubscriber() != null)
         {
             user_type = UserType.Subscriber;
             name = Subscriber.getLocalSubscriber().getFirstName();
         }
-        else if(Librarian.getLocalLibrarian()!=null)
+        else if (Librarian.getLocalLibrarian() != null)
         {
             user_type = UserType.Librarian;
             name = Librarian.getLocalLibrarian().getFirstName();
@@ -76,7 +75,7 @@ public class SearchHomePageFrameController
 
         profileButton.setDisable(!user_type.equals(UserType.User));
         profileButton.setVisible(!user_type.equals(UserType.User));
-        profileButton.setText("Hello "+name);
+        profileButton.setText("Hello " + name);
         watchProfileButton.setDisable(!user_type.equals(UserType.User));
         watchProfileButton.setVisible(!user_type.equals(UserType.User));
         //watchProfileButton.setVisible()
@@ -89,20 +88,26 @@ public class SearchHomePageFrameController
         descriptionSearch.setVisible(false);
 
     }
-    //allows the system to change the ability to allow search process
+
+    /**
+     * This method changes the canSearch variable to the given boolean
+     *
+     * @param bool The boolean to change the canSearch variable to
+     */
     public static void changeCanSearch(Boolean bool)
     {
-        canSearch=bool;
+        canSearch = bool;
     }
 
     /**
      * This method changes the search configuration to search by name
-     * @param event     The ActionEvent triggered by the button click
+     *
+     * @param event The ActionEvent triggered by the button click
      */
     public void searchByName(ActionEvent event)
     {
         searchType = SearchType.NAME;
-        changeAllRadioSelected(true,false,false);
+        changeAllRadioSelected(true, false, false);
         searchField.setVisible(true);
         descriptionSearch.setVisible(false);
 
@@ -110,19 +115,21 @@ public class SearchHomePageFrameController
 
     /**
      * This method changes the search configuration to search by genre
-     * @param event     The ActionEvent triggered by the button click
+     *
+     * @param event The ActionEvent triggered by the button click
      */
     public void searchByGenre(ActionEvent event)
     {
         searchType = SearchType.GENRE;
-        changeAllRadioSelected(false,true,false);
+        changeAllRadioSelected(false, true, false);
         searchField.setVisible(true);
         descriptionSearch.setVisible(false);
     }
 
     /**
      * This method changes the search configuration to search by description
-     * @param event     The ActionEvent triggered by the button click
+     *
+     * @param event The ActionEvent triggered by the button click
      */
     public void searchByDescription(ActionEvent event)
     {
@@ -131,9 +138,16 @@ public class SearchHomePageFrameController
         searchField.setVisible(false);
         descriptionSearch.setVisible(true);
 
-        changeAllRadioSelected(false,false,true);
+        changeAllRadioSelected(false, false, true);
     }
 
+    /**
+     * This method changes the selected radio button to the given values
+     *
+     * @param name  The value to set the name radio button to
+     * @param genre The value to set the genre radio button to
+     * @param desc  The value to set the description radio button to
+     */
     private void changeAllRadioSelected(Boolean name, Boolean genre, boolean desc)
     {
         nameRadio.setSelected(name);
@@ -143,19 +157,20 @@ public class SearchHomePageFrameController
 
     /**
      * This method handles the searchButton click event to search for books
-     * @param event      The ActionEvent triggered by the search button click
+     *
+     * @param event The ActionEvent triggered by the search button click
      * @throws Exception if there is an issue with the search
      */
     public void search(ActionEvent event) throws Exception
     {
         //todo: implement
         //todo: use radio and either use the private methods of just send it from here
-        int messageCode=0 ;
-        String messageContent ="";
+        int messageCode = 0;
+        String messageContent = "";
 
         /// Switch case for which option of search was chosen
         /// sets the message code and content according to it
-        switch(searchType)
+        switch (searchType)
         {
             case NAME:
                 messageCode = 200;
@@ -176,25 +191,28 @@ public class SearchHomePageFrameController
         //checks if we are trying to search with empty messageContent and stops it from advancing
         if (messageContent.isEmpty()) return;
 
-        ClientServerMessage searchMessage = new ClientServerMessage(messageCode,messageContent);
-        try {
+        ClientServerMessage searchMessage = new ClientServerMessage(messageCode, messageContent);
+
+        try
+        {
             ClientGUIController.chat.sendToServer(searchMessage);
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             System.out.println("Error sending search message to server: " + e.getMessage());
         }
+
         //if there were was a result from the server, go to searchResultFrame
-        if(canSearch)
+        if (canSearch)
         {
-            navigateTo(event, "/gui/SearchResultFrame.fxml","/gui/Subscriber.css", "Search results");
+            navigateTo(event, "/gui/SearchResultFrame.fxml", "/gui/Subscriber.css", "Search results");
         }
-
-
     }
 
     /**
      * This method handles the loginButton click event to navigate to the login page
-     * @param event      The ActionEvent triggered by the login button click
+     *
+     * @param event The ActionEvent triggered by the login button click
      * @throws Exception if there is an issue with the navigation
      */
     public void login(ActionEvent event) throws Exception
@@ -204,7 +222,8 @@ public class SearchHomePageFrameController
 
     /**
      * This method handles the profileButton click event to navigate to the profile page
-     * @param event      the ActionEvent triggered by the profile button click
+     *
+     * @param event the ActionEvent triggered by the profile button click
      * @throws Exception if there is an issue with the navigation
      */
     public void goToProfile(ActionEvent event) throws Exception

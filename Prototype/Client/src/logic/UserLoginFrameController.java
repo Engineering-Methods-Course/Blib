@@ -1,4 +1,4 @@
-package gui;
+package logic;
 
 import client.ClientGUIController;
 import common.ClientServerMessage;
@@ -19,8 +19,8 @@ import java.util.ResourceBundle;
 import static client.ClientGUIController.navigateTo;
 
 
-public class UserLoginFrameController implements Initializable {
-
+public class UserLoginFrameController implements Initializable
+{
     @FXML
     public Button backButton;
     @FXML
@@ -38,7 +38,8 @@ public class UserLoginFrameController implements Initializable {
      * @param resources The primary stage to set the scene
      */
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources)
+    {
         try
         {
             if (Subscriber.getLocalSubscriber() != null)
@@ -65,11 +66,13 @@ public class UserLoginFrameController implements Initializable {
      * @throws Exception If there is an issue with the navigation
      */
     @FXML
-    public void clickLoginButton(ActionEvent event) throws Exception {
+    public void clickLoginButton(ActionEvent event) throws Exception
+    {
         String username = txtUsername.getText();
         String password = txtPassword.getText();
 
-        if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+        if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty())
+        {
             System.out.println("Username and password cannot be empty");
             Alert alert = new Alert(Alert.AlertType.ERROR, "Username and password cannot be empty");
             alert.showAndWait();
@@ -82,13 +85,17 @@ public class UserLoginFrameController implements Initializable {
         // Create a new ClientServerMessage with the login details and ID 100
         ClientServerMessage loginMessage = new ClientServerMessage(100, loginDetails);
 
-        try {
+        try
+        {
             ClientGUIController.chat.sendToServer(loginMessage);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             System.out.println("Error sending login message to server: " + e.getMessage());
         }
 
-        if (Subscriber.getLocalSubscriber() != null) {
+        if (Subscriber.getLocalSubscriber() != null)
+        {
             System.out.println("Subscriber logged in" + Subscriber.getLocalSubscriber());
             navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", null, "Profile Page");
         }

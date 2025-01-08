@@ -8,91 +8,120 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LibrarianProfileFrameController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
+      prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="logic.LibrarianProfileFrameController">
     <children>
         <AnchorPane prefHeight="46.0" prefWidth="600.0">
             <children>
-                <Button fx:id="logoutButton" layoutX="22.0" layoutY="9.0" mnemonicParsing="false" onAction="#logoutButtonClicked" text="Log Out" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="1199.0" AnchorPane.topAnchor="3.0" />
+                <Button fx:id="logoutButton" layoutX="22.0" layoutY="9.0" mnemonicParsing="false"
+                        onAction="#logoutButtonClicked" text="Log Out" AnchorPane.bottomAnchor="0.0"
+                        AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="1199.0" AnchorPane.topAnchor="3.0"/>
             </children>
         </AnchorPane>
         <AnchorPane prefHeight="61.0" prefWidth="1280.0">
             <children>
-                <Text layoutX="455.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome: " AnchorPane.bottomAnchor="27.9609375" AnchorPane.leftAnchor="455.0" AnchorPane.rightAnchor="640.1171875" AnchorPane.topAnchor="26.8359375">
+                <Text layoutX="455.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome: "
+                      AnchorPane.bottomAnchor="27.9609375" AnchorPane.leftAnchor="455.0"
+                      AnchorPane.rightAnchor="640.1171875" AnchorPane.topAnchor="26.8359375">
                     <font>
-                        <Font size="40.0" />
+                        <Font size="40.0"/>
                     </font>
                 </Text>
-                <Text fx:id="usernameTextField" layoutX="640.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;UserName&gt;" AnchorPane.bottomAnchor="29.9609375" AnchorPane.leftAnchor="640.0" AnchorPane.rightAnchor="400.3515625" AnchorPane.topAnchor="25.8359375">
+                <Text fx:id="usernameTextField" layoutX="640.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="&lt;UserName&gt;" AnchorPane.bottomAnchor="29.9609375" AnchorPane.leftAnchor="640.0"
+                      AnchorPane.rightAnchor="400.3515625" AnchorPane.topAnchor="25.8359375">
                     <font>
-                        <Font size="40.0" />
+                        <Font size="40.0"/>
                     </font>
                 </Text>
             </children>
         </AnchorPane>
         <AnchorPane prefHeight="110.0" prefWidth="1280.0">
             <children>
-                <Button fx:id="borrowButton" layoutX="589.0" layoutY="51.0" mnemonicParsing="false" onAction="#borrowButtonClicked" text="Borrow" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="589.0" AnchorPane.rightAnchor="588.0" AnchorPane.topAnchor="51.0">
+                <Button fx:id="borrowButton" layoutX="589.0" layoutY="51.0" mnemonicParsing="false"
+                        onAction="#borrowButtonClicked" text="Borrow" AnchorPane.bottomAnchor="0.0"
+                        AnchorPane.leftAnchor="589.0" AnchorPane.rightAnchor="588.0" AnchorPane.topAnchor="51.0">
                     <font>
-                        <Font size="23.0" />
+                        <Font size="23.0"/>
                     </font>
                 </Button>
-                <Button fx:id="returnBookButton" layoutX="1055.0" layoutY="51.0" mnemonicParsing="false" onAction="#returnBookButtonClicked" text="Return" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1055.0" AnchorPane.rightAnchor="127.0" AnchorPane.topAnchor="51.0">
+                <Button fx:id="returnBookButton" layoutX="1055.0" layoutY="51.0" mnemonicParsing="false"
+                        onAction="#returnBookButtonClicked" text="Return" AnchorPane.bottomAnchor="0.0"
+                        AnchorPane.leftAnchor="1055.0" AnchorPane.rightAnchor="127.0" AnchorPane.topAnchor="51.0">
                     <font>
-                        <Font size="23.0" />
+                        <Font size="23.0"/>
                     </font>
                 </Button>
-                <Button fx:id="searchButton" layoutX="153.0" layoutY="51.0" mnemonicParsing="false" onAction="#searchButtonClicked" text="Search" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="1029.0" AnchorPane.topAnchor="51.0">
+                <Button fx:id="searchButton" layoutX="153.0" layoutY="51.0" mnemonicParsing="false"
+                        onAction="#searchButtonClicked" text="Search" AnchorPane.bottomAnchor="0.0"
+                        AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="1029.0" AnchorPane.topAnchor="51.0">
                     <font>
-                        <Font size="23.0" />
+                        <Font size="23.0"/>
                     </font>
                 </Button>
             </children>
         </AnchorPane>
         <HBox prefHeight="574.0" prefWidth="1280.0">
             <children>
-                <Region prefHeight="556.0" prefWidth="485.0" />
+                <Region prefHeight="556.0" prefWidth="485.0"/>
                 <VBox prefHeight="556.0" prefWidth="340.0">
                     <children>
                         <AnchorPane prefHeight="190.0" prefWidth="340.0">
                             <children>
-                                <Button fx:id="viewAllSubscribersButton" layoutX="53.0" layoutY="145.0" mnemonicParsing="false" onAction="#viewAllSubscribersButtonClicked" text="View All Subscribers" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="53.0" AnchorPane.topAnchor="145.0">
+                                <Button fx:id="viewAllSubscribersButton" layoutX="53.0" layoutY="145.0"
+                                        mnemonicParsing="false" onAction="#viewAllSubscribersButtonClicked"
+                                        text="View All Subscribers" AnchorPane.bottomAnchor="0.0"
+                                        AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="53.0"
+                                        AnchorPane.topAnchor="145.0">
                                     <font>
-                                        <Font size="23.0" />
+                                        <Font size="23.0"/>
                                     </font>
                                 </Button>
-                        <Button fx:id="btnSearchSubscriber" layoutX="53.0" layoutY="63.0" mnemonicParsing="false" onAction="#clickSearchSubscriber" prefHeight="69.0" prefWidth="234.0" text="Search Subscriber" />
+                                <Button fx:id="btnSearchSubscriber" layoutX="53.0" layoutY="63.0"
+                                        mnemonicParsing="false" onAction="#clickSearchSubscriber" prefHeight="69.0"
+                                        prefWidth="234.0" text="Search Subscriber"/>
                             </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="110.0" prefWidth="340.0">
                             <children>
-                                <Button fx:id="viewReportsButton" layoutX="88.0" layoutY="30.0" mnemonicParsing="false" onAction="#viewReportsButtonClicked" text="View Reports" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="88.0" AnchorPane.topAnchor="30.0">
+                                <Button fx:id="viewReportsButton" layoutX="88.0" layoutY="30.0" mnemonicParsing="false"
+                                        onAction="#viewReportsButtonClicked" text="View Reports"
+                                        AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="88.0"
+                                        AnchorPane.rightAnchor="88.0" AnchorPane.topAnchor="30.0">
                                     <font>
-                                        <Font size="23.0" />
+                                        <Font size="23.0"/>
                                     </font>
                                 </Button>
                             </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="78.0" prefWidth="340.0">
                             <children>
-                                <Button fx:id="registerMemberButton" layoutX="68.0" mnemonicParsing="false" onAction="#registerMemberButtonClicked" prefWidth="205.0" text="Register Member" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="68.0" AnchorPane.rightAnchor="67.0" AnchorPane.topAnchor="0.0">
+                                <Button fx:id="registerMemberButton" layoutX="68.0" mnemonicParsing="false"
+                                        onAction="#registerMemberButtonClicked" prefWidth="205.0" text="Register Member"
+                                        AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="68.0"
+                                        AnchorPane.rightAnchor="67.0" AnchorPane.topAnchor="0.0">
                                     <font>
-                                        <Font size="23.0" />
+                                        <Font size="23.0"/>
                                     </font>
                                 </Button>
                             </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="51.0" prefWidth="340.0">
                             <children>
-                                <Button fx:id="viewMessagesButton" layoutX="78.0" layoutY="1.0" mnemonicParsing="false" onAction="#viewMessagesButtonClicked" text="View Messages" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="78.0" AnchorPane.rightAnchor="77.0" AnchorPane.topAnchor="1.0">
+                                <Button fx:id="viewMessagesButton" layoutX="78.0" layoutY="1.0" mnemonicParsing="false"
+                                        onAction="#viewMessagesButtonClicked" text="View Messages"
+                                        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="78.0"
+                                        AnchorPane.rightAnchor="77.0" AnchorPane.topAnchor="1.0">
                                     <font>
-                                        <Font size="23.0" />
+                                        <Font size="23.0"/>
                                     </font>
                                 </Button>
                             </children>
                         </AnchorPane>
                     </children>
                 </VBox>
-                <Region prefHeight="556.0" prefWidth="454.0" />
+                <Region prefHeight="556.0" prefWidth="454.0"/>
             </children>
         </HBox>
     </children>

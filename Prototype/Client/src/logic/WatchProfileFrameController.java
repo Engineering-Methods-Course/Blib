@@ -1,6 +1,5 @@
-package gui;
+package logic;
 
-import common.Librarian;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,9 +7,8 @@ import javafx.scene.text.Text;
 
 import static client.ClientGUIController.navigateTo;
 
-public class WatchProfileFrameController {
-
-
+public class WatchProfileFrameController
+{
     @FXML
     private Text txtName;
     @FXML
@@ -34,10 +32,12 @@ public class WatchProfileFrameController {
 
     /**
      * Handles the Back button click event.
+     *
      * @param event The ActionEvent triggered by clicking the button.
      * @throws Exception If an error occurs during navigation.
      */
-    public void backButtonClicked(ActionEvent event) throws Exception {
+    public void backButtonClicked(ActionEvent event) throws Exception
+    {
         navigateTo(event, "LibrarianProfileFrame.fxml", "Subscriber.css", "Return");
     }
 }

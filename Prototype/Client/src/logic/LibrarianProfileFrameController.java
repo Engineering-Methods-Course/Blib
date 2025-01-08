@@ -1,4 +1,4 @@
-package gui;
+package logic;
 
 import common.Librarian;
 import javafx.event.ActionEvent;
@@ -136,7 +136,14 @@ public class LibrarianProfileFrameController
         navigateTo(event, "ViewMessagesFrame.fxml", "Subscriber.css", "View Messages");
     }
 
-    public void clickSearchSubscriber(ActionEvent event) throws Exception{
+    /**
+     * This method is called when the search subscriber button is clicked
+     *
+     * @param event      The event that triggered this method
+     * @throws Exception If an error occurs during navigation
+     */
+    public void clickSearchSubscriber(ActionEvent event) throws Exception
+    {
         navigateTo(event, "SearchSubscriberFrame.fxml", "Subscriber.css", "Search Subscriber");
     }
 }

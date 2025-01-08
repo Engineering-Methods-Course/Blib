@@ -1,4 +1,4 @@
-package gui;
+package logic;
 
 import client.ClientGUIController;
 import common.ClientServerMessage;
@@ -115,7 +115,8 @@ public class BorrowBookFrameController
      * @param title     The title of the alert
      * @param message   The message to display in the alert
      */
-    private static void showAlert(Alert.AlertType alertType, String title, String message) {
+    private static void showAlert(Alert.AlertType alertType, String title, String message)
+    {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);

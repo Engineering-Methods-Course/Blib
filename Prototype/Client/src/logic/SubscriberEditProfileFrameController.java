@@ -1,4 +1,4 @@
-package gui;
+package logic;
 
 import client.ClientGUIController;
 import common.ClientServerMessage;
@@ -6,8 +6,6 @@ import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -18,7 +16,6 @@ import static client.ClientGUIController.navigateTo;
 
 public class SubscriberEditProfileFrameController implements Initializable
 {
-
     // FXML elements for labels
     @FXML
     public TextField txtLastName;

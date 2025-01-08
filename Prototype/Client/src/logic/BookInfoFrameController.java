@@ -1,4 +1,4 @@
-package gui;
+package logic;
 
 import common.Book;
 import javafx.event.ActionEvent;
@@ -59,7 +59,8 @@ public class BookInfoFrameController
 
     /**
      * This method handles the orderBookButton click event to order the book
-     * @param event      The ActionEvent triggered by the user's interaction (e.g., button click).
+     *
+     * @param event The ActionEvent triggered by the user's interaction (e.g., button click).
      * @throws Exception If there is an issue with the navigation
      */
     public void orderBookButtonClicked(ActionEvent event) throws Exception
@@ -71,7 +72,8 @@ public class BookInfoFrameController
 
     /**
      * This method handles the backButton click event to return to the previous page
-     * @param event      The ActionEvent triggered by the user's interaction (e.g., button click).
+     *
+     * @param event The ActionEvent triggered by the user's interaction (e.g., button click).
      * @throws Exception If there is an issue with the navigation
      */
     public void backButtonClicked(ActionEvent event) throws Exception
@@ -88,5 +90,4 @@ public class BookInfoFrameController
         bookdescription.setText(localBook.getBookDescription());
         bookAvailCopyNum.setText(String.valueOf(localBook.getBookCopyNum()));
     }
-
 }

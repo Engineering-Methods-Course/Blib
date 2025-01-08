@@ -1,4 +1,4 @@
-package gui;
+package logic;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,7 +36,8 @@ public class BorrowExtensionFrameController
 
     /**
      * This method handles the backButton click event to navigate back to the previous frame
-     * @param event      The action event triggered by clicking the back button
+     *
+     * @param event The action event triggered by clicking the back button
      * @throws Exception If there is an issue with the navigation
      */
     public void backButtonClicked(ActionEvent event) throws Exception
@@ -46,7 +47,8 @@ public class BorrowExtensionFrameController
 
     /**
      * This method handles the extendButton click event to extend the book borrowing period
-     * @param event      The action event triggered by clicking the extend button
+     *
+     * @param event The action event triggered by clicking the extend button
      * @throws Exception If there is an issue with the navigation
      */
     public void extendButtonClicked(ActionEvent event) throws Exception

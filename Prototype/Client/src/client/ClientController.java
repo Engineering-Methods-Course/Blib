@@ -1,11 +1,11 @@
 package client;
 
 import common.*;
-import gui.BorrowBookFrameController;
-import gui.ReturnBookFrameController;
-import gui.SearchHomePageFrameController;
-import gui.SearchResultFrameController;
-import gui.SearchSubscriberFrameController;
+import logic.BorrowBookFrameController;
+import logic.ReturnBookFrameController;
+import logic.SearchHomePageFrameController;
+import logic.SearchResultFrameController;
+import logic.SearchSubscriberFrameController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import ocsf.client.*;

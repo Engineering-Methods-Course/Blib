@@ -1,4 +1,4 @@
-package gui;
+package logic;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,12 +7,11 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
 
 import static client.ClientGUIController.navigateTo;
 
-public class ViewReportsFrameController {
-
+public class ViewReportsFrameController
+{
     @FXML
     private LineChart<String, Number> lineChart;  // Reference to the LineChart
     @FXML
@@ -33,7 +32,8 @@ public class ViewReportsFrameController {
      * This updates the chart data based on the selected radio button.
      */
     @FXML
-    public void onRadioButtonSelected(ActionEvent actionEvent) {
+    public void onRadioButtonSelected(ActionEvent actionEvent)
+    {
         //todo: change the chart rely on chosen option
     }
 
@@ -63,6 +63,7 @@ public class ViewReportsFrameController {
 
     /**
      * Handles the Back button click event.
+     *
      * @param event The ActionEvent triggered by clicking the button.
      * @throws Exception If an error occurs during navigation.
      */

@@ -1,4 +1,4 @@
-package gui;
+package logic;
 
 import client.ClientGUIController;
 import common.ClientServerMessage;
@@ -28,12 +28,12 @@ public class ChangePasswordFrameController
     /**
      * This method is called when the update button is clicked
      *
-     * @param event      The event that triggered this method
+     * @param event The event that triggered this method
      * @throws Exception If an error occurs during navigation
      */
     public void clickUpdateButton(ActionEvent event) throws Exception
     {
-        if(!newPassField.getText().equals(confirmPassField.getText()))
+        if (!newPassField.getText().equals(confirmPassField.getText()))
         {
             System.out.println("Passwords do not match");
             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Passwords do not match"));
@@ -57,7 +57,7 @@ public class ChangePasswordFrameController
     /**
      * This method is called when the back button is clicked
      *
-     * @param event      The event that triggered this method
+     * @param event The event that triggered this method
      * @throws Exception If an error occurs during navigation
      */
     public void clickBackButton(ActionEvent event) throws Exception
@@ -72,7 +72,8 @@ public class ChangePasswordFrameController
      * @param title     The title of the alert
      * @param message   The message to display in the alert
      */
-    private static void showAlert(Alert.AlertType alertType, String title, String message) {
+    private static void showAlert(Alert.AlertType alertType, String title, String message)
+    {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
