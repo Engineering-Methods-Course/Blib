@@ -1,14 +1,12 @@
 package Server;
 
 
-import com.sun.security.ntlm.Client;
 import common.ClientServerMessage;
-import gui.ServerMonitorFrameController;
+import logic.ServerMonitorFrameController;
 import logic.DBController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

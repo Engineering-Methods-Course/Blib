@@ -1,4 +1,4 @@
-package gui;
+package logic;
 
 import Server.ServerGUI;
 import javafx.collections.ObservableList;
