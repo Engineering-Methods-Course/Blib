@@ -197,6 +197,23 @@ public class ServerController extends AbstractServer {
                     case (208):
                         break;
                     case (210):
+                        /**
+                         * do: subscriber wants to see his borrowed book list
+                         * in: int
+                         * return: (id 211) arraylist<book>
+                         */
+                        try {
+                            if (message.getMessageContent() instanceof Integer) {
+                                client.sendToClient(new ClientServerMessage(211, dbController.showSubscriberBorrowedBooks((Integer) message.getMessageContent(), conn)));
+                                System.out.println("Subscriber borrowed books were sent to client");
+                            } else {
+                                System.out.println("Cannot find borrowed books - message is not an integer (case 210)");
+                                client.sendToClient(new ClientServerMessage(211, null));
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error: with getting borrowed book details (case 210)" + e);
+                            client.sendToClient(new ClientServerMessage(211, null));
+                        }
                         break;
                     case (212):
                         /**

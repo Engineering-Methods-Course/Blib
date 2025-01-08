@@ -451,6 +451,43 @@ public class DBController {
     }
 
     /**
+     * case 210
+     * this method show subscriber borrowed list
+     */
+    public ArrayList<BorrowedBook> showSubscriberBorrowedBooks(int subscriberId, Connection conn) {
+        try {
+            ArrayList<BorrowedBook> borrowedBooks = new ArrayList<>();
+
+            /*
+             * The query selects all columns from the borrow table where the subscriber ID matches a given value
+             */
+
+            String findBorrowQuery = "SELECT * FROM borrow WHERE subscriber_id = ?, status = 'borrowed'";
+            PreparedStatement findBorrowStatement = conn.prepareStatement(findBorrowQuery);
+            findBorrowStatement.setInt(1, subscriberId);
+
+            ResultSet rs = findBorrowStatement.executeQuery();
+
+            /*
+             * If the query was successful, add the values of the book to a list
+             */
+            while (rs.next()) {
+                BorrowedBook borrow = new BorrowedBook(rs.getInt("copy_id"), rs.getInt("subscriber_id"), rs.getTimestamp("borrow_date").toString(), rs.getTimestamp("expected_return_date").toString(),rs.getTimestamp("return_date").toString() ,(rs.getInt("notify") == 1 ? "notified" : "not notified"));
+                borrowedBooks.add(borrow);
+            }
+            if (borrowedBooks.isEmpty()) {
+                System.out.println("No borrowed books found (showSubscriberBorrowedBooks)");
+                return null;
+            }
+            System.out.println("Borrowed books found (showSubscriberBorrowedBooks)");
+            return borrowedBooks;
+        } catch (SQLException e) {
+            System.out.println("Error: With exporting borrowed books from sql (showSubscriberBorrowedBooks) " + e);
+            return null;
+        }
+    }
+
+    /**
      * case 212
      * This method extends the return date of a borrowed book
      *
