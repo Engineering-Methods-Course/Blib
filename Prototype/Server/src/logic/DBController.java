@@ -332,6 +332,76 @@ public class DBController {
             return null;
         }
     }
+    /**
+     * case 206
+     * This method get the availablety of the book
+     *
+     * @param serialNumber The serial number of the book
+     * @param conn The connection to the database
+     * @return [true, book location] if the book is available
+     *         [false, nearest available date] if the book is not available
+     */
+    public ArrayList<String> checkBookAvailability(int serialNumber, Connection conn) {
+        try {
+            ArrayList<String> response = new ArrayList<>();
+            ArrayList<Integer>  unAvalebleCopies= new ArrayList<>();
+            /*
+             * The query select all book copies and check if there is book copy available
+             */
+            String checkAvailabilityQuery = "SELECT available, copy_id, shelf_location FROM book_copy WHERE serial_number = ?)";
+            PreparedStatement checkAvailabilityStatement = conn.prepareStatement(checkAvailabilityQuery);
+            checkAvailabilityStatement.setInt(1, serialNumber);
+            ResultSet checkAvailabilityRs = checkAvailabilityStatement.executeQuery();
+            while (checkAvailabilityRs.next()) {
+                boolean available = checkAvailabilityRs.getInt("available") == 1;
+                // if there is a copy available return true and the location of the book
+                if (available) {
+                    response.add("true");
+                    response.add(checkAvailabilityRs.getString("shelf_location"));
+                    return response;
+                }
+                // if there is no copy available add the copy id to the list
+                else{
+                    unAvalebleCopies.add(checkAvailabilityRs.getInt("copy_id"));
+                }
+            }
+            /*
+                * The query select the nearest available date for the book ORDER BY expected_return_date ASC LIMIT 1
+             */
+            if (!unAvalebleCopies.isEmpty()) {
+                // create a query string with the number of copies dynamically
+                StringBuilder queryBuilder = new StringBuilder("SELECT MIN(expected_return_date) AS nearest_return_date FROM borrow WHERE copy_id IN (");
+                for (int i = 0; i < unAvalebleCopies.size(); i++) {
+                    queryBuilder.append("?");
+                    if (i < unAvalebleCopies.size() - 1) {
+                        queryBuilder.append(",");
+                    }
+                }
+                queryBuilder.append(")");
+                // add the copy ids to the query
+                PreparedStatement nearestReturnDateStatement = conn.prepareStatement(queryBuilder.toString());
+                for (int i = 0; i < unAvalebleCopies.size(); i++) {
+                    nearestReturnDateStatement.setInt(i + 1, unAvalebleCopies.get(i));
+                }
+                // execute the query
+                ResultSet nearestReturnDateRs = nearestReturnDateStatement.executeQuery();
+                if (nearestReturnDateRs.next()) {
+                    Timestamp nearestReturnDate = nearestReturnDateRs.getTimestamp("nearest_return_date");
+                    if (nearestReturnDate != null) {
+                        response.add("false");
+                        response.add(nearestReturnDate.toString());
+                    } else {
+                        response.add("false");
+                        response.add("No return dates found for the provided book IDs");
+                    }
+                }
+            }
+            return response;
+        } catch (Exception e) {
+            System.out.println("Error: With checking the book availability (checkBookAvailability) " + e);
+            return null;
+        }
+    }
 
     /**
      * case 212

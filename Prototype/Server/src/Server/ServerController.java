@@ -74,7 +74,7 @@ public class ServerController extends AbstractServer {
                  * 200 - subscriber wants to search a book by its name
                  * 202 - subscriber wants to search a book by its genre
                  * 204 - subscriber wants to search a book by its description
-                 * 206 - subscriber wants to see details of a specific book !!! MAYBE DELETE THIS
+                 * 206 - subscriber wants to check book availability of a specific book
                  * 208 - subscriber wants to order a book
                  * 210 - subscriber wants to see his borrowed book list
                  * 212 - subscriber wants to extend his borrow time
@@ -180,6 +180,23 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (206):
+                        /**
+                         * do: subscriber wants to  check book availability of a specific book
+                         * in: int
+                         * return: (id 207) book
+                         */
+                        try {
+                            if (message.getMessageContent() instanceof Integer) {
+                                client.sendToClient(new ClientServerMessage(207, dbController.checkBookAvailability((Integer) message.getMessageContent(), conn)));
+                                System.out.println("Book details were sent to client");
+                            } else {
+                                System.out.println("Cannot get book details - message is not an integer (case 206)");
+                                client.sendToClient(new ClientServerMessage(207, null));
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error: with getting book details (case 206)" + e);
+                            client.sendToClient(new ClientServerMessage(207, null));
+                        }
                         break;
                     case (208):
                         break;
