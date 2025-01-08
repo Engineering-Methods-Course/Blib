@@ -2,6 +2,7 @@ package client;
 
 import common.ChatIF;
 import common.ClientServerMessage;
+import logic.ClientController;
 
 import java.io.IOException;
 
