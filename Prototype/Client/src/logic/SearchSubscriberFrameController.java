@@ -2,58 +2,49 @@ package logic;
 
 import client.ClientGUIController;
 import common.ClientServerMessage;
+import common.Librarian;
+import common.Subscriber;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
-import java.util.ArrayList;
+
 
 import static client.ClientGUIController.navigateTo;
 
 public class SearchSubscriberFrameController
 {
+
     @FXML
     private TextField idTextField;
 
-    public void watchProfileButtonClicked(ActionEvent actionEvent)
-    {
+    public void watchProfileButtonClicked(ActionEvent actionEvent) {
         // Get the ID from the TextField
         String userIDText = idTextField.getText().trim();
 
-        // Validate fields
-        if (userIDText.isEmpty())
-        {
-            // Handle missing data (e.g., show an error dialog)
+        if (userIDText.isEmpty()) {
             System.out.println("Please enter a valid Copy ID.");
             return;
         }
 
         int userID;
-        try
-        {
-            // Parse the text input to an integer
+        try {
             userID = Integer.parseInt(userIDText);
-        }
-        catch (NumberFormatException e)
-        {
-            // Handle invalid number input
+        } catch (NumberFormatException e) {
             System.out.println("Invalid Copy ID. Please enter a numeric value.");
             return;
         }
 
-        // Create the ClientServerMessage object with code 308 and the integer ID as the message content
         ClientServerMessage message = new ClientServerMessage(308, userID);
-
-        try
-        {
-            // Send the message to the server
+        try {
+            // Store the ActionEvent to pass it to the response handler
+            ClientController.setActionEvent(actionEvent);
+            // Send the request to the server
             ClientGUIController.chat.sendToServer(message);
-        }
-        catch (Exception e)
-        {
-            System.out.println("Error sending return request to the server: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error sending request to the server: " + e.getMessage());
         }
     }
 
@@ -68,44 +59,6 @@ public class SearchSubscriberFrameController
         navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Return");
     }
 
-    /**
-     * @param msg
-     */
-    public static void WatchProfileResponse(ArrayList<String> msg)
-    {
-        Platform.runLater(() -> {
-            if (msg == null)
-            {
-                // Null response indicates failure
-                showAlert(Alert.AlertType.ERROR, "Error", "Subscriber not found or invalid ID.");
-                return;
-            }
-
-            // Check for success or failure
-            String status = msg.get(0);
-            if ("true".equals(status))
-            {
-                // Navigate to the next window (assume appropriate navigation logic)
-                try
-                {
-                    navigateTo(null, "/gui/WatchProfileFrame.fxml", "/gui/Subscriber.css", "Watch Profile");
-                }
-                catch (Exception e)
-                {
-                    showAlert(Alert.AlertType.ERROR, "Navigation Error", "Failed to load the subscriber details.");
-                }
-            }
-            else if ("false".equals(status))
-            {
-                String explanation = msg.size() > 1 ? msg.get(1) : "Unknown error occurred.";
-                showAlert(Alert.AlertType.ERROR, "Search Failed", "Reason: " + explanation);
-            }
-            else
-            {
-                showAlert(Alert.AlertType.ERROR, "Error", "Unexpected response format from server.");
-            }
-        });
-    }
 
     /**
      * Helper method to display an alert.
@@ -122,4 +75,31 @@ public class SearchSubscriberFrameController
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    public static void WatchProfileResponse(Subscriber subscriberFromServer) {
+        Platform.runLater(() -> {
+            if (subscriberFromServer == null) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Subscriber not found or invalid ID.");
+            } else {
+                // Set the subscriber for further use
+                Subscriber.setWatchProfileSubscriber(subscriberFromServer);
+
+                // Retrieve the stored ActionEvent and navigate
+                ActionEvent storedEvent = ClientController.getStoredActionEvent();
+                if (storedEvent != null) {
+                    try {
+                        navigateTo(storedEvent, "/gui/WatchProfileFrame.fxml", "/gui/Subscriber.css", "Watch Profile");
+                    } catch (Exception e) {
+                        showAlert(Alert.AlertType.ERROR, "Navigation Error", "Failed to load the subscriber details.");
+                    }
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Error", "Action context is missing for navigation.");
+                }
+            }
+        });
+    }
+
+
+
+
 }

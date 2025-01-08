@@ -402,6 +402,7 @@ public class ServerController extends AbstractServer {
                         } catch (Exception e) {
                             System.out.println("Error: with getting subscriber details (case 308)" + e);
                             client.sendToClient(new ClientServerMessage(309, null));
+
                         }
                         break;
                     case (310):

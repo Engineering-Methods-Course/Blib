@@ -2,6 +2,7 @@ package logic;
 
 import common.*;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import ocsf.client.*;
 import common.ChatIF;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 public class ClientController extends AbstractClient
 {
     private Connection conn;
+    private static ActionEvent storedActionEvent;
 
     ChatIF clientUI;
     public static boolean awaitResponse = false;
@@ -34,6 +36,14 @@ public class ClientController extends AbstractClient
         openConnection();
     }
 
+    public static void setActionEvent(ActionEvent actionEvent) {
+        storedActionEvent = actionEvent;
+    }
+
+    public static ActionEvent getStoredActionEvent() {
+        return storedActionEvent;
+    }
+
     /**
      * This method handles all data that comes in from the server
      *
@@ -47,7 +57,6 @@ public class ClientController extends AbstractClient
             if (msg instanceof ClientServerMessage)
             {
                 ClientServerMessage message = (ClientServerMessage) msg;
-
                 /*
                  * The following switch case is used to handle the different responses from the server:
                  * 101 - login response from the server
@@ -224,19 +233,16 @@ public class ClientController extends AbstractClient
                         break;
                     // Watch subscriber details response
                     case 309:
-                        if (message.getMessageContent() instanceof ArrayList<?>)
+                        if (message.getMessageContent() == null)
                         {
-                            @SuppressWarnings("unchecked")
-                            ArrayList<String> response = (ArrayList<String>) message.getMessageContent();
-
-                            // Call the showWatchProfileResponse method to handle and display the response
-                            SearchSubscriberFrameController.WatchProfileResponse(response);
+                            System.out.println("Wrong Username(id)");
+                            Platform.runLater(() -> showErrorAlert("Search Error", "Wrong Username"));
                         }
-                        else
+                        else if (message.getMessageContent() instanceof Subscriber)
                         {
-                            // Log an error or display an error message if the response format is unexpected
-                            System.err.println("Unexpected format for Watch Subscriber Details response: " + message.getMessageContent());
-                            Platform.runLater(() -> showErrorAlert("Watch Subscriber Error", "Invalid response format from the server."));
+                            Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
+                            Subscriber.setWatchProfileSubscriber(subscriberFromServer);
+                            SearchSubscriberFrameController.WatchProfileResponse(subscriberFromServer);
                         }
                         break;
                     // Extend borrow - librarian response

@@ -6,6 +6,7 @@ import java.io.Serializable;
 public class Subscriber extends User implements Serializable {
 
     private static Subscriber localSubscriber = null;
+    private static Subscriber watchProfileSubscriber = null;
     // Unique identifier for the subscriber
     private int id;
 
@@ -47,6 +48,19 @@ public class Subscriber extends User implements Serializable {
     public static Subscriber getLocalSubscriber() {
         return localSubscriber;
     }
+    /**
+     * Gets the watch profile subscriber object.
+     *
+     * @return the watch profile subscriber object
+     */
+    public static Subscriber getWatchProfileSubscriber() {
+        return watchProfileSubscriber;
+    }
+
+    public static void setWatchProfileSubscriber(Subscriber watchProfileSubscriber) {
+        Subscriber.watchProfileSubscriber = watchProfileSubscriber;
+    }
+
 
     /**
      * Sets the local subscriber object.
