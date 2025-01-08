@@ -39,11 +39,11 @@ public class UserLoginFrameController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //todo: make it check if there is a user logged in and navigate to the correct page
         try
         {
             if (Subscriber.getLocalSubscriber() != null)
             {
+                System.out.println("bob");
                 navigateTo(null, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Page");
             }
             else if (Librarian.getLocalLibrarian() != null)

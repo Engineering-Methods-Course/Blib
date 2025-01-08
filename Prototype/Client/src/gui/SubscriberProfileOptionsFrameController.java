@@ -48,7 +48,6 @@ public class SubscriberProfileOptionsFrameController
 
     public void initialize()
     {
-        System.out.println("bob");
         //loads all the user info into the fields
         nameField.setText("Hello: " + Subscriber.getLocalSubscriber().getFirstName() + " " + Subscriber.getLocalSubscriber().getLastName());
         phoneNumberField.setText("Phone number: " + Subscriber.getLocalSubscriber().getPhoneNumber());
