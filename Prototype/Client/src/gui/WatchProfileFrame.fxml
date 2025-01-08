@@ -14,7 +14,7 @@
         <AnchorPane prefHeight="759.0" prefWidth="1280.0">
             <children>
                 <!-- TableView for History -->
-                <TableView fx:id="tblBorrowedBooks" layoutX="329.0" layoutY="252.0" prefHeight="454.0" prefWidth="543.0" AnchorPane.bottomAnchor="52.0" AnchorPane.leftAnchor="329.0" AnchorPane.rightAnchor="408.0" AnchorPane.topAnchor="252.0">
+                <TableView fx:id="tblBorrowedBooks" layoutX="583.0" layoutY="117.0" prefHeight="454.0" prefWidth="617.0" AnchorPane.bottomAnchor="187.0" AnchorPane.leftAnchor="583.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="117.0">
                     <columns>
                         <TableColumn fx:id="bookCopyIDColumn" prefWidth="167.0" text="Book Copy ID" />
                         <TableColumn fx:id="returnDateColumn" prefWidth="219.0" text="Return Date" />
@@ -24,27 +24,27 @@
 
 
                 <!-- Profile Text Fields -->
-                <Text fx:id="txtName" layoutX="45.0" layoutY="39.8984375" text="&lt;First Name + Last Name&gt;" wrappingWidth="300.708984375" AnchorPane.bottomAnchor="679.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="14.0">
+                <Text fx:id="txtFullName" layoutX="45.0" layoutY="39.8984375" text="&lt;First Name + Last Name&gt;" wrappingWidth="510.708984375" AnchorPane.bottomAnchor="712.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="14.0">
                     <font>
                         <Font size="24.0" />
                     </font>
                 </Text>
-                <Text fx:id="txtPhoneNumber" layoutX="34.0" layoutY="121.0" text="&lt;Phone Number&gt;" wrappingWidth="237.708984375" AnchorPane.bottomAnchor="628.878125" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="95.1015625">
+                <Text fx:id="txtPhoneNumber" layoutX="45.0" layoutY="183.8984375" text="&lt;Phone Number&gt;" wrappingWidth="498.708984375" AnchorPane.bottomAnchor="568.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="158.0">
                     <font>
                         <Font size="24.0" />
                     </font>
                 </Text>
-                <Text fx:id="txtStatus" layoutX="45.0" layoutY="202.0" text="&lt;Status&gt;" wrappingWidth="237.708984375" AnchorPane.bottomAnchor="546.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="176.0">
+                <Text fx:id="txtStatus" layoutX="45.0" layoutY="337.8984375" text="&lt;Status&gt;" wrappingWidth="510.708984375" AnchorPane.bottomAnchor="414.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="312.0">
                     <font>
                         <Font size="24.0" />
                     </font>
                 </Text>
-                <Text fx:id="txtEmail" layoutX="34.0" layoutY="81.0" text="&lt;Email Address&gt;" wrappingWidth="237.708984375" AnchorPane.bottomAnchor="668.878125" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="55.1015625">
+                <Text fx:id="txtEmail" layoutX="45.0" layoutY="116.8984375" text="&lt;Email Address&gt;" wrappingWidth="498.708984375" AnchorPane.bottomAnchor="635.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="91.0">
                     <font>
                         <Font size="24.0" />
                     </font>
                 </Text>
-                <Text fx:id="txtUserID" layoutX="45.0" layoutY="162.0" text="&lt;User ID&gt;" wrappingWidth="237.708984375" AnchorPane.bottomAnchor="589.078125" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="136.1015625">
+                <Text fx:id="txtUserID" layoutX="45.0" layoutY="256.8984375" text="&lt;User ID&gt;" wrappingWidth="498.708984375" AnchorPane.bottomAnchor="495.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="231.0">
                     <font>
                         <Font size="24.0" />
                     </font>
