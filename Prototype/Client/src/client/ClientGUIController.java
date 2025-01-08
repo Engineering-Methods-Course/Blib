@@ -70,7 +70,7 @@ public class ClientGUIController extends Application
 
     private static void exitAction()
     {
-        ClientServerMessage logOutMessage = new ClientServerMessage(999, null);
+        ClientServerMessage logOutMessage = new ClientServerMessage(102, null);
         try {
             ClientGUIController.chat.sendToServer(logOutMessage);
             System.exit(0);
