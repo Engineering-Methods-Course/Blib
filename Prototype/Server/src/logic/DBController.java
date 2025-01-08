@@ -1080,10 +1080,6 @@ public class DBController {
         int copyId = Integer.parseInt(messageContent);
 
         try {
-
-            /*
-             * Created a date object to get the current date
-             */
             conn.setAutoCommit(false);
 
             /*
@@ -1182,7 +1178,10 @@ public class DBController {
              * Add the list to the subscribers list
              */
             while (getSubscribersRs.next()) {
-                Subscriber subscriber = new Subscriber(getSubscribersRs.getInt("subscriber_id"), getSubscribersRs.getString("first_name"), getSubscribersRs.getString("last_name"), getSubscribersRs.getString("phone_number"), getSubscribersRs.getString("email"), getSubscribersRs.getInt("status") == 1, getSubscribersRs.getInt("detailed_subscription_history"));
+                Subscriber subscriber = new Subscriber(getSubscribersRs.getInt("subscriber_id"), getSubscribersRs.getString("first_name"),
+                        getSubscribersRs.getString("last_name"), getSubscribersRs.getString("phone_number"),
+                        getSubscribersRs.getString("email"), getSubscribersRs.getInt("status") == 1,
+                        getSubscribersRs.getInt("detailed_subscription_history"));
                 subscribersList.add(subscriber);
             }
             /*
@@ -1233,7 +1232,10 @@ public class DBController {
              * If the query was successful, add the values of the columns to a list
              */
             if (getSubscriberRs.next()) {
-                Subscriber subscriber = new Subscriber(getSubscriberRs.getInt("subscriber_id"), getSubscriberRs.getString("first_name"), getSubscriberRs.getString("last_name"), getSubscriberRs.getString("phone_number"), getSubscriberRs.getString("email"), getSubscriberRs.getInt("status") == 1, getSubscriberRs.getInt("detailed_subscription_history"));
+                Subscriber subscriber = new Subscriber(getSubscriberRs.getInt("subscriber_id"), getSubscriberRs.getString("first_name"),
+                        getSubscriberRs.getString("last_name"), getSubscriberRs.getString("phone_number"),
+                        getSubscriberRs.getString("email"), getSubscriberRs.getInt("status") == 1,
+                        getSubscriberRs.getInt("detailed_subscription_history"));
                 System.out.println("Subscriber found (viewSubscriberDetails)");
                 return subscriber;
             }
