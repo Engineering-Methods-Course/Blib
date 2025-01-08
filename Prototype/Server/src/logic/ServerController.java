@@ -1,9 +1,7 @@
-package Server;
+package logic;
 
 
 import common.ClientServerMessage;
-import logic.ServerMonitorFrameController;
-import logic.DBController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 

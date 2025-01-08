@@ -1,6 +1,7 @@
 package Server;
 
 import common.ClientServerMessage;
+import logic.ServerController;
 import logic.ServerMonitorFrameController;
 import logic.ServerPortFrameController;
 import javafx.application.Application;
