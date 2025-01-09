@@ -219,4 +219,4 @@ RemoteSystemsTempFiles/
 *.CSV
 
 #.env
-*.env
+.env
