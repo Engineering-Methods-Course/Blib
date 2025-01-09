@@ -36,6 +36,29 @@ public class DBController {
         return dbInstance;
     }
 
+    /**
+     * Connect to the database and create a connection
+     */
+    private void connectToDb() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            System.out.println("Driver definition succeed");
+        } catch (Exception ex) {
+            /* handle the error*/
+            System.out.println("Driver definition failed");
+        }
+
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/blib?serverTimezone=IST", "root", "Aa123456");
+            System.out.println("SQL connection succeed");
+
+        } catch (SQLException ex) {/* handle any errors*/
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+    }
+
     public void setConn(Connection conn) {
         this.conn = conn;
     }
@@ -125,13 +148,11 @@ public class DBController {
 
     /**
      * This method updates the history of a subscriber
-     *
-     * @param conn         The connection to the database
      * @param subscriberId The ID of the subscriber
      * @param action       The action that was performed
      * @param details      The details of the action
      */
-    public void updateHistory(Connection conn, int subscriberId, String action, String details) {
+    public void updateHistory(int subscriberId, String action, String details) {
         {
             try {
                 String csvFile = String.format("History.csv");
@@ -474,7 +495,7 @@ public class DBController {
             checkSubscriberStatement.setInt(1, subscriberId);
             ResultSet checkSubscriberRs = checkSubscriberStatement.executeQuery();
             if (checkSubscriberRs.next()) {
-                if (checkSubscriberRs.getInt("status") == 0) {
+                if (checkSubscriberRs.getInt("status") == 1) {
                     response.add("false");
                     response.add("Subscriber is frozen");
                     return response;
@@ -533,7 +554,7 @@ public class DBController {
             /*
              * Update subscriber history
              */
-            updateHistory(conn, subscriberId, "reserved", "a book of serial number " + serialNumber + " was reserved");
+            updateHistory(subscriberId, "reserved", "a book of serial number " + serialNumber + " was reserved");
 
             /*
              * Commit the transaction
@@ -587,7 +608,7 @@ public class DBController {
              * If the query was successful, add the values of the book to a list
              */
             while (rs.next()) {
-                BorrowedBook borrow = new BorrowedBook(rs.getInt("copy_id"), rs.getInt("subscriber_id"), rs.getTimestamp("borrow_date").toString(), rs.getTimestamp("expected_return_date").toString(),rs.getTimestamp("return_date").toString() ,(rs.getInt("notify") == 1 ? "notified" : "not notified"));
+                BorrowedBook borrow = new BorrowedBook(rs.getInt("copy_id"), rs.getInt("subscriber_id"), rs.getTimestamp("borrow_date").toString(), rs.getTimestamp("expected_return_date").toString(), rs.getTimestamp("return_date").toString(), (rs.getInt("notify") == 1 ? "notified" : "not notified"));
                 borrowedBooks.add(borrow);
             }
             if (borrowedBooks.isEmpty()) {
@@ -620,14 +641,14 @@ public class DBController {
             conn.setAutoCommit(false);
 
             /*
-             *Checks if the subscriber is frozen
+             * Checks if the subscriber is frozen
              */
             String checkSubscriberQuery = "SELECT status FROM subscriber WHERE subscriber_id = ?";
             PreparedStatement checkSubscriberStatement = conn.prepareStatement(checkSubscriberQuery);
             checkSubscriberStatement.setInt(1, subscriberId);
             ResultSet checkSubscriberRs = checkSubscriberStatement.executeQuery();
             if (checkSubscriberRs.next()) {
-                if (checkSubscriberRs.getInt("status") == 0) {
+                if (checkSubscriberRs.getInt("status") == 1) {
                     response.add("false");
                     response.add("Subscriber is frozen");
                     return response;
@@ -635,7 +656,7 @@ public class DBController {
             }
 
             /*
-            * Checks if less than a week is left for the book to be returned (book can be extended only if less than a week is left)
+             * Checks if less than a week is left for the book to be returned (book can be extended only if less than a week is left)
              */
             String checkReturnDateQuery = "SELECT DATEDIFF(expected_return_date, NOW()) AS days_diff , expected_return_date FROM borrow WHERE subscriber_id = ? AND copy_id = ?";
             PreparedStatement checkReturnDateStatement = conn.prepareStatement(checkReturnDateQuery);
@@ -669,7 +690,7 @@ public class DBController {
             }
 
             /*
-             *The query updates the expected return date of the borrow table where the subscriber ID and the book ID matches the given values
+             * The query updates the expected return date of the borrow table where the subscriber ID and the book ID matches the given values
              */
             String extendQuery = "UPDATE borrow SET expected_return_date = ?, notify = ? WHERE subscriber_id = ? AND copy_id = ?";
             PreparedStatement extendStatement = conn.prepareStatement(extendQuery);
@@ -694,7 +715,7 @@ public class DBController {
             /*
              * Update subscriber history
              */
-            updateHistory(conn, subscriberId, "extended", "the return date for the book " + bookName + " was extended for an extra week");
+            updateHistory(subscriberId, "extended", "the return date for the book " + bookName + " was extended for an extra week");
 
             /*
              * Send a notification to the librarians
@@ -710,7 +731,7 @@ public class DBController {
              */
             conn.commit();
             response.add("true");
-        }catch (Exception e) {
+        } catch (Exception e) {
             /*
              * If an error occur rollback the transaction
              */
@@ -770,7 +791,7 @@ public class DBController {
             /*
              * Update subscriber history
              */
-            updateHistory(conn, subscriberId, "edited", "subscriber details were edited");
+            updateHistory(subscriberId, "edited", "subscriber details were edited");
 
             /*
              * Commit the transaction
@@ -827,7 +848,7 @@ public class DBController {
             /*
              * Update subscriber history
              */
-            updateHistory(conn, subscriberId, "edited", "subscriber password was edited");
+            updateHistory(subscriberId, "edited", "subscriber password was edited");
 
             /*
              * Commit the transaction
@@ -862,7 +883,7 @@ public class DBController {
      * @param messageContent Array list containing the copyID
      * @return Array list containing the book copies if successful and null if not
      */
-     public ArrayList<BookCopy> getBookCopies(String messageContent) {
+    public ArrayList<BookCopy> getBookCopies(String messageContent) {
         try {
             //! may be deleted later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             ArrayList<BookCopy> bookCopies = new ArrayList<>();
@@ -894,8 +915,9 @@ public class DBController {
             System.out.println("Error: With exporting book copies from sql (getBookCopies) " + e);
             return null;
         }
-     }
-     /**
+    }
+
+    /**
      * case 300
      * This method registers a new subscriber in the system
      *
@@ -1143,7 +1165,7 @@ public class DBController {
             /*
              * Update subscriber history
              */
-            updateHistory(conn, subscriberId, "borrowed", "the book with copy id of : " + copyId + " was borrowed");
+            updateHistory(subscriberId, "borrowed", "the book with copy id of : " + copyId + " was borrowed");
 
             /*
              * Commit the transaction
@@ -1233,7 +1255,7 @@ public class DBController {
             /*
              * Update subscriber history
              */
-            updateHistory(conn, subscriberId, "returned", "the book with copy id of : " + copyId + " was returned");
+            updateHistory(subscriberId, "returned", "the book with copy id of : " + copyId + " was returned");
 
             /*
              * Commit the transaction
@@ -1362,25 +1384,111 @@ public class DBController {
     }
 
     /**
-     * Connect to the database and create a connection
+     * case 310
+     * This method extends the return date of a borrowed book (librarian)
+     *
+     * @param messageContent Array list containing the subscriber ID, the book ID, the new return date and the librarian ID
+     * @return Array list containing true if the book was extended successfully and false if not with the error message
      */
-    private void connectToDb() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-            System.out.println("Driver definition succeed");
-        } catch (Exception ex) {
-            /* handle the error*/
-            System.out.println("Driver definition failed");
-        }
+    public ArrayList<String> extendBookBorrowTimeLibrarian(ArrayList<String> messageContent) {
+        ArrayList<String> response = new ArrayList<>();
+        int subscriberId = Integer.parseInt(messageContent.get(0));
+        int copyId = Integer.parseInt(messageContent.get(1));
+        Timestamp newReturnDate = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/blib?serverTimezone=IST", "root", "Aa123456");
-            System.out.println("SQL connection succeed");
+            conn.setAutoCommit(false);
 
-        } catch (SQLException ex) {/* handle any errors*/
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
+            /*
+             * Checks if the subscriber is frozen
+             */
+            String checkSubscriberQuery = "SELECT status FROM subscriber WHERE subscriber_id = ?";
+            PreparedStatement checkSubscriberStatement = conn.prepareStatement(checkSubscriberQuery);
+            checkSubscriberStatement.setInt(1, subscriberId);
+            ResultSet checkSubscriberRs = checkSubscriberStatement.executeQuery();
+            if (checkSubscriberRs.next()) {
+                if (checkSubscriberRs.getInt("status") == 1) {
+                    response.add("false");
+                    response.add("Subscriber is frozen");
+                    return response;
+                }
+            }
+            /*
+             * Checks if the book is reserved (ordered)
+             */
+            String checkReservedQuery = "SELECT reserved_copies FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+            PreparedStatement checkReservedStatement = conn.prepareStatement(checkReservedQuery);
+            checkReservedStatement.setInt(1, copyId);
+            ResultSet checkReservedRs = checkReservedStatement.executeQuery();
+            if (checkReservedRs.next()) {
+                if (checkReservedRs.getInt("reserved_copies") != 0) {
+                    response.add("false");
+                    response.add("the book had been reserved");
+                    return response;
+                }
+            }
+
+            /*
+             * The query parses the return date from the message content
+             */
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime localDateTime = LocalDateTime.parse(messageContent.get(2), formatter);
+            newReturnDate = Timestamp.valueOf(localDateTime);
+
+            /*
+             * The query updates the expected return date of the borrow table where the subscriber ID and the book ID matches the given values
+             * and sets the notify column to 0
+             */
+            String extendQuery = "UPDATE borrow SET expected_return_date = ?, notify = ? WHERE subscriber_id = ? AND copy_id = ?";
+            PreparedStatement extendStatement = conn.prepareStatement(extendQuery);
+            extendStatement.setTimestamp(1, newReturnDate);
+            extendStatement.setInt(2, 0);
+            extendStatement.setInt(3, subscriberId);
+            extendStatement.setInt(4, copyId);
+            extendStatement.executeUpdate();
+
+            /*
+             * Gets the librarian first name and last name
+             */
+            String getLibrarianNameQuery = "SELECT first_name, last_name FROM librarian WHERE librarian_id = ?";
+            PreparedStatement getLibrarianNameStatement = conn.prepareStatement(getLibrarianNameQuery);
+            getLibrarianNameStatement.setInt(1, Integer.parseInt(messageContent.get(3)));
+            ResultSet getLibrarianNameRs = getLibrarianNameStatement.executeQuery();
+            String librarianName = "";
+            if (getLibrarianNameRs.next()) {
+                librarianName = getLibrarianNameRs.getString("first_name") + " " + getLibrarianNameRs.getString("last_name");
+            }
+
+            /*
+             * Update subscriber history
+             */
+            updateHistory(subscriberId, "extended", "the return date for the book " + copyId + " was extended by librarian " + librarianName + " on " + LocalDateTime.now());
+
+            /*
+             * Commit the transaction
+             */
+            conn.commit();
+        } catch (SQLException e) {
+            /*
+             * If an error occur rollback the transaction
+             */
+            try {
+                conn.rollback();
+            } catch (SQLException rollbackEx) {
+                System.out.println("Error: Rolling back transaction" + rollbackEx);
+            }
+            response.add("false");
+            response.add("Problem with extending the return date");
+            System.out.println("Error: With extending the return date (extendReturnDate) " + e);
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException ex) {
+                System.out.println("Error: Setting auto-commit back to true" + ex);
+            }
         }
+        return response;
     }
+
+
 }

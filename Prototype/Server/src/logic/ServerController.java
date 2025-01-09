@@ -446,10 +446,27 @@ public class ServerController extends AbstractServer {
                     case (310):
                         /**
                          * do: librarian wants to extend the borrow time for a book that was borrowed by a subscriber
-                         * in: ArrayList<String> {subscriber id, book id, return date(yyyy-MM-dd HH:mm:ss)}
+                         * in: ArrayList<String> {subscriber id, book id, return date(yyyy-MM-dd HH:mm:ss), librarian id}
                          * return: (id 311) ArrayList<String> {success/fail, error message}
                          */
-
+                        try {
+                            if (message.getMessageContent() instanceof ArrayList) {
+                                client.sendToClient(new ClientServerMessage(311, dbController.extendBookBorrowTimeLibrarian((ArrayList<String>) message.getMessageContent())));
+                                System.out.println("Borrow time was extended by librarian");
+                            } else {
+                                client.sendToClient(new ClientServerMessage(311, new ArrayList<String>() {{
+                                    add("fail");
+                                    add("Cannot extend borrow time Message is not an ArrayList<String>");
+                                }}));
+                                System.out.println("Cannot extend borrow time Message is not an ArrayList<String> (case 310)");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error: with extend borrow time method (case 310)" + e);
+                            client.sendToClient(new ClientServerMessage(311, new ArrayList<String>() {{
+                                add("fail");
+                                add("Server Error");
+                            }}));
+                        }
                         break;
                     default:
                         System.out.println("Invalid command id(handleMessageFromClient ServerController)");
