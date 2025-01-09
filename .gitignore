@@ -212,6 +212,11 @@ RemoteSystemsTempFiles/
 
 # Allow to add mysql connection jar
 !mysql-connector-java-8.0.13.jar
+!javax.mail.jar
+!dotenv-java-2.2.0.jar
 
 # CSV files
 *.CSV
+
+#.env
+*.env

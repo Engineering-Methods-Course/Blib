@@ -2,12 +2,10 @@ package logic;
 
 
 import common.ClientServerMessage;
+import gui.ServerMonitorFrameController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -18,13 +16,14 @@ public class ServerController extends AbstractServer {
 
     private final ServerMonitorFrameController serverMonitorController;
     private DBController dbController = null;
-    //private static NotificationController notificationController;
+    private static NotificationController notificationController;
 
 
     public ServerController(int port, ServerMonitorFrameController serverMonitorController) {
         super(port);
         this.serverMonitorController = serverMonitorController;
-        //NotificationController notificationController = NotificationController.getInstance();
+        NotificationController notificationController = NotificationController.getInstance();
+        notificationController.sendEmail("orhod2@gmail.com", "User logged in","test");
 
     }
 
@@ -98,7 +97,6 @@ public class ServerController extends AbstractServer {
                                 // get the user details from the database
                                 client.sendToClient(new ClientServerMessage(101, dbController.userLogin((ArrayList<String>) message.getMessageContent())));
                                 System.out.println("user details were sent to client");
-
                             }
                             // message type isn't an arraylist
                             else {

@@ -1,9 +1,9 @@
-package Server;
+package main;
 
 import common.ClientServerMessage;
 import logic.ServerController;
-import logic.ServerMonitorFrameController;
-import logic.ServerPortFrameController;
+import gui.ServerMonitorFrameController;
+import gui.ServerPortFrameController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

@@ -1,4 +1,4 @@
-package logic;
+package gui;
 
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;

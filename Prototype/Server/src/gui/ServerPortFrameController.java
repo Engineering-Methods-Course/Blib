@@ -1,6 +1,6 @@
-package logic;
+package gui;
 
-import Server.ServerGUI;
+import main.ServerGUI;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
