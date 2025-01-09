@@ -60,7 +60,6 @@ public class ServerController extends AbstractServer {
     protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
         try {
             if (msg instanceof ClientServerMessage) {
-
                 /*
                  * 100 - user wants to log in to his account
                  * 102 - user closed the app
@@ -368,6 +367,7 @@ public class ServerController extends AbstractServer {
                                 response = dbController.borrowBookToSubscriber((ArrayList<String>) message.getMessageContent());
                                 client.sendToClient(new ClientServerMessage(303, response));
                                 System.out.println("message was sent to client (case 302)" + response);
+
                             } else {
                                 response = new ArrayList<String>() {{
                                     add("fail");

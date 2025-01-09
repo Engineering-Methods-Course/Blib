@@ -7,6 +7,7 @@ import common.*;
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.*;
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class DBController {
     Connection conn = null;
 
     private DBController() {
-        NotificationController notificationController = NotificationController.getInstance();
+        notificationController = NotificationController.getInstance();
         connectToDb();
     }
 
@@ -57,10 +58,6 @@ public class DBController {
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
         }
-    }
-
-    public void setConn(Connection conn) {
-        this.conn = conn;
     }
 
     /**
@@ -143,6 +140,58 @@ public class DBController {
             System.out.println("File deleted successfully");
         } else {
             System.out.println("Failed to delete the file");
+        }
+    }
+
+    /**
+     * This method check if a subscribre need to be notified about a reserved book
+     * if the subscriber has a reserved book and the book is available, the subscriber will be notified
+     *
+     * @param bookName The subscriber details
+     * @return The subscriber ID
+     */
+    public void checkReservation(String bookName){
+        try {
+            int subscriberId;
+            String checkReservationQuery = "SELECT subscriber_id, notify FROM reservation WHERE serial_number = (SELECT serial_number FROM book WHERE name = ?) ORDER BY reserve_date ASC LIMIT 1";
+            PreparedStatement checkReservationStatement = conn.prepareStatement(checkReservationQuery);
+            checkReservationStatement.setString(1, bookName);
+            ResultSet checkReservationRs = checkReservationStatement.executeQuery();
+            if (checkReservationRs.next()) {
+                subscriberId = checkReservationRs.getInt("subscriber_id");
+                boolean notify = checkReservationRs.getInt("notify") == 1;
+                if (!notify) {
+                    /*
+                     * send a notification to the subscriber
+                     */
+                    String GetSubscriberEmailQuery = "SELECT email FROM subscriber WHERE subscriber_id = ?";
+                    PreparedStatement GetSubscriberEmailStatement = conn.prepareStatement(GetSubscriberEmailQuery);
+                    GetSubscriberEmailStatement.setInt(1, subscriberId);
+                    ResultSet GetSubscriberEmailRs = GetSubscriberEmailStatement.executeQuery();
+                    if (GetSubscriberEmailRs.next()) {
+                        String email = GetSubscriberEmailRs.getString("email");
+                        notificationController.sendEmail(email,"Book available" ,"The book " + bookName + " is now available for you to borrow it will be reserved for you until the end of " + LocalDate.now().plusDays(2) );
+                    }
+                    /*
+                     * Update the reservation
+                     */
+                    String updateReservationQuery = "UPDATE reservation SET notify = 1, notify_date = ? WHERE subscriber_id = ? AND serial_number = (SELECT serial_number FROM book WHERE name = ?)";
+                    PreparedStatement updateReservationStatement = conn.prepareStatement(updateReservationQuery);
+                    updateReservationStatement.setDate(1, Date.valueOf(LocalDate.now()));
+                    updateReservationStatement.setInt(2, subscriberId);
+                    updateReservationStatement.setString(3, bookName);
+                    updateReservationStatement.executeUpdate();
+
+                    /*
+                     * Update subscriber history
+                     */
+                    updateHistory(subscriberId, "notified", "that the book " + bookName + " is available");
+
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error: Checking the reservation" + e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -460,7 +509,7 @@ public class DBController {
                  * If the query was successful, add the values of the book to a list
                  */
                 if (nearestReturnDateRs.next()) {
-                    Timestamp nearestReturnDate = nearestReturnDateRs.getTimestamp("nearest_return_date");
+                    Date nearestReturnDate = nearestReturnDateRs.getDate("nearest_return_date");
                     if (nearestReturnDate != null) {
                         response.add("false");
                         response.add(nearestReturnDate.toString());
@@ -490,6 +539,7 @@ public class DBController {
         try {
             int subscriberId = Integer.parseInt(messageContent.get(0));
             int serialNumber = Integer.parseInt(messageContent.get(1));
+            String bookName ="";
 
             conn.setAutoCommit(false);
 
@@ -509,9 +559,9 @@ public class DBController {
             }
 
             /*
-             * This query saves the total copies of the book, the borrowed copies and the reserved copies
+             * This query select the total copies of the book, the borrowed copies and the reserved copies
              */
-            String totalCopiesQuery = "SELECT copies, borrowed_copies, reserved_copies FROM book WHERE serial_number = ?";
+            String totalCopiesQuery = "SELECT copies, borrowed_copies, reserved_copies, name FROM book WHERE serial_number = ?";
             PreparedStatement totalCopiesStatement = conn.prepareStatement(totalCopiesQuery);
             totalCopiesStatement.setInt(1, serialNumber);
             ResultSet totalCopiesRs = totalCopiesStatement.executeQuery();
@@ -519,6 +569,7 @@ public class DBController {
                 int totalCopies = totalCopiesRs.getInt("copies");
                 int borrowedCopies = totalCopiesRs.getInt("borrowed_copies");
                 int reservedCopies = totalCopiesRs.getInt("reserved_copies");
+                bookName = totalCopiesRs.getString("name");
 
                 /*
                  * Check if all copies are borrowed
@@ -560,7 +611,7 @@ public class DBController {
             /*
              * Update subscriber history
              */
-            updateHistory(subscriberId, "reserved", "a book of serial number " + serialNumber + " was reserved");
+            updateHistory(subscriberId, "reserved", "book " + bookName + " of serial number " + serialNumber + " was reserved");
 
             /*
              * Commit the transaction
@@ -615,8 +666,8 @@ public class DBController {
              */
             while (rs.next()) {
                 BorrowedBook borrow = new BorrowedBook(rs.getInt("copy_id"), rs.getInt("subscriber_id"),
-                        rs.getTimestamp("borrow_date").toString(), rs.getTimestamp("expected_return_date").toString(),
-                        rs.getTimestamp("return_date").toString(), (rs.getInt("notify") == 1 ? "notified" : "not notified"));
+                        rs.getDate("borrow_date").toString(), rs.getDate("expected_return_date").toString(),
+                        rs.getDate("return_date").toString(), (rs.getInt("notify") == 1 ? "notified" : "not notified"));
                 borrowedBooks.add(borrow);
             }
             if (borrowedBooks.isEmpty()) {
@@ -643,7 +694,7 @@ public class DBController {
 
         int subscriberId = Integer.parseInt(messageContent.get(0));
         int copyId = Integer.parseInt(messageContent.get(1));
-        Timestamp newReturnDate = null;
+        Date newReturnDate = null;
 
         try {
             conn.setAutoCommit(false);
@@ -672,8 +723,8 @@ public class DBController {
             checkReturnDateStatement.setInt(2, copyId);
             ResultSet checkReturnDateRs = checkReturnDateStatement.executeQuery();
             if (checkReturnDateRs.next()) {
-                LocalDateTime localDateTime = checkReturnDateRs.getTimestamp("expected_return_date").toLocalDateTime().plusDays(7);
-                newReturnDate = Timestamp.valueOf(localDateTime);
+                LocalDate localDate = checkReturnDateRs.getDate("expected_return_date").toLocalDate().plusDays(7);
+                newReturnDate = Date.valueOf(localDate);
                 int daysDiff = checkReturnDateRs.getInt("days_diff");
                 if (daysDiff > 7) {
                     response.add("false");
@@ -702,7 +753,7 @@ public class DBController {
              */
             String extendQuery = "UPDATE borrow SET expected_return_date = ?, notify = ? WHERE subscriber_id = ? AND copy_id = ? AND status = 'borrowed'";
             PreparedStatement extendStatement = conn.prepareStatement(extendQuery);
-            extendStatement.setTimestamp(1, newReturnDate);
+            extendStatement.setDate(1, newReturnDate);
             extendStatement.setInt(2, 0);
             extendStatement.setInt(3, subscriberId);
             extendStatement.setInt(4, copyId);
@@ -723,14 +774,14 @@ public class DBController {
             /*
              * Update subscriber history
              */
-            updateHistory(subscriberId, "extended", "the return date for the book " + bookName + " was extended for an extra week");
+            updateHistory(subscriberId, "extended", "Return date for the book " + bookName + " was extended for an extra week");
 
             /*
              * Send a notification to the librarians
              */
             String notifyQuery = "Insert into messages_for_librarians (message_date, message_info) values (?, ?)";
             PreparedStatement notifyStatement = conn.prepareStatement(notifyQuery);
-            notifyStatement.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+            notifyStatement.setDate(1, Date.valueOf(LocalDate.now()));
             notifyStatement.setString(2, "Subscriber with ID: " + subscriberId + " has extended the return date for the book " + bookName + " for an extra week" + "book copy ID: " + copyId);
             notifyStatement.executeUpdate();
 
@@ -799,7 +850,7 @@ public class DBController {
             /*
              * Update subscriber history
              */
-            updateHistory(subscriberId, "edited", "subscriber details were edited");
+            updateHistory(subscriberId, "edited", "Subscriber details were edited");
 
             /*
              * Commit the transaction
@@ -856,7 +907,7 @@ public class DBController {
             /*
              * Update subscriber history
              */
-            updateHistory(subscriberId, "edited", "subscriber password was edited");
+            updateHistory(subscriberId, "edited", "Subscriber password was edited");
 
             /*
              * Commit the transaction
@@ -1057,13 +1108,14 @@ public class DBController {
         try {
             int subscriberId = Integer.parseInt(messageContent.get(0));
             int copyId = Integer.parseInt(messageContent.get(1));
+            String bookName = "";
 
             /*
              * The query parses the return date from the message content
              */
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            LocalDateTime localDateTime = LocalDateTime.parse(messageContent.get(2), formatter);
-            Timestamp returnDate = Timestamp.valueOf(localDateTime);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localDate = LocalDate.parse(messageContent.get(2), formatter);
+            Date returnDate = Date.valueOf(localDate);
 
             /*
              * This query selects the status of the book where the book ID matches the given value
@@ -1100,30 +1152,38 @@ public class DBController {
              * Check if the book is reserved by the subscriber
              */
             boolean wasReserved = false;
-            String bookReservedByTheSubscriberQuery = "SELECT subscriber_id FROM reservation WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?) ORDER BY reserve_date ASC LIMIT 1";
+            String bookReservedByTheSubscriberQuery = "SELECT subscriber_id, notify FROM reservation WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
             PreparedStatement bookReservedByTheSubscriberStatement = conn.prepareStatement(bookReservedByTheSubscriberQuery);
             bookReservedByTheSubscriberStatement.setInt(1, copyId);
             ResultSet bookReservedByTheSubscriberRs = bookReservedByTheSubscriberStatement.executeQuery();
             if (bookReservedByTheSubscriberRs.next()) {
                 int firstSubscriberId = bookReservedByTheSubscriberRs.getInt("subscriber_id");
+                boolean notify = bookReservedByTheSubscriberRs.getInt("notify") == 1;
                 if (firstSubscriberId == subscriberId) {
-                    /*
-                     * The subscriber was the first one to reserve the book
-                     */
-                    String deleteReservationQuery = "DELETE FROM reserve WHERE subscriber_id = ? AND serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
-                    PreparedStatement deleteReservationStatement = conn.prepareStatement(deleteReservationQuery);
-                    deleteReservationStatement.setInt(1, subscriberId);
-                    deleteReservationStatement.setInt(2, copyId);
-                    deleteReservationStatement.executeUpdate();
-                    wasReserved = true;
+                    if (notify) {
+                        /*
+                         * The subscriber was the first one to reserve the book and was notified
+                         */
+                        String deleteReservationQuery = "DELETE FROM reservation WHERE subscriber_id = ? AND serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+                        PreparedStatement deleteReservationStatement = conn.prepareStatement(deleteReservationQuery);
+                        deleteReservationStatement.setInt(1, subscriberId);
+                        deleteReservationStatement.setInt(2, copyId);
+                        deleteReservationStatement.executeUpdate();
+                        wasReserved = true;
+                    } else {
+                        response.add("false");
+                        response.add("Subscriber reserved the book but was not notified");
+                        return response;
+                    }
                 }
             }
+            System.out.println("wasReserved: " + wasReserved);
 
             /*
              * Check if the book is reserved
              */
             if (!wasReserved) {
-                String checkReservedQuery = "SELECT copies, reserved_copies, borrowed_copies  FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+                String checkReservedQuery = "SELECT copies, reserved_copies, borrowed_copies, name FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
                 PreparedStatement checkReservedStatement = conn.prepareStatement(checkReservedQuery);
                 checkReservedStatement.setInt(1, copyId);
                 ResultSet checkReservedRs = checkReservedStatement.executeQuery();
@@ -1131,6 +1191,7 @@ public class DBController {
                     int copies = checkReservedRs.getInt("copies");
                     int reservedCopies = checkReservedRs.getInt("reserved_copies");
                     int borrowedCopies = checkReservedRs.getInt("borrowed_copies");
+                    bookName = checkReservedRs.getString("name");
                     if (copies <= (reservedCopies + borrowedCopies)) {
                         response.add("false");
                         response.add("Book is reserved");
@@ -1153,7 +1214,7 @@ public class DBController {
             /*
              * The query update the amount of borrowed books in the book table
              */
-            String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies + 1" + " WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+            String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies + 1 WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
             PreparedStatement updateBookStatement = conn.prepareStatement(updateBookQuery);
             updateBookStatement.setInt(1, copyId); // copy_id
             updateBookStatement.executeUpdate();
@@ -1165,7 +1226,7 @@ public class DBController {
             PreparedStatement borrowStatement = conn.prepareStatement(borrowQuery);
             borrowStatement.setInt(1, copyId);
             borrowStatement.setInt(2, subscriberId);
-            borrowStatement.setTimestamp(3, returnDate);
+            borrowStatement.setDate(3, returnDate);
             borrowStatement.setString(4, "borrowed");
             borrowStatement.executeUpdate();
 
@@ -1173,7 +1234,7 @@ public class DBController {
             /*
              * Update subscriber history
              */
-            updateHistory(subscriberId, "borrowed", "the book with copy id of : " + copyId + " was borrowed");
+            updateHistory(subscriberId, "borrowed", "the book: " + bookName + " was borrowed");
 
             /*
              * Commit the transaction
@@ -1181,6 +1242,7 @@ public class DBController {
             conn.commit();
 
             response.add("true");
+            response.add("Book "+bookName+" borrowed successfully to subscriber " + subscriberId);
 
         } catch (SQLException e) {
             /*
@@ -1193,7 +1255,7 @@ public class DBController {
             }
             System.out.println("Error: Borrowing book" + e);
             response.add("false");
-            response.add("Problem with borrowing the book");
+            response.add("Book copy was not found in the system");
 
         } finally {
             try {
@@ -1255,15 +1317,28 @@ public class DBController {
             String returnQuery = "UPDATE borrow SET status = ?, return_date = ? WHERE subscriber_id = ? AND copy_id = ? AND status = 'borrowed'";
             PreparedStatement returnStatement = conn.prepareStatement(returnQuery);
             returnStatement.setString(1, "returned");
-            returnStatement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            returnStatement.setDate(2, Date.valueOf(LocalDate.now()));
             returnStatement.setInt(3, subscriberId);
             returnStatement.setInt(4, copyId);
             returnStatement.executeUpdate();
 
             /*
+             * Get the book name
+             */
+            String getBookNameQuery = "SELECT name FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+            PreparedStatement getBookNameStatement = conn.prepareStatement(getBookNameQuery);
+            getBookNameStatement.setInt(1, copyId);
+            ResultSet getBookNameRs = getBookNameStatement.executeQuery();
+            String bookName = "";
+            if (getBookNameRs.next()) {
+                bookName = getBookNameRs.getString("name");
+            }
+
+            /*
              * Update subscriber history
              */
-            updateHistory(subscriberId, "returned", "the book with copy id of : " + copyId + " was returned");
+            updateHistory(subscriberId, "returned", "the book: " + bookName + " was returned");
+            checkReservation(bookName);
 
             /*
              * Commit the transaction
@@ -1271,13 +1346,13 @@ public class DBController {
             conn.commit();
             response.add("true");
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             /*
              * If an error occur rollback the transaction
              */
             try {
                 conn.rollback();
-            } catch (SQLException rollbackEx) {
+            } catch (Exception rollbackEx) {
                 System.out.println("Error: Rolling back transaction" + rollbackEx);
             }
             System.out.println("Error: Returning book" + e);
@@ -1287,11 +1362,10 @@ public class DBController {
         } finally {
             try {
                 conn.setAutoCommit(true);
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 System.out.println("Error: Setting auto-commit back to true" + ex);
             }
         }
-        //! notify reservation if needed
         return response;
     }
 
@@ -1402,7 +1476,7 @@ public class DBController {
         ArrayList<String> response = new ArrayList<>();
         int subscriberId = Integer.parseInt(messageContent.get(0));
         int copyId = Integer.parseInt(messageContent.get(1));
-        Timestamp newReturnDate = null;
+        Date newReturnDate = null;
 
         try {
             conn.setAutoCommit(false);
@@ -1421,9 +1495,11 @@ public class DBController {
                     return response;
                 }
             }
+
             /*
              * Checks if the book is reserved (ordered)
              */
+
             String checkReservedQuery = "SELECT reserved_copies FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
             PreparedStatement checkReservedStatement = conn.prepareStatement(checkReservedQuery);
             checkReservedStatement.setInt(1, copyId);
@@ -1439,9 +1515,10 @@ public class DBController {
             /*
              * The query parses the return date from the message content
              */
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            LocalDateTime localDateTime = LocalDateTime.parse(messageContent.get(2), formatter);
-            newReturnDate = Timestamp.valueOf(localDateTime);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localDate = LocalDate.parse(messageContent.get(2), formatter);
+            newReturnDate = Date.valueOf(localDate);
 
             /*
              * The query updates the expected return date of the borrow table where the subscriber ID and the book ID matches the given values
@@ -1450,7 +1527,7 @@ public class DBController {
              */
             String extendQuery = "UPDATE borrow SET expected_return_date = ?, notify = ? WHERE subscriber_id = ? AND copy_id = ? AND status = 'borrowed'";
             PreparedStatement extendStatement = conn.prepareStatement(extendQuery);
-            extendStatement.setTimestamp(1, newReturnDate);
+            extendStatement.setDate(1, newReturnDate);
             extendStatement.setInt(2, 0);
             extendStatement.setInt(3, subscriberId);
             extendStatement.setInt(4, copyId);
@@ -1471,7 +1548,7 @@ public class DBController {
             /*
              * Update subscriber history
              */
-            updateHistory(subscriberId, "extended", "the return date for the book " + copyId + " was extended by librarian " + librarianName + " on " + LocalDateTime.now());
+            updateHistory(subscriberId, "extended", "Return date for the book " + copyId + " was extended by librarian " + librarianName + " on " + LocalDate.now());//! check with the team
 
             /*
              * Commit the transaction
