@@ -18,7 +18,7 @@ public class DBController {
     Connection conn = null;
 
     private DBController() {
-        NotificationController notificationController = NotificationController.getInstance();
+        //NotificationController notificationController = NotificationController.getInstance();
         connectToDb();
     }
 
@@ -35,6 +35,7 @@ public class DBController {
         }
         return dbInstance;
     }
+
     public void setConn(Connection conn) {
         this.conn = conn;
     }
@@ -66,6 +67,7 @@ public class DBController {
          */
         return new SerialBlob(fileContent);
     }
+
     /**
      * This method converts a Blob to a CSV file
      *
@@ -92,6 +94,7 @@ public class DBController {
 
     /**
      * This method writes data to a CSV file
+     *
      * @param csvFilePath The path to the CSV file
      */
     public void writeDataToCSV(String csvFilePath, String data) throws IOException {
@@ -102,6 +105,7 @@ public class DBController {
             writer.println(data);
         }
     }
+
     /**
      * This method deletes a file
      *
@@ -118,6 +122,7 @@ public class DBController {
             System.out.println("Failed to delete the file");
         }
     }
+
     /**
      * This method updates the history of a subscriber
      *
@@ -126,7 +131,7 @@ public class DBController {
      * @param action       The action that was performed
      * @param details      The details of the action
      */
-    public void updateHistory(Connection conn, int subscriberId,String action ,String details) {
+    public void updateHistory(Connection conn, int subscriberId, String action, String details) {
         {
             try {
                 String csvFile = String.format("History.csv");
@@ -357,18 +362,19 @@ public class DBController {
             return null;
         }
     }
+
     /**
      * case 206
      * This method checks if a book is available
      *
      * @param serialNumber The serial number of the book
      * @return [true, book location] if the book is available
-     *         [false, nearest available date] if the book is not available
+     * [false, nearest available date] if the book is not available
      */
     public ArrayList<String> checkBookAvailability(int serialNumber) {
         try {
             ArrayList<String> response = new ArrayList<>();
-            ArrayList<Integer>  unAvailableCopies= new ArrayList<>();
+            ArrayList<Integer> unAvailableCopies = new ArrayList<>();
 
             /*
              * The query select all book copies and check if there is book copy available
@@ -392,7 +398,7 @@ public class DBController {
                 /*
                  * If there is no copy available add the copy id to the list
                  */
-                else{
+                else {
                     unAvailableCopies.add(checkAvailabilityRs.getInt("copy_id"));
                 }
             }
@@ -443,6 +449,117 @@ public class DBController {
             System.out.println("Error: With checking the book availability (checkBookAvailability) " + e);
             return null;
         }
+    }
+
+    /**
+     * case 208
+     * This method reserves (orders) a book for a subscriber
+     *
+     * @param messageContent Array list containing the subscriber ID and the book Serial number
+     * @return Array list containing true if the book was reserved successfully and false if not with the error message
+     */
+    public ArrayList<String> reserveBook(ArrayList<String> messageContent) {
+        ArrayList<String> response = new ArrayList<>();
+        try {
+            int subscriberId = Integer.parseInt(messageContent.get(0));
+            int serialNumber = Integer.parseInt(messageContent.get(1));
+
+            conn.setAutoCommit(false);
+
+            /*
+             * Check if the subscriber is frozen
+             */
+            String checkSubscriberQuery = "SELECT status FROM subscriber WHERE subscriber_id = ?";
+            PreparedStatement checkSubscriberStatement = conn.prepareStatement(checkSubscriberQuery);
+            checkSubscriberStatement.setInt(1, subscriberId);
+            ResultSet checkSubscriberRs = checkSubscriberStatement.executeQuery();
+            if (checkSubscriberRs.next()) {
+                if (checkSubscriberRs.getInt("status") == 0) {
+                    response.add("false");
+                    response.add("Subscriber is frozen");
+                    return response;
+                }
+            }
+
+            /*
+             * This query saves the total copies of the book, the borrowed copies and the reserved copies
+             */
+            String totalCopiesQuery = "SELECT copies, borrowed_copies, reserved_copies FROM book WHERE serial_number = ?";
+            PreparedStatement totalCopiesStatement = conn.prepareStatement(totalCopiesQuery);
+            totalCopiesStatement.setInt(1, serialNumber);
+            ResultSet totalCopiesRs = totalCopiesStatement.executeQuery();
+            if (totalCopiesRs.next()) {
+                int totalCopies = totalCopiesRs.getInt("copies");
+                int borrowedCopies = totalCopiesRs.getInt("borrowed_copies");
+                int reservedCopies = totalCopiesRs.getInt("reserved_copies");
+
+                /*
+                 * Check if all copies are borrowed
+                 */
+                if (totalCopies != borrowedCopies) {
+                    response.add("false");
+                    response.add("Can't reserve the book, not all copies are borrowed");
+                    return response;
+                }
+
+                /*
+                 * Check if the book is fully reserved
+                 */
+                if (reservedCopies == totalCopies) {
+                    response.add("false");
+                    response.add("Can't reserve the book, the book is fully reserved");
+                    return response;
+                }
+            }
+
+            /*
+             * Reserve the book
+             */
+            String reserveQuery = "INSERT INTO reservation (subscriber_id, serial_number, reserve_date) VALUES (?, ?, ?)";
+            PreparedStatement reserveStatement = conn.prepareStatement(reserveQuery);
+            reserveStatement.setInt(1, subscriberId);
+            reserveStatement.setInt(2, serialNumber);
+            reserveStatement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            reserveStatement.executeUpdate();
+
+            /*
+             * Update the reserved copies of the book
+             */
+            String updateReservedQuery = "UPDATE book SET reserved_copies = reserved_copies + 1 WHERE serial_number = ?";
+            PreparedStatement updateReservedStatement = conn.prepareStatement(updateReservedQuery);
+            updateReservedStatement.setInt(1, serialNumber);
+            updateReservedStatement.executeUpdate();
+
+            /*
+             * Update subscriber history
+             */
+            updateHistory(conn, subscriberId, "reserved", "a book of serial number " + serialNumber + " was reserved");
+
+            /*
+             * Commit the transaction
+             */
+            conn.commit();
+
+        } catch (SQLException e) {
+            /*
+             * If an error occur rollback the transaction
+             */
+            try {
+                conn.rollback();
+            } catch (SQLException rollbackEx) {
+                System.out.println("Error: Rolling back transaction" + rollbackEx);
+            }
+            response.add("false");
+            response.add("Problem with reserving the book");
+            System.out.println("Error: With reserving the book (reserveBookToSubscriber) " + e);
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException ex) {
+                System.out.println("Error: Setting auto-commit back to true" + ex);
+            }
+        }
+        return response;
     }
 
     /**

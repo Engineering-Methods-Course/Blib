@@ -196,6 +196,29 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (208):
+                        /**
+                         * do: subscriber wants to reserve a book
+                         * in: ArrayList<String> {subscriber id, book id}
+                         * return: (id 209) arraylist<string> {success/fail, error message}
+                         */
+                        try {
+                            if (message.getMessageContent() instanceof ArrayList) {
+                                client.sendToClient(new ClientServerMessage(209, dbController.reserveBook((ArrayList<String>) message.getMessageContent())));
+                                System.out.println("Book was reserved");
+                            } else {
+                                client.sendToClient(new ClientServerMessage(209, new ArrayList<String>() {{
+                                    add("fail");
+                                    add("Cannot reserve book Message is not an ArrayList<String>");
+                                }}));
+                                System.out.println("Cannot reserve book Message is not an ArrayList<String> (case 208)");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error: with reserve method (case 208)" + e);
+                            client.sendToClient(new ClientServerMessage(209, new ArrayList<String>() {{
+                                add("fail");
+                                add("Server Error");
+                            }}));
+                        }
                         break;
                     case (210):
                         /**
@@ -266,7 +289,6 @@ public class ServerController extends AbstractServer {
                                 add("fail");
                                 add("Server Error (case 216)");
                             }}));
-                            break;
                         }
                         break;
                     case (218):
@@ -336,7 +358,6 @@ public class ServerController extends AbstractServer {
                                 add("fail");
                                 add("Server Error (case 300)");
                             }}));
-                            break;
                         }
                         break;
                     case (302):
@@ -420,7 +441,6 @@ public class ServerController extends AbstractServer {
                         } catch (Exception e) {
                             System.out.println("Error: with getting subscriber details (case 308)" + e);
                             client.sendToClient(new ClientServerMessage(309, null));
-
                         }
                         break;
                     case (310):
@@ -440,7 +460,6 @@ public class ServerController extends AbstractServer {
         } catch (Exception e) {
             System.out.println("Error: incorrect msg object type (handleMessageFromClient ServerController)" + e);
         }
-
     }
 
     /**
