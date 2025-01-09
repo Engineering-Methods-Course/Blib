@@ -12,9 +12,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class DBController {
-    private static DBController instance = null;
+    private static DBController dbInstance = null;
+    private static NotificationController notificationController;
+
+    Connection conn = null;
 
     private DBController() {
+        NotificationController notificationController = NotificationController.getInstance();
+        connectToDb();
     }
 
     /**
@@ -24,19 +29,14 @@ public class DBController {
      * @return The instance of the DBController
      */
     public static DBController getInstance() {
-        if (instance == null) {
+        if (dbInstance == null) {
             System.out.println("DBController was created successfully");
-            instance = new DBController();
+            dbInstance = new DBController();
         }
-        return instance;
+        return dbInstance;
     }
-
-    public static DBController getInstance(Connection connection) {
-        if (instance == null) {
-            System.out.println("DBController was created successfully");
-            instance = new DBController();
-        }
-        return instance;
+    public void setConn(Connection conn) {
+        this.conn = conn;
     }
 
     /**
@@ -173,10 +173,9 @@ public class DBController {
      * This method logs in the user in to the system
      *
      * @param messageContent The message content
-     * @param conn           The connection to the database
      * @return The user
      */
-    public User userLogin(ArrayList<String> messageContent, Connection conn) {
+    public User userLogin(ArrayList<String> messageContent) {
         try {
             String username = messageContent.get(0);
             String password = messageContent.get(1);
@@ -243,10 +242,9 @@ public class DBController {
      * This method searches for books by a partial name match
      *
      * @param bookName The partial name of the book
-     * @param conn     The connection to the database
      * @return The list of books that match the partial name
      */
-    public ArrayList<Book> searchBookByName(String bookName, Connection conn) {
+    public ArrayList<Book> searchBookByName(String bookName) {
         try {
             ArrayList<Book> books = new ArrayList<>();
 
@@ -284,10 +282,9 @@ public class DBController {
      * This method searches for books by a genre match
      *
      * @param bookGenre The partial genre of the book
-     * @param conn      The connection to the database
      * @return The list of books that match the partial genre
      */
-    public ArrayList<Book> searchBookByGenre(String bookGenre, Connection conn) {
+    public ArrayList<Book> searchBookByGenre(String bookGenre) {
         try {
             ArrayList<Book> books = new ArrayList<>();
 
@@ -325,10 +322,9 @@ public class DBController {
      * case 204
      * This method gets the list of all books in the system by description
      *
-     * @param conn The connection to the database
      * @return The arraylist of all books
      */
-    public ArrayList<Book> searchBookByDescription(String text, Connection conn) {
+    public ArrayList<Book> searchBookByDescription(String text) {
         try {
             ArrayList<Book> books = new ArrayList<>();
 
@@ -366,11 +362,10 @@ public class DBController {
      * This method checks if a book is available
      *
      * @param serialNumber The serial number of the book
-     * @param conn The connection to the database
      * @return [true, book location] if the book is available
      *         [false, nearest available date] if the book is not available
      */
-    public ArrayList<String> checkBookAvailability(int serialNumber, Connection conn) {
+    public ArrayList<String> checkBookAvailability(int serialNumber) {
         try {
             ArrayList<String> response = new ArrayList<>();
             ArrayList<Integer>  unAvailableCopies= new ArrayList<>();
@@ -453,8 +448,11 @@ public class DBController {
     /**
      * case 210
      * this method show subscriber borrowed list
+     *
+     * @param subscriberId The ID of the subscriber
+     * @return The list of borrowed books
      */
-    public ArrayList<BorrowedBook> showSubscriberBorrowedBooks(int subscriberId, Connection conn) {
+    public ArrayList<BorrowedBook> showSubscriberBorrowedBooks(int subscriberId) {
         try {
             ArrayList<BorrowedBook> borrowedBooks = new ArrayList<>();
 
@@ -492,10 +490,9 @@ public class DBController {
      * This method extends the return date of a borrowed book
      *
      * @param messageContent Array list containing the subscriber ID and the book ID and the new return date
-     * @param conn           The connection to the database
      * @return Array list containing true if the book was reserved successfully and false if not with the error message
      */
-    public ArrayList<String> extendBookBorrowTimeSubscriber(ArrayList<String> messageContent, Connection conn) {
+    public ArrayList<String> extendBookBorrowTimeSubscriber(ArrayList<String> messageContent) {
         ArrayList<String> response = new ArrayList<>();
 
         int subscriberId = Integer.parseInt(messageContent.get(0));
@@ -623,10 +620,9 @@ public class DBController {
      * This method edits the subscriber details
      *
      * @param messageContent the new subscriber details
-     * @param conn           The connection to the database
      * @return array list containing true if the subscriber was edited successfully and false if not with the error message
      */
-    public ArrayList<String> editSubscriberDetails(ArrayList<String> messageContent, Connection conn) {
+    public ArrayList<String> editSubscriberDetails(ArrayList<String> messageContent) {
         ArrayList<String> response = new ArrayList<>();
         try {
             conn.setAutoCommit(false);
@@ -691,10 +687,9 @@ public class DBController {
      * This method edits the subscriber login details
      *
      * @param messageContent the new subscriber details
-     * @param conn           The connection to the database
      * @return array list containing true if the subscriber was edited successfully and false if not with the error message
      */
-    public ArrayList<String> editSubscriberPassword(ArrayList<String> messageContent, Connection conn) {
+    public ArrayList<String> editSubscriberPassword(ArrayList<String> messageContent) {
         ArrayList<String> response = new ArrayList<>();
         try {
             conn.setAutoCommit(false);
@@ -748,10 +743,9 @@ public class DBController {
      * This return an array list of all the copies of a specific book
      *
      * @param messageContent Array list containing the copyID
-     * @param conn           The connection to the database
      * @return Array list containing the book copies if successful and null if not
      */
-     public ArrayList<BookCopy> getBookCopies(String messageContent, Connection conn) {
+     public ArrayList<BookCopy> getBookCopies(String messageContent) {
         try {
             //! may be deleted later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             ArrayList<BookCopy> bookCopies = new ArrayList<>();
@@ -789,10 +783,9 @@ public class DBController {
      * This method registers a new subscriber in the system
      *
      * @param messageContent the new subscriber details
-     * @param conn           The connection to the database
      * @return array list containing true if the subscriber was added successfully and false if not with the error message
      */
-    public ArrayList<String> registerNewSubscriber(ArrayList<String> messageContent, Connection conn) {
+    public ArrayList<String> registerNewSubscriber(ArrayList<String> messageContent) {
         ArrayList<String> response = new ArrayList<>();
         try {
             int subscriberId = 0;
@@ -910,10 +903,9 @@ public class DBController {
      * This method borrows a book to a subscriber
      *
      * @param messageContent Array list containing the subscriber ID and the book ID and return date
-     * @param conn           The connection to the database
      * @return Array list containing true if the book was borrowed successfully and false if not with the error message
      */
-    public ArrayList<String> borrowBookToSubscriber(ArrayList<String> messageContent, Connection conn) {
+    public ArrayList<String> borrowBookToSubscriber(ArrayList<String> messageContent) {
         ArrayList<String> response = new ArrayList<>();
         try {
             int subscriberId = Integer.parseInt(messageContent.get(0));
@@ -1071,10 +1063,9 @@ public class DBController {
      * This method returns a book from a subscriber
      *
      * @param messageContent Array list containing the subscriber ID and the book ID
-     * @param conn           The connection to the database
      * @return Array list containing true if the book was returned successfully and false if not with the error message
      */
-    public ArrayList<String> returnBookFromSubscriber(String messageContent, Connection conn) {
+    public ArrayList<String> returnBookFromSubscriber(String messageContent) {
         ArrayList<String> response = new ArrayList<>();
         int subscriberId = 0;
         int copyId = Integer.parseInt(messageContent);
@@ -1161,10 +1152,9 @@ public class DBController {
      * case 306
      * This method gets the list of all subscribers in the system
      *
-     * @param conn The connection to the database
      * @return The arraylist of all subscribers
      */
-    public ArrayList<Subscriber> viewAllSubscribers(Connection conn) {
+    public ArrayList<Subscriber> viewAllSubscribers() {
         try {
             ArrayList<Subscriber> subscribersList = new ArrayList<>();
             /*
@@ -1214,10 +1204,9 @@ public class DBController {
      * This method returns a specific subscriber's details to the librarian by the subscriber ID
      *
      * @param subscriberId The subscriber ID
-     * @param conn         The connection to the database
      * @return The subscriber
      */
-    public Subscriber viewSubscriberDetails(int subscriberId, Connection conn) {
+    public Subscriber viewSubscriberDetails(int subscriberId) {
         try {
 
             /*
@@ -1255,4 +1244,26 @@ public class DBController {
         }
     }
 
+    /**
+     * Connect to the database and create a connection
+     */
+    private void connectToDb() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            System.out.println("Driver definition succeed");
+        } catch (Exception ex) {
+            /* handle the error*/
+            System.out.println("Driver definition failed");
+        }
+
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/blib?serverTimezone=IST", "root", "Aa123456");
+            System.out.println("SQL connection succeed");
+
+        } catch (SQLException ex) {/* handle any errors*/
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+    }
 }
