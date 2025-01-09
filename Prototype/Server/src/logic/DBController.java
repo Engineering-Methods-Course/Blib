@@ -288,7 +288,9 @@ public class DBController {
              * If the query was successful, add the values of the book to a list
              */
             while (rs.next()) {
-                Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("borrowed_copies"));
+                Book book = new Book(rs.getInt("serial_number"), rs.getString("name"),
+                        rs.getString("main_genre"), rs.getString("description"),
+                        rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("borrowed_copies"));
                 books.add(book);
             }
             if (books.isEmpty()) {
@@ -329,7 +331,9 @@ public class DBController {
              */
 
             while (rs.next()) {
-                Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("borrowed_copies"));
+                Book book = new Book(rs.getInt("serial_number"), rs.getString("name"),
+                        rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"),
+                        rs.getInt("reserved_copies"), rs.getInt("borrowed_copies"));
                 books.add(book);
             }
             if (books.isEmpty()) {
@@ -369,7 +373,9 @@ public class DBController {
              */
 
             while (rs.next()) {
-                Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("borrowed_copies"));
+                Book book = new Book(rs.getInt("serial_number"), rs.getString("name"),
+                        rs.getString("main_genre"), rs.getString("description"),
+                        rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("borrowed_copies"));
                 books.add(book);
             }
             if (books.isEmpty()) {
@@ -608,7 +614,9 @@ public class DBController {
              * If the query was successful, add the values of the book to a list
              */
             while (rs.next()) {
-                BorrowedBook borrow = new BorrowedBook(rs.getInt("copy_id"), rs.getInt("subscriber_id"), rs.getTimestamp("borrow_date").toString(), rs.getTimestamp("expected_return_date").toString(), rs.getTimestamp("return_date").toString(), (rs.getInt("notify") == 1 ? "notified" : "not notified"));
+                BorrowedBook borrow = new BorrowedBook(rs.getInt("copy_id"), rs.getInt("subscriber_id"),
+                        rs.getTimestamp("borrow_date").toString(), rs.getTimestamp("expected_return_date").toString(),
+                        rs.getTimestamp("return_date").toString(), (rs.getInt("notify") == 1 ? "notified" : "not notified"));
                 borrowedBooks.add(borrow);
             }
             if (borrowedBooks.isEmpty()) {
@@ -658,7 +666,7 @@ public class DBController {
             /*
              * Checks if less than a week is left for the book to be returned (book can be extended only if less than a week is left)
              */
-            String checkReturnDateQuery = "SELECT DATEDIFF(expected_return_date, NOW()) AS days_diff , expected_return_date FROM borrow WHERE subscriber_id = ? AND copy_id = ?";
+            String checkReturnDateQuery = "SELECT DATEDIFF(expected_return_date, NOW()) AS days_diff , expected_return_date FROM borrow WHERE subscriber_id = ? AND copy_id = ? AND status = 'borrowed'";
             PreparedStatement checkReturnDateStatement = conn.prepareStatement(checkReturnDateQuery);
             checkReturnDateStatement.setInt(1, subscriberId);
             checkReturnDateStatement.setInt(2, copyId);
@@ -692,7 +700,7 @@ public class DBController {
             /*
              * The query updates the expected return date of the borrow table where the subscriber ID and the book ID matches the given values
              */
-            String extendQuery = "UPDATE borrow SET expected_return_date = ?, notify = ? WHERE subscriber_id = ? AND copy_id = ?";
+            String extendQuery = "UPDATE borrow SET expected_return_date = ?, notify = ? WHERE subscriber_id = ? AND copy_id = ? AND status = 'borrowed'";
             PreparedStatement extendStatement = conn.prepareStatement(extendQuery);
             extendStatement.setTimestamp(1, newReturnDate);
             extendStatement.setInt(2, 0);
@@ -1244,7 +1252,7 @@ public class DBController {
             /*
              * The query updates the status of the borrow table to returned and the return date to the current date
              */
-            String returnQuery = "UPDATE borrow SET status = ?, return_date = ? WHERE subscriber_id = ? AND copy_id = ?";
+            String returnQuery = "UPDATE borrow SET status = ?, return_date = ? WHERE subscriber_id = ? AND copy_id = ? AND status = 'borrowed'";
             PreparedStatement returnStatement = conn.prepareStatement(returnQuery);
             returnStatement.setString(1, "returned");
             returnStatement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
