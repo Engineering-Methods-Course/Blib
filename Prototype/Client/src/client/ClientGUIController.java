@@ -44,8 +44,8 @@ public class ClientGUIController extends Application
         ClientController.setLoader(newLoader);
 
         // Optionally add a CSS file if provided
-        if (cssFilePath != null && !cssFilePath.isEmpty()) {
-            System.out.println("CSS file path: " + cssFilePath);
+        if (cssFilePath != null && !cssFilePath.isEmpty())
+        {
             if (ClientGUIController.class.getResource(cssFilePath) != null) {
                 newRoot.getStylesheets().add(Objects.requireNonNull(ClientGUIController.class.getResource(cssFilePath)).toExternalForm());
             } else {

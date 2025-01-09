@@ -36,7 +36,6 @@ public class ClientController extends AbstractClient
         super(host, port); //Call the superclass constructor
         this.clientUI = clientUI;
         ClientController.loader = loader;
-        System.out.println("clientcontroller"+ClientController.loader);
         openConnection();
     }
 
