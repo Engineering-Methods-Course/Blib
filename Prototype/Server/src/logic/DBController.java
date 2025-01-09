@@ -1438,8 +1438,9 @@ public class DBController {
             /*
              * The query updates the expected return date of the borrow table where the subscriber ID and the book ID matches the given values
              * and sets the notify column to 0
+             * and the copy is borrowed
              */
-            String extendQuery = "UPDATE borrow SET expected_return_date = ?, notify = ? WHERE subscriber_id = ? AND copy_id = ?";
+            String extendQuery = "UPDATE borrow SET expected_return_date = ?, notify = ? WHERE subscriber_id = ? AND copy_id = ? AND status = 'borrowed'";
             PreparedStatement extendStatement = conn.prepareStatement(extendQuery);
             extendStatement.setTimestamp(1, newReturnDate);
             extendStatement.setInt(2, 0);
