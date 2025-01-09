@@ -18,7 +18,7 @@ public class DBController {
     Connection conn = null;
 
     private DBController() {
-        //NotificationController notificationController = NotificationController.getInstance();
+        NotificationController notificationController = NotificationController.getInstance();
         connectToDb();
     }
 

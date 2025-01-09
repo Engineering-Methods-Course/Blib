@@ -23,8 +23,6 @@ public class ServerController extends AbstractServer {
         super(port);
         this.serverMonitorController = serverMonitorController;
         NotificationController notificationController = NotificationController.getInstance();
-        notificationController.sendEmail("orhod2@gmail.com", "User logged in","test");
-
     }
 
     /**
