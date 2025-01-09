@@ -53,7 +53,7 @@
 
 /* AnchorPane Specific Styles */
 .anchor-pane {
-    -fx-background-color: #f0f4f8; /* Soft neutral background */
+    -fx-background-color: #de00ff; /* Soft neutral background */
     -fx-padding: 10px;
     -fx-border-color: #d9e2ec;
     -fx-border-width: 1px;

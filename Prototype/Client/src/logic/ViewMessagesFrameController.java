@@ -1,19 +1,45 @@
 package logic;
 
+import client.ClientGUIController;
+import common.ClientServerMessage;
+import common.LibrarianMessage;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+
+import java.util.ArrayList;
 
 import static client.ClientGUIController.navigateTo;
 
 public class ViewMessagesFrameController
 {
     @FXML
+    public TableView<LibrarianMessage> messagesTableView;
+    @FXML
+    public TableColumn<LibrarianMessage, String> dateColumn;
+    @FXML
+    public TableColumn<LibrarianMessage, String> contentColumn;
+    @FXML
     private Button backButton;
 
-    public void ViewAllMessages()
+    public void initialize()
     {
-        //todo: show all messages from DB in the table
+        ClientServerMessage message = new ClientServerMessage(314, null);
+
+        ClientGUIController.chat.sendToServer(message);
+    }
+
+    /**
+     *
+     */
+    public void loadLibrarianMessages(ArrayList<LibrarianMessage> messages)
+    {
+        ObservableList<LibrarianMessage> data = FXCollections.observableArrayList(messages);
+        messagesTableView.setItems(data);
     }
 
     /**

@@ -1,6 +1,7 @@
 package client;
 
 import common.ClientServerMessage;
+import logic.ClientController;
 import logic.ClientIPFrameController;
 import logic.SearchHomePageFrameController;
 import javafx.application.Application;
@@ -12,7 +13,6 @@ import javafx.scene.Parent;
 import javafx.stage.Stage;
 
 import java.util.Objects;
-
 
 public class ClientGUIController extends Application
 {
@@ -26,24 +26,31 @@ public class ClientGUIController extends Application
     /**
      * Navigates to a specified FXML destination, optionally applying a CSS file and setting the title of the new stage.
      *
-     * @param event           The ActionEvent triggered by the user's interaction (e.g., button click).
-     * @param fxmlDestination The path to the FXML file for the destination view (e.g., "/GUI/SubscriberProfileOptions.fxml").
-     * @param cssFilePath     The optional path to the CSS file to style the new view (e.g., "/GUI/Subscriber.css"). Pass null if no CSS is required.
-     * @param stageTitle      The title for the new stage window (e.g., "Profile Options").
+     * @param event       The ActionEvent triggered by the user's interaction (e.g., button click).
+     * @param fxmlFilePath The path to the FXML file to load (e.g., "/gui/SearchHomePageFrame.fxml").
+     * @param cssFilePath The optional path to the CSS file to style the new view (e.g., "/gui/Subscriber.css"). Pass null if no CSS is required.
+     * @param stageTitle  The title for the new stage window (e.g., "Profile Options").
      * @throws Exception If the FXML file cannot be loaded or another error occurs during navigation.
      */
-    public static void navigateTo(ActionEvent event, String fxmlDestination, String cssFilePath, String stageTitle) throws Exception
-    {
+    public static void navigateTo(ActionEvent event, String fxmlFilePath, String cssFilePath, String stageTitle) throws Exception {
         // Get the current stage
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        // Load the destination FXML
-        Parent newRoot = FXMLLoader.load(Objects.requireNonNull(SearchHomePageFrameController.class.getResource(fxmlDestination)));
+        // Create a new FXMLLoader instance with the specified FXML file path
+        FXMLLoader newLoader = new FXMLLoader(ClientGUIController.class.getResource(fxmlFilePath));
+        Parent newRoot = newLoader.load();
+
+        // Update the static loader in ClientController
+        ClientController.setLoader(newLoader);
 
         // Optionally add a CSS file if provided
-        if (cssFilePath != null && !cssFilePath.isEmpty())
-        {
-            newRoot.getStylesheets().add(Objects.requireNonNull(SearchHomePageFrameController.class.getResource(cssFilePath)).toExternalForm());
+        if (cssFilePath != null && !cssFilePath.isEmpty()) {
+            System.out.println("CSS file path: " + cssFilePath);
+            if (ClientGUIController.class.getResource(cssFilePath) != null) {
+                newRoot.getStylesheets().add(Objects.requireNonNull(ClientGUIController.class.getResource(cssFilePath)).toExternalForm());
+            } else {
+                System.out.println("CSS file not found: " + cssFilePath);
+            }
         }
 
         // Update the root node of the existing scene
@@ -51,11 +58,9 @@ public class ClientGUIController extends Application
         currentStage.setTitle(stageTitle);
         currentStage.setOnCloseRequest(event1 -> {
             // Run exitAction() in a background thread to prevent blocking
-            Task<Void> logOutTask = new Task<Void>()
-            {
+            Task<Void> logOutTask = new Task<Void>() {
                 @Override
-                protected Void call() throws Exception
-                {
+                protected Void call() throws Exception {
                     exitAction();  // Call your logout action in the background
                     return null;
                 }
@@ -65,7 +70,7 @@ public class ClientGUIController extends Application
         });
 
         // Show the updated stage
-        currentStage.setResizable(true); // Disable window resizing
+        currentStage.setResizable(true); // Enable window resizing
         currentStage.show();
     }
 

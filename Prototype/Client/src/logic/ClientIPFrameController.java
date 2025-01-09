@@ -52,34 +52,27 @@ public class ClientIPFrameController
      * @throws Exception If there is an issue with the navigation
      */
     @FXML
-    public void clickEnterButton(ActionEvent event) throws Exception
-    {
+    public void clickEnterButton(ActionEvent event) throws Exception {
         String ipAddress = txtIP.getText().trim();
         String portText = txtPort.getText().trim();
 
-        // Check if either field is empty
-        if (ipAddress.isEmpty() || portText.isEmpty())
-        {
+        if (ipAddress.isEmpty() || portText.isEmpty()) {
             System.out.println("Both IP address and Port must be entered.");
             return;
         }
 
-        // Proceed with the entered IP and Port
-        try
-        {
+        try {
             int port = Integer.parseInt(portText);
-            ClientGUIController.chat = new ChatClient(ipAddress, port);
-            // Navigate to the next frame
+
+            ClientGUIController.chat = new ChatClient(ipAddress, port, new FXMLLoader());
+
             navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
         }
-        catch (NumberFormatException e)
-        {
+        catch (NumberFormatException e) {
             System.out.println("Port must be a valid number.");
             throw e;
-
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             System.out.println("Failed to initialize client: " + e.getMessage());
             throw e;
         }

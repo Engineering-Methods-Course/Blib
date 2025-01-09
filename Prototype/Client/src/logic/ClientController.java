@@ -1,8 +1,10 @@
 package logic;
 
+import client.ClientGUIController;
 import common.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import ocsf.client.*;
 import common.ChatIF;
@@ -17,7 +19,7 @@ public class ClientController extends AbstractClient
 {
     private Connection conn;
     private static ActionEvent storedActionEvent;
-
+    private static FXMLLoader loader;
     ChatIF clientUI;
     public static boolean awaitResponse = false;
 
@@ -28,19 +30,23 @@ public class ClientController extends AbstractClient
      * @param port     The port number to connect on.
      * @param clientUI The interface type variable.
      */
-    public ClientController(String host, int port, ChatIF clientUI)
+    public ClientController(String host, int port, ChatIF clientUI, FXMLLoader loader)
             throws IOException
     {
         super(host, port); //Call the superclass constructor
         this.clientUI = clientUI;
+        ClientController.loader = loader;
+        System.out.println("clientcontroller"+ClientController.loader);
         openConnection();
     }
 
-    public static void setActionEvent(ActionEvent actionEvent) {
+    public static void setActionEvent(ActionEvent actionEvent)
+    {
         storedActionEvent = actionEvent;
     }
 
-    public static ActionEvent getStoredActionEvent() {
+    public static ActionEvent getStoredActionEvent()
+    {
         return storedActionEvent;
     }
 
@@ -253,7 +259,15 @@ public class ClientController extends AbstractClient
                     case 313:
                         //todo: handle watch logs response
                         break;
-                    // Server has closed its connection
+                    case 315:
+                        if (message.getMessageContent() instanceof ArrayList)
+                        {
+                            @SuppressWarnings("unchecked")
+                            ArrayList<LibrarianMessage> messages = (ArrayList<LibrarianMessage>) message.getMessageContent();
+                            ViewMessagesFrameController controller = loader.getController();
+                            controller.loadLibrarianMessages(messages);
+                        }
+                        // Server has closed its connection
                     case 999:
                         Platform.runLater(() -> showErrorAlert("Server closed", "Server has closed its connection for maintenance"));
                         break;
@@ -388,5 +402,10 @@ public class ClientController extends AbstractClient
                 });
             }
         }
+    }
+
+    public static void setLoader(FXMLLoader loader)
+    {
+        ClientController.loader = loader;
     }
 }

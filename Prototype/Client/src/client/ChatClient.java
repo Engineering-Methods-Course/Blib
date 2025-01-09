@@ -2,6 +2,7 @@ package client;
 
 import common.ChatIF;
 import common.ClientServerMessage;
+import javafx.fxml.FXMLLoader;
 import logic.ClientController;
 
 import java.io.IOException;
@@ -17,11 +18,11 @@ public class ChatClient implements ChatIF
      * @param host The host to connect to.
      * @param port The port to connect on.
      */
-    public ChatClient(String host, int port) throws Exception
+    public ChatClient(String host, int port, FXMLLoader loader) throws Exception
     {
         try
         {
-            client = new ClientController(host, port, this);
+            client = new ClientController(host, port, this, loader);
         }
         catch (IOException exception)
         {
