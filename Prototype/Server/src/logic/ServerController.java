@@ -16,15 +16,15 @@ import java.util.ArrayList;
  */
 public class ServerController extends AbstractServer {
 
-    private static Connection conn;
     private final ServerMonitorFrameController serverMonitorController;
-    private final DBController dbController;
+    private DBController dbController = null;
+    //private static NotificationController notificationController;
 
 
     public ServerController(int port, ServerMonitorFrameController serverMonitorController) {
         super(port);
         this.serverMonitorController = serverMonitorController;
-        dbController = DBController.getInstance();
+        //NotificationController notificationController = NotificationController.getInstance();
 
     }
 
@@ -96,8 +96,9 @@ public class ServerController extends AbstractServer {
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
                                 // get the user details from the database
-                                client.sendToClient(new ClientServerMessage(101, dbController.userLogin((ArrayList<String>) message.getMessageContent(), conn)));
+                                client.sendToClient(new ClientServerMessage(101, dbController.userLogin((ArrayList<String>) message.getMessageContent())));
                                 System.out.println("user details were sent to client");
+
                             }
                             // message type isn't an arraylist
                             else {
@@ -125,7 +126,7 @@ public class ServerController extends AbstractServer {
                          */
                         if (message.getMessageContent() instanceof String) {
                             try {
-                                client.sendToClient(new ClientServerMessage(201, dbController.searchBookByName((String) message.getMessageContent(), conn)));
+                                client.sendToClient(new ClientServerMessage(201, dbController.searchBookByName((String) message.getMessageContent())));
                                 System.out.println("Books search by name was sent to client");
                             } catch (Exception e) {
                                 System.out.println("Error: with getting book search by name (case 200)" + e);
@@ -145,7 +146,7 @@ public class ServerController extends AbstractServer {
                          */
                         try {
                             if (message.getMessageContent() instanceof String) {
-                                client.sendToClient(new ClientServerMessage(201, dbController.searchBookByGenre((String) message.getMessageContent(), conn)));
+                                client.sendToClient(new ClientServerMessage(201, dbController.searchBookByGenre((String) message.getMessageContent())));
                                 System.out.println("Books search by genre was sent to client");
                             } else {
                                 System.out.println("Cannot search book by genre - message is not a string (case 202)");
@@ -164,7 +165,7 @@ public class ServerController extends AbstractServer {
                          */
                         try {
                             if (message.getMessageContent() instanceof String) {
-                                client.sendToClient(new ClientServerMessage(201, dbController.searchBookByDescription((String) message.getMessageContent(), conn)));
+                                client.sendToClient(new ClientServerMessage(201, dbController.searchBookByDescription((String) message.getMessageContent())));
                                 System.out.println("Books search by description was sent to client");
                             } else {
                                 System.out.println("Cannot search book by description - message is not a string (case 204)");
@@ -183,7 +184,7 @@ public class ServerController extends AbstractServer {
                          */
                         try {
                             if (message.getMessageContent() instanceof Integer) {
-                                client.sendToClient(new ClientServerMessage(207, dbController.checkBookAvailability((Integer) message.getMessageContent(), conn)));
+                                client.sendToClient(new ClientServerMessage(207, dbController.checkBookAvailability((Integer) message.getMessageContent())));
                                 System.out.println("Book details were sent to client");
                             } else {
                                 System.out.println("Cannot get book details - message is not an integer (case 206)");
@@ -195,6 +196,29 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (208):
+                        /**
+                         * do: subscriber wants to reserve a book
+                         * in: ArrayList<String> {subscriber id, book id}
+                         * return: (id 209) arraylist<string> {success/fail, error message}
+                         */
+                        try {
+                            if (message.getMessageContent() instanceof ArrayList) {
+                                client.sendToClient(new ClientServerMessage(209, dbController.reserveBook((ArrayList<String>) message.getMessageContent())));
+                                System.out.println("Book was reserved");
+                            } else {
+                                client.sendToClient(new ClientServerMessage(209, new ArrayList<String>() {{
+                                    add("fail");
+                                    add("Cannot reserve book Message is not an ArrayList<String>");
+                                }}));
+                                System.out.println("Cannot reserve book Message is not an ArrayList<String> (case 208)");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error: with reserve method (case 208)" + e);
+                            client.sendToClient(new ClientServerMessage(209, new ArrayList<String>() {{
+                                add("fail");
+                                add("Server Error");
+                            }}));
+                        }
                         break;
                     case (210):
                         /**
@@ -204,7 +228,7 @@ public class ServerController extends AbstractServer {
                          */
                         try {
                             if (message.getMessageContent() instanceof Integer) {
-                                client.sendToClient(new ClientServerMessage(211, dbController.showSubscriberBorrowedBooks((Integer) message.getMessageContent(), conn)));
+                                client.sendToClient(new ClientServerMessage(211, dbController.showSubscriberBorrowedBooks((Integer) message.getMessageContent())));
                                 System.out.println("Subscriber borrowed books were sent to client");
                             } else {
                                 System.out.println("Cannot find borrowed books - message is not an integer (case 210)");
@@ -223,7 +247,7 @@ public class ServerController extends AbstractServer {
                          */
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
-                                client.sendToClient(new ClientServerMessage(213, dbController.extendBookBorrowTimeSubscriber((ArrayList<String>) message.getMessageContent(), conn)));
+                                client.sendToClient(new ClientServerMessage(213, dbController.extendBookBorrowTimeSubscriber((ArrayList<String>) message.getMessageContent())));
                                 System.out.println("Borrow time was extended");
                             } else {
                                 client.sendToClient(new ClientServerMessage(213, new ArrayList<String>() {{
@@ -250,7 +274,7 @@ public class ServerController extends AbstractServer {
                          */
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
-                                client.sendToClient(new ClientServerMessage(217, dbController.editSubscriberDetails((ArrayList<String>) message.getMessageContent(), conn)));
+                                client.sendToClient(new ClientServerMessage(217, dbController.editSubscriberDetails((ArrayList<String>) message.getMessageContent())));
                                 System.out.println("Subscriber details were edited");
                             } else {
                                 client.sendToClient(new ClientServerMessage(217, new ArrayList<String>() {{
@@ -265,7 +289,6 @@ public class ServerController extends AbstractServer {
                                 add("fail");
                                 add("Server Error (case 216)");
                             }}));
-                            break;
                         }
                         break;
                     case (218):
@@ -276,7 +299,7 @@ public class ServerController extends AbstractServer {
                          */
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
-                                client.sendToClient(new ClientServerMessage(219, dbController.editSubscriberPassword((ArrayList<String>) message.getMessageContent(), conn)));
+                                client.sendToClient(new ClientServerMessage(219, dbController.editSubscriberPassword((ArrayList<String>) message.getMessageContent())));
                                 System.out.println("Subscriber login details were edited");
                             } else {
                                 client.sendToClient(new ClientServerMessage(219, new ArrayList<String>() {{
@@ -301,7 +324,7 @@ public class ServerController extends AbstractServer {
                          */
                         try {
                             if (message.getMessageContent() instanceof String) {
-                                client.sendToClient(new ClientServerMessage(221, dbController.getBookCopies((String) message.getMessageContent(), conn)));
+                                client.sendToClient(new ClientServerMessage(221, dbController.getBookCopies((String) message.getMessageContent())));
                                 System.out.println("Book copies were sent to client");
                             } else {
                                 System.out.println("Cannot get book copies Message is not a String (case 220)");
@@ -320,7 +343,7 @@ public class ServerController extends AbstractServer {
                          */
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
-                                client.sendToClient(new ClientServerMessage(301, dbController.registerNewSubscriber((ArrayList<String>) message.getMessageContent(), conn)));
+                                client.sendToClient(new ClientServerMessage(301, dbController.registerNewSubscriber((ArrayList<String>) message.getMessageContent())));
                             } else {
                                 System.out.println("Cannot register account Message is not an ArrayList<String> (case 300)");
                                 client.sendToClient(new ClientServerMessage(301, new ArrayList<String>() {{
@@ -335,7 +358,6 @@ public class ServerController extends AbstractServer {
                                 add("fail");
                                 add("Server Error (case 300)");
                             }}));
-                            break;
                         }
                         break;
                     case (302):
@@ -347,7 +369,7 @@ public class ServerController extends AbstractServer {
                         ArrayList<String> response = null;
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
-                                response = dbController.borrowBookToSubscriber((ArrayList<String>) message.getMessageContent(), conn);
+                                response = dbController.borrowBookToSubscriber((ArrayList<String>) message.getMessageContent());
                                 client.sendToClient(new ClientServerMessage(303, response));
                                 System.out.println("message was sent to client (case 302)" + response);
                             } else {
@@ -375,7 +397,7 @@ public class ServerController extends AbstractServer {
                          */
                         try {
                             if (message.getMessageContent() instanceof String) {
-                                client.sendToClient(new ClientServerMessage(305, dbController.returnBookFromSubscriber((String) message.getMessageContent(), conn)));
+                                client.sendToClient(new ClientServerMessage(305, dbController.returnBookFromSubscriber((String) message.getMessageContent())));
                                 System.out.println("Book was returned from subscriber");
                             } else {
                                 System.out.println("Cannot return book Message is not a String");
@@ -395,7 +417,7 @@ public class ServerController extends AbstractServer {
                          * return: (id 307) arraylist<subscriber>
                          */
                         try {
-                            client.sendToClient(new ClientServerMessage(307, dbController.viewAllSubscribers(conn)));
+                            client.sendToClient(new ClientServerMessage(307, dbController.viewAllSubscribers()));
                             System.out.println("Subscribers list was sent to client");
                         } catch (Exception e) {
                             System.out.println("Error: with getting subscribers list (case 306)" + e);
@@ -410,7 +432,7 @@ public class ServerController extends AbstractServer {
                          */
                         try {
                             if (message.getMessageContent() instanceof Integer) {
-                                client.sendToClient(new ClientServerMessage(309, dbController.viewSubscriberDetails((Integer) message.getMessageContent(), conn)));
+                                client.sendToClient(new ClientServerMessage(309, dbController.viewSubscriberDetails((Integer) message.getMessageContent())));
                                 System.out.println("Subscriber details were sent to client");
                             } else {
                                 System.out.println("Input is not an instance of Integer (case 308)");
@@ -419,16 +441,32 @@ public class ServerController extends AbstractServer {
                         } catch (Exception e) {
                             System.out.println("Error: with getting subscriber details (case 308)" + e);
                             client.sendToClient(new ClientServerMessage(309, null));
-
                         }
                         break;
                     case (310):
                         /**
                          * do: librarian wants to extend the borrow time for a book that was borrowed by a subscriber
-                         * in: ArrayList<String> {subscriber id, book id, return date(yyyy-MM-dd HH:mm:ss)}
+                         * in: ArrayList<String> {subscriber id, book id, return date(yyyy-MM-dd HH:mm:ss), librarian id}
                          * return: (id 311) ArrayList<String> {success/fail, error message}
                          */
-
+                        try {
+                            if (message.getMessageContent() instanceof ArrayList) {
+                                client.sendToClient(new ClientServerMessage(311, dbController.extendBookBorrowTimeLibrarian((ArrayList<String>) message.getMessageContent())));
+                                System.out.println("Borrow time was extended by librarian");
+                            } else {
+                                client.sendToClient(new ClientServerMessage(311, new ArrayList<String>() {{
+                                    add("fail");
+                                    add("Cannot extend borrow time Message is not an ArrayList<String>");
+                                }}));
+                                System.out.println("Cannot extend borrow time Message is not an ArrayList<String> (case 310)");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error: with extend borrow time method (case 310)" + e);
+                            client.sendToClient(new ClientServerMessage(311, new ArrayList<String>() {{
+                                add("fail");
+                                add("Server Error");
+                            }}));
+                        }
                         break;
                     default:
                         System.out.println("Invalid command id(handleMessageFromClient ServerController)");
@@ -439,7 +477,6 @@ public class ServerController extends AbstractServer {
         } catch (Exception e) {
             System.out.println("Error: incorrect msg object type (handleMessageFromClient ServerController)" + e);
         }
-
     }
 
     /**
@@ -448,7 +485,8 @@ public class ServerController extends AbstractServer {
      */
     protected void serverStarted() {
         System.out.println("Server listening for connections on port " + getPort());
-        connectToDb();
+        // connect to the database (get instance)
+        this.dbController = DBController.getInstance();
     }
 
     /**
@@ -457,25 +495,6 @@ public class ServerController extends AbstractServer {
      */
     protected void serverStopped() {
         System.out.println("Server has stopped listening for connections.");
-    }
-
-    private void connectToDb() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-            System.out.println("Driver definition succeed");
-        } catch (Exception ex) {
-            /* handle the error*/
-            System.out.println("Driver definition failed");
-        }
-
-        try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/blib?serverTimezone=IST", "root", "Aa123456");
-            System.out.println("SQL connection succeed");
-        } catch (SQLException ex) {/* handle any errors*/
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
-        }
     }
 
     /**

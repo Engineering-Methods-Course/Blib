@@ -12,9 +12,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class DBController {
-    private static DBController instance = null;
+    private static DBController dbInstance = null;
+    private static NotificationController notificationController;
+
+    Connection conn = null;
 
     private DBController() {
+        //NotificationController notificationController = NotificationController.getInstance();
+        connectToDb();
     }
 
     /**
@@ -24,19 +29,38 @@ public class DBController {
      * @return The instance of the DBController
      */
     public static DBController getInstance() {
-        if (instance == null) {
+        if (dbInstance == null) {
             System.out.println("DBController was created successfully");
-            instance = new DBController();
+            dbInstance = new DBController();
         }
-        return instance;
+        return dbInstance;
     }
 
-    public static DBController getInstance(Connection connection) {
-        if (instance == null) {
-            System.out.println("DBController was created successfully");
-            instance = new DBController();
+    /**
+     * Connect to the database and create a connection
+     */
+    private void connectToDb() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            System.out.println("Driver definition succeed");
+        } catch (Exception ex) {
+            /* handle the error*/
+            System.out.println("Driver definition failed");
         }
-        return instance;
+
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/blib?serverTimezone=IST", "root", "Aa123456");
+            System.out.println("SQL connection succeed");
+
+        } catch (SQLException ex) {/* handle any errors*/
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+    }
+
+    public void setConn(Connection conn) {
+        this.conn = conn;
     }
 
     /**
@@ -66,6 +90,7 @@ public class DBController {
          */
         return new SerialBlob(fileContent);
     }
+
     /**
      * This method converts a Blob to a CSV file
      *
@@ -92,6 +117,7 @@ public class DBController {
 
     /**
      * This method writes data to a CSV file
+     *
      * @param csvFilePath The path to the CSV file
      */
     public void writeDataToCSV(String csvFilePath, String data) throws IOException {
@@ -102,6 +128,7 @@ public class DBController {
             writer.println(data);
         }
     }
+
     /**
      * This method deletes a file
      *
@@ -118,15 +145,14 @@ public class DBController {
             System.out.println("Failed to delete the file");
         }
     }
+
     /**
      * This method updates the history of a subscriber
-     *
-     * @param conn         The connection to the database
      * @param subscriberId The ID of the subscriber
      * @param action       The action that was performed
      * @param details      The details of the action
      */
-    public void updateHistory(Connection conn, int subscriberId,String action ,String details) {
+    public void updateHistory(int subscriberId, String action, String details) {
         {
             try {
                 String csvFile = String.format("History.csv");
@@ -173,10 +199,9 @@ public class DBController {
      * This method logs in the user in to the system
      *
      * @param messageContent The message content
-     * @param conn           The connection to the database
      * @return The user
      */
-    public User userLogin(ArrayList<String> messageContent, Connection conn) {
+    public User userLogin(ArrayList<String> messageContent) {
         try {
             String username = messageContent.get(0);
             String password = messageContent.get(1);
@@ -243,10 +268,9 @@ public class DBController {
      * This method searches for books by a partial name match
      *
      * @param bookName The partial name of the book
-     * @param conn     The connection to the database
      * @return The list of books that match the partial name
      */
-    public ArrayList<Book> searchBookByName(String bookName, Connection conn) {
+    public ArrayList<Book> searchBookByName(String bookName) {
         try {
             ArrayList<Book> books = new ArrayList<>();
 
@@ -284,10 +308,9 @@ public class DBController {
      * This method searches for books by a genre match
      *
      * @param bookGenre The partial genre of the book
-     * @param conn      The connection to the database
      * @return The list of books that match the partial genre
      */
-    public ArrayList<Book> searchBookByGenre(String bookGenre, Connection conn) {
+    public ArrayList<Book> searchBookByGenre(String bookGenre) {
         try {
             ArrayList<Book> books = new ArrayList<>();
 
@@ -325,10 +348,9 @@ public class DBController {
      * case 204
      * This method gets the list of all books in the system by description
      *
-     * @param conn The connection to the database
      * @return The arraylist of all books
      */
-    public ArrayList<Book> searchBookByDescription(String text, Connection conn) {
+    public ArrayList<Book> searchBookByDescription(String text) {
         try {
             ArrayList<Book> books = new ArrayList<>();
 
@@ -361,19 +383,19 @@ public class DBController {
             return null;
         }
     }
+
     /**
      * case 206
      * This method checks if a book is available
      *
      * @param serialNumber The serial number of the book
-     * @param conn The connection to the database
      * @return [true, book location] if the book is available
-     *         [false, nearest available date] if the book is not available
+     * [false, nearest available date] if the book is not available
      */
-    public ArrayList<String> checkBookAvailability(int serialNumber, Connection conn) {
+    public ArrayList<String> checkBookAvailability(int serialNumber) {
         try {
             ArrayList<String> response = new ArrayList<>();
-            ArrayList<Integer>  unAvailableCopies= new ArrayList<>();
+            ArrayList<Integer> unAvailableCopies = new ArrayList<>();
 
             /*
              * The query select all book copies and check if there is book copy available
@@ -397,7 +419,7 @@ public class DBController {
                 /*
                  * If there is no copy available add the copy id to the list
                  */
-                else{
+                else {
                     unAvailableCopies.add(checkAvailabilityRs.getInt("copy_id"));
                 }
             }
@@ -451,10 +473,124 @@ public class DBController {
     }
 
     /**
+     * case 208
+     * This method reserves (orders) a book for a subscriber
+     *
+     * @param messageContent Array list containing the subscriber ID and the book Serial number
+     * @return Array list containing true if the book was reserved successfully and false if not with the error message
+     */
+    public ArrayList<String> reserveBook(ArrayList<String> messageContent) {
+        ArrayList<String> response = new ArrayList<>();
+        try {
+            int subscriberId = Integer.parseInt(messageContent.get(0));
+            int serialNumber = Integer.parseInt(messageContent.get(1));
+
+            conn.setAutoCommit(false);
+
+            /*
+             * Check if the subscriber is frozen
+             */
+            String checkSubscriberQuery = "SELECT status FROM subscriber WHERE subscriber_id = ?";
+            PreparedStatement checkSubscriberStatement = conn.prepareStatement(checkSubscriberQuery);
+            checkSubscriberStatement.setInt(1, subscriberId);
+            ResultSet checkSubscriberRs = checkSubscriberStatement.executeQuery();
+            if (checkSubscriberRs.next()) {
+                if (checkSubscriberRs.getInt("status") == 1) {
+                    response.add("false");
+                    response.add("Subscriber is frozen");
+                    return response;
+                }
+            }
+
+            /*
+             * This query saves the total copies of the book, the borrowed copies and the reserved copies
+             */
+            String totalCopiesQuery = "SELECT copies, borrowed_copies, reserved_copies FROM book WHERE serial_number = ?";
+            PreparedStatement totalCopiesStatement = conn.prepareStatement(totalCopiesQuery);
+            totalCopiesStatement.setInt(1, serialNumber);
+            ResultSet totalCopiesRs = totalCopiesStatement.executeQuery();
+            if (totalCopiesRs.next()) {
+                int totalCopies = totalCopiesRs.getInt("copies");
+                int borrowedCopies = totalCopiesRs.getInt("borrowed_copies");
+                int reservedCopies = totalCopiesRs.getInt("reserved_copies");
+
+                /*
+                 * Check if all copies are borrowed
+                 */
+                if (totalCopies != borrowedCopies) {
+                    response.add("false");
+                    response.add("Can't reserve the book, not all copies are borrowed");
+                    return response;
+                }
+
+                /*
+                 * Check if the book is fully reserved
+                 */
+                if (reservedCopies == totalCopies) {
+                    response.add("false");
+                    response.add("Can't reserve the book, the book is fully reserved");
+                    return response;
+                }
+            }
+
+            /*
+             * Reserve the book
+             */
+            String reserveQuery = "INSERT INTO reservation (subscriber_id, serial_number, reserve_date) VALUES (?, ?, ?)";
+            PreparedStatement reserveStatement = conn.prepareStatement(reserveQuery);
+            reserveStatement.setInt(1, subscriberId);
+            reserveStatement.setInt(2, serialNumber);
+            reserveStatement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            reserveStatement.executeUpdate();
+
+            /*
+             * Update the reserved copies of the book
+             */
+            String updateReservedQuery = "UPDATE book SET reserved_copies = reserved_copies + 1 WHERE serial_number = ?";
+            PreparedStatement updateReservedStatement = conn.prepareStatement(updateReservedQuery);
+            updateReservedStatement.setInt(1, serialNumber);
+            updateReservedStatement.executeUpdate();
+
+            /*
+             * Update subscriber history
+             */
+            updateHistory(subscriberId, "reserved", "a book of serial number " + serialNumber + " was reserved");
+
+            /*
+             * Commit the transaction
+             */
+            conn.commit();
+
+        } catch (SQLException e) {
+            /*
+             * If an error occur rollback the transaction
+             */
+            try {
+                conn.rollback();
+            } catch (SQLException rollbackEx) {
+                System.out.println("Error: Rolling back transaction" + rollbackEx);
+            }
+            response.add("false");
+            response.add("Problem with reserving the book");
+            System.out.println("Error: With reserving the book (reserveBookToSubscriber) " + e);
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException ex) {
+                System.out.println("Error: Setting auto-commit back to true" + ex);
+            }
+        }
+        return response;
+    }
+
+    /**
      * case 210
      * this method show subscriber borrowed list
+     *
+     * @param subscriberId The ID of the subscriber
+     * @return The list of borrowed books
      */
-    public ArrayList<BorrowedBook> showSubscriberBorrowedBooks(int subscriberId, Connection conn) {
+    public ArrayList<BorrowedBook> showSubscriberBorrowedBooks(int subscriberId) {
         try {
             ArrayList<BorrowedBook> borrowedBooks = new ArrayList<>();
 
@@ -472,7 +608,7 @@ public class DBController {
              * If the query was successful, add the values of the book to a list
              */
             while (rs.next()) {
-                BorrowedBook borrow = new BorrowedBook(rs.getInt("copy_id"), rs.getInt("subscriber_id"), rs.getTimestamp("borrow_date").toString(), rs.getTimestamp("expected_return_date").toString(),rs.getTimestamp("return_date").toString() ,(rs.getInt("notify") == 1 ? "notified" : "not notified"));
+                BorrowedBook borrow = new BorrowedBook(rs.getInt("copy_id"), rs.getInt("subscriber_id"), rs.getTimestamp("borrow_date").toString(), rs.getTimestamp("expected_return_date").toString(), rs.getTimestamp("return_date").toString(), (rs.getInt("notify") == 1 ? "notified" : "not notified"));
                 borrowedBooks.add(borrow);
             }
             if (borrowedBooks.isEmpty()) {
@@ -492,10 +628,9 @@ public class DBController {
      * This method extends the return date of a borrowed book
      *
      * @param messageContent Array list containing the subscriber ID and the book ID and the new return date
-     * @param conn           The connection to the database
      * @return Array list containing true if the book was reserved successfully and false if not with the error message
      */
-    public ArrayList<String> extendBookBorrowTimeSubscriber(ArrayList<String> messageContent, Connection conn) {
+    public ArrayList<String> extendBookBorrowTimeSubscriber(ArrayList<String> messageContent) {
         ArrayList<String> response = new ArrayList<>();
 
         int subscriberId = Integer.parseInt(messageContent.get(0));
@@ -506,14 +641,14 @@ public class DBController {
             conn.setAutoCommit(false);
 
             /*
-             *Checks if the subscriber is frozen
+             * Checks if the subscriber is frozen
              */
             String checkSubscriberQuery = "SELECT status FROM subscriber WHERE subscriber_id = ?";
             PreparedStatement checkSubscriberStatement = conn.prepareStatement(checkSubscriberQuery);
             checkSubscriberStatement.setInt(1, subscriberId);
             ResultSet checkSubscriberRs = checkSubscriberStatement.executeQuery();
             if (checkSubscriberRs.next()) {
-                if (checkSubscriberRs.getInt("status") == 0) {
+                if (checkSubscriberRs.getInt("status") == 1) {
                     response.add("false");
                     response.add("Subscriber is frozen");
                     return response;
@@ -521,7 +656,7 @@ public class DBController {
             }
 
             /*
-            * Checks if less than a week is left for the book to be returned (book can be extended only if less than a week is left)
+             * Checks if less than a week is left for the book to be returned (book can be extended only if less than a week is left)
              */
             String checkReturnDateQuery = "SELECT DATEDIFF(expected_return_date, NOW()) AS days_diff , expected_return_date FROM borrow WHERE subscriber_id = ? AND copy_id = ?";
             PreparedStatement checkReturnDateStatement = conn.prepareStatement(checkReturnDateQuery);
@@ -555,7 +690,7 @@ public class DBController {
             }
 
             /*
-             *The query updates the expected return date of the borrow table where the subscriber ID and the book ID matches the given values
+             * The query updates the expected return date of the borrow table where the subscriber ID and the book ID matches the given values
              */
             String extendQuery = "UPDATE borrow SET expected_return_date = ?, notify = ? WHERE subscriber_id = ? AND copy_id = ?";
             PreparedStatement extendStatement = conn.prepareStatement(extendQuery);
@@ -580,7 +715,7 @@ public class DBController {
             /*
              * Update subscriber history
              */
-            updateHistory(conn, subscriberId, "extended", "the return date for the book " + bookName + " was extended for an extra week");
+            updateHistory(subscriberId, "extended", "the return date for the book " + bookName + " was extended for an extra week");
 
             /*
              * Send a notification to the librarians
@@ -596,7 +731,7 @@ public class DBController {
              */
             conn.commit();
             response.add("true");
-        }catch (Exception e) {
+        } catch (Exception e) {
             /*
              * If an error occur rollback the transaction
              */
@@ -623,10 +758,9 @@ public class DBController {
      * This method edits the subscriber details
      *
      * @param messageContent the new subscriber details
-     * @param conn           The connection to the database
      * @return array list containing true if the subscriber was edited successfully and false if not with the error message
      */
-    public ArrayList<String> editSubscriberDetails(ArrayList<String> messageContent, Connection conn) {
+    public ArrayList<String> editSubscriberDetails(ArrayList<String> messageContent) {
         ArrayList<String> response = new ArrayList<>();
         try {
             conn.setAutoCommit(false);
@@ -657,7 +791,7 @@ public class DBController {
             /*
              * Update subscriber history
              */
-            updateHistory(conn, subscriberId, "edited", "subscriber details were edited");
+            updateHistory(subscriberId, "edited", "subscriber details were edited");
 
             /*
              * Commit the transaction
@@ -691,10 +825,9 @@ public class DBController {
      * This method edits the subscriber login details
      *
      * @param messageContent the new subscriber details
-     * @param conn           The connection to the database
      * @return array list containing true if the subscriber was edited successfully and false if not with the error message
      */
-    public ArrayList<String> editSubscriberPassword(ArrayList<String> messageContent, Connection conn) {
+    public ArrayList<String> editSubscriberPassword(ArrayList<String> messageContent) {
         ArrayList<String> response = new ArrayList<>();
         try {
             conn.setAutoCommit(false);
@@ -715,7 +848,7 @@ public class DBController {
             /*
              * Update subscriber history
              */
-            updateHistory(conn, subscriberId, "edited", "subscriber password was edited");
+            updateHistory(subscriberId, "edited", "subscriber password was edited");
 
             /*
              * Commit the transaction
@@ -748,10 +881,9 @@ public class DBController {
      * This return an array list of all the copies of a specific book
      *
      * @param messageContent Array list containing the copyID
-     * @param conn           The connection to the database
      * @return Array list containing the book copies if successful and null if not
      */
-     public ArrayList<BookCopy> getBookCopies(String messageContent, Connection conn) {
+    public ArrayList<BookCopy> getBookCopies(String messageContent) {
         try {
             //! may be deleted later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             ArrayList<BookCopy> bookCopies = new ArrayList<>();
@@ -783,16 +915,16 @@ public class DBController {
             System.out.println("Error: With exporting book copies from sql (getBookCopies) " + e);
             return null;
         }
-     }
-     /**
+    }
+
+    /**
      * case 300
      * This method registers a new subscriber in the system
      *
      * @param messageContent the new subscriber details
-     * @param conn           The connection to the database
      * @return array list containing true if the subscriber was added successfully and false if not with the error message
      */
-    public ArrayList<String> registerNewSubscriber(ArrayList<String> messageContent, Connection conn) {
+    public ArrayList<String> registerNewSubscriber(ArrayList<String> messageContent) {
         ArrayList<String> response = new ArrayList<>();
         try {
             int subscriberId = 0;
@@ -910,10 +1042,9 @@ public class DBController {
      * This method borrows a book to a subscriber
      *
      * @param messageContent Array list containing the subscriber ID and the book ID and return date
-     * @param conn           The connection to the database
      * @return Array list containing true if the book was borrowed successfully and false if not with the error message
      */
-    public ArrayList<String> borrowBookToSubscriber(ArrayList<String> messageContent, Connection conn) {
+    public ArrayList<String> borrowBookToSubscriber(ArrayList<String> messageContent) {
         ArrayList<String> response = new ArrayList<>();
         try {
             int subscriberId = Integer.parseInt(messageContent.get(0));
@@ -1034,7 +1165,7 @@ public class DBController {
             /*
              * Update subscriber history
              */
-            updateHistory(conn, subscriberId, "borrowed", "the book with copy id of : " + copyId + " was borrowed");
+            updateHistory(subscriberId, "borrowed", "the book with copy id of : " + copyId + " was borrowed");
 
             /*
              * Commit the transaction
@@ -1071,10 +1202,9 @@ public class DBController {
      * This method returns a book from a subscriber
      *
      * @param messageContent Array list containing the subscriber ID and the book ID
-     * @param conn           The connection to the database
      * @return Array list containing true if the book was returned successfully and false if not with the error message
      */
-    public ArrayList<String> returnBookFromSubscriber(String messageContent, Connection conn) {
+    public ArrayList<String> returnBookFromSubscriber(String messageContent) {
         ArrayList<String> response = new ArrayList<>();
         int subscriberId = 0;
         int copyId = Integer.parseInt(messageContent);
@@ -1125,7 +1255,7 @@ public class DBController {
             /*
              * Update subscriber history
              */
-            updateHistory(conn, subscriberId, "returned", "the book with copy id of : " + copyId + " was returned");
+            updateHistory(subscriberId, "returned", "the book with copy id of : " + copyId + " was returned");
 
             /*
              * Commit the transaction
@@ -1161,10 +1291,9 @@ public class DBController {
      * case 306
      * This method gets the list of all subscribers in the system
      *
-     * @param conn The connection to the database
      * @return The arraylist of all subscribers
      */
-    public ArrayList<Subscriber> viewAllSubscribers(Connection conn) {
+    public ArrayList<Subscriber> viewAllSubscribers() {
         try {
             ArrayList<Subscriber> subscribersList = new ArrayList<>();
             /*
@@ -1214,10 +1343,9 @@ public class DBController {
      * This method returns a specific subscriber's details to the librarian by the subscriber ID
      *
      * @param subscriberId The subscriber ID
-     * @param conn         The connection to the database
      * @return The subscriber
      */
-    public Subscriber viewSubscriberDetails(int subscriberId, Connection conn) {
+    public Subscriber viewSubscriberDetails(int subscriberId) {
         try {
 
             /*
@@ -1254,5 +1382,113 @@ public class DBController {
             return null;
         }
     }
+
+    /**
+     * case 310
+     * This method extends the return date of a borrowed book (librarian)
+     *
+     * @param messageContent Array list containing the subscriber ID, the book ID, the new return date and the librarian ID
+     * @return Array list containing true if the book was extended successfully and false if not with the error message
+     */
+    public ArrayList<String> extendBookBorrowTimeLibrarian(ArrayList<String> messageContent) {
+        ArrayList<String> response = new ArrayList<>();
+        int subscriberId = Integer.parseInt(messageContent.get(0));
+        int copyId = Integer.parseInt(messageContent.get(1));
+        Timestamp newReturnDate = null;
+
+        try {
+            conn.setAutoCommit(false);
+
+            /*
+             * Checks if the subscriber is frozen
+             */
+            String checkSubscriberQuery = "SELECT status FROM subscriber WHERE subscriber_id = ?";
+            PreparedStatement checkSubscriberStatement = conn.prepareStatement(checkSubscriberQuery);
+            checkSubscriberStatement.setInt(1, subscriberId);
+            ResultSet checkSubscriberRs = checkSubscriberStatement.executeQuery();
+            if (checkSubscriberRs.next()) {
+                if (checkSubscriberRs.getInt("status") == 1) {
+                    response.add("false");
+                    response.add("Subscriber is frozen");
+                    return response;
+                }
+            }
+            /*
+             * Checks if the book is reserved (ordered)
+             */
+            String checkReservedQuery = "SELECT reserved_copies FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+            PreparedStatement checkReservedStatement = conn.prepareStatement(checkReservedQuery);
+            checkReservedStatement.setInt(1, copyId);
+            ResultSet checkReservedRs = checkReservedStatement.executeQuery();
+            if (checkReservedRs.next()) {
+                if (checkReservedRs.getInt("reserved_copies") != 0) {
+                    response.add("false");
+                    response.add("the book had been reserved");
+                    return response;
+                }
+            }
+
+            /*
+             * The query parses the return date from the message content
+             */
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime localDateTime = LocalDateTime.parse(messageContent.get(2), formatter);
+            newReturnDate = Timestamp.valueOf(localDateTime);
+
+            /*
+             * The query updates the expected return date of the borrow table where the subscriber ID and the book ID matches the given values
+             * and sets the notify column to 0
+             */
+            String extendQuery = "UPDATE borrow SET expected_return_date = ?, notify = ? WHERE subscriber_id = ? AND copy_id = ?";
+            PreparedStatement extendStatement = conn.prepareStatement(extendQuery);
+            extendStatement.setTimestamp(1, newReturnDate);
+            extendStatement.setInt(2, 0);
+            extendStatement.setInt(3, subscriberId);
+            extendStatement.setInt(4, copyId);
+            extendStatement.executeUpdate();
+
+            /*
+             * Gets the librarian first name and last name
+             */
+            String getLibrarianNameQuery = "SELECT first_name, last_name FROM librarian WHERE librarian_id = ?";
+            PreparedStatement getLibrarianNameStatement = conn.prepareStatement(getLibrarianNameQuery);
+            getLibrarianNameStatement.setInt(1, Integer.parseInt(messageContent.get(3)));
+            ResultSet getLibrarianNameRs = getLibrarianNameStatement.executeQuery();
+            String librarianName = "";
+            if (getLibrarianNameRs.next()) {
+                librarianName = getLibrarianNameRs.getString("first_name") + " " + getLibrarianNameRs.getString("last_name");
+            }
+
+            /*
+             * Update subscriber history
+             */
+            updateHistory(subscriberId, "extended", "the return date for the book " + copyId + " was extended by librarian " + librarianName + " on " + LocalDateTime.now());
+
+            /*
+             * Commit the transaction
+             */
+            conn.commit();
+        } catch (SQLException e) {
+            /*
+             * If an error occur rollback the transaction
+             */
+            try {
+                conn.rollback();
+            } catch (SQLException rollbackEx) {
+                System.out.println("Error: Rolling back transaction" + rollbackEx);
+            }
+            response.add("false");
+            response.add("Problem with extending the return date");
+            System.out.println("Error: With extending the return date (extendReturnDate) " + e);
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException ex) {
+                System.out.println("Error: Setting auto-commit back to true" + ex);
+            }
+        }
+        return response;
+    }
+
 
 }
