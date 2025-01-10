@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
+            prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="logic.ViewReportsFrameController">
+
+    <!-- Title for Reports -->
+    <Label layoutX="550.0" layoutY="34.0" prefHeight="50.0" prefWidth="180.0"
+           style="-fx-font-size: 24px; -fx-font-weight: bold;" text="REPORTS" textAlignment="CENTER"
+           AnchorPane.leftAnchor="550.0" AnchorPane.rightAnchor="550.0">
+        <font>
+            <Font size="55.0"/>
+        </font>
+    </Label>
+
+    <!-- Static Text for "Type" -->
+    <Label layoutX="127.0" layoutY="144.0" prefHeight="5.0" prefWidth="45.0" style="-fx-font-size: 16px;" text="Type"/>
+
+    <!-- Radio Buttons for X, Y, Z -->
+    <HBox layoutX="172.0" layoutY="148.0" prefHeight="16.0" prefWidth="155.0" spacing="10.0">
+        <RadioButton fx:id="radioX" text="X"/>
+        <RadioButton fx:id="radioY" text="Y"/>
+        <RadioButton fx:id="radioZ" text="Z"/>
+    </HBox>
+
+    <!-- Graph Placeholder (Using a LineChart for example) -->
+    <LineChart fx:id="lineChart" layoutX="100.0" layoutY="210.0" prefHeight="400" prefWidth="1080">
+        <xAxis>
+            <CategoryAxis fx:id="xAxis"/>
+        </xAxis>
+        <yAxis>
+            <NumberAxis fx:id="yAxis"/>
+        </yAxis>
+    </LineChart>
+
+    <!-- Back Button in the left corner -->
+    <Button layoutX="20" layoutY="730" onAction="#backButtonClicked" prefWidth="100" text="Back"
+            AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0"/>
+
+</AnchorPane>

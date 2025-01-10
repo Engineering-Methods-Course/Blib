@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
+      prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="logic.SearchResultFrameController">
+    <children>
+        <TableView fx:id="searchResultTable" prefHeight="5000.0" prefWidth="1052.0">
+            <columns>
+                <TableColumn fx:id="bookNameColumn" prefWidth="342.0" text="Book Name"/>
+                <TableColumn fx:id="genreColumn" prefWidth="415.0" text="Genre"/>
+                <TableColumn fx:id="watchDetailsColumn" prefWidth="522.0" text="Watch Details"/>
+            </columns>
+        </TableView>
+        <AnchorPane prefHeight="60.0" prefWidth="600.0">
+            <children>
+                <Button fx:id="backButton" layoutX="14.0" layoutY="9.0" mnemonicParsing="false"
+                        onAction="#backButtonClicked" text="Back" AnchorPane.bottomAnchor="17.0"
+                        AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="1225.0" AnchorPane.topAnchor="9.0"/>
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>

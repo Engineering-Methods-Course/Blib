@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
+            prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="logic.ClientIPFrameController">
+    <children>
+        <!-- Centered VBox for IP, Port, and Enter Button -->
+        <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="20.0" AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <HBox alignment="CENTER" spacing="10.0">
+                <children>
+                    <Label prefHeight="32.0" prefWidth="287.0" text="Enter Server IP Address And Port"/>
+                </children>
+            </HBox>
+            <!-- IP Field -->
+            <HBox alignment="CENTER" spacing="10.0">
+                <Label prefWidth="100.0" text="IP Address:"/>
+                <TextField fx:id="txtIP" prefWidth="200.0"/>
+            </HBox>
+
+            <!-- Port Field -->
+            <HBox alignment="CENTER" spacing="10.0">
+                <Label prefWidth="100.0" text="Port:"/>
+                <TextField fx:id="txtPort" prefWidth="200.0"/>
+            </HBox>
+
+            <!-- Enter Button -->
+            <HBox alignment="CENTER" spacing="20.0">
+                <Button onAction="#clickEnterButton" prefWidth="100.0" text="Enter"/>
+            </HBox>
+        </VBox>
+    </children>
+</AnchorPane>
