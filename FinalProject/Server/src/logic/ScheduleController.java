@@ -17,13 +17,8 @@ public class ScheduleController {
         scheduler = Executors.newScheduledThreadPool(1);
         notificationController = NotificationController.getInstance();
         dbController = DBController.getInstance();
+        runDayleTask();
     }
-
-    /**
-     * Gets the instance of the schedule controller
-     *
-     * @return the instance of the schedule controller
-     */
 
     public static ScheduleController getInstance() {
         if (instance == null) {
@@ -35,49 +30,39 @@ public class ScheduleController {
         }
         return instance;
     }
-    /**
-     * Schedules a monthly task
-     *
-     * @param task the task to be scheduled
-     */
+    //!WIP
     public void setSchedulerExportLog(Runnable task) {
         long initialDelay = computeInitialDelay(1, 0, 0);
         long period = TimeUnit.DAYS.toMillis(30);
         scheduler.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.MILLISECONDS);
     }
     /**
-     * Schedules a task to be executed
-     *
-     * @param task the task to be scheduled
+     * This method runs the daily task
      */
-    public void scheduleUnfreeze(Runnable task) {
-        int days = 30;
-        scheduler.schedule(task, days, TimeUnit.DAYS);
-        System.out.println("Unfreeze task scheduled to run in " + days + " days");
+    public void runDayleTask() {
+        long initialDelay = computeInitialDelay(0, 0, 0);
+        System.out.println("Initial Delay: " + initialDelay + " ms");
+        long period = TimeUnit.DAYS.toMillis(1);
+        scheduler.scheduleAtFixedRate(() -> {
+            try {
+                System.out.println("Running daily task");
+                dbController.unfreezeAccount().run();
+                dbController.checkDueBooks().run();
+                dbController.checkReservationDue().run();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }, 0, period, TimeUnit.DAYS);
     }
     /**
-     * Schedules a daily task
-     */
-    public void scheduleBorrowReturnNotification() {
-        long initialDelay = computeInitialDelay(5, 0, 0);
-        long period = TimeUnit.DAYS.toMillis(1);
-        scheduler.scheduleAtFixedRate(dbController.checkDueBooks(), initialDelay, period, TimeUnit.MILLISECONDS);
-    }
-
-    public void checkReservationDue() {
-        long initialDelay = computeInitialDelay(5, 0, 0);
-        long period = TimeUnit.DAYS.toMillis(1);
-        scheduler.scheduleAtFixedRate(dbController.checkReservationDue(), initialDelay, period, TimeUnit.MILLISECONDS);
-    }
-
-    /**
-     * Computes the initial delay for the scheduler
+     * This method computes the initial delay
      *
-     * @param hour   the hour of the day
-     * @param minute the minute of the hour
-     * @param second the second of the minute
+     * @param hour the hour
+     * @param minute the minute
+     * @param second the second
      * @return the initial delay
      */
+    //! Not Working
     private long computeInitialDelay(int hour, int minute, int second) {
         Calendar nextRun = Calendar.getInstance();
         nextRun.set(Calendar.HOUR_OF_DAY, hour);
@@ -92,7 +77,7 @@ public class ScheduleController {
         return nextRun.getTimeInMillis() - System.currentTimeMillis();
     }
     /**
-     * Stops the scheduler called when the server is closed
+     * This method stops the scheduler
      */
     public void stopScheduler() {
         scheduler.shutdown();
@@ -104,5 +89,4 @@ public class ScheduleController {
             scheduler.shutdownNow();
         }
     }
-
 }

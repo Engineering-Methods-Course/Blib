@@ -11,7 +11,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class DBController {
-    private static final ScheduleController scheduleController = ScheduleController.getInstance();
     private static DBController dbInstance = null;
     private static NotificationController notificationController;
     Connection conn = null;
@@ -1247,7 +1246,6 @@ public class DBController {
                     lateReturn = true;
                     // Freeze the subscriber account for a month
                     freezeAccount(subscriberId, "Late return of book " + bookName);
-                    ScheduleController.getInstance().scheduleUnfreeze(unfreezeAccount(subscriberId));
                 }
             }
 
@@ -1702,15 +1700,15 @@ public class DBController {
 
     public void freezeAccount(int subscriberId, String reason) {
         try {
-
             /*
              * The query updates the status of the subscriber to frozen (1)
              */
 
-            String freezeQuery = "UPDATE subscriber SET status = ? WHERE subscriber_id = ?";
+            String freezeQuery = "UPDATE subscriber SET status = ?,frozen_date = ? WHERE subscriber_id = ?";
             PreparedStatement freezeStatement = conn.prepareStatement(freezeQuery);
             freezeStatement.setInt(1, 1);
             freezeStatement.setInt(2, subscriberId);
+            freezeStatement.setDate(3, Date.valueOf(LocalDate.now()));
             freezeStatement.executeUpdate();
             // Update subscriber history
             updateHistory(subscriberId, "frozen", "Account was frozen reason: " + reason);
@@ -1722,31 +1720,46 @@ public class DBController {
     /**
      * This method unfreezes a subscriber account
      *
-     * @param subscriberId The ID of the subscriber
      */
-    public Runnable unfreezeAccount(int subscriberId) {
-        return new Runnable() {
-            @Override
-            public void run() {
-                try {
+    public Runnable unfreezeAccount() {
+        return () -> {
+            try {
+                ArrayList<Integer> subscriberIds = new ArrayList<>();
+                /*
+                 * The query updates the status of the subscriber to unfrozen (0)
+                 */
 
-                    /*
-                     * The query updates the status of the subscriber to unfrozen (0)
-                     */
+                /*
+                 * Get the subscriber ID to unfreeze
+                 */
 
-                    String unfreezeQuery = "UPDATE subscriber SET status = ? WHERE subscriber_id = ?";
-                    PreparedStatement unfreezeStatement = conn.prepareStatement(unfreezeQuery);
-                    unfreezeStatement.setInt(1, 0);
-                    unfreezeStatement.setInt(2, subscriberId);
-                    unfreezeStatement.executeUpdate();
-                    // Update subscriber history
-                    updateHistory(subscriberId, "unfrozen", "Account was unfrozen");
-                } catch (SQLException e) {
-                    System.out.println("Error: Unfreezing account" + e);
+                String getSubscriberIdQuery = "SELECT subscriber_id ,DATEDIFF(NOW(), frozen_date) AS frozen_time FROM subscriber WHERE status = 1";
+                PreparedStatement getSubscriberIdStatement = conn.prepareStatement(getSubscriberIdQuery);
+                ResultSet getSubscriberIdRs = getSubscriberIdStatement.executeQuery();
+                while (getSubscriberIdRs.next()) {
+                    if (getSubscriberIdRs.getInt("frozen_time") >= 30) {
+                        {
+                            subscriberIds.add(getSubscriberIdRs.getInt("subscriber_id"));
+                            /*
+                             * Unfreeze the subscribers
+                             */
+                            int subscriberId = getSubscriberIdRs.getInt("subscriber_id");
+                            String unfreezeQuery = "UPDATE subscriber SET status = 0 WHERE subscriber_id = ?";
+                            PreparedStatement unfreezeStatement = conn.prepareStatement(unfreezeQuery);
+                            unfreezeStatement.setInt(1, subscriberId);
+                            unfreezeStatement.executeUpdate();
+                            // Update subscriber history
+                            updateHistory(subscriberId, "unfrozen", "Account was unfrozen");
+                        }
+                    }
                 }
+
+            } catch (SQLException e) {
+                System.out.println("Error: Unfreezing account" + e);
             }
         };
     }
+
 
     /**
      * This method checks if a book is due for return
@@ -1754,60 +1767,56 @@ public class DBController {
      * @return Runnable
      */
     public Runnable checkDueBooks() {
-        return new Runnable() {
-            @Override
-            public void run() {
-                try {
+        return () -> {
+            try {
+
+                /*
+                 * Check if the subscribers has to return a book
+                 */
+
+                String query = "SELECT subscriber_id, copy_id, expected_return_date, DATEDIFF(expected_return_date, NOW()) AS date_diff FROM borrow WHERE DATEDIFF(expected_return_date, NOW()) <= 1 AND status = 'borrowed'";
+                PreparedStatement statement = conn.prepareStatement(query);
+                ResultSet rs = statement.executeQuery();
+                while (rs.next()) {
+                    int subscriberId = rs.getInt("subscriber_id");
+                    int copyId = rs.getInt("copy_id");
+                    Date expectedReturnDate = rs.getDate("expected_return_date");
+                    int dateDiff = rs.getInt("date_diff");
+                    String bookName = "";
 
                     /*
-                     * Check if the subscribers has to return a book
+                     * Get the book name
                      */
 
-                    String query = "SELECT subscriber_id, copy_id, expected_return_date, DATEDIFF(expected_return_date, NOW()) AS date_diff FROM borrow WHERE DATEDIFF(expected_return_date, NOW()) <= 1 AND status = 'borrowed'";
-                    PreparedStatement statement = conn.prepareStatement(query);
-                    ResultSet rs = statement.executeQuery();
-                    while (rs.next()) {
-                        int subscriberId = rs.getInt("subscriber_id");
-                        int copyId = rs.getInt("copy_id");
-                        Date expectedReturnDate = rs.getDate("expected_return_date");
-                        int dateDiff = rs.getInt("date_diff");
-                        String bookName = "";
-
-                        /*
-                         * Get the book name
-                         */
-
-                        String getBookNameQuery = "SELECT name FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
-                        PreparedStatement getBookNameStatement = conn.prepareStatement(getBookNameQuery);
-                        getBookNameStatement.setInt(1, copyId);
-                        ResultSet getBookNameRs = getBookNameStatement.executeQuery();
-                        if (getBookNameRs.next()) {
-                            bookName = getBookNameRs.getString("name");
-                        }
-
-                        /*
-                         * Get the subscriber email
-                         */
-
-                        String getEmailQuery = "SELECT email FROM subscriber WHERE subscriber_id = ?";
-                        PreparedStatement getEmailStatement = conn.prepareStatement(getEmailQuery);
-                        getEmailStatement.setInt(1, subscriberId);
-                        ResultSet emailRs = getEmailStatement.executeQuery();
-                        if (emailRs.next()) {
-                            String email = emailRs.getString("email");
-                            if (dateDiff < 0 && dateDiff > -7) {
-                                notificationController.sendEmail(email, "Book Return Reminder", "Please return the book " + bookName + " with copy ID " + copyId + " else account will be frozen in " + (7 - Math.abs(dateDiff)) + " days");
-                            } else if (dateDiff > 0) {
-                                notificationController.sendEmail(email, "Book Return Reminder", "Please return the book " + bookName + " with copy ID " + copyId + " due date is in " + dateDiff + " days");
-                            }
-                        }
-                        // Update subscriber history
-                        updateHistory(subscriberId, "notified", "Reminder to return the book with copy ID " + copyId + " by " + expectedReturnDate + ". Days left: " + dateDiff);
+                    String getBookNameQuery = "SELECT name FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+                    PreparedStatement getBookNameStatement = conn.prepareStatement(getBookNameQuery);
+                    getBookNameStatement.setInt(1, copyId);
+                    ResultSet getBookNameRs = getBookNameStatement.executeQuery();
+                    if (getBookNameRs.next()) {
+                        bookName = getBookNameRs.getString("name");
                     }
-                    System.out.println("Checked due books");
-                } catch (SQLException e) {
-                    System.out.println("Error: Checking due books" + e);
+
+                    /*
+                     * Get the subscriber email
+                     */
+
+                    String getEmailQuery = "SELECT email FROM subscriber WHERE subscriber_id = ?";
+                    PreparedStatement getEmailStatement = conn.prepareStatement(getEmailQuery);
+                    getEmailStatement.setInt(1, subscriberId);
+                    ResultSet emailRs = getEmailStatement.executeQuery();
+                    if (emailRs.next()) {
+                        String email = emailRs.getString("email");
+                        if (dateDiff < 0 && dateDiff > -7) {
+                            notificationController.sendEmail(email, "Book Return Reminder", "Please return the book " + bookName + " with copy ID " + copyId + " else account will be frozen in " + (7 - Math.abs(dateDiff)) + " days");
+                        } else if (dateDiff > 0) {
+                            notificationController.sendEmail(email, "Book Return Reminder", "Please return the book " + bookName + " with copy ID " + copyId + " due date is in " + dateDiff + " days");
+                        }
+                    }
+                    // Update subscriber history
+                    updateHistory(subscriberId, "notified", "Reminder to return the book with copy ID " + copyId + " by " + expectedReturnDate + ". Days left: " + dateDiff);
                 }
+            } catch (SQLException e) {
+                System.out.println("Error: Checking due books" + e);
             }
         };
     }
@@ -1818,74 +1827,70 @@ public class DBController {
      * @return Runnable
      */
     public Runnable checkReservationDue() {
-        return new Runnable() {
-            @Override
-            public void run() {
-                try {
+        return () -> {
+            try {
+                /*
+                 * Check if the subscriber was notified
+                 */
+
+                String checkNotificationQuery = "SELECT subscriber_id, serial_number, DATEDIFF(NOW(), notify_date) AS date_diff FROM reservation WHERE notify = 1";
+                PreparedStatement checkNotificationStatement = conn.prepareStatement(checkNotificationQuery);
+                ResultSet checkNotificationRs = checkNotificationStatement.executeQuery();
+                while (checkNotificationRs.next()) {
+                    int subscriberId = checkNotificationRs.getInt("subscriber_id");
+                    int serialNumber = checkNotificationRs.getInt("serial_number");
+                    String email = "";
+                    int dateDiff = checkNotificationRs.getInt("date_diff");
+                    String bookName = "";
 
                     /*
-                     * Check if the subscriber was notified
+                     *Get the book name
                      */
 
-                    String checkNotificationQuery = "SELECT subscriber_id, serial_number, DATEDIFF(NOW(), notify_date) AS date_diff FROM reservation WHERE notify = 1";
-                    PreparedStatement checkNotificationStatement = conn.prepareStatement(checkNotificationQuery);
-                    ResultSet checkNotificationRs = checkNotificationStatement.executeQuery();
-                    while (checkNotificationRs.next()) {
-                        int subscriberId = checkNotificationRs.getInt("subscriber_id");
-                        int serialNumber = checkNotificationRs.getInt("serial_number");
-                        String email = "";
-                        int dateDiff = checkNotificationRs.getInt("date_diff");
-                        String bookName = "";
-
-                        /*
-                         *Get the book name
-                         */
-
-                        String getBookNameQuery = "SELECT name FROM book WHERE serial_number = ?";
-                        PreparedStatement getBookNameStatement = conn.prepareStatement(getBookNameQuery);
-                        getBookNameStatement.setInt(1, serialNumber);
-                        ResultSet getBookNameRs = getBookNameStatement.executeQuery();
-                        if (getBookNameRs.next()) {
-                            bookName = getBookNameRs.getString("name");
-                        }
-
-                        /*
-                         * Get the subscriber email
-                         */
-
-                        String getEmailQuery = "SELECT email FROM subscriber WHERE subscriber_id = ?";
-                        PreparedStatement getEmailStatement = conn.prepareStatement(getEmailQuery);
-                        getEmailStatement.setInt(1, subscriberId);
-                        ResultSet emailRs = getEmailStatement.executeQuery();
-                        if (emailRs.next()) {
-                            email = emailRs.getString("email");
-                        }
-
-                        /*
-                         * check if the subscriber was notified and the date difference
-                         */
-
-                        if (dateDiff <= 2) {
-                            // Notify the subscriber
-                            notificationController.sendEmail(email, "Book Reservation Reminder", "Reminder to borrow the book " + bookName + ".\nDays left until reservation is canceled: " + (2 - dateDiff));
-                            // Update subscriber history
-                            updateHistory(subscriberId, "notified", "Reminder to borrow the book " + bookName + ". \nDays left until reservation is canceled: " + (2 - dateDiff));
-                        } else {
-                            String deleteReservationQuery = "DELETE FROM reservation WHERE subscriber_id = ? AND serial_number = ?";
-                            PreparedStatement deleteReservationStatement = conn.prepareStatement(deleteReservationQuery);
-                            deleteReservationStatement.setInt(1, subscriberId);
-                            deleteReservationStatement.setInt(2, serialNumber);
-                            deleteReservationStatement.executeUpdate();
-                            // Notify the subscriber
-                            notificationController.sendEmail(email, "Reservation Canceled", "Reservation for the book " + bookName + " was canceled due to inactivity");
-                            // Update subscriber history
-                            updateHistory(subscriberId, "reservation canceled", "Reservation for the book " + bookName + " was canceled");
-                        }
+                    String getBookNameQuery = "SELECT name FROM book WHERE serial_number = ?";
+                    PreparedStatement getBookNameStatement = conn.prepareStatement(getBookNameQuery);
+                    getBookNameStatement.setInt(1, serialNumber);
+                    ResultSet getBookNameRs = getBookNameStatement.executeQuery();
+                    if (getBookNameRs.next()) {
+                        bookName = getBookNameRs.getString("name");
                     }
 
-                } catch (SQLException e) {
-                    System.out.println("Error: Checking due books" + e);
+                    /*
+                     * Get the subscriber email
+                     */
+
+                    String getEmailQuery = "SELECT email FROM subscriber WHERE subscriber_id = ?";
+                    PreparedStatement getEmailStatement = conn.prepareStatement(getEmailQuery);
+                    getEmailStatement.setInt(1, subscriberId);
+                    ResultSet emailRs = getEmailStatement.executeQuery();
+                    if (emailRs.next()) {
+                        email = emailRs.getString("email");
+                    }
+
+                    /*
+                     * check if the subscriber was notified and the date difference
+                     */
+                    if (dateDiff <= 2) {
+                        // Notify the subscriber
+                        notificationController.sendEmail(email, "Book Reservation Reminder", "Reminder to borrow the book " + bookName + ".\nDays left until reservation is canceled: " + (2 - dateDiff));
+                        // Update subscriber history
+                        updateHistory(subscriberId, "notified", "Reminder to borrow the book " + bookName + ". \nDays left until reservation is canceled: " + (2 - dateDiff));
+                    } else {
+                        System.out.println("Reservation canceled "+ subscriberId + " " + serialNumber);
+                        String deleteReservationQuery = "DELETE FROM reservation WHERE subscriber_id = ? AND serial_number = ?";
+                        PreparedStatement deleteReservationStatement = conn.prepareStatement(deleteReservationQuery);
+                        deleteReservationStatement.setInt(1, subscriberId);
+                        deleteReservationStatement.setInt(2, serialNumber);
+                        deleteReservationStatement.executeUpdate();
+                        // Notify the subscriber
+                        notificationController.sendEmail(email, "Reservation Canceled", "Reservation for the book " + bookName + " was canceled due to inactivity");
+                        // Update subscriber history
+                        updateHistory(subscriberId, "reservation canceled", "Reservation for the book " + bookName + " was canceled");
+                    }
                 }
+
+            } catch (SQLException e) {
+                System.out.println("Error: Checking due books" + e);
             }
         };
 

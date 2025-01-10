@@ -4,6 +4,8 @@ package logic;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -69,6 +71,9 @@ public class NotificationController {
 
         Session session = Session.getInstance(properties, authenticator);
         try {
+            if (!isValidEmailAddress(recipient)) {
+                throw new RuntimeException("Invalid email address: " + recipient);
+            }
             Message message = new MimeMessage(session); // Create a new email message
             message.setFrom(new InternetAddress(from)); // Set the email sender
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient)); // Set the email recipient
@@ -84,4 +89,10 @@ public class NotificationController {
         }
     }
 
+    private boolean isValidEmailAddress(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
 }

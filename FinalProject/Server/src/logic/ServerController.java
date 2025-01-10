@@ -28,6 +28,7 @@ public class ServerController extends AbstractServer {
         scheduleController = ScheduleController.getInstance();
     }
 
+
     /**
      * This method overrides the one in the superclass. Called
      * when a client has connected to the server add it to the list of clients.
