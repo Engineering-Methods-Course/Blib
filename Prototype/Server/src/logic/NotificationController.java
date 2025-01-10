@@ -69,20 +69,19 @@ public class NotificationController {
 
         Session session = Session.getInstance(properties, authenticator);
         try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
-            message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+            Message message = new MimeMessage(session); // Create a new email message
+            message.setFrom(new InternetAddress(from)); // Set the email sender
+            message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient)); // Set the email recipient
             message.setSubject(subject); // Set the email subject
             message.setContent(text, "text/html"); // Set the email body type
             System.out.println("Sending email...");
-            Transport.send(message);
+            Transport.send(message); // Send the email
             System.out.println("Email sent successfully");
         } catch (MessagingException e) {
             System.out.println("Error sending email"+ e.getMessage());
             throw new RuntimeException(e);
 
         }
-
     }
 
 }

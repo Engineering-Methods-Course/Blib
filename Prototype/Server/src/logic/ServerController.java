@@ -15,14 +15,17 @@ import java.util.ArrayList;
 public class ServerController extends AbstractServer {
 
     private final ServerMonitorFrameController serverMonitorController;
-    private DBController dbController = null;
-    private static NotificationController notificationController;
+    private DBController dbController;
+    private NotificationController notificationController;
+    private ScheduleController scheduleController;
+
 
 
     public ServerController(int port, ServerMonitorFrameController serverMonitorController) {
         super(port);
         this.serverMonitorController = serverMonitorController;
-        NotificationController notificationController = NotificationController.getInstance();
+        notificationController = NotificationController.getInstance();
+        scheduleController = ScheduleController.getInstance();
     }
 
     /**
@@ -472,6 +475,11 @@ public class ServerController extends AbstractServer {
             }
         } catch (Exception e) {
             System.out.println("Error: incorrect msg object type (handleMessageFromClient ServerController)" + e);
+            try {
+                client.sendToClient(null);
+            } catch (Exception e1) {
+                System.out.println("Error: sending null to client" + e1);
+            }
         }
     }
 

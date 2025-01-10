@@ -1,6 +1,7 @@
 package main;
 
 import common.ClientServerMessage;
+import logic.ScheduleController;
 import logic.ServerController;
 import gui.ServerMonitorFrameController;
 import gui.ServerPortFrameController;
@@ -68,6 +69,7 @@ public class ServerGUI extends Application {
         primaryStage.setOnCloseRequest(event -> {
             try {
                 sv.sendMessagesToAllClients(new ClientServerMessage(999, null));
+                ScheduleController.getInstance().stopScheduler(); // Stop the scheduler
                 System.exit(0);
             } catch (Exception e) {
                 e.printStackTrace();

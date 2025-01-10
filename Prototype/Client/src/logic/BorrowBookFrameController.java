@@ -70,7 +70,7 @@ public class BorrowBookFrameController
         }
 
         // Format the return date
-        String formattedReturnDate = returnDate.atStartOfDay().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String formattedReturnDate = returnDate.atStartOfDay().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         // Create the ArrayList for message content
         ArrayList<String> dataToSend = new ArrayList<>();
