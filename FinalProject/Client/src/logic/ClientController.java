@@ -140,16 +140,19 @@ public class ClientController extends AbstractClient
                         break;
                     // Show borrowed list response
                     case 211:
-                        if (message.getMessageContent() instanceof ArrayList)
-                        {
+                        if (message.getMessageContent() instanceof ArrayList) {
                             @SuppressWarnings("unchecked")
                             ArrayList<BorrowedBook> messages = (ArrayList<BorrowedBook>) message.getMessageContent();
-
-                            SubscriberProfileOptionsFrameController controllerSubscriberOption = loader.getController();
-                            controllerSubscriberOption.loadBorrowsTable(messages);
-
-                            SubscriberProfileOptionsFrameController controllerFromLibrarianFrames = loader.getController();
-                            controllerFromLibrarianFrames.loadBorrowsTable(messages);
+                            // Handle SubscriberProfileOptionsFrameController
+                            if (loader.getController().getClass().getSimpleName().equals("SubscriberProfileOptionsFrameController")) {
+                                SubscriberProfileOptionsFrameController controllerSubscriberOption = loader.getController();
+                                controllerSubscriberOption.loadBorrowsTable(messages);
+                            }
+                            // Handle WatchProfileFrameController
+                            if (loader.getController().getClass().getSimpleName().equals("WatchProfileFrameController")) {
+                                WatchProfileFrameController controllerFromLibrarianFrames = loader.getController();
+                                controllerFromLibrarianFrames.loadBorrowsTable(messages);
+                            }
                         }
                         break;
                     //Extend book borrow - subscriber response
@@ -265,7 +268,16 @@ public class ClientController extends AbstractClient
                         break;
                     // Extend borrow - librarian response
                     case 311:
-                        //todo: handle extend borrow - librarian response
+                        if (message.getMessageContent() instanceof ArrayList) {
+
+                            ArrayList<String> arrayMessageFromServer = (ArrayList<String>) message.getMessageContent();
+                            //System.out.println(arrayMessageFromServer.get(0));
+                            System.out.println(arrayMessageFromServer);
+                            BorrowExtensionFrameController.showExtendMessageResponse(arrayMessageFromServer);
+                        } else {
+                            System.out.println("Invalid message content for case 311");
+                            Platform.runLater(() -> showErrorAlert("Data Error", "Expected an ArrayList for borrow extension."));
+                        }
                         break;
                     // Watch logs response
                     case 313:

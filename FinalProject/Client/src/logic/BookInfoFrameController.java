@@ -78,7 +78,7 @@ public class BookInfoFrameController
      */
     public void backButtonClicked(ActionEvent event) throws Exception
     {
-        navigateTo(event, "/gui/SearchResultsFrame.fxml", "/gui/Subscriber.css", "Search Results");
+        navigateTo(event, "/gui/SearchResultFrame.fxml", "/gui/Subscriber.css", "Search Results");
     }
 
     private void loadBookInfo()

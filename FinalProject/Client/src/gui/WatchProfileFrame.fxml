@@ -58,7 +58,7 @@
                 </VBox>
 
                 <!-- Back Button -->
-                <Button fx:id="btnBack" text="Back" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
+                <Button fx:id="btnBack" onAction="#backButtonClicked" text="Back" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
             </children>
         </AnchorPane>
     </children>

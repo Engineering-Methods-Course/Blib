@@ -44,10 +44,6 @@ public class WatchProfileFrameController
     public TableColumn<BorrowedBook, Button> extendButtonColumn;
 
 
-
-
-    //210 returns the borrowed list
-
     public void initialize()
     {
         Subscriber subscriber = Subscriber.getWatchProfileSubscriber();
@@ -80,7 +76,6 @@ public class WatchProfileFrameController
                             }
                         });
                     }
-
                     @Override
                     protected void updateItem(Button item, boolean empty) {
                         super.updateItem(item, empty);
@@ -114,7 +109,6 @@ public class WatchProfileFrameController
     {
         // Create a message with code 210 and userID
         ClientServerMessage message = new ClientServerMessage(210, userID);
-
         try
         {
             // Send the message to the server
@@ -126,34 +120,31 @@ public class WatchProfileFrameController
         }
     }
 
+
+    public void loadBorrowsTable(ArrayList<BorrowedBook> borrowedBooks)
+    {
+        // Adds the borrowed books to the table
+        for (BorrowedBook borrowedBook : borrowedBooks)
+        {
+            borrowsTable.getItems().add(borrowedBook);
+        }
+    }
+
     public void extendBorrowButtonClicked(ActionEvent event) throws Exception
     {
-        //todo: implement the extend borrow button
+        // Get the selected BorrowedBook from the clicked row
+        BorrowedBook selectedBook = borrowsTable.getSelectionModel().getSelectedItem();
+
+        if (selectedBook != null) {
+            // Save the selected book using the set method or pass it directly
+            BorrowExtensionFrameController.setBorrowedBook(selectedBook); // Set the selected book in the Subscriber object, or use a different method
+            // Navigate to the BorrowExtensionFrameController, passing the selected book
+            navigateTo(event, "/gui/BorrowExtensionFrame.fxml", "/gui/Subscriber.css", "Extend Borrow Period");
+        } else {
+            // If no book is selected, show an alert
+            showAlert(Alert.AlertType.WARNING, "No Book Selected", "Please select a book to extend the borrow period.");
+        }
     }
-
-/*
-    // TODO: Make the table when server will do the request
-    // TODO: Add functionality for the Extend button
-    public static void handleBorrowedBooksResponse(ArrayList<BorrowedBook> borrowedBooks) {
-        Platform.runLater(() -> {
-            if (borrowedBooks == null || borrowedBooks.isEmpty()) {
-                showAlert(Alert.AlertType.INFORMATION, "No Borrowed Books", "The subscriber has not borrowed any books.");
-            } else {
-                borrowedBooksTable.setItems(FXCollections.observableList(borrowedBooks));
-
-                // Add an "Extend" button in the last column for each borrowed book
-                for (BorrowedBook book : borrowedBooks) {
-                    Button extendButton = new Button("Extend");
-                    extendButton.setDisable(false); // Make the button visible
-
-                    extendOptionsColumn.setCellValueFactory(cellData -> {
-                        return new SimpleObjectProperty<>(extendButton); // Add the button to the table
-                    });
-                }
-            }
-        });
-    }
-*/
 
 
     /**
