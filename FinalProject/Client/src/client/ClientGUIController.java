@@ -3,7 +3,6 @@ package client;
 import common.ClientServerMessage;
 import logic.ClientController;
 import logic.ClientIPFrameController;
-import logic.SearchHomePageFrameController;
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -18,7 +17,7 @@ public class ClientGUIController extends Application
 {
     public static ChatClient chat;
 
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
     {
         launch(args);
     }
@@ -63,7 +62,7 @@ public class ClientGUIController extends Application
             // Run exitAction() in a background thread to prevent blocking
             Task<Void> logOutTask = new Task<Void>() {
                 @Override
-                protected Void call() throws Exception {
+                protected Void call(){
                     exitAction();  // Call your logout action in the background
                     return null;
                 }
