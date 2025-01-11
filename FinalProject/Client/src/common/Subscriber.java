@@ -69,7 +69,6 @@ public class Subscriber extends User implements Serializable
         Subscriber.watchProfileSubscriber = watchProfileSubscriber;
     }
 
-
     /**
      * Sets the local subscriber object.
      *
@@ -200,7 +199,6 @@ public class Subscriber extends User implements Serializable
         return statusIsFrozen;
     }
 
-
     /**
      * Sets the frozen status of the subscriber's account.
      *
@@ -210,5 +208,4 @@ public class Subscriber extends User implements Serializable
     {
         this.statusIsFrozen = statusIsFrozen;
     }
-
 }
