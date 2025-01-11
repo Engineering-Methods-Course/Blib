@@ -144,8 +144,12 @@ public class ClientController extends AbstractClient
                         {
                             @SuppressWarnings("unchecked")
                             ArrayList<BorrowedBook> messages = (ArrayList<BorrowedBook>) message.getMessageContent();
-                            SubscriberProfileOptionsFrameController controller = loader.getController();
-                            controller.loadBorrowsTable(messages);
+
+                            SubscriberProfileOptionsFrameController controllerSubscriberOption = loader.getController();
+                            controllerSubscriberOption.loadBorrowsTable(messages);
+
+                            SubscriberProfileOptionsFrameController controllerFromLibrarianFrames = loader.getController();
+                            controllerFromLibrarianFrames.loadBorrowsTable(messages);
                         }
                         break;
                     //Extend book borrow - subscriber response

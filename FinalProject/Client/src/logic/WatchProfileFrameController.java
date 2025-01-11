@@ -4,13 +4,17 @@ import client.ClientGUIController;
 import common.BorrowedBook;
 import common.ClientServerMessage;
 import common.Subscriber;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
+
+import java.util.ArrayList;
 
 import static client.ClientGUIController.navigateTo;
 
@@ -29,9 +33,17 @@ public class WatchProfileFrameController
     @FXML
     public Button btnBack;
     @FXML
-    public static TableView<BorrowedBook> borrowedBooksTable;
+    public TableView<BorrowedBook> borrowsTable;
     @FXML
-    public static TableColumn<BorrowedBook, Button> extendOptionsColumn;
+    public TableColumn<BorrowedBook, String> bookNameColumn;
+    @FXML
+    public TableColumn<BorrowedBook, String> borrowDateColumn;
+    @FXML
+    public TableColumn<BorrowedBook, String> returnDateColumn;
+    @FXML
+    public TableColumn<BorrowedBook, Button> extendButtonColumn;
+
+
 
 
     //210 returns the borrowed list
@@ -47,7 +59,43 @@ public class WatchProfileFrameController
         {
             updateSubscriberInfo(subscriber);
         }
-        //requestBorrowedBooks(subscriber.getId());
+        // Set up the borrowed books table columns
+        bookNameColumn.setCellValueFactory(new PropertyValueFactory<BorrowedBook, String>("bookName"));
+        borrowDateColumn.setCellValueFactory(new PropertyValueFactory<BorrowedBook, String>("borrowDate"));
+        returnDateColumn.setCellValueFactory(new PropertyValueFactory<BorrowedBook, String>("expectedReturnDate"));
+
+        // Set up the extend button column
+        extendButtonColumn.setCellFactory(new Callback<TableColumn<BorrowedBook, Button>, TableCell<BorrowedBook, Button>>() {
+            @Override
+            public TableCell<BorrowedBook, Button> call(TableColumn<BorrowedBook, Button> param) {
+                return new TableCell<BorrowedBook, Button>() {
+                    private final Button extendButton = new Button("Extend Borrow");
+
+                    {
+                        extendButton.setOnAction((ActionEvent event) -> {
+                            try {
+                                extendBorrowButtonClicked(event);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(Button item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(extendButton);
+                        }
+                    }
+                };
+            }
+        });
+
+        // Sends a message to the server to get the user's borrowed books
+        requestBorrowedBooks(Subscriber.getWatchProfileSubscriber().getID());
     }
 
     public void updateSubscriberInfo(Subscriber subscriber)
@@ -78,29 +126,34 @@ public class WatchProfileFrameController
         }
     }
 
-    /**
-     //todo: make the table when server will do the request
-     //todo: add functionality of extend button
-     public static void handleBorrowedBooksResponse(ArrayList<BorrowedBook> borrowedBooks) {
-     Platform.runLater(() -> {
-     if (borrowedBooks == null || borrowedBooks.isEmpty()) {
-     showAlert(Alert.AlertType.INFORMATION, "No Borrowed Books", "The subscriber has not borrowed any books.");
-     } else {
-     borrowedBooksTable.setItems(FXCollections.observableList(borrowedBooks));
+    public void extendBorrowButtonClicked(ActionEvent event) throws Exception
+    {
+        //todo: implement the extend borrow button
+    }
 
-     // Add an "Extend" button in the last column for each borrowed book
-     for (BorrowedBook book : borrowedBooks) {
-     Button extendButton = new Button("Extend");
-     extendButton.setDisable(false); // Make the button visible
-     extendOptionsColumn.setCellValueFactory(cellData -> {
-     return new SimpleObjectProperty<>(extendButton); // Add the button to the table
-     });
-     }
+/*
+    // TODO: Make the table when server will do the request
+    // TODO: Add functionality for the Extend button
+    public static void handleBorrowedBooksResponse(ArrayList<BorrowedBook> borrowedBooks) {
+        Platform.runLater(() -> {
+            if (borrowedBooks == null || borrowedBooks.isEmpty()) {
+                showAlert(Alert.AlertType.INFORMATION, "No Borrowed Books", "The subscriber has not borrowed any books.");
+            } else {
+                borrowedBooksTable.setItems(FXCollections.observableList(borrowedBooks));
 
-     }
-     });
-     }
-     */
+                // Add an "Extend" button in the last column for each borrowed book
+                for (BorrowedBook book : borrowedBooks) {
+                    Button extendButton = new Button("Extend");
+                    extendButton.setDisable(false); // Make the button visible
+
+                    extendOptionsColumn.setCellValueFactory(cellData -> {
+                        return new SimpleObjectProperty<>(extendButton); // Add the button to the table
+                    });
+                }
+            }
+        });
+    }
+*/
 
 
     /**
