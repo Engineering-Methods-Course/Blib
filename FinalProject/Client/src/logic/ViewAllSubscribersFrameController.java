@@ -107,11 +107,8 @@ public class ViewAllSubscribersFrameController
     /**
      * Handles the Filter button click event.
      * This method will apply the filter logic when the user clicks the filter button.
-     * Currently, the filter logic is not implemented.
-     *
-     * @param actionEvent The ActionEvent triggered by clicking the Filter button.
      */
-    public void onFilterButtonClicked(ActionEvent actionEvent)
+    public void onFilterButtonClicked()
     {
         String searchId = filterTextField.getText();
         if (searchId != null && !searchId.isEmpty())
