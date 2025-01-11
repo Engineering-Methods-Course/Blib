@@ -102,7 +102,6 @@ public class ClientController extends AbstractClient
                             else if (user instanceof Librarian)
                             {
                                 Librarian librarianFromServer = (Librarian) user;
-                                System.out.println(librarianFromServer.getLibrarianID() + " " + librarianFromServer.getFirstName() + " " + librarianFromServer.getLastName());
                                 Librarian.setLocalLibrarian(librarianFromServer);
                             }
                         }
@@ -236,8 +235,6 @@ public class ClientController extends AbstractClient
                         {
                             @SuppressWarnings("unchecked")
                             ArrayList<Subscriber> subscribers = (ArrayList<Subscriber>) message.getMessageContent();
-                            System.out.println("Subscribers list received");
-                            System.out.println(loader);
                             ViewAllSubscribersFrameController controller = loader.getController();
                             controller.addToTable(subscribers);
                         }

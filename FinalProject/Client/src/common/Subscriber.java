@@ -59,6 +59,11 @@ public class Subscriber extends User implements Serializable
         return watchProfileSubscriber;
     }
 
+    /**
+     * Sets the watch profile subscriber object.
+     *
+     * @param watchProfileSubscriber the watch profile subscriber object
+     */
     public static void setWatchProfileSubscriber(Subscriber watchProfileSubscriber)
     {
         Subscriber.watchProfileSubscriber = watchProfileSubscriber;

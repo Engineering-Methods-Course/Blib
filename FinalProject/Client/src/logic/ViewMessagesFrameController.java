@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.ArrayList;
 
@@ -28,8 +29,14 @@ public class ViewMessagesFrameController
 
     public void initialize()
     {
+        // Set up the columns in the table
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        contentColumn.setCellValueFactory(new PropertyValueFactory<>("content"));
+
+        // creates the message to request the messages from the server
         ClientServerMessage message = new ClientServerMessage(314, null);
 
+        // sends the message to the server
         ClientGUIController.chat.sendToServer(message);
     }
 

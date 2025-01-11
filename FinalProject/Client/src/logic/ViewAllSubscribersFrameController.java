@@ -11,6 +11,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static client.ClientGUIController.navigateTo;
 
@@ -27,17 +29,19 @@ public class ViewAllSubscribersFrameController
     @FXML
     public TableColumn<Subscriber, String> emailColumn;
     @FXML
-    public TableColumn<Subscriber, String> statusColumn;
+    public TableColumn<Subscriber, Boolean> statusColumn;
     @FXML
-    public TableColumn watchProfileColumn;
+    public TableColumn<Subscriber, Void> watchProfileColumn;
     @FXML
     public Button filterButton;
     @FXML
-    public TableView subscribersTable;
+    public TableView<Subscriber> subscribersTable;
     @FXML
     public TextField filterTextField;
     @FXML
     public Button backButton;
+
+    private List<Subscriber> allSubscribers;
 
     /**
      * Initializes the ViewAllSubscribersFrameController.
@@ -45,12 +49,40 @@ public class ViewAllSubscribersFrameController
     public void initialize()
     {
         // Set up the columns in the table
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("statusIsFrozen"));
+
+        // Set up the watch profile column with a button
+        watchProfileColumn.setCellFactory(param -> new TableCell<Subscriber, Void>()
+        {
+            private final Button watchButton = new Button("Watch Profile");
+
+            {
+                watchButton.setOnAction(event -> {
+                    Subscriber subscriber = getTableView().getItems().get(getIndex());
+                    // Handle the watch profile action here
+                    watchProfileButtonClicked(event, subscriber);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty)
+            {
+                super.updateItem(item, empty);
+                if (empty)
+                {
+                    setGraphic(null);
+                }
+                else
+                {
+                    setGraphic(watchButton);
+                }
+            }
+        });
 
         //creates a message requesting a list of all the subscribers
         ClientServerMessage message = new ClientServerMessage(306, null);
@@ -67,6 +99,7 @@ public class ViewAllSubscribersFrameController
      */
     public void addToTable(ArrayList<Subscriber> subscribers)
     {
+        allSubscribers = subscribers;
         ObservableList<Subscriber> subscriberList = FXCollections.observableArrayList(subscribers);
         subscribersTable.setItems(subscriberList);
     }
@@ -93,7 +126,20 @@ public class ViewAllSubscribersFrameController
      */
     public void onFilterButtonClicked(ActionEvent actionEvent)
     {
-        //todo: add applying filter
+        String searchId = filterTextField.getText();
+        if (searchId != null && !searchId.isEmpty())
+        {
+            try
+            {
+                int id = Integer.parseInt(searchId);
+                List<Subscriber> filteredList = allSubscribers.stream().filter(subscriber -> subscriber.getID() == id).collect(Collectors.toList());
+                subscribersTable.setItems(FXCollections.observableArrayList(filteredList));
+            }
+            catch (NumberFormatException e)
+            {
+                System.out.println("Invalid ID format: " + searchId);
+            }
+        }
     }
 
     /**
@@ -105,5 +151,27 @@ public class ViewAllSubscribersFrameController
     public void backButtonClicked(ActionEvent event) throws Exception
     {
         navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "All Subscribers");
+    }
+
+    /**
+     * Handles the watch profile action.
+     *
+     * @param subscriber The subscriber whose profile is to be watched.
+     */
+    private void watchProfileButtonClicked(ActionEvent event, Subscriber subscriber)
+    {
+        // Sets the local watch profile subscriber
+        Subscriber.setWatchProfileSubscriber(subscriber);
+
+        // navigates to the watch profile frame
+        //wrapped in a try catch block so the button will not crash the program
+        try
+        {
+            navigateTo(event, "/gui/WatchProfileFrame.fxml", "/gui/Subscriber.css", "Watch Profile");
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error navigating to WatchProfileFrame.fxml\n" + e);
+        }
     }
 }
