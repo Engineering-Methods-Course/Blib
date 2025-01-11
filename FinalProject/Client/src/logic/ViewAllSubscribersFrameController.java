@@ -1,24 +1,75 @@
 package logic;
 
+import client.ClientGUIController;
+import common.ClientServerMessage;
+import common.Subscriber;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.util.ArrayList;
 
 import static client.ClientGUIController.navigateTo;
 
 public class ViewAllSubscribersFrameController
 {
     @FXML
-    private ComboBox<String> filterComboBox;
+    public TableColumn<Subscriber, Integer> idColumn;
     @FXML
-    private TextField filterTextField;
+    public TableColumn<Subscriber, String> firstNameColumn;
     @FXML
-    private TableView<?> subscriberTable;
+    public TableColumn<Subscriber, String> lastNameColumn;
     @FXML
-    private Button backButton;
+    public TableColumn<Subscriber, String> phoneNumberColumn;
+    @FXML
+    public TableColumn<Subscriber, String> emailColumn;
+    @FXML
+    public TableColumn<Subscriber, String> statusColumn;
+    @FXML
+    public TableColumn watchProfileColumn;
+    @FXML
+    public Button filterButton;
+    @FXML
+    public TableView subscribersTable;
+    @FXML
+    public TextField filterTextField;
+    @FXML
+    public Button backButton;
+
+    /**
+     * Initializes the ViewAllSubscribersFrameController.
+     */
+    public void initialize()
+    {
+        // Set up the columns in the table
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        //creates a message requesting a list of all the subscribers
+        ClientServerMessage message = new ClientServerMessage(306, null);
+
+        //sends the message to the server
+        ClientGUIController.chat.sendToServer(message);
+    }
+
+
+    /**
+     * Adds the list of subscribers to the table.
+     *
+     * @param subscribers The list of subscribers to add to the table.
+     */
+    public void addToTable(ArrayList<Subscriber> subscribers)
+    {
+        ObservableList<Subscriber> subscriberList = FXCollections.observableArrayList(subscribers);
+        subscribersTable.setItems(subscriberList);
+    }
 
     /**
      * Handles the Apply Filter button click event.

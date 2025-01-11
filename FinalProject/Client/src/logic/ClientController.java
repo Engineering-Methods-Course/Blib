@@ -227,14 +227,20 @@ public class ClientController extends AbstractClient
                         break;
                     // Get all subscribers list
                     case 307:
-//                        if (message.getMessageContent() == null) {
-//                            System.out.println("Unable to present Subscribers");
-//                            Platform.runLater(() -> showErrorAlert("No Subscribers", "Unable to present Subscribers"));
-//                        } else if (message.getMessageContent() instanceof ArrayList<?>) {
-//                            ArrayList<Subscriber> subscribersFromServer = (ArrayList<Subscriber>) message.getMessageContent();
-//                            //?PrototypeViewAllController.setSubscribers(subscribersFromServer);
-//                        }
-                        //todo: handle get all subscribers list
+                        if(message.getMessageContent() == null)
+                        {
+                            System.out.println("Could not get all subscribers list");
+                            Platform.runLater(() -> showErrorAlert("Error", "Could not get all subscribers list"));
+                        }
+                        else if (message.getMessageContent() instanceof ArrayList)
+                        {
+                            @SuppressWarnings("unchecked")
+                            ArrayList<Subscriber> subscribers = (ArrayList<Subscriber>) message.getMessageContent();
+                            System.out.println("Subscribers list received");
+                            System.out.println(loader);
+                            ViewAllSubscribersFrameController controller = loader.getController();
+                            controller.addToTable(subscribers);
+                        }
                         break;
                     // Watch subscriber details response
                     case 309:

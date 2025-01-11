@@ -38,10 +38,13 @@ public class ClientGUIController extends Application
 
         // Create a new FXMLLoader instance with the specified FXML file path
         FXMLLoader newLoader = new FXMLLoader(ClientGUIController.class.getResource(fxmlFilePath));
-        Parent newRoot = newLoader.load();
 
         // Update the static loader in ClientController
         ClientController.setLoader(newLoader);
+
+        // Loads the new frame and calls its controller's initialize() method
+        Parent newRoot = newLoader.load();
+
 
         // Optionally add a CSS file if provided
         if (cssFilePath != null && !cssFilePath.isEmpty())
