@@ -4,10 +4,9 @@ import java.io.Serializable;
 
 public class BorrowedBook implements Serializable
 {
-    private int bookSerialNumber;
     private int copyID;
+    private int borrowerID;
     private String bookName;
-    private String borrowerID;
     private String borrowDate;
     private String expectedReturnDate;
     private String returnDate;
@@ -15,15 +14,13 @@ public class BorrowedBook implements Serializable
     /**
      * Constructor to initialize a local BorrowedBook object with all necessary details from the server.
      *
-     * @param bookSerialNumber - the serial number of the book
      * @param copyID           - the ID of the copy
      * @param borrowerID       - the ID of the borrower
      * @param borrowDate       - the date the book was borrowed
      * @param expectedReturnDate       - the date the book is to be returned
      */
-    public BorrowedBook(int bookSerialNumber, int copyID, String bookName, String borrowerID, String borrowDate, String expectedReturnDate, String returnDate)
+    public BorrowedBook(int copyID, int borrowerID, String bookName, String borrowDate, String expectedReturnDate, String returnDate)
     {
-        this.bookSerialNumber = bookSerialNumber;
         this.copyID = copyID;
         this.bookName = bookName;
         this.borrowerID = borrowerID;
@@ -32,15 +29,6 @@ public class BorrowedBook implements Serializable
         this.returnDate = returnDate;
     }
 
-    /**
-     * Gets the serial number of the book.
-     *
-     * @return the serial number of the book
-     */
-    public int getBookSerialNumber()
-    {
-        return bookSerialNumber;
-    }
 
     /**
      * Gets the ID of the copy.
@@ -57,7 +45,7 @@ public class BorrowedBook implements Serializable
      *
      * @return the ID of the borrower
      */
-    public String getBorrowerID()
+    public int getBorrowerID()
     {
         return borrowerID;
     }

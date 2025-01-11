@@ -512,7 +512,7 @@ public class DBController {
              * The query selects all columns from the borrow table where the subscriber ID matches a given value
              */
 
-            String findBorrowQuery = "SELECT * FROM borrow WHERE subscriber_id = ?, status = 'borrowed'";
+            String findBorrowQuery = "SELECT * FROM borrow WHERE subscriber_id = ? AND status = 'borrowed'";
             PreparedStatement findBorrowStatement = conn.prepareStatement(findBorrowQuery);
             findBorrowStatement.setInt(1, subscriberId);
 
@@ -521,9 +521,22 @@ public class DBController {
             /*
              * If the query was successful, add the values of the book to a list
              */
-
             while (rs.next()) {
-                BorrowedBook borrow = new BorrowedBook(rs.getInt("copy_id"), rs.getInt("subscriber_id"), rs.getDate("borrow_date").toString(), rs.getDate("expected_return_date").toString(), rs.getDate("return_date").toString(), (rs.getInt("notify") == 1 ? "notified" : "not notified"));
+                /*
+                 * This query selects the book name of the subscriber
+                 */
+                String getBookNameQuery = "SELECT name FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+                PreparedStatement getBookNameStatement = conn.prepareStatement(getBookNameQuery);
+                getBookNameStatement.setInt(1, rs.getInt("copy_id"));
+                ResultSet getBookNameRs = getBookNameStatement.executeQuery();
+                String bookName = "";
+                if (getBookNameRs.next()) {
+                    bookName = getBookNameRs.getString("name");
+                }
+
+                BorrowedBook borrow = new BorrowedBook(rs.getInt("copy_id"), rs.getInt("subscriber_id"), bookName,
+                        rs.getDate("borrow_date").toString(), rs.getDate("expected_return_date").toString(),
+                        rs.getDate("return_date").toString());
                 borrowedBooks.add(borrow);
             }
             if (borrowedBooks.isEmpty()) {
