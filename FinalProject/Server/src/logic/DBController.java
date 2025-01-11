@@ -535,7 +535,7 @@ public class DBController {
                 }
 
                 BorrowedBook borrow = new BorrowedBook(rs.getInt("copy_id"), rs.getInt("subscriber_id"), bookName,
-                        rs.getDate("borrow_date").toString(), rs.getDate("expected_return_date").toString(),
+                        rs.getDate("borrowed_date").toString(), rs.getDate("expected_return_date").toString(),
                         rs.getDate("return_date").toString());
                 borrowedBooks.add(borrow);
             }
