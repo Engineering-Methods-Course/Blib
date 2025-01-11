@@ -16,21 +16,21 @@ import java.util.Objects;
 
 public class ClientGUIController extends Application
 {
-    public static ChatClient chat; //only one instance
+    public static ChatClient chat;
 
     public static void main(String[] args) throws Exception
     {
         launch(args);
-    } // end main
+    }
 
     /**
      * Navigates to a specified FXML destination, optionally applying a CSS file and setting the title of the new stage.
      *
-     * @param event       The ActionEvent triggered by the user's interaction (e.g., button click).
+     * @param event        The ActionEvent triggered by the user's interaction (e.g., button click).
      * @param fxmlFilePath The path to the FXML file to load (e.g., "/gui/SearchHomePageFrame.fxml").
-     * @param cssFilePath The optional path to the CSS file to style the new view (e.g., "/gui/Subscriber.css"). Pass null if no CSS is required.
-     * @param stageTitle  The title for the new stage window (e.g., "Profile Options").
-     * @throws Exception If the FXML file cannot be loaded or another error occurs during navigation.
+     * @param cssFilePath  The optional path to the CSS file to style the new view (e.g., "/gui/Subscriber.css"). Pass null if no CSS is required.
+     * @param stageTitle   The title for the new stage window (e.g., "Profile Options").
+     * @throws Exception   If the FXML file cannot be loaded or another error occurs during navigation.
      */
     public static void navigateTo(ActionEvent event, String fxmlFilePath, String cssFilePath, String stageTitle) throws Exception {
         // Get the current stage
@@ -77,6 +77,9 @@ public class ClientGUIController extends Application
         currentStage.show();
     }
 
+    /**
+     *  The method is called when the program is closed, it sends a disconnect message to the server
+     */
     private static void exitAction()
     {
         ClientServerMessage logOutMessage = new ClientServerMessage(102, null);
@@ -91,6 +94,11 @@ public class ClientGUIController extends Application
         }
     }
 
+    /**
+     * The start method is called when the program is run, it starts the ClientIPFrameController
+     * @param primaryStage The stage to be displayed
+     * @throws Exception   If an error occurs during the start
+     */
     @Override
     public void start(Stage primaryStage) throws Exception
     {
