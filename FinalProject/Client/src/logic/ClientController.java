@@ -138,7 +138,10 @@ public class ClientController extends AbstractClient
                     case 209:
                         //todo: handle order book response
                         break;
+
+
                     // Show borrowed list response
+                    //todo:check if the date is still minus 1 day or not
                     case 211:
                         if (message.getMessageContent() instanceof ArrayList) {
                             @SuppressWarnings("unchecked")
@@ -157,7 +160,13 @@ public class ClientController extends AbstractClient
                         break;
                     //Extend book borrow - subscriber response
                     case 213:
-                        //todo: handle extend book borrow response
+                        if (message.getMessageContent() instanceof ArrayList) {
+                            ArrayList<String> arrayMessageFromServer = (ArrayList<String>) message.getMessageContent();
+                            SubscriberProfileOptionsFrameController.showExtendMessageResponse(arrayMessageFromServer);
+                        } else {
+                            System.out.println("Invalid message content for case 311");
+                            Platform.runLater(() -> showErrorAlert("Data Error", "Expected an ArrayList for borrow extension."));
+                        }
                         break;
                     //Watch history response
                     case 215:
@@ -271,8 +280,6 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() instanceof ArrayList) {
 
                             ArrayList<String> arrayMessageFromServer = (ArrayList<String>) message.getMessageContent();
-                            //System.out.println(arrayMessageFromServer.get(0));
-                            System.out.println(arrayMessageFromServer);
                             BorrowExtensionFrameController.showExtendMessageResponse(arrayMessageFromServer);
                         } else {
                             System.out.println("Invalid message content for case 311");

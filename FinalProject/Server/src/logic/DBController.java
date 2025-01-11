@@ -629,7 +629,7 @@ public class DBController {
              * The query updates the expected return date of the borrow table where the subscriber ID and the book ID matches the given values
              */
 
-            String extendQuery = "UPDATE borrow SET expected_return_date = ?, notify = ? WHERE subscriber_id = ? AND copy_id = ? AND status = 'borrowed'";
+            String extendQuery = "UPDATE borrow SET expected_return_date = ?, notified = ? WHERE subscriber_id = ? AND copy_id = ? AND status = 'borrowed'";
             PreparedStatement extendStatement = conn.prepareStatement(extendQuery);
             extendStatement.setDate(1, newReturnDate);
             extendStatement.setInt(2, 0);

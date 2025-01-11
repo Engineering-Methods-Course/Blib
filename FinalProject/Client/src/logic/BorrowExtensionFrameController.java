@@ -48,6 +48,20 @@ public class BorrowExtensionFrameController
         bookNameLabel.setText(borrowedBookCopy.getBookName());
         bookIdLabel.setText(String.valueOf(borrowedBookCopy.getCopyID()));
         currentReturnDateLabel.setText(borrowedBookCopy.getExpectedReturnDate());
+
+        // Get the current return date from the label and parse it to LocalDate
+        String currentReturnDateText = currentReturnDateLabel.getText();
+        LocalDate currentReturnDate = LocalDate.parse(currentReturnDateText);
+
+        // Set the minimum date on the DatePicker (restricting dates before the current return date)
+        newReturnDatePicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                // Disable dates before the current return date
+                setDisable(empty || date.isBefore(currentReturnDate));
+            }
+        });
     }
 
 

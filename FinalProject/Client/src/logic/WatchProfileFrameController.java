@@ -139,7 +139,9 @@ public class WatchProfileFrameController
             // Save the selected book using the set method or pass it directly
             BorrowExtensionFrameController.setBorrowedBook(selectedBook); // Set the selected book in the Subscriber object, or use a different method
             // Navigate to the BorrowExtensionFrameController, passing the selected book
+
             navigateTo(event, "/gui/BorrowExtensionFrame.fxml", "/gui/Subscriber.css", "Extend Borrow Period");
+
         } else {
             // If no book is selected, show an alert
             showAlert(Alert.AlertType.WARNING, "No Book Selected", "Please select a book to extend the borrow period.");

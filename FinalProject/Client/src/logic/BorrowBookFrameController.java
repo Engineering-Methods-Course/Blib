@@ -5,10 +5,7 @@ import common.ClientServerMessage;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -38,6 +35,16 @@ public class BorrowBookFrameController
     {
         borrowDatePicker.setValue(LocalDate.now());
         returnDatePicker.setValue(LocalDate.now().plusDays(14));
+
+        // Disable return dates before or equal to borrow date
+        returnDatePicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                // Disable return dates before or including the borrow date
+                setDisable(empty || date.isBefore(borrowDatePicker.getValue().plusDays(1)));
+            }
+        });
     }
 
     /**

@@ -4,12 +4,10 @@ import client.ClientGUIController;
 import common.BorrowedBook;
 import common.ClientServerMessage;
 import common.Subscriber;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
@@ -145,14 +143,79 @@ public class SubscriberProfileOptionsFrameController
     }
 
     /**
-     * This method handles the extendBorrowButton click event to navigate to the borrow extension frame
+     * This method handles the extendBorrowButton click event to send extension request
      *
      * @param event The action event triggered by clicking the extend borrow button
      * @throws Exception If there is an issue with the navigation
      */
     public void extendBorrowButtonClicked(ActionEvent event) throws Exception
     {
-        //todo: implement the extend borrow button
+        // Get the selected borrowed book from the table
+        BorrowedBook selectedBook = borrowsTable.getSelectionModel().getSelectedItem();
+
+        // Check if a book is selected
+        if (selectedBook == null) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Please select a book to extend.");
+            return;
+        }
+
+        // Extract subscriberID and copyID from the selected book
+        String subscriberID = String.valueOf(Subscriber.getLocalSubscriber().getID());
+        String copyID = String.valueOf(selectedBook.getCopyID()); // Assuming BorrowedBook has a getCopyID() method
+
+        // Create the message content as an ArrayList<String>
+        ArrayList<String> extendRequestData = new ArrayList<>();
+        extendRequestData.add(subscriberID);
+        extendRequestData.add(copyID);
+
+        // Create the ClientServerMessage object with code 212 for extend borrow request
+        ClientServerMessage message = new ClientServerMessage(212, extendRequestData);
+
+        // Send the message to the server
+        try {
+            ClientGUIController.chat.sendToServer(message);
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Error sending extend borrow request to the server: " + e.getMessage());
+        }
+    }
+
+    public static void showExtendMessageResponse(ArrayList<String> msg) {
+        Platform.runLater(() -> {
+            if (msg == null || msg.isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Error", "No response from server.");
+                return;
+            }
+            // Check if the first element in the message is "True" or "False"
+            String status = msg.get(0); // Extract status (True or False)
+
+            if ("true".equals(status)) {
+                // Extract explanation if available
+                String explanation = msg.size() > 1 ? msg.get(1) : "No additional information provided.";
+                showAlert(Alert.AlertType.INFORMATION, "Success", "The book return date was successfully extended! " + explanation);
+            } else if ("false".equals(status)) {
+                // Extract explanation if available
+                String explanation = msg.size() > 1 ? msg.get(1) : "Unknown error occurred.";
+                showAlert(Alert.AlertType.ERROR, "Extension Failed", "Reason: " + explanation);
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Error", "Unexpected response format from server.");
+            }
+        });
+    }
+
+    /**
+     * Helper method to display an alert.
+     *
+     * @param alertType The type of the alert (e.g., INFORMATION, ERROR)
+     * @param title     The title of the alert
+     * @param message   The message to display in the alert
+     */
+    private static void showAlert(Alert.AlertType alertType, String title, String message)
+    {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     /**
