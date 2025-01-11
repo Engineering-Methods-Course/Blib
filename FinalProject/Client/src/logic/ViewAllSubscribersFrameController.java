@@ -105,19 +105,6 @@ public class ViewAllSubscribersFrameController
     }
 
     /**
-     * Handles the Apply Filter button click event.
-     * This will allow users to apply the filter based on the selected option.
-     * Currently, the filter logic is not implemented.
-     *
-     * @param actionEvent The ActionEvent triggered by clicking the Apply Filter button.
-     */
-    public void applyFilter(ActionEvent actionEvent)
-    {
-        //todo:add sort option by id
-
-    }
-
-    /**
      * Handles the Filter button click event.
      * This method will apply the filter logic when the user clicks the filter button.
      * Currently, the filter logic is not implemented.
