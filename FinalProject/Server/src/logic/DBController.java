@@ -522,6 +522,7 @@ public class DBController {
              * If the query was successful, add the values of the book to a list
              */
             while (rs.next()) {
+
                 /*
                  * This query selects the book name of the subscriber
                  */
@@ -533,11 +534,11 @@ public class DBController {
                 if (getBookNameRs.next()) {
                     bookName = getBookNameRs.getString("name");
                 }
-
                 BorrowedBook borrow = new BorrowedBook(rs.getInt("copy_id"), rs.getInt("subscriber_id"), bookName,
                         rs.getDate("borrowed_date").toString(), rs.getDate("expected_return_date").toString(),
-                        rs.getDate("return_date").toString());
+                        rs.getDate("return_date") != null ? rs.getDate("return_date").toString() : null);
                 borrowedBooks.add(borrow);
+
             }
             if (borrowedBooks.isEmpty()) {
                 System.out.println("No borrowed books found (showSubscriberBorrowedBooks)");
