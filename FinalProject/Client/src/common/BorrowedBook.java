@@ -6,6 +6,7 @@ public class BorrowedBook implements Serializable
 {
     private int bookSerialNumber;
     private int copyID;
+    private String bookName;
     private String borrowerID;
     private String borrowDate;
     private String expectedReturnDate;
@@ -20,21 +21,15 @@ public class BorrowedBook implements Serializable
      * @param borrowDate       - the date the book was borrowed
      * @param expectedReturnDate       - the date the book is to be returned
      */
-    public BorrowedBook(int bookSerialNumber, int copyID, String borrowerID, String borrowDate, String expectedReturnDate, String returnDate)
+    public BorrowedBook(int bookSerialNumber, int copyID, String bookName, String borrowerID, String borrowDate, String expectedReturnDate, String returnDate)
     {
         this.bookSerialNumber = bookSerialNumber;
         this.copyID = copyID;
+        this.bookName = bookName;
         this.borrowerID = borrowerID;
         this.borrowDate = borrowDate;
         this.expectedReturnDate = expectedReturnDate;
         this.returnDate = returnDate;
-    }
-    {
-        this.bookSerialNumber = bookSerialNumber;
-        this.copyID = copyID;
-        this.borrowerID = borrowerID;
-        this.borrowDate = borrowDate;
-        this.expectedReturnDate = expectedReturnDate;
     }
 
     /**
@@ -94,5 +89,25 @@ public class BorrowedBook implements Serializable
      */
     public String getReturnDate(){
         return returnDate;
+    }
+
+    /**
+     * Gets the name of the book.
+     *
+     * @return the name of the book
+     */
+    public String getBookName()
+    {
+        return bookName;
+    }
+
+    /**
+     * Sets the name of the book.
+     *
+     * @param bookName the name of the book
+     */
+    public void setBookName(String bookName)
+    {
+        this.bookName = bookName;
     }
 }

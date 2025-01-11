@@ -140,7 +140,13 @@ public class ClientController extends AbstractClient
                         break;
                     // Show borrowed list response
                     case 211:
-                        //todo: handle show borrowed list to the subscriber
+                        if (message.getMessageContent() instanceof ArrayList)
+                        {
+                            @SuppressWarnings("unchecked")
+                            ArrayList<BorrowedBook> messages = (ArrayList<BorrowedBook>) message.getMessageContent();
+                            SubscriberProfileOptionsFrameController controller = loader.getController();
+                            controller.loadBorrowsTable(messages);
+                        }
                         break;
                     //Extend book borrow - subscriber response
                     case 213:
