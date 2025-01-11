@@ -534,8 +534,12 @@ public class DBController {
                 if (getBookNameRs.next()) {
                     bookName = getBookNameRs.getString("name");
                 }
-                BorrowedBook borrow = new BorrowedBook(rs.getInt("copy_id"), rs.getInt("subscriber_id"), bookName,
-                        rs.getDate("borrowed_date").toString(), rs.getDate("expected_return_date").toString(),
+                BorrowedBook borrow = new BorrowedBook(
+                        rs.getInt("copy_id"),
+                        rs.getInt("subscriber_id"),
+                        bookName,
+                        rs.getDate("borrowed_date").toString(),
+                        rs.getDate("expected_return_date").toString(),
                         rs.getDate("return_date") != null ? rs.getDate("return_date").toString() : null);
                 borrowedBooks.add(borrow);
 
@@ -1514,6 +1518,8 @@ public class DBController {
 
             updateHistory(subscriberId, "extended", "Return date for the book " + copyId + " was extended by librarian " + librarianName + " on " + LocalDate.now());//! check with the team
 
+            response.add("true");
+
             /*
              * Commit the transaction
              */
@@ -1533,6 +1539,7 @@ public class DBController {
             System.out.println("Error: With extending the return date (extendReturnDate) " + e);
         } finally {
             try {
+
                 conn.setAutoCommit(true);
             } catch (SQLException ex) {
                 System.out.println("Error: Setting auto-commit back to true" + ex);
