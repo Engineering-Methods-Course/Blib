@@ -39,6 +39,7 @@ public class BookInfoFrameController
 
     private static Book localBook = null;
     private static ArrayList<String> Avaliabilty;
+    public static boolean orderComplete=false;
 
     /**
      * This method gets the local book object
@@ -114,11 +115,16 @@ public class BookInfoFrameController
         try
         {
             ClientGUIController.chat.sendToServer(searchMessage);
-            //navigateTo(event, "/gui/SearchResultsFrame.fxml", "/gui/Subscriber.css", "Search Results");
         }
         catch (Exception e)
         {
             System.out.println("Error sending search message to server: " + e.getMessage());
+        }
+
+        if(orderComplete)
+        {
+            System.out.println(orderComplete);
+            navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
         }
     }
 

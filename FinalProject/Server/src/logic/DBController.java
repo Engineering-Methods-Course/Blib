@@ -472,7 +472,7 @@ public class DBController {
              */
 
             conn.commit();
-
+            response.add("true");
         } catch (SQLException e) {
 
             /*

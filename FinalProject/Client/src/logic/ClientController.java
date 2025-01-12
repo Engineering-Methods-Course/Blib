@@ -146,27 +146,29 @@ public class ClientController extends AbstractClient
                     // Order book response
                     case 209:
 
-                        System.out.println("bob1:"+message.getMessageContent());
                         //todo: handle order book response
-                        /*
+
                         if (message.getMessageContent() == null)
                         {
                             Platform.runLater(() -> showErrorAlert("Book Not ordered", "Book not ordered"));
+                            BookInfoFrameController.orderComplete=false;
                         }
                         else if(message.getMessageContent() instanceof ArrayList )
                         {
                             ArrayList<String> details = (ArrayList<String>) message.getMessageContent();
                             if(details.get(0).equals("true"))
                             {
-                               //Platform.runLater(() -> showErrorAlert("Book ordered", "Book was ordered"));
+                                Platform.runLater(() -> showInformationAlert("Book ordered", "Book was ordered"));
+                                BookInfoFrameController.orderComplete=true;
                                 System.out.println("Book Ordered Successfully");
                             }
                             else
                             {
-                                //Platform.runLater(() -> showErrorAlert("Book ordered", details.get(1)));
+                                Platform.runLater(() -> showErrorAlert("Book ordered", details.get(1)));
+                                BookInfoFrameController.orderComplete=false;
                                 System.out.println("Book Ordered Failed");
                             }
-                        }*/
+                        }
                         break;
 
 
