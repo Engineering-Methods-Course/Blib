@@ -72,12 +72,14 @@ public class SearchHomePageFrameController
             user_type = UserType.Librarian;
             name = Librarian.getLocalLibrarian().getFirstName();
         }
-
-        profileButton.setDisable(!user_type.equals(UserType.User));
-        profileButton.setVisible(!user_type.equals(UserType.User));
+        else
+        {
+            profileButton.setDisable(!user_type.equals(UserType.User));
+            profileButton.setVisible(!user_type.equals(UserType.User));
+            watchProfileButton.setDisable(!user_type.equals(UserType.User));
+            watchProfileButton.setVisible(!user_type.equals(UserType.User));
+        }
         profileButton.setText("Hello " + name);
-        watchProfileButton.setDisable(!user_type.equals(UserType.User));
-        watchProfileButton.setVisible(!user_type.equals(UserType.User));
         //watchProfileButton.setVisible()
 
         //set search by name to be the default search when opening the window
@@ -230,5 +232,13 @@ public class SearchHomePageFrameController
     {
         //todo: implement logic to check if there's a user logged in and navigate to the appropriate page
         //check the instance of the current user and according to it navigate
+        if (Subscriber.getLocalSubscriber() != null)
+        {
+            navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Page");
+        }
+        else if (Librarian.getLocalLibrarian() != null)
+        {
+            navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Librarian Menu");
+        }
     }
 }

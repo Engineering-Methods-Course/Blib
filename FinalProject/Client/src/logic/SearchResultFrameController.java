@@ -1,6 +1,8 @@
 package logic;
 
+import client.ClientGUIController;
 import common.Book;
+import common.ClientServerMessage;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -55,12 +57,9 @@ public class SearchResultFrameController
             {
                 // Set the button action
                 button.setOnAction(event -> {
-                    // Handle button action here, e.g., show the book's details
-                    /*Alert alert = new Alert(Alert.AlertType.INFORMATION, "Will be implemented in the future");
-                    alert.setTitle("View Details");
-                    alert.showAndWait();*/
                     try {
-                        System.out.println(getTableView().getItems().get(getIndex()));
+                        getBookCopy(getTableView().getItems().get(getIndex()));
+                        //System.out.println(getTableView().getItems().get(getIndex()));
                         navigateTo(event, "/gui/BookInfoFrame.fxml","/gui/Subscriber.css", "Book information");
                     } catch (Exception e) {
                         throw new RuntimeException(e);
@@ -84,7 +83,6 @@ public class SearchResultFrameController
         for(Book book : books)
         {
             List<String> row = new ArrayList<>();
-            System.out.println("book: " + book.getBookName()+"genre: "+book.getBookGenre());
             row.add(book.getBookName());
             row.add(book.getBookGenre());
             this.BookList.add(row);
@@ -107,7 +105,29 @@ public class SearchResultFrameController
      */
     private void getBookCopy(List<String> listFromRow)
     {
+        Book bk=null;
+        for(Book book : books)
+        {
+            if(listFromRow.contains(book.getBookName()) && listFromRow.contains(book.getBookGenre()))
+            {
+                bk=book;
+            }
+        }
 
+        if(bk!=null)
+        {
+            ClientServerMessage searchMessage = new ClientServerMessage(206,bk.getBookSerialNumber());
+            System.out.println(searchMessage.getMessageContent());
+            try
+            {
+                ClientGUIController.chat.sendToServer(searchMessage);
+            }
+            catch (Exception e)
+            {
+                System.out.println("Error sending search message to server: " + e.getMessage());
+            }
+            BookInfoFrameController.setLocalBook(bk);
+        }
     }
 
     /**

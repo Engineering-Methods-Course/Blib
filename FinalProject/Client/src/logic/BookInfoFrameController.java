@@ -1,11 +1,19 @@
 package logic;
 
+import client.ClientGUIController;
 import common.Book;
+import common.ClientServerMessage;
+import common.Librarian;
+import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 import static client.ClientGUIController.navigateTo;
 
@@ -26,8 +34,11 @@ public class BookInfoFrameController
     public Button orderBookButton;
     @FXML
     public Button backButton;
+    @FXML
+    public Text TextForAvaliabilty;
 
     private static Book localBook = null;
+    private static ArrayList<String> Avaliabilty;
 
     /**
      * This method gets the local book object
@@ -49,12 +60,40 @@ public class BookInfoFrameController
         localBook = bookFromServer;
     }
 
+    public static ArrayList<String> getAvailiabilty() {
+        return Avaliabilty;
+    }
+
+    public static void setAvailiabilty(ArrayList<String> arrList) {
+        Avaliabilty = arrList;
+    }
+
     /**
      * This method initializes the Book Info Frame
      */
     public void initialize()
     {
         //loadBookInfo();
+        bookName.setText(localBook.getBookName());
+        bookGenre.setText(localBook.getBookGenre());
+        bookdescription.setText(localBook.getBookDescription());
+        if(Avaliabilty.get(0).equals("true"))
+        {
+            TextForAvaliabilty.setText("Book Location: ");
+            bookLocation.setText(Avaliabilty.get(1));
+        }
+        else
+        {
+            TextForAvaliabilty.setText("Closest Date: ");
+            bookLocation.setText(Avaliabilty.get(1));
+        }
+
+        if (Subscriber.getLocalSubscriber()==null && Librarian.getLocalLibrarian()==null || Avaliabilty.get(0).equals("true") )
+        {
+            orderBookButton.setDisable(false);
+            orderBookButton.setVisible(false);
+        }
+
     }
 
     /**
@@ -66,8 +105,21 @@ public class BookInfoFrameController
     public void orderBookButtonClicked(ActionEvent event) throws Exception
     {
         //todo: implement the order book system
+        ArrayList<String> content = new ArrayList<>();
+        content.add(String.valueOf(Subscriber.getLocalSubscriber().getID()));
+        content.add(String.valueOf(localBook.getBookSerialNumber()));
 
-        navigateTo(event, "/gui/SearchResultsFrame.fxml", "/gui/Subscriber.css", "Search Results");
+        ClientServerMessage searchMessage = new ClientServerMessage(208,content);
+
+        try
+        {
+            ClientGUIController.chat.sendToServer(searchMessage);
+            //navigateTo(event, "/gui/SearchResultsFrame.fxml", "/gui/Subscriber.css", "Search Results");
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error sending search message to server: " + e.getMessage());
+        }
     }
 
     /**

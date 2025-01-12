@@ -296,7 +296,7 @@ public class DBController {
              * The query select all book copies and check if there is book copy available
              */
 
-            String checkAvailabilityQuery = "SELECT available, copy_id, shelf_location FROM book_copy WHERE serial_number = ?)";
+            String checkAvailabilityQuery = "SELECT available, copy_id, shelf_location FROM book_copy WHERE serial_number = ?";
             PreparedStatement checkAvailabilityStatement = conn.prepareStatement(checkAvailabilityQuery);
             checkAvailabilityStatement.setInt(1, serialNumber);
             ResultSet checkAvailabilityRs = checkAvailabilityStatement.executeQuery();

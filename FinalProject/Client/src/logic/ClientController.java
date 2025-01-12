@@ -132,11 +132,41 @@ public class ClientController extends AbstractClient
                         break;
                     //Show book details response
                     case 207:
-                        //todo: handle show book details response
+
+                        if (message.getMessageContent() == null)
+                        {
+                            Platform.runLater(() -> showErrorAlert("Book Not Found", "Error with db"));
+                        }
+                        else if(message.getMessageContent() instanceof ArrayList )
+                        {
+                            ArrayList<String> details = (ArrayList<String>) message.getMessageContent();
+                            BookInfoFrameController.setAvailiabilty(details);
+                        }
                         break;
                     // Order book response
                     case 209:
+
+                        System.out.println("bob1:"+message.getMessageContent());
                         //todo: handle order book response
+                        /*
+                        if (message.getMessageContent() == null)
+                        {
+                            Platform.runLater(() -> showErrorAlert("Book Not ordered", "Book not ordered"));
+                        }
+                        else if(message.getMessageContent() instanceof ArrayList )
+                        {
+                            ArrayList<String> details = (ArrayList<String>) message.getMessageContent();
+                            if(details.get(0).equals("true"))
+                            {
+                               //Platform.runLater(() -> showErrorAlert("Book ordered", "Book was ordered"));
+                                System.out.println("Book Ordered Successfully");
+                            }
+                            else
+                            {
+                                //Platform.runLater(() -> showErrorAlert("Book ordered", details.get(1)));
+                                System.out.println("Book Ordered Failed");
+                            }
+                        }*/
                         break;
 
 
