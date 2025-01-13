@@ -10,10 +10,9 @@ public class BookCopy {
      * Constructor to initialize a local BookCopy object with all necessary details from the server.
      *
      * @param bookSerialNumber - the serial number of the book
-     * @param copyID - the serial number of the copy
-     * @param copyAvailability       - the status of the copy
-     * (available, reserved, borrowed, lost)
-     * @param shelfLocation - the location of the copy on the shelf
+     * @param copyID           - the serial number of the copy
+     * @param copyAvailability - the status of the copy (available, reserved, borrowed, lost)
+     * @param shelfLocation    - the location of the copy on the shelf
      */
     public BookCopy(int bookSerialNumber, int copyID, String copyAvailability, String shelfLocation)
     {

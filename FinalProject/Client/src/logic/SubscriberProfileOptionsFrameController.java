@@ -61,7 +61,7 @@ public class SubscriberProfileOptionsFrameController
         borrowDateColumn.setCellValueFactory(new PropertyValueFactory<BorrowedBook, String>("borrowDate"));
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<BorrowedBook, String>("expectedReturnDate"));
 
-        // Set up the extend button column
+        // Set up the "extend button" column
         extendButtonColumn.setCellFactory(new Callback<TableColumn<BorrowedBook, Button>, TableCell<BorrowedBook, Button>>() {
             @Override
             public TableCell<BorrowedBook, Button> call(TableColumn<BorrowedBook, Button> param) {
@@ -246,7 +246,8 @@ public class SubscriberProfileOptionsFrameController
      * @param event      The action event triggered by clicking the watch history button
      * @throws Exception If there is an issue with the navigation
      */
-    public void watchHistoryButtonClicked(ActionEvent event)
+    public void watchHistoryButtonClicked(ActionEvent event) throws Exception
     {
+        navigateTo(event, "/gui/WatchHistoryScene.fxml", "/gui/Subscriber.css", "Watch History");
     }
 }

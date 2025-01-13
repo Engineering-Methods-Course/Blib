@@ -13,6 +13,7 @@ import common.ChatIF;
 import java.io.*;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ClientController extends AbstractClient
@@ -202,7 +203,18 @@ public class ClientController extends AbstractClient
                         break;
                     //Watch history response
                     case 215:
-                        //todo: handle watch history response
+                        if (message.getMessageContent() == null)
+                        {
+                            System.out.println("Could not get history");
+                            Platform.runLater(() -> showErrorAlert("Error", "Could not get history"));
+                        }
+                        else if (message.getMessageContent() instanceof List)
+                        {
+                            @SuppressWarnings("unchecked")
+                            List<ArrayList<String>> history = (ArrayList<ArrayList<String>>) message.getMessageContent();
+                            WatchHistorySceneController controller = loader.getController();
+                            controller.setHistory(history);
+                        }
                         break;
                     //Edit subscriber details
                     case 217:
