@@ -35,9 +35,9 @@ public class WatchHistorySceneController
     public void initialize()
     {
         // set up the table to accept SubscriberHistory objects
-        dateColumn.setCellValueFactory(new PropertyValueFactory<SubscriberHistory, Date>("date"));
-        actionTypeColumn.setCellValueFactory(new PropertyValueFactory<SubscriberHistory, String>("actionType"));
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<SubscriberHistory, String>("description"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        actionTypeColumn.setCellValueFactory(new PropertyValueFactory<>("actionType"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 
         // send the request to the server to get the history of the user
         ClientServerMessage message = new ClientServerMessage(214, null);
