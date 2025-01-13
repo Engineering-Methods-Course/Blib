@@ -17,7 +17,7 @@ import javax.mail.internet.MimeMessage;
 
 public class NotificationController {
 
-    private static NotificationController instance = null;
+    private static volatile NotificationController instance;
     private String from ;
     private String username;
     private String password;
@@ -55,8 +55,12 @@ public class NotificationController {
      */
     public static NotificationController getInstance() {
         if (instance == null) {
-            System.out.println("NotificationController was created successfully");
-            instance = new NotificationController();
+            synchronized (NotificationController.class) {
+                if (instance == null) {
+                    System.out.println("NotificationController was created successfully");
+                    instance = new NotificationController();
+                }
+            }
         }
         return instance;
     }

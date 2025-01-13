@@ -11,8 +11,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class DBController {
-    private static DBController dbInstance = null;
-    private static NotificationController notificationController;
+    private static volatile DBController instance;
+    private  NotificationController notificationController;
     Connection conn = null;
 
     private DBController() {
@@ -27,11 +27,15 @@ public class DBController {
      * @return The instance of the DBController
      */
     public static DBController getInstance() {
-        if (dbInstance == null) {
-            System.out.println("DBController was created successfully");
-            dbInstance = new DBController();
+        if (instance == null) {
+            synchronized (DBController.class) {
+                if (instance == null) {
+                    System.out.println("DBController was created successfully");
+                    instance = new DBController();
+                }
+            }
         }
-        return dbInstance;
+        return instance;
     }
 
     /**
@@ -1149,7 +1153,7 @@ public class DBController {
              * Update subscriber history
              */
 
-            updateHistory(subscriberId, "borrowed", "the book: " + bookName + " was borrowed");
+            updateHistory(subscriberId, "borrowed", "the book: " + bookName + " was borrowed"); //! add borrowdate and retunr date
 
             /*
              * Commit the transaction

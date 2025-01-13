@@ -1,5 +1,6 @@
 package logic;
 
+import java.lang.invoke.VolatileCallSite;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.Executors;
@@ -8,9 +9,9 @@ import java.util.concurrent.TimeUnit;
 
 public class ScheduleController {
 
-    private static ScheduleController instance = null;
+    private static volatile ScheduleController instance;
     private final ScheduledExecutorService scheduler;
-    private DBController dbController;
+    private static  DBController dbController;
     private NotificationController notificationController;
 
     private ScheduleController() {
@@ -40,7 +41,7 @@ public class ScheduleController {
      * This method runs the daily task
      */
     public void runDayleTask() {
-        long initialDelay = computeInitialDelay(0, 0, 0);
+        long initialDelay = computeInitialDelay(0, 0, 0); //! Not Working
         System.out.println("Initial Delay: " + initialDelay + " ms");
         long period = TimeUnit.DAYS.toMillis(1);
         scheduler.scheduleAtFixedRate(() -> {
@@ -48,7 +49,7 @@ public class ScheduleController {
                 System.out.println("Running daily task");
                 dbController.unfreezeAccount().run();
                 dbController.checkDueBooks().run();
-                dbController.checkReservationDue().run();
+                dbController.checkReservationDue().run(); //! remove it not needed
             } catch (Exception e) {
                 e.printStackTrace();
             }
