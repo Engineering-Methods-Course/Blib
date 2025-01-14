@@ -353,7 +353,7 @@ public class ClientController extends AbstractClient
                             @SuppressWarnings("unchecked")
                             List<ArrayList<String>> logs = (ArrayList<ArrayList<String>>) message.getMessageContent();
                             ViewReportsFrameController controller = loader.getController();
-                            controller.generateBorrowTimeReport(logs);
+                            //controller.generateBorrowTimeReport(logs);
                         }
                         break;
                     // View messages response
@@ -377,7 +377,7 @@ public class ClientController extends AbstractClient
                             @SuppressWarnings("unchecked")
                             List<ArrayList<String>> logs = (ArrayList<ArrayList<String>>) message.getMessageContent();
                             ViewReportsFrameController controller = loader.getController();
-                            controller.generateSubscriberStatusReport(logs);
+                            //controller.generateSubscriberStatusReport(logs);
                         }
                         // Server has closed its connection
                     case 999:

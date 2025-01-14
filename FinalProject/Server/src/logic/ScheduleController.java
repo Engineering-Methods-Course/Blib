@@ -18,7 +18,7 @@ public class ScheduleController {
         scheduler = Executors.newScheduledThreadPool(1);
         notificationController = NotificationController.getInstance();
         dbController = DBController.getInstance();
-        runDayleTask();
+        runDailyTask();
     }
 
     public static ScheduleController getInstance() {
@@ -31,30 +31,42 @@ public class ScheduleController {
         }
         return instance;
     }
-    //!WIP
-    public void setSchedulerExportLog(Runnable task) {
-        long initialDelay = computeInitialDelay(1, 0, 0);
+    /**
+     * This method sets the scheduler for the export logs
+     */
+    public void setSchedulerExportLog() {
+        long initialDelay = computeInitialDelayForFirstOfMonth(1, 0, 0);
         long period = TimeUnit.DAYS.toMillis(30);
-        scheduler.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.MILLISECONDS);
+        scheduler.scheduleAtFixedRate(() -> {
+            try {
+                System.out.println("Running daily task");
+                dbController.exportLogSubscribersStatus().run();
+                dbController.exportLogBorrowTime().run();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }, initialDelay, period, TimeUnit.MILLISECONDS);
     }
+
+
     /**
      * This method runs the daily task
      */
-    public void runDayleTask() {
-        long initialDelay = computeInitialDelay(0, 0, 0); //! Not Working
-        System.out.println("Initial Delay: " + initialDelay + " ms");
+    public void runDailyTask() {
+        long initialDelay = computeInitialDelayEvreyDayAtTime(7, 0, 0);
         long period = TimeUnit.DAYS.toMillis(1);
         scheduler.scheduleAtFixedRate(() -> {
             try {
                 System.out.println("Running daily task");
                 dbController.unfreezeAccount().run();
                 dbController.checkDueBooks().run();
-                dbController.checkReservationDue().run(); //! remove it not needed
+                dbController.checkReservedBooks().run();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }, 0, period, TimeUnit.DAYS);
+        }, initialDelay, period, TimeUnit.MILLISECONDS);
     }
+
     /**
      * This method computes the initial delay
      *
@@ -63,20 +75,53 @@ public class ScheduleController {
      * @param second the second
      * @return the initial delay
      */
-    //! Not Working
-    private long computeInitialDelay(int hour, int minute, int second) {
+    private long computeInitialDelayEvreyDayAtTime(int hour, int minute, int second) {
+
         Calendar nextRun = Calendar.getInstance();
+
+        /*
+         * Set the next run time to the specified inputs
+         */
         nextRun.set(Calendar.HOUR_OF_DAY, hour);
         nextRun.set(Calendar.MINUTE, minute);
         nextRun.set(Calendar.SECOND, second);
         nextRun.set(Calendar.MILLISECOND, 0);
 
-        if (nextRun.getTime().before(new Date())) {
+        /*
+         * If the next run time is before the current time, add one day
+         */
+        if (nextRun.getTimeInMillis() <= System.currentTimeMillis()) {
             nextRun.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
+        /*
+         * Return the difference between the next run time and the current time
+         */
+        return nextRun.getTimeInMillis() - System.currentTimeMillis();
+    }
+    /**
+     * This sets the scheduler for the first of the month
+     *
+     * @param hour the hour
+     * @param minute the minute
+     * @param second the second
+     * @return long the initial delay
+     */
+    private long computeInitialDelayForFirstOfMonth(int hour, int minute, int second) {
+        Calendar nextRun = Calendar.getInstance();
+        nextRun.set(Calendar.HOUR_OF_DAY, hour);
+        nextRun.set(Calendar.MINUTE, minute);
+        nextRun.set(Calendar.SECOND, second);
+        nextRun.set(Calendar.MILLISECOND, 0);
+        nextRun.set(Calendar.DAY_OF_MONTH, 1);
+
+        if (nextRun.getTime().before(new Date())) {
+            nextRun.add(Calendar.MONTH, 1);
         }
 
         return nextRun.getTimeInMillis() - System.currentTimeMillis();
     }
+
     /**
      * This method stops the scheduler
      */

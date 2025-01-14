@@ -1,6 +1,8 @@
 package common;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Subscriber extends User implements Serializable {
@@ -11,7 +13,7 @@ public class Subscriber extends User implements Serializable {
     private int id;
 
     // Subscription history (e.g., the number of subscriptions)
-    private final int subscriptionHistory;
+    private final List<ArrayList<String>> subscriptionHistory;
 
     // Subscriber's phone number
     private String phoneNumber;
@@ -31,7 +33,7 @@ public class Subscriber extends User implements Serializable {
      * @param phoneNumber Subscriber's phone number
      * @param email       Subscriber's email address
      */
-    public Subscriber(int id, String firstName, String lastName, String phoneNumber, String email, boolean status, int subscriptionHistory) {
+    public Subscriber(int id, String firstName, String lastName, String phoneNumber, String email, boolean status, List<ArrayList<String>> subscriptionHistory) {
         super(firstName, lastName);
         this.id = id;
         this.phoneNumber = phoneNumber;
@@ -130,7 +132,7 @@ public class Subscriber extends User implements Serializable {
      *
      * @return the subscription history count
      */
-    public int getSubscriptionHistory() {
+    public List<ArrayList<String>> getSubscriptionHistory() {
         return subscriptionHistory;
     }
 

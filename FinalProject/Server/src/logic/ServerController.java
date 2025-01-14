@@ -10,7 +10,9 @@ import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * This class extends the AbstractServer class and implements the SubscriberController and LibrarianController interfaces.
@@ -18,7 +20,6 @@ import java.util.HashMap;
  */
 public class ServerController extends AbstractServer {
 
-    private static final HashMap<Integer, ConnectionToClient> clients = new HashMap<>();
     private final ServerMonitorFrameController serverMonitorController;
     private DBController dbController;
     private final NotificationController notificationController;
@@ -86,7 +87,9 @@ public class ServerController extends AbstractServer {
                  * 306 - librarian wants to view subscribers in the system
                  * 308 - librarian wants to view details of a specific subscriber
                  * 310 - librarian wants to extend the borrow time for a book subscriber that was borrowed by a subscriber
-                 * 312 - librarian wants to view a list of all logs
+                 * 312 - librarian wants to view Borrow Times Logs
+                 * 314 - librarian wants to view Subscriber Status Log
+                 * 316 - librarian wants to view messages
                  */
                 ClientServerMessage message = (ClientServerMessage) msg;
                 switch (message.getId()) {
@@ -101,10 +104,10 @@ public class ServerController extends AbstractServer {
                                 // get the user details from the database
                                 User user = dbController.userLogin((ArrayList<String>) message.getMessageContent());
                                 if (user instanceof Subscriber) {
-                                    clients.put(((Subscriber) user).getID(), client);
+                                    notificationController.addSubscriberClients(((Subscriber) user).getID(), client);
                                 }
                                 if (user instanceof Librarian) {
-                                    clients.put(((Librarian) user).getID(), client);
+                                    notificationController.addLibrarianClients(((Librarian) user).getID(), client);
                                 }
                                 client.sendToClient(new ClientServerMessage(101, user));
                                 System.out.println("user details were sent to client");
@@ -126,7 +129,8 @@ public class ServerController extends AbstractServer {
                          */
                         try {
                             if (message.getMessageContent() instanceof Integer) {
-                                clients.remove((Integer) message.getMessageContent());
+                                notificationController.removeSubscriberClients((Integer) message.getMessageContent());
+                                notificationController.removeLibrarianClients((Integer) message.getMessageContent());
                                 System.out.println("User " + message.getMessageContent() + " logged out");
                             } else {
                                 System.out.println("Cannot log out - message is not an integer (case 102)");
@@ -290,7 +294,7 @@ public class ServerController extends AbstractServer {
                             }}));
                         }
                         break;
-                    case (214):
+                    case (214): //! not needed
                         break;
                     case (216):
                         /**
@@ -342,7 +346,7 @@ public class ServerController extends AbstractServer {
                             }}));
                         }
                         break;
-                    case (220):
+                    case (220): //! not needed
                         /**
                          * do: Returns an array list of all of the book copies of a specific book
                          * in: String {copyID}
@@ -496,6 +500,62 @@ public class ServerController extends AbstractServer {
                             }}));
                         }
                         break;
+                    case(312):
+                        /**
+                         * do: librarian wants to view Borrow Times Logs
+                         * in: List<java.util.Date> [start date, end date]
+                         * return: (id 313) ArrayList<MonthlyLog> {borrow time logs}
+                         */
+                        try {
+                            if(message.getMessageContent() instanceof List) {
+                                client.sendToClient(new ClientServerMessage(313, dbController.getBorrowTimeLogs((List<Date>) message.getMessageContent())));
+                                System.out.println("Borrow Time Logs were sent to client");
+                            }
+                            else {
+                                System.out.println("Cannot get Borrow Time Logs - message is not a List<Date> (case 312)");
+                                client.sendToClient(new ClientServerMessage(313, null));
+                            }
+                        }
+                        catch (Exception e) {
+                            System.out.println("Error: with getting Borrow Time Logs (case 312)" + e);
+                            client.sendToClient(new ClientServerMessage(313, null));
+                        }
+                        break;
+                    case(314):
+                        /**
+                         * do: librarian wants to view Subscriber Status Log
+                         * in: List<java.util.Date> [start date, end date]
+                         * return: (id 315) ArrayList<MonthlyLog> {subscriber status logs}
+                         */
+                        try {
+                            if(message.getMessageContent() instanceof List) {
+                                client.sendToClient(new ClientServerMessage(315, dbController.getSubscriberStatusLogs((List<Date>) message.getMessageContent())));
+                                System.out.println("Subscriber Status Logs were sent to client");
+                            }
+                            else {
+                                System.out.println("Cannot get Subscriber Status Logs - message is not a List<Date> (case 314)");
+                                client.sendToClient(new ClientServerMessage(315, null));
+                            }
+                        }
+                        catch (Exception e) {
+                            System.out.println("Error: with getting Subscriber Status Logs (case 314)" + e);
+                            client.sendToClient(new ClientServerMessage(315, null));
+                        }
+                        break;
+                        case(316):
+                            /**
+                             * do: librarian wants to view messages
+                             * return: (id 317) ArrayList<String> {messages}
+                             */
+                            try {
+                                client.sendToClient(new ClientServerMessage(317, dbController.ViewLibrarianMessages()));
+                                System.out.println("Messages were sent to client");
+                            }
+                            catch (Exception e) {
+                                System.out.println("Error: with getting messages (case 316)" + e);
+                                client.sendToClient(new ClientServerMessage(317, null));
+                            }
+
                     default:
                         System.out.println("Invalid command id(handleMessageFromClient ServerController)");
                         client.sendToClient(null);

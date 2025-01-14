@@ -7,6 +7,7 @@ import java.io.*;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +15,10 @@ import java.util.List;
 public class DBController {
     private static volatile DBController instance;
     Connection conn = null;
-    private final NotificationController notificationController;
+    private static NotificationController notificationController;
+
 
     private DBController() {
-        notificationController = NotificationController.getInstance();
         connectToDb();
     }
 
@@ -33,6 +34,8 @@ public class DBController {
                 if (instance == null) {
                     System.out.println("DBController was created successfully");
                     instance = new DBController();
+                    notificationController = NotificationController.getInstance();
+
                 }
             }
         }
@@ -102,7 +105,24 @@ public class DBController {
                     subStatement.setInt(1, userId);
                     ResultSet subRs = subStatement.executeQuery();
                     if (subRs.next()) {
-                        return new Subscriber(subRs.getInt("subscriber_id"), subRs.getString("first_name"), subRs.getString("last_name"), subRs.getString("phone_number"), subRs.getString("email"), subRs.getInt("status") == 1, subRs.getInt("detailed_subscription_history"));
+
+                        /*
+                         * get the subscriber subscription history where the subscriber ID matches the given value
+                         */
+                        String subscriptionHistoryQuery = "SELECT details FROM subscription_history WHERE subscription_history_id = ?";
+                        PreparedStatement subscriptionHistoryStatement = conn.prepareStatement(subscriptionHistoryQuery);
+                        subscriptionHistoryStatement.setInt(1, subRs.getInt("detailed_subscription_history"));
+                        ResultSet subscriptionHistoryRs = subscriptionHistoryStatement.executeQuery();
+
+                        /*
+                         * Converts the subscription history Blob to a List of array lists and returns new subscriber based of the details
+                         */
+                        if (subscriptionHistoryRs.next()) {
+                            Blob blobSubscriptionHistory = subscriptionHistoryRs.getBlob("details");
+                            List<ArrayList<String>> subscriptionHistory = convertBlobToList(blobSubscriptionHistory);
+                            return new Subscriber(subRs.getInt("subscriber_id"), subRs.getString("first_name"), subRs.getString("last_name"), subRs.getString("phone_number"), subRs.getString("email"), subRs.getInt("status") == 1, subscriptionHistory);
+
+                        }
                     }
                 }
 
@@ -115,6 +135,9 @@ public class DBController {
                     PreparedStatement libStatement = conn.prepareStatement(libQuery);
                     libStatement.setInt(1, userId);
                     ResultSet subRs = libStatement.executeQuery();
+                    /*
+                     * If the query was successful returns a new librarian based of the details
+                     */
                     if (subRs.next()) {
                         return new Librarian(subRs.getInt("librarian_id"), subRs.getString("first_name"), subRs.getString("last_name"));
                     }
@@ -123,7 +146,7 @@ public class DBController {
             // No subscriber found
             System.out.println("No user found (userLogin)");
             return null;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             // If an error occur
             System.out.println("Error: Login Failed (userLogin) " + e);
             return null;
@@ -329,11 +352,10 @@ public class DBController {
 
                 if (nearestReturnDateRs.next()) {
                     Date nearestReturnDate = nearestReturnDateRs.getDate("nearest_return_date");
+                    response.add("false");
                     if (nearestReturnDate != null) {
-                        response.add("false");
                         response.add(nearestReturnDate.toString());
                     } else {
-                        response.add("false");
                         response.add("No return dates found for the provided book IDs");
                     }
                 }
@@ -358,7 +380,7 @@ public class DBController {
         try {
             int subscriberId = Integer.parseInt(messageContent.get(0));
             int serialNumber = Integer.parseInt(messageContent.get(1));
-            String bookName = "";
+            String bookName ;
 
             conn.setAutoCommit(false);
 
@@ -376,8 +398,7 @@ public class DBController {
                     response.add("Subscriber is frozen");
                     return response;
                 }
-            }
-            else {
+            } else {
                 response.add("false");
                 response.add("Subscriber not found");
                 return response;
@@ -408,6 +429,20 @@ public class DBController {
                 }
 
                 /*
+                 * Check if the subscriber did not reserve this book already
+                 */
+                String checkReserveQuery = "SELECT * FROM reservation WHERE subscriber_id = ? AND serial_number = ?";
+                PreparedStatement checkReserveStatement = conn.prepareStatement(checkReserveQuery);
+                checkReserveStatement.setInt(1, subscriberId);
+                checkReserveStatement.setInt(2, serialNumber);
+                ResultSet checkReserveRs = checkReserveStatement.executeQuery();
+                if (checkReserveRs.next()) {
+                    response.add("false");
+                    response.add("Subscriber already reserved this book!");
+                    return response;
+                }
+
+                /*
                  * Check if the book is fully reserved
                  */
 
@@ -416,8 +451,7 @@ public class DBController {
                     response.add("Can't reserve the book, the book is fully reserved");
                     return response;
                 }
-            }
-            else {
+            } else {
                 response.add("false");
                 response.add("Book not found");
                 return response;
@@ -544,7 +578,7 @@ public class DBController {
 
         int subscriberId = Integer.parseInt(messageContent.get(0));
         int copyId = Integer.parseInt(messageContent.get(1));
-        Date newReturnDate = null;
+        Date newReturnDate;
 
         try {
             conn.setAutoCommit(false);
@@ -563,8 +597,7 @@ public class DBController {
                     response.add("Subscriber is frozen");
                     return response;
                 }
-            }
-            else{
+            } else {
                 response.add("false");
                 response.add("Subscriber not found");
                 return response;
@@ -588,8 +621,7 @@ public class DBController {
                     response.add("Cannot extend the return date due to having more than a week left");
                     return response;
                 }
-            }
-            else{
+            } else {
                 response.add("false");
                 response.add("Borrow not found");
                 return response;
@@ -609,8 +641,7 @@ public class DBController {
                     response.add("the book had been reserved");
                     return response;
                 }
-            }
-            else{
+            } else {
                 response.add("false");
                 response.add("Book not found");
                 return response;
@@ -647,15 +678,12 @@ public class DBController {
 
             updateHistory(subscriberId, "extend", "Return date for the book: " + bookName + " copy ID: " + copyId + " was extended by an extra week");
 
+
             /*
-             * Send a notification to the librarians
+             * Send a notification to the librarian
              */
 
-            String notifyQuery = "Insert into messages_for_librarians (message_date, message_info) values (?, ?)";
-            PreparedStatement notifyStatement = conn.prepareStatement(notifyQuery);
-            notifyStatement.setDate(1, Date.valueOf(LocalDate.now()));
-            notifyStatement.setString(2, "Subscriber with ID: " + subscriberId + " has extended the return date for the book " + bookName + " for an extra week" + "book copy ID: " + copyId);
-            notifyStatement.executeUpdate();
+            NotificationController.notifyLibrarian("Subscriber with ID: " + subscriberId + " has extended the return date for the book " + bookName + " for an extra week" + "book copy ID: " + copyId);
 
             /*
              * Commit the transaction
@@ -1018,14 +1046,13 @@ public class DBController {
             ResultSet checkSubscriberRs = checkSubscriberStatement.executeQuery();
             if (checkSubscriberRs.next()) {
                 if (checkSubscriberRs.getInt("status") == 1) {
-                    
+
                     response.add("false");
                     response.add("Subscriber is frozen");
                     return response;
                 }
-                
-            }
-            else{
+
+            } else {
                 response.add("false");
                 response.add("Subscriber does not exist");
                 return response;
@@ -1103,14 +1130,13 @@ public class DBController {
                         response.add("Book is reserved");
                         return response;
                     }
-                }
-                else{
+                } else {
                     response.add("false");
                     response.add("Book not found");
                     return response;
                 }
             }
-            
+
 
             conn.setAutoCommit(false);
 
@@ -1123,7 +1149,7 @@ public class DBController {
             updateCopyStatement.setInt(1, 0);
             updateCopyStatement.setInt(2, copyId);
             updateCopyStatement.executeUpdate();
-            
+
 
 
             /*
@@ -1134,7 +1160,7 @@ public class DBController {
             PreparedStatement updateBookStatement = conn.prepareStatement(updateBookQuery);
             updateBookStatement.setInt(1, copyId); // copy_id
             updateBookStatement.executeUpdate();
-            
+
 
             /*
              * The query inserts the book details into the borrow table
@@ -1147,7 +1173,7 @@ public class DBController {
             borrowStatement.setDate(3, returnDate);
             borrowStatement.setString(4, "borrowed");
             borrowStatement.executeUpdate();
-            
+
 
             /*
              * Update subscriber history
@@ -1155,7 +1181,7 @@ public class DBController {
             DateTimeFormatter historyFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             String newReturnDate = returnDate.toLocalDate().format(historyFormatter);
             updateHistory(subscriberId, "borrow", "Borrowed the book: " + bookName + " copy ID: " + copyId + " Expected return date: " + newReturnDate);
-            
+
 
             /*
              * Commit the transaction
@@ -1201,7 +1227,7 @@ public class DBController {
      */
     public ArrayList<String> returnBookFromSubscriber(String messageContent) {
         ArrayList<String> response = new ArrayList<>();
-        int subscriberId = 0;
+        int subscriberId;
         int copyId = Integer.parseInt(messageContent);
 
         try {
@@ -1216,6 +1242,11 @@ public class DBController {
             updateCopyStatement.setInt(1, 1);
             updateCopyStatement.setInt(2, copyId);
             updateCopyStatement.executeUpdate();
+            if (updateCopyStatement.executeUpdate() == 0) {
+                response.add("false");
+                response.add("Book copy was not found in the system");
+                return response;
+            }
 
             /*
              * The query updates the amount of borrowed books in the book table
@@ -1237,10 +1268,9 @@ public class DBController {
             ResultSet getSubscriberRs = getSubscriberStatement.executeQuery();
             if (getSubscriberRs.next()) {
                 subscriberId = getSubscriberRs.getInt("subscriber_id");
-            }
-            else{
+            } else {
                 response.add("false");
-                response.add("Book not found");
+                response.add("Borrow not found");
                 return response;
             }
 
@@ -1252,11 +1282,10 @@ public class DBController {
             PreparedStatement getBookNameStatement = conn.prepareStatement(getBookNameQuery);
             getBookNameStatement.setInt(1, copyId);
             ResultSet getBookNameRs = getBookNameStatement.executeQuery();
-            String bookName = "";
+            String bookName;
             if (getBookNameRs.next()) {
                 bookName = getBookNameRs.getString("name");
-            }
-            else{
+            } else {
                 response.add("false");
                 response.add("Book not found");
                 return response;
@@ -1266,7 +1295,7 @@ public class DBController {
              * Check if late return
              */
 
-            Boolean lateReturn = false;
+            boolean lateReturn = false;
             String checkLateReturnQuery = "SELECT DATEDIFF(CURDATE(), expected_return_date) AS days_diff FROM borrow WHERE subscriber_id = ? AND copy_id = ? AND status = 'borrowed'";
             PreparedStatement checkLateReturnStatement = conn.prepareStatement(checkLateReturnQuery);
             checkLateReturnStatement.setInt(1, subscriberId);
@@ -1276,7 +1305,9 @@ public class DBController {
                 int daysDiff = checkLateReturnRs.getInt("days_diff");
                 if (daysDiff >= 7) {
                     lateReturn = true;
-                    // Freeze the subscriber account for a month
+                    /*
+                     * Freeze the subscriber account for a month
+                     */
                     freezeAccount(subscriberId, "Late return of book " + bookName);
                 }
             }
@@ -1298,13 +1329,14 @@ public class DBController {
              * Update subscriber history
              */
 
-            if(lateReturn){
+            if (lateReturn) {
                 updateHistory(subscriberId, "late return", "Book: " + bookName + " of copy ID: " + copyId + " was returned late account is frozen for a month");
-            }
-            else{
+            } else {
                 updateHistory(subscriberId, "return", "Book: " + bookName + " of copy ID: " + copyId + " was returned");
             }
-
+            /*
+             * Check if the book was reserved
+             */
             checkReservation(bookName);
 
             /*
@@ -1315,8 +1347,7 @@ public class DBController {
             response.add("true");
             if (lateReturn) {
                 response.add("Book " + bookName + " returned successfully to subscriber " + subscriberId + " but it was late account is frozen for a month");
-            }
-            else{
+            } else {
                 response.add("Book " + bookName + " returned successfully to subscriber " + subscriberId);
             }
 
@@ -1369,8 +1400,25 @@ public class DBController {
              */
 
             while (getSubscribersRs.next()) {
-                Subscriber subscriber = new Subscriber(getSubscribersRs.getInt("subscriber_id"), getSubscribersRs.getString("first_name"), getSubscribersRs.getString("last_name"), getSubscribersRs.getString("phone_number"), getSubscribersRs.getString("email"), getSubscribersRs.getInt("status") == 1, getSubscribersRs.getInt("detailed_subscription_history"));
-                subscribersList.add(subscriber);
+
+                /*
+                 * get the subscriber subscription history where the subscriber ID matches the given value
+                 */
+                String subscriptionHistoryQuery = "SELECT details FROM subscription_history WHERE subscription_history_id = ?";
+                PreparedStatement subscriptionHistoryStatement = conn.prepareStatement(subscriptionHistoryQuery);
+                subscriptionHistoryStatement.setInt(1, getSubscribersRs.getInt("detailed_subscription_history"));
+                ResultSet subscriptionHistoryRs = subscriptionHistoryStatement.executeQuery();
+                /*
+                 * Converts the subscription history Blob to a List of array lists
+                 * Creates a new subscriber based on the details
+                 * And add him to the subscribers list
+                 */
+                if (subscriptionHistoryRs.next()) {
+                    Blob blobSubscriptionHistory = subscriptionHistoryRs.getBlob("details");
+                    List<ArrayList<String>> subscriptionHistory = convertBlobToList(blobSubscriptionHistory);
+                    Subscriber subscriber = new Subscriber(getSubscribersRs.getInt("subscriber_id"), getSubscribersRs.getString("first_name"), getSubscribersRs.getString("last_name"), getSubscribersRs.getString("phone_number"), getSubscribersRs.getString("email"), getSubscribersRs.getInt("status") == 1, subscriptionHistory);
+                    subscribersList.add(subscriber);
+                }
             }
 
             /*
@@ -1392,7 +1440,7 @@ public class DBController {
                 return null;
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
 
             /*
              * If an error occur
@@ -1427,20 +1475,34 @@ public class DBController {
              */
 
             if (getSubscriberRs.next()) {
-                Subscriber subscriber = new Subscriber(getSubscriberRs.getInt("subscriber_id"), getSubscriberRs.getString("first_name"), getSubscriberRs.getString("last_name"), getSubscriberRs.getString("phone_number"), getSubscriberRs.getString("email"), getSubscriberRs.getInt("status") == 1, getSubscriberRs.getInt("detailed_subscription_history"));
-                System.out.println("Subscriber found (viewSubscriberDetails)");
-                return subscriber;
+                /*
+                 * get the subscriber subscription history where the subscriber ID matches the given value
+                 */
+                String subscriptionHistoryQuery = "SELECT details FROM subscription_history WHERE subscription_history_id = ?";
+                PreparedStatement subscriptionHistoryStatement = conn.prepareStatement(subscriptionHistoryQuery);
+                subscriptionHistoryStatement.setInt(1, getSubscriberRs.getInt("detailed_subscription_history"));
+                ResultSet subscriptionHistoryRs = subscriptionHistoryStatement.executeQuery();
+                /*
+                 * Converts the subscription history Blob to a List of array lists
+                 * Creates a new subscriber based on the details and returns him
+                 */
+                if (subscriptionHistoryRs.next()) {
+                    Blob blobSubscriptionHistory = subscriptionHistoryRs.getBlob("details");
+                    List<ArrayList<String>> subscriptionHistory = convertBlobToList(blobSubscriptionHistory);
+                    Subscriber subscriber = new Subscriber(getSubscriberRs.getInt("subscriber_id"), getSubscriberRs.getString("first_name"), getSubscriberRs.getString("last_name"), getSubscriberRs.getString("phone_number"), getSubscriberRs.getString("email"), getSubscriberRs.getInt("status") == 1, subscriptionHistory);
+                    System.out.println("Subscriber found (viewSubscriberDetails)");
+                    return subscriber;
+                }
             }
 
             /*
              * No subscriber found
              */
 
-            else {
-                System.out.println("No subscriber found (viewSubscriberDetails)");
-                return null;
-            }
-        } catch (SQLException e) {
+            System.out.println("No subscriber found (viewSubscriberDetails)");
+            return null;
+
+        } catch (Exception e) {
 
             /*
              * If an error occur
@@ -1450,6 +1512,7 @@ public class DBController {
             return null;
         }
     }
+
 
     /**
      * case 310
@@ -1538,7 +1601,7 @@ public class DBController {
             PreparedStatement getLibrarianNameStatement = conn.prepareStatement(getLibrarianNameQuery);
             getLibrarianNameStatement.setInt(1, Integer.parseInt(messageContent.get(3)));
             ResultSet getLibrarianNameRs = getLibrarianNameStatement.executeQuery();
-            String librarianName = "";
+            String librarianName;
             if (getLibrarianNameRs.next()) {
                 librarianName = getLibrarianNameRs.getString("first_name") + " " + getLibrarianNameRs.getString("last_name");
             }
@@ -1597,6 +1660,185 @@ public class DBController {
     }
 
     /**
+     * Case 312
+     * This method return an array list containing a log of the subscribers borrow histories between two time frames
+     *
+     * @param messageContent The time frames
+     * @return ArrayList<MonthlyLog> containing the logs
+     */
+    public ArrayList<MonthlyLog> getBorrowTimeLogs(List<java.util.Date> messageContent) {
+
+        /*
+         * Covert the dates received from the client to java.sql.Date from java.util.Date
+         */
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        Date startDate = Date.valueOf(messageContent.get(0).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter));
+        Date endDate = Date.valueOf(messageContent.get(1).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter));
+        ArrayList<MonthlyLog> logs = new ArrayList<>();
+
+        /*
+         * This query selects all columns from the log table where the export date is between given times and the log type is borrowTime
+         */
+        try {
+            String logQuery = "SELECT * FROM log WHERE export_date BETWEEN ? AND ? AND log_type = 'borrowTime'";
+            PreparedStatement statement = conn.prepareStatement(logQuery);
+            statement.setDate(1, startDate);
+            statement.setDate(2, endDate);
+            ResultSet logRs = statement.executeQuery();
+
+            /*
+             * Converts the Blob data to a List<ArrayList<String>>
+             * Creates a MonthlyLog object
+             * And add it to the logs array list
+             */
+            while (logRs.next()) {
+                Blob dataBlob = logRs.getBlob("details");
+                List<ArrayList<String>> data = convertBlobToList(dataBlob);
+                MonthlyLog log = new MonthlyLog(logRs.getDate("export_date"), data);
+                logs.add(log);
+            }
+
+            /*
+             * If no logs were found returns null
+             */
+            if(logs.isEmpty()){
+                return null;
+            }
+
+            return logs;
+        } catch (Exception e) {
+            System.out.println("Error: Getting borrow time logs" + e);
+            return null;
+        }
+    }
+
+    /**
+     * Case 314
+     * This method return an array list containing a log of the subscribers status abnormalities between two time frames
+     *
+     * @param messageContent The time frames
+     * @return ArrayList<MonthlyLog> containing the logs
+     */
+    public ArrayList<MonthlyLog> getSubscriberStatusLogs(List<java.util.Date> messageContent) {
+
+        /*
+         * Covert the dates received from the client to java.sql.Date from java.util.Date
+         */
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        Date startDate = Date.valueOf(messageContent.get(0).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter));
+        Date endDate = Date.valueOf(messageContent.get(1).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter));
+        ArrayList<MonthlyLog> logs = new ArrayList<>();
+
+        /*
+         * This query selects all columns from the log table where the export date is between given times and the log type is borrowTime
+         */
+        try {
+            String logQuery = "SELECT * FROM log WHERE export_date BETWEEN ? AND ? AND log_type = 'subscriberStatuses'";
+            PreparedStatement statement = conn.prepareStatement(logQuery);
+            statement.setDate(1, startDate);
+            statement.setDate(2, endDate);
+            ResultSet logRs = statement.executeQuery();
+
+            /*
+             * Converts the Blob data to a List<ArrayList<String>>
+             * Creates a MonthlyLog object
+             * And add it to the logs array list
+             */
+            while (logRs.next()) {
+                Blob dataBlob = logRs.getBlob("details");
+                List<ArrayList<String>> data = convertBlobToList(dataBlob);
+                MonthlyLog log = new MonthlyLog(logRs.getDate("export_date"), data);
+                logs.add(log);
+            }
+
+            /*
+             * If no logs were found returns null
+             */
+            if(logs.isEmpty()){
+                return null;
+            }
+
+            return logs;
+        } catch (Exception e) {
+            System.out.println("Error: Getting borrow time logs" + e);
+            return null;
+        }
+    }
+
+    /**
+     * Case 316
+     * This method returns all the librarian messages
+     *
+     * @return ArrayList<String> containing the messages
+     */
+    public List<ArrayList<String>> ViewLibrarianMessages() {
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            List<ArrayList<String>> messages = new ArrayList<>();
+
+            /*
+             * This query selects all columns from the librarian_messages table
+             */
+            String getMessagesQuery = "SELECT * FROM librarian_messages";
+            PreparedStatement getMessagesStatement = conn.prepareStatement(getMessagesQuery);
+            ResultSet getMessagesRs = getMessagesStatement.executeQuery();
+
+            /*
+             * Creates an ArrayList containing the message date and the message content
+             * And adds it to the messages List
+             */
+            while (getMessagesRs.next()) {
+                ArrayList<String> message = new ArrayList<>();
+                Timestamp timestamp = getMessagesRs.getTimestamp("message_date");
+                message.add(timestamp.toLocalDateTime().format(formatter));
+                message.add(getMessagesRs.getString("message_content"));
+                messages.add(message);
+            }
+
+            /*
+             * If no messages were found returns null
+             */
+            if(messages.isEmpty()){
+                return null;
+            }
+            return messages;
+        } catch (SQLException e) {
+            System.out.println("Error: Getting librarian messages" + e);
+            return null;
+        }
+
+    }
+
+    /**
+     * This method exports the entire from last month
+     *
+     * @return List<ArrayList<String>>
+     */
+    public static List<ArrayList<String>> getLastMonthEntries(List<ArrayList<String>> history) {
+
+        List<ArrayList<String>> lastMonthEntries = new ArrayList<>();
+
+        /*
+         * Get the first and last day of last month
+         */
+        LocalDate now = LocalDate.now();
+        LocalDate firstDayOfLastMonth = now.minusMonths(1).withDayOfMonth(1);
+        LocalDate lastDayOfLastMonth = now.withDayOfMonth(1).minusDays(1);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+        /*
+         * Add the entries from last month to the lastMonthEntries array list
+         */
+        for (ArrayList<String> entry : history) {
+            LocalDate entryDate = LocalDate.parse(entry.get(0), formatter);
+            if (!entryDate.isBefore(firstDayOfLastMonth) && !entryDate.isAfter(lastDayOfLastMonth)) {
+                lastMonthEntries.add(entry);
+            }
+        }
+        return lastMonthEntries;
+    }
+
+    /**
      * This method check if a subscribe need to be notified about a reserved book
      * if the subscriber has a reserved book and the book is available, the subscriber will be notified
      *
@@ -1624,7 +1866,7 @@ public class DBController {
                     ResultSet GetSubscriberEmailRs = GetSubscriberEmailStatement.executeQuery();
                     if (GetSubscriberEmailRs.next()) {
                         String email = GetSubscriberEmailRs.getString("email");
-                        notificationController.sendEmail(email, "Book available", "The book " + bookName + " is now available for you to borrow it will be reserved for you until the end of " + LocalDate.now().plusDays(2));
+                        notificationController.sendEmail(email,subscriberId ,"Book available", "The book " + bookName + " is now available for you to borrow it will be reserved for you until the end of " + LocalDate.now().plusDays(2));
                     }
 
                     /*
@@ -1786,6 +2028,213 @@ public class DBController {
     }
 
     /**
+     * add to database the message that was sent to the subscriber
+     *
+     * @param subscriberID the id of the subscriber
+     * @param message the message that was sent
+     * @param sent if the message was sent or not
+     *
+     */
+    public void messagesToSubscriber(int subscriberID, String message, int sent) {
+        try {
+            String query = "INSERT INTO messages_to_subscriber (receiver_id, message_content, sent) VALUES (?, ?, ?)";
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setInt(1, subscriberID);
+            statement.setString(2, message);
+            statement.setInt(3, sent);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error: Adding message to subscriber" + e);
+        }
+    }
+
+    /**
+     * add to database the message that was sent to the librarian
+     *
+     * @param message the message that was sent
+     * @param sent if the message was sent or not
+     */
+    public void messagesToLibrarian(String message, int sent) {
+        try {
+            String query = "INSERT INTO messages_to_librarian (message_content, sent) VALUES (?, ?)";
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setString(1, message);
+            statement.setInt(2, sent);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error: Adding message to librarian" + e);
+        }
+    }
+    /**
+     * This method checks if there are messages for the subscriber and returns them
+     *
+     * @param subscriberID The ID of the subscriber
+     * @return ArrayList<String>
+     */
+    public ArrayList<String> checkSubscriberMessages(int subscriberID) {
+        ArrayList<String> messages = new ArrayList<>();
+        try {
+            /*
+             * Get the messages
+             */
+            String query = "SELECT message_content FROM messages_to_subscriber WHERE receiver_id = ? AND sent = 0";
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setInt(1, subscriberID);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                messages.add(rs.getString("message_content"));
+
+                /*
+                 * Update the message to sent
+                 */
+
+                String updateQuery = "UPDATE messages_to_subscriber SET sent = 1 WHERE receiver_id = ? AND message_content = ?";
+                PreparedStatement updateStatement = conn.prepareStatement(updateQuery);
+                updateStatement.setInt(1, subscriberID);
+                updateStatement.setString(2, rs.getString("message_content"));
+                updateStatement.executeUpdate();
+            }
+            return messages;
+        } catch (SQLException e) {
+            System.out.println("Error: Checking subscriber messages" + e);
+            return null;
+        }
+    }
+    /**
+     * This method checks if there are messages for the librarian and returns them
+     *
+     * @return ArrayList<String>
+     */
+    public ArrayList<String> checkLibrarianMessages() {
+        String query = "SELECT message_content FROM messages_to_librarian WHERE sent = 0";
+        ArrayList<String> messages = new ArrayList<>();
+        try {
+            PreparedStatement statement = conn.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                messages.add(rs.getString("message_content"));
+
+                /*
+                 * Update the message to sent
+                 */
+
+                String updateQuery = "UPDATE messages_to_librarian SET sent = 1 WHERE message_content = ?";
+                PreparedStatement updateStatement = conn.prepareStatement(updateQuery);
+                updateStatement.setString(1, rs.getString("message_content"));
+                updateStatement.executeUpdate();
+            }
+            return messages;
+        } catch (SQLException e) {
+            System.out.println("Error: Checking librarian messages" + e);
+            return null;
+        }
+    }
+
+
+    /**
+     * This method exports the log of all subscribers statuses
+     *
+     * @return Runnable
+     */
+    public Runnable exportLogSubscribersStatus() {
+        return () -> {
+            try {
+                List<ArrayList<String>> newLog = new ArrayList<>();
+                /*
+                 * This query selects all columns from the subscriber_history table
+                 * And checks whether the subscriber was frozen, unfrozen or newly registered this month
+                 */
+                String newLogQuery = "SELECT * FROM subscription_history";
+                PreparedStatement newLogStatement = conn.prepareStatement(newLogQuery);
+                ResultSet newLogRs = newLogStatement.executeQuery();
+                while (newLogRs.next()) {
+                    Blob historyBlob = newLogRs.getBlob("details");
+                    List<ArrayList<String>> subscriberHistory = convertBlobToList(historyBlob);
+                    List<ArrayList<String>> lastMonthEntries = getLastMonthEntries(subscriberHistory);
+
+                    /*
+                     * Add the entries to the new log according to the subscriber status abnormality
+                     */
+                    for (ArrayList<String> entry : lastMonthEntries) {
+                        if (entry.get(1).equals("frozen") || entry.get(1).equals("unfrozen") || entry.get(1).equals("register")) {
+                            newLog.add(entry);
+                        }
+                    }
+                }
+
+                /*
+                 * Convert the data to a Blob
+                 */
+                Blob dataBlob = convertToBlob(newLog);
+
+                /*
+                 * Add the new log to the database
+                 */
+                String newLogUpdateQuery = "INSERT INTO log (export_date, details, log_type) VALUES (?, ?, ?)";
+                PreparedStatement newLogUpdateStatement = conn.prepareStatement(newLogUpdateQuery);
+                newLogUpdateStatement.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
+                newLogUpdateStatement.setBlob(2, dataBlob);
+                newLogUpdateStatement.setString(3, "subscriberStatuses");
+                newLogUpdateStatement.executeUpdate();
+
+            } catch (Exception e) {
+                System.out.println("Error: Exporting log of subscribers status" + e);
+            }
+
+        };
+    }
+    /**
+     * This method exports the log of all borrowed book times
+     */
+    public Runnable exportLogBorrowTime() {
+        return () -> {
+            try {
+                List<ArrayList<String>> newLog = new ArrayList<>();
+                /*
+                 * This query selects all columns from the subscriber_history table
+                 * And checks whether the subscriber was frozen, unfrozen or newly registered this month
+                 */
+                String newLogQuery = "SELECT * FROM subscription_history";
+                PreparedStatement newLogStatement = conn.prepareStatement(newLogQuery);
+                ResultSet newLogRs = newLogStatement.executeQuery();
+                while (newLogRs.next()) {
+                    Blob historyBlob = newLogRs.getBlob("details");
+                    List<ArrayList<String>> subscriberHistory = convertBlobToList(historyBlob);
+                    List<ArrayList<String>> lastMonthEntries = getLastMonthEntries(subscriberHistory);
+
+                    /*
+                     * Add the entries to the new log according to the subscriber status abnormality
+                     */
+                    for (ArrayList<String> entry : lastMonthEntries) {
+                        if (entry.get(1).equals("borrow") || entry.get(1).equals("return") || entry.get(1).equals("late return") || entry.get(1).equals("extend") || entry.get(1).equals("reserve")) {
+                            newLog.add(entry);
+                        }
+                    }
+                }
+
+                /*
+                 * Convert the data to a Blob
+                 */
+                Blob dataBlob = convertToBlob(newLog);
+
+                /*
+                 * Add the new log to the database
+                 */
+                String newLogUpdateQuery = "INSERT INTO log (export_date, details, log_type) VALUES (?, ?, ?)";
+                PreparedStatement newLogUpdateStatement = conn.prepareStatement(newLogUpdateQuery);
+                newLogUpdateStatement.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
+                newLogUpdateStatement.setBlob(2, dataBlob);
+                newLogUpdateStatement.setString(3, "borrowTime");
+                newLogUpdateStatement.executeUpdate();
+
+            } catch (Exception e) {
+                System.out.println("Error: Exporting log of subscribers status" + e);
+            }
+
+        };
+    }
+
+    /**
      * This method unfreezes a subscriber account
      */
     public Runnable unfreezeAccount() {
@@ -1832,17 +2281,18 @@ public class DBController {
             try {
 
                 /*
-                 * Check if the subscribers has to return a book
+                 * Check if the subscribers has to return a book in less than a day
                  */
 
-                String query = "SELECT subscriber_id, copy_id, expected_return_date, DATEDIFF(expected_return_date, NOW()) AS date_diff FROM borrow WHERE DATEDIFF(expected_return_date, NOW()) <= 1 AND status = 'borrowed'";
+                String query = "SELECT subscriber_id, copy_id, expected_return_date FROM borrow WHERE DATEDIFF(expected_return_date, NOW()) <= 1 AND status = 'borrowed' AND notified = 0";
                 PreparedStatement statement = conn.prepareStatement(query);
                 ResultSet rs = statement.executeQuery();
                 while (rs.next()) {
                     int subscriberId = rs.getInt("subscriber_id");
                     int copyId = rs.getInt("copy_id");
                     Date expectedReturnDate = rs.getDate("expected_return_date");
-                    int dateDiff = rs.getInt("date_diff");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    String formattedExpectedDate = expectedReturnDate.toLocalDate().format(formatter);
                     String bookName = "";
 
                     /*
@@ -1861,26 +2311,31 @@ public class DBController {
                      * Get the subscriber email
                      */
 
-                    String getEmailQuery = "SELECT email FROM subscriber WHERE subscriber_id = ?";
-                    PreparedStatement getEmailStatement = conn.prepareStatement(getEmailQuery);
+                    String getSubscriberContactInfoQuery = "SELECT email, phone_number FROM subscriber WHERE subscriber_id = ?";
+                    PreparedStatement getEmailStatement = conn.prepareStatement(getSubscriberContactInfoQuery);
                     getEmailStatement.setInt(1, subscriberId);
-                    ResultSet emailRs = getEmailStatement.executeQuery();
-                    if (emailRs.next()) {
-                        String email = emailRs.getString("email");
-                        if (dateDiff < 0 && dateDiff > -7) {
-                            notificationController.sendEmail(email, "Book Return Reminder", "Please return the book " + bookName + " with copy ID " + copyId + " else account will be frozen in " + (7 - Math.abs(dateDiff)) + " days");
-                        } else if (dateDiff > 0) {
-                            notificationController.sendEmail(email, "Book Return Reminder", "Please return the book " + bookName + " with copy ID " + copyId + " due date is in " + dateDiff + " days");
-                        }
+                    ResultSet SubscriberContactInfoRs = getEmailStatement.executeQuery();
+                    if (SubscriberContactInfoRs.next()) {
+                        String email = SubscriberContactInfoRs.getString("email");
+                        String phoneNumber = SubscriberContactInfoRs.getString("phone_number");
+
+                        notificationController.sendEmail(email, subscriberId, "Book Return Reminder", "Reminder to return the book: " + bookName + " with copy ID: " + copyId + " by " + formattedExpectedDate);
+                        notificationController.sendSMSSimulator(subscriberId, "Reminder to return the book: " + bookName + " with copy ID: " + copyId + " by " + formattedExpectedDate+" was sent to phone number: "+phoneNumber);
+
                     }
+                    /*
+                     * Update the borrow table to notified
+                     */
+                    String updateBorrowQuery = "UPDATE borrow SET notified = 1 WHERE subscriber_id = ? AND copy_id = ?";
+                    PreparedStatement updateBorrowStatement = conn.prepareStatement(updateBorrowQuery);
+                    updateBorrowStatement.setInt(1, subscriberId);
+                    updateBorrowStatement.setInt(2, copyId);
+                    updateBorrowStatement.executeUpdate();
 
                     /*
                      * Update subscriber history
                      */
-
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    String formattedExpectedDate = expectedReturnDate.toLocalDate().format(formatter);
-                    updateHistory(subscriberId, "notified", "Reminder to return the book with copy ID " + copyId + " by " + formattedExpectedDate + ". Days left: " + dateDiff);
+                    updateHistory(subscriberId, "notified", "Reminder to return the book with copy ID " + copyId + " by " + formattedExpectedDate);
                 }
             } catch (SQLException e) {
                 System.out.println("Error: Checking due books" + e);
@@ -1889,77 +2344,36 @@ public class DBController {
     }
 
     /**
-     * This method checks if a reservation is due
+     * This method checks if there are reserved books that are not picked up for more than 2 days
      *
-     * @return Runnable
+     * @return boolean
      */
-    public Runnable checkReservationDue() {
+    public Runnable checkReservedBooks() {
         return () -> {
             try {
                 /*
-                 * Check if the subscriber was notified
+                 * Check if the reserved books are not picked up for more than 2 days
                  */
-
-                String checkNotificationQuery = "SELECT subscriber_id, serial_number, DATEDIFF(NOW(), notify_date) AS date_diff FROM reservation WHERE notify = 1";
-                PreparedStatement checkNotificationStatement = conn.prepareStatement(checkNotificationQuery);
-                ResultSet checkNotificationRs = checkNotificationStatement.executeQuery();
-                while (checkNotificationRs.next()) {
-                    int subscriberId = checkNotificationRs.getInt("subscriber_id");
-                    int serialNumber = checkNotificationRs.getInt("serial_number");
-                    String email = "";
-                    int dateDiff = checkNotificationRs.getInt("date_diff");
-                    String bookName = "";
-
+                String query = "SELECT subscriber_id, serial_number, reserve_date, DATEDIFF(NOW(), reserve_date) AS date_diff FROM reservation WHERE DATEDIFF(NOW(), notify_date) >= 2 AND notify = 1";
+                PreparedStatement statement = conn.prepareStatement(query);
+                ResultSet rs = statement.executeQuery();
+                while (rs.next()) {
+                    int subscriberId = rs.getInt("subscriber_id");
+                    int serialNumber = rs.getInt("serial_number");
                     /*
-                     *Get the book name
+                     * Delete the reservation
                      */
+                    String deleteReservationQuery = "DELETE FROM reservation WHERE subscriber_id = ? AND serial_number = ?";
+                    PreparedStatement deleteReservationStatement = conn.prepareStatement(deleteReservationQuery);
+                    deleteReservationStatement.setInt(1, subscriberId);
+                    deleteReservationStatement.setInt(2, serialNumber);
+                    deleteReservationStatement.executeUpdate();
 
-                    String getBookNameQuery = "SELECT name FROM book WHERE serial_number = ?";
-                    PreparedStatement getBookNameStatement = conn.prepareStatement(getBookNameQuery);
-                    getBookNameStatement.setInt(1, serialNumber);
-                    ResultSet getBookNameRs = getBookNameStatement.executeQuery();
-                    if (getBookNameRs.next()) {
-                        bookName = getBookNameRs.getString("name");
-                    }
-
-                    /*
-                     * Get the subscriber email
-                     */
-
-                    String getEmailQuery = "SELECT email FROM subscriber WHERE subscriber_id = ?";
-                    PreparedStatement getEmailStatement = conn.prepareStatement(getEmailQuery);
-                    getEmailStatement.setInt(1, subscriberId);
-                    ResultSet emailRs = getEmailStatement.executeQuery();
-                    if (emailRs.next()) {
-                        email = emailRs.getString("email");
-                    }
-
-                    /*
-                     * check if the subscriber was notified and the date difference
-                     */
-                    if (dateDiff <= 2) {
-                        // Notify the subscriber
-                        notificationController.sendEmail(email, "Book Reservation Reminder", "Reminder to borrow the book " + bookName + ".\nDays left until reservation is canceled: " + (2 - dateDiff));
-                        // Update subscriber history
-                        updateHistory(subscriberId, "notified", "Reminder to borrow the book " + bookName + ". \nDays left until reservation is canceled: " + (2 - dateDiff));
-                    } else {
-                        System.out.println("Reservation canceled " + subscriberId + " " + serialNumber);
-                        String deleteReservationQuery = "DELETE FROM reservation WHERE subscriber_id = ? AND serial_number = ?";
-                        PreparedStatement deleteReservationStatement = conn.prepareStatement(deleteReservationQuery);
-                        deleteReservationStatement.setInt(1, subscriberId);
-                        deleteReservationStatement.setInt(2, serialNumber);
-                        deleteReservationStatement.executeUpdate();
-                        // Notify the subscriber
-                        notificationController.sendEmail(email, "Reservation Canceled", "Reservation for the book " + bookName + " was canceled due to inactivity");
-                        // Update subscriber history
-                        updateHistory(subscriberId, "reservation canceled", "Reservation for the book " + bookName + " was canceled");
-                    }
                 }
-
             } catch (SQLException e) {
-                System.out.println("Error: Checking due books" + e);
+                System.out.println("Error: Checking reserved books" + e);
             }
         };
-
     }
+
 }
