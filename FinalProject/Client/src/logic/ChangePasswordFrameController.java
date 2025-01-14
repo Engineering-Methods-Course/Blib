@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import java.util.ArrayList;
 
 import static client.ClientGUIController.navigateTo;
+import static client.ClientGUIController.showAlert;
 
 public class ChangePasswordFrameController
 {
@@ -63,21 +64,5 @@ public class ChangePasswordFrameController
     public void clickBackButton(ActionEvent event) throws Exception
     {
         navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "My profile");
-    }
-
-    /**
-     * Helper method to display an alert.
-     *
-     * @param alertType The type of the alert (e.g., INFORMATION, ERROR)
-     * @param title     The title of the alert
-     * @param message   The message to display in the alert
-     */
-    private static void showAlert(Alert.AlertType alertType, String title, String message)
-    {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

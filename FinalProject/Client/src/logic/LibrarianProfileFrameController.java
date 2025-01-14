@@ -139,7 +139,7 @@ public class LibrarianProfileFrameController
     /**
      * This method is called when the search subscriber button is clicked
      *
-     * @param event      The event that triggered this method
+     * @param event The event that triggered this method
      * @throws Exception If an error occurs during navigation
      */
     public void clickSearchSubscriber(ActionEvent event) throws Exception

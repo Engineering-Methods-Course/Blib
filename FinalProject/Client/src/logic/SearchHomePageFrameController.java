@@ -167,8 +167,8 @@ public class SearchHomePageFrameController
     {
         //todo: implement
         //todo: use radio and either use the private methods of just send it from here
-        int messageCode = 0;
-        String messageContent = "";
+        int messageCode;
+        String messageContent;
 
         /// Switch case for which option of search was chosen
         /// sets the message code and content according to it

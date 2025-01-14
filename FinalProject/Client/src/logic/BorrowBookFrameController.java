@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import static client.ClientGUIController.navigateTo;
+import static client.ClientGUIController.showAlert;
 
 public class BorrowBookFrameController
 {
@@ -29,7 +30,7 @@ public class BorrowBookFrameController
     public Button borrowButton;
 
     /**
-     *  This method is called when the borrow button is clicked
+     * This method is called when the borrow button is clicked
      */
     public void initialize()
     {
@@ -37,9 +38,11 @@ public class BorrowBookFrameController
         returnDatePicker.setValue(LocalDate.now().plusDays(14));
 
         // Disable return dates before or equal to borrow date
-        returnDatePicker.setDayCellFactory(picker -> new DateCell() {
+        returnDatePicker.setDayCellFactory(picker -> new DateCell()
+        {
             @Override
-            public void updateItem(LocalDate date, boolean empty) {
+            public void updateItem(LocalDate date, boolean empty)
+            {
                 super.updateItem(date, empty);
                 // Disable return dates before or including the borrow date
                 setDisable(empty || date.isBefore(borrowDatePicker.getValue().plusDays(1)));
@@ -49,20 +52,21 @@ public class BorrowBookFrameController
 
     /**
      * This method is called when the borrow button is clicked
-     * @param event      The event that triggered this method
+     *
+     * @param event The event that triggered this method
      * @throws Exception If an error occurs during navigation
      */
     public void backButtonClicked(ActionEvent event) throws Exception
     {
-        navigateTo(event,"/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Librarian Profile");
+        navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Librarian Profile");
     }
 
     /**
      * This method is called when the borrow button is clicked
-     * @param event      The event that triggered this method
-     * @throws Exception If an error occurs during navigation
+     *
+     * @param event The event that triggered this method
      */
-    public void borrowButtonClicked(ActionEvent event) throws Exception
+    public void borrowButtonClicked(ActionEvent event)
     {
         // Extract data from the fields
         String subscriberID = subscriberIDTextField.getText().trim();
@@ -70,7 +74,8 @@ public class BorrowBookFrameController
         LocalDate returnDate = returnDatePicker.getValue();
 
         // Validate fields
-        if (subscriberID.isEmpty() || copyID.isEmpty() || returnDate == null) {
+        if (subscriberID.isEmpty() || copyID.isEmpty() || returnDate == null)
+        {
             // Handle missing data (e.g., show an error dialog)
             System.out.println("Please fill all fields.");
             return;
@@ -88,46 +93,39 @@ public class BorrowBookFrameController
         // Create the ClientServerMessage object
         ClientServerMessage message = new ClientServerMessage(302, dataToSend);
 
-        try {
+        try
+        {
             ClientGUIController.chat.sendToServer(message);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             System.out.println("Error sending borrow request to the server: " + e.getMessage());
         }
-
     }
 
-    public static void showBorrowMessageResponse(ArrayList<String> msg) {
+    public static void showBorrowMessageResponse(ArrayList<String> msg)
+    {
         Platform.runLater(() -> {
-            if (msg == null || msg.isEmpty()) {
+            if (msg == null || msg.isEmpty())
+            {
                 showAlert(Alert.AlertType.ERROR, "Error", "No response from server.");
                 return;
             }
 
             String status = msg.get(0);
-            if ("true".equals(status)) {
+            if ("true".equals(status))
+            {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "The book was borrowed successfully!");
-            } else if ("false".equals(status)) {
+            }
+            else if ("false".equals(status))
+            {
                 String explanation = msg.size() > 1 ? msg.get(1) : "Unknown error occurred.";
                 showAlert(Alert.AlertType.ERROR, "Borrow Failed", "Reason: " + explanation);
-            } else {
+            }
+            else
+            {
                 showAlert(Alert.AlertType.ERROR, "Error", "Unexpected response format from server.");
             }
         });
-    }
-
-    /**
-     * Helper method to display an alert.
-     *
-     * @param alertType The type of the alert (e.g., INFORMATION, ERROR)
-     * @param title     The title of the alert
-     * @param message   The message to display in the alert
-     */
-    private static void showAlert(Alert.AlertType alertType, String title, String message)
-    {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

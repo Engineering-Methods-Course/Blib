@@ -17,6 +17,7 @@ import javafx.util.Callback;
 import java.util.ArrayList;
 
 import static client.ClientGUIController.navigateTo;
+import static client.ClientGUIController.showAlert;
 
 public class SubscriberProfileOptionsFrameController
 {
@@ -57,9 +58,9 @@ public class SubscriberProfileOptionsFrameController
         userIDField.setText("User ID: " + Subscriber.getLocalSubscriber().getID());
 
         // Set up the borrowed books table columns
-        bookNameColumn.setCellValueFactory(new PropertyValueFactory<BorrowedBook, String>("bookName"));
-        borrowDateColumn.setCellValueFactory(new PropertyValueFactory<BorrowedBook, String>("borrowDate"));
-        returnDateColumn.setCellValueFactory(new PropertyValueFactory<BorrowedBook, String>("expectedReturnDate"));
+        bookNameColumn.setCellValueFactory(new PropertyValueFactory<>("bookName"));
+        borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
+        returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("expectedReturnDate"));
 
         // Set up the "extend button" column
         extendButtonColumn.setCellFactory(new Callback<TableColumn<BorrowedBook, Button>, TableCell<BorrowedBook, Button>>() {
@@ -146,9 +147,8 @@ public class SubscriberProfileOptionsFrameController
      * This method handles the extendBorrowButton click event to send extension request
      *
      * @param event The action event triggered by clicking the extend borrow button
-     * @throws Exception If there is an issue with the navigation
      */
-    public void extendBorrowButtonClicked(ActionEvent event) throws Exception
+    public void extendBorrowButtonClicked(ActionEvent event)
     {
         // Get the selected borrowed book from the table
         BorrowedBook selectedBook = borrowsTable.getSelectionModel().getSelectedItem();
@@ -200,22 +200,6 @@ public class SubscriberProfileOptionsFrameController
                 showAlert(Alert.AlertType.ERROR, "Error", "Unexpected response format from server.");
             }
         });
-    }
-
-    /**
-     * Helper method to display an alert.
-     *
-     * @param alertType The type of the alert (e.g., INFORMATION, ERROR)
-     * @param title     The title of the alert
-     * @param message   The message to display in the alert
-     */
-    private static void showAlert(Alert.AlertType alertType, String title, String message)
-    {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     /**

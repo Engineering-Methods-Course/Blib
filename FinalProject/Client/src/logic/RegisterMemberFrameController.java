@@ -5,12 +5,12 @@ import common.ClientServerMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 import java.util.ArrayList;
 
 import static client.ClientGUIController.navigateTo;
+import static client.ClientGUIController.showAlert;
 
 public class RegisterMemberFrameController
 {
@@ -59,23 +59,6 @@ public class RegisterMemberFrameController
 
         // navigate to the librarian profile page
         navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Librarian Page");
-    }
-
-    /**
-     * Show an alert to the user with a given type, title, and message.
-     *
-     * @param type    The type of the alert (e.g., ERROR, WARNING, INFORMATION)
-     * @param title   The title of the alert
-     * @param message The message to be displayed
-     */
-    private void showAlert(AlertType type, String title, String message)
-    {
-
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     /**

@@ -1,6 +1,5 @@
 package logic;
 
-import client.ClientGUIController;
 import common.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -8,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import ocsf.client.*;
 import common.ChatIF;
-
 
 import java.io.*;
 import java.sql.Connection;
@@ -122,8 +120,9 @@ public class ClientController extends AbstractClient
                             SearchHomePageFrameController.changeCanSearch(true);
                             if (message.getMessageContent() instanceof ArrayList)
                             {
-                                ArrayList<Book> booklst = (ArrayList<Book>) message.getMessageContent();
-                                SearchResultFrameController.setBookArray(booklst);
+                                @SuppressWarnings("unchecked")
+                                ArrayList<Book> bookList = (ArrayList<Book>) message.getMessageContent();
+                                SearchResultFrameController.setBookArray(bookList);
                             }
                             else
                             {
@@ -138,10 +137,11 @@ public class ClientController extends AbstractClient
                         {
                             Platform.runLater(() -> showErrorAlert("Book Not Found", "Error with db"));
                         }
-                        else if(message.getMessageContent() instanceof ArrayList )
+                        else if (message.getMessageContent() instanceof ArrayList)
                         {
+                            @SuppressWarnings("unchecked")
                             ArrayList<String> details = (ArrayList<String>) message.getMessageContent();
-                            BookInfoFrameController.setAvailiabilty(details);
+                            BookInfoFrameController.setAvailability(details);
                         }
                         break;
                     // Order book response
@@ -152,21 +152,22 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() == null)
                         {
                             Platform.runLater(() -> showErrorAlert("Book Not ordered", "Book not ordered"));
-                            BookInfoFrameController.orderComplete=false;
+                            BookInfoFrameController.orderComplete = false;
                         }
-                        else if(message.getMessageContent() instanceof ArrayList )
+                        else if (message.getMessageContent() instanceof ArrayList)
                         {
+                            @SuppressWarnings("unchecked")
                             ArrayList<String> details = (ArrayList<String>) message.getMessageContent();
-                            if(details.get(0).equals("true"))
+                            if (details.get(0).equals("true"))
                             {
                                 Platform.runLater(() -> showInformationAlert("Book ordered", "Book was ordered"));
-                                BookInfoFrameController.orderComplete=true;
+                                BookInfoFrameController.orderComplete = true;
                                 System.out.println("Book Ordered Successfully");
                             }
                             else
                             {
                                 Platform.runLater(() -> showErrorAlert("Book ordered", details.get(1)));
-                                BookInfoFrameController.orderComplete=false;
+                                BookInfoFrameController.orderComplete = false;
                                 System.out.println("Book Ordered Failed");
                             }
                         }
@@ -176,16 +177,19 @@ public class ClientController extends AbstractClient
                     // Show borrowed list response
                     //todo:check if the date is still minus 1 day or not
                     case 211:
-                        if (message.getMessageContent() instanceof ArrayList) {
+                        if (message.getMessageContent() instanceof ArrayList)
+                        {
                             @SuppressWarnings("unchecked")
                             ArrayList<BorrowedBook> messages = (ArrayList<BorrowedBook>) message.getMessageContent();
                             // Handle SubscriberProfileOptionsFrameController
-                            if (loader.getController().getClass().getSimpleName().equals("SubscriberProfileOptionsFrameController")) {
+                            if (loader.getController().getClass().getSimpleName().equals("SubscriberProfileOptionsFrameController"))
+                            {
                                 SubscriberProfileOptionsFrameController controllerSubscriberOption = loader.getController();
                                 controllerSubscriberOption.loadBorrowsTable(messages);
                             }
                             // Handle WatchProfileFrameController
-                            if (loader.getController().getClass().getSimpleName().equals("WatchProfileFrameController")) {
+                            if (loader.getController().getClass().getSimpleName().equals("WatchProfileFrameController"))
+                            {
                                 WatchProfileFrameController controllerFromLibrarianFrames = loader.getController();
                                 controllerFromLibrarianFrames.loadBorrowsTable(messages);
                             }
@@ -193,10 +197,14 @@ public class ClientController extends AbstractClient
                         break;
                     //Extend book borrow - subscriber response
                     case 213:
-                        if (message.getMessageContent() instanceof ArrayList) {
+                        if (message.getMessageContent() instanceof ArrayList)
+                        {
+                            @SuppressWarnings("unchecked")
                             ArrayList<String> arrayMessageFromServer = (ArrayList<String>) message.getMessageContent();
                             SubscriberProfileOptionsFrameController.showExtendMessageResponse(arrayMessageFromServer);
-                        } else {
+                        }
+                        else
+                        {
                             System.out.println("Invalid message content for case 311");
                             Platform.runLater(() -> showErrorAlert("Data Error", "Expected an ArrayList for borrow extension."));
                         }
@@ -227,6 +235,7 @@ public class ClientController extends AbstractClient
                         }
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
+                            @SuppressWarnings("unchecked")
                             ArrayList<String> newDetails = (ArrayList<String>) message.getMessageContent();
                             updateSubscriberDetails(newDetails);
                             Platform.runLater(() -> showInformationAlert("Update successful", "Subscriber details updated successfully"));
@@ -241,6 +250,7 @@ public class ClientController extends AbstractClient
                         }
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
+                            @SuppressWarnings("unchecked")
                             ArrayList<String> serverResponse = (ArrayList<String>) message.getMessageContent();
                             if (Boolean.parseBoolean(serverResponse.get(0)))
                             {
@@ -293,7 +303,7 @@ public class ClientController extends AbstractClient
                         break;
                     // Get all subscribers list
                     case 307:
-                        if(message.getMessageContent() == null)
+                        if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not get all subscribers list");
                             Platform.runLater(() -> showErrorAlert("Error", "Could not get all subscribers list"));
@@ -322,11 +332,14 @@ public class ClientController extends AbstractClient
                         break;
                     // Extend borrow - librarian response
                     case 311:
-                        if (message.getMessageContent() instanceof ArrayList) {
-
+                        if (message.getMessageContent() instanceof ArrayList)
+                        {
+                            @SuppressWarnings("unchecked")
                             ArrayList<String> arrayMessageFromServer = (ArrayList<String>) message.getMessageContent();
                             BorrowExtensionFrameController.showExtendMessageResponse(arrayMessageFromServer);
-                        } else {
+                        }
+                        else
+                        {
                             System.out.println("Invalid message content for case 311");
                             Platform.runLater(() -> showErrorAlert("Data Error", "Expected an ArrayList for borrow extension."));
                         }
@@ -463,19 +476,16 @@ public class ClientController extends AbstractClient
         }
         else if (message.getMessageContent() instanceof ArrayList)
         {
-            // casts the message content to an ArrayList and gives a pop up message to the librarian
+            // casts the message content to an ArrayList and gives a pop-up message to the librarian
+            @SuppressWarnings("unchecked")
             ArrayList<String> serverResponse = (ArrayList<String>) message.getMessageContent();
             if (Boolean.parseBoolean(serverResponse.get(0)))
             {
-                Platform.runLater(() -> {
-                    showInformationAlert("Success", serverResponse.get(1));
-                });
+                Platform.runLater(() -> showInformationAlert("Success", serverResponse.get(1)));
             }
             else
             {
-                Platform.runLater(() -> {
-                    showErrorAlert("Registration error", serverResponse.get(1));
-                });
+                Platform.runLater(() -> showErrorAlert("Registration error", serverResponse.get(1)));
             }
         }
     }

@@ -10,8 +10,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
@@ -35,11 +33,38 @@ public class BookInfoFrameController
     @FXML
     public Button backButton;
     @FXML
-    public Text TextForAvaliabilty;
+    public Text TextForAvailability;
+
+    /**
+     * This method initializes the Book Info Frame
+     */
+    public void initialize()
+    {
+        //loadBookInfo();
+        bookName.setText(localBook.getBookName());
+        bookGenre.setText(localBook.getBookGenre());
+        bookdescription.setText(localBook.getBookDescription());
+        if (Availability.get(0).equals("true"))
+        {
+            TextForAvailability.setText("Book Location: ");
+            bookLocation.setText(Availability.get(1));
+        }
+        else
+        {
+            TextForAvailability.setText("Closest Date: ");
+            bookLocation.setText(Availability.get(1));
+        }
+
+        if (Subscriber.getLocalSubscriber() == null && Librarian.getLocalLibrarian() == null || Availability.get(0).equals("true"))
+        {
+            orderBookButton.setDisable(false);
+            orderBookButton.setVisible(false);
+        }
+    }
 
     private static Book localBook = null;
-    private static ArrayList<String> Avaliabilty;
-    public static boolean orderComplete=false;
+    private static ArrayList<String> Availability;
+    public static boolean orderComplete = false;
 
     /**
      * This method gets the local book object
@@ -61,40 +86,24 @@ public class BookInfoFrameController
         localBook = bookFromServer;
     }
 
-    public static ArrayList<String> getAvailiabilty() {
-        return Avaliabilty;
-    }
-
-    public static void setAvailiabilty(ArrayList<String> arrList) {
-        Avaliabilty = arrList;
+    /**
+     * This method gets the availability of the book
+     *
+     * @return The availability of the book
+     */
+    public static ArrayList<String> getAvailability()
+    {
+        return Availability;
     }
 
     /**
-     * This method initializes the Book Info Frame
+     * This method sets the availability of the book
+     *
+     * @param arrList The availability of the book
      */
-    public void initialize()
+    public static void setAvailability(ArrayList<String> arrList)
     {
-        //loadBookInfo();
-        bookName.setText(localBook.getBookName());
-        bookGenre.setText(localBook.getBookGenre());
-        bookdescription.setText(localBook.getBookDescription());
-        if(Avaliabilty.get(0).equals("true"))
-        {
-            TextForAvaliabilty.setText("Book Location: ");
-            bookLocation.setText(Avaliabilty.get(1));
-        }
-        else
-        {
-            TextForAvaliabilty.setText("Closest Date: ");
-            bookLocation.setText(Avaliabilty.get(1));
-        }
-
-        if (Subscriber.getLocalSubscriber()==null && Librarian.getLocalLibrarian()==null || Avaliabilty.get(0).equals("true") )
-        {
-            orderBookButton.setDisable(false);
-            orderBookButton.setVisible(false);
-        }
-
+        Availability = arrList;
     }
 
     /**
@@ -110,7 +119,7 @@ public class BookInfoFrameController
         content.add(String.valueOf(Subscriber.getLocalSubscriber().getID()));
         content.add(String.valueOf(localBook.getBookSerialNumber()));
 
-        ClientServerMessage searchMessage = new ClientServerMessage(208,content);
+        ClientServerMessage searchMessage = new ClientServerMessage(208, content);
 
         try
         {
@@ -121,7 +130,7 @@ public class BookInfoFrameController
             System.out.println("Error sending search message to server: " + e.getMessage());
         }
 
-        if(orderComplete)
+        if (orderComplete)
         {
             System.out.println(orderComplete);
             navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
@@ -139,10 +148,12 @@ public class BookInfoFrameController
         navigateTo(event, "/gui/SearchResultFrame.fxml", "/gui/Subscriber.css", "Search Results");
     }
 
+    /**
+     * This method loads the book information
+     */
     private void loadBookInfo()
     {
         //todo: implement loadBookInfo
-
         bookName.setText(localBook.getBookName());
         bookGenre.setText(localBook.getBookGenre());
         bookdescription.setText(localBook.getBookDescription());

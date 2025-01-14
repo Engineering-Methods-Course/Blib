@@ -21,15 +21,15 @@ import static client.ClientGUIController.navigateTo;
 public class SearchResultFrameController
 {
     @FXML
-    public TableView<List<String>>  searchResultTable;
+    public TableView<List<String>> searchResultTable;
     @FXML
-    public TableColumn<List<String>,String> bookNameColumn;
+    public TableColumn<List<String>, String> bookNameColumn;
     @FXML
-    public TableColumn<List<String>,String> genreColumn;
+    public TableColumn<List<String>, String> genreColumn;
     //@FXML
     //public TableColumn locationColumn;
     @FXML
-    public TableColumn<List<String>,String> watchDetailsColumn;
+    public TableColumn<List<String>, String> watchDetailsColumn;
     @FXML
     public Button backButton;
 
@@ -52,27 +52,37 @@ public class SearchResultFrameController
         bookNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
         genreColumn.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().get(1))));
         //watchDetailsColumn.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().get(2)))); // Adjust property name
-        watchDetailsColumn.setCellFactory(column -> new TableCell<List<String>, String>() {
+        watchDetailsColumn.setCellFactory(column -> new TableCell<List<String>, String>()
+        {
             private final Button button = new Button("View Details");
+
             {
                 // Set the button action
                 button.setOnAction(event -> {
-                    try {
+                    try
+                    {
                         getBookCopy(getTableView().getItems().get(getIndex()));
                         //System.out.println(getTableView().getItems().get(getIndex()));
-                        navigateTo(event, "/gui/BookInfoFrame.fxml","/gui/Subscriber.css", "Book information");
-                    } catch (Exception e) {
+                        navigateTo(event, "/gui/BookInfoFrame.fxml", "/gui/Subscriber.css", "Book information");
+                    }
+                    catch (Exception e)
+                    {
                         throw new RuntimeException(e);
                     }
                 });
             }
+
             // Display button if the row is not empty
             @Override
-            protected void updateItem(String item, boolean empty) {
+            protected void updateItem(String item, boolean empty)
+            {
                 super.updateItem(item, empty);
-                if (empty ||  getTableRow() == null || getTableRow().getItem() == null) {
+                if (empty || getTableRow() == null || getTableRow().getItem() == null)
+                {
                     setGraphic(null);
-                } else {
+                }
+                else
+                {
                     setGraphic(button);
                     setAlignment(Pos.CENTER);
                 }
@@ -80,7 +90,7 @@ public class SearchResultFrameController
         });
 
         //runs on the book list and adds each book to the table
-        for(Book book : books)
+        for (Book book : books)
         {
             List<String> row = new ArrayList<>();
             row.add(book.getBookName());
@@ -91,32 +101,31 @@ public class SearchResultFrameController
 
     /**
      * Sets the book list to the input
-     * @param bookslst - the book list we want to set it to
+     *
+     * @param booksList - the book list we want to set it to
      */
-    public static void setBookArray(ArrayList<Book> bookslst)
+    public static void setBookArray(ArrayList<Book> booksList)
     {
-        books = bookslst;
+        books = booksList;
     }
 
     /**
-     *
-     *
      * @param listFromRow
      */
     private void getBookCopy(List<String> listFromRow)
     {
-        Book bk=null;
-        for(Book book : books)
+        Book bk = null;
+        for (Book book : books)
         {
-            if(listFromRow.contains(book.getBookName()) && listFromRow.contains(book.getBookGenre()))
+            if (listFromRow.contains(book.getBookName()) && listFromRow.contains(book.getBookGenre()))
             {
-                bk=book;
+                bk = book;
             }
         }
 
-        if(bk!=null)
+        if (bk != null)
         {
-            ClientServerMessage searchMessage = new ClientServerMessage(206,bk.getBookSerialNumber());
+            ClientServerMessage searchMessage = new ClientServerMessage(206, bk.getBookSerialNumber());
             System.out.println(searchMessage.getMessageContent());
             try
             {
@@ -132,7 +141,8 @@ public class SearchResultFrameController
 
     /**
      * This method handles the backButton click event to navigate back to the previous frame
-     * @param event      The action event triggered by clicking the back button
+     *
+     * @param event The action event triggered by clicking the back button
      * @throws Exception If there is an issue with the navigation
      */
     public void backButtonClicked(ActionEvent event) throws Exception
@@ -150,7 +160,8 @@ public class SearchResultFrameController
 
     /**
      * This method handles the watchDetailsButton click event to navigate to the book info page
-     * @param event      The action event triggered by clicking the watch details button
+     *
+     * @param event The action event triggered by clicking the watch details button
      * @throws Exception If there is an issue with the navigation
      */
     public void watchDetailsButtonClicked(ActionEvent event) throws Exception

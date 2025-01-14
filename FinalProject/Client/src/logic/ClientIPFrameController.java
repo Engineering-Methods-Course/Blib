@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -21,10 +20,6 @@ public class ClientIPFrameController
     private TextField txtIP;
     @FXML
     private TextField txtPort;
-    @FXML
-    private Button btnEnter;
-    @FXML
-    private Button btnExit;
 
     /**
      * This method initializes the Client IP Frame
@@ -52,40 +47,34 @@ public class ClientIPFrameController
      * @throws Exception If there is an issue with the navigation
      */
     @FXML
-    public void clickEnterButton(ActionEvent event) throws Exception {
+    public void clickEnterButton(ActionEvent event) throws Exception
+    {
         String ipAddress = txtIP.getText().trim();
         String portText = txtPort.getText().trim();
 
-        if (ipAddress.isEmpty() || portText.isEmpty()) {
+        if (ipAddress.isEmpty() || portText.isEmpty())
+        {
             System.out.println("Both IP address and Port must be entered.");
             return;
         }
 
-        try {
+        try
+        {
             int port = Integer.parseInt(portText);
 
             ClientGUIController.chat = new ChatClient(ipAddress, port, new FXMLLoader());
 
             navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
         }
-        catch (NumberFormatException e) {
+        catch (NumberFormatException e)
+        {
             System.out.println("Port must be a valid number.");
             throw e;
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             System.out.println("Failed to initialize client: " + e.getMessage());
             throw e;
         }
-    }
-
-    /**
-     * Handle the Exit button click event.
-     *
-     * @param event The action event triggered by clicking the Exit button
-     */
-    @FXML
-    public void clickExitButton(ActionEvent event)
-    {
-        System.exit(0);
     }
 }

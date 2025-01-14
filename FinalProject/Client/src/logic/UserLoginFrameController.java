@@ -27,8 +27,6 @@ public class UserLoginFrameController implements Initializable
     private TextField txtUsername;
     @FXML
     private PasswordField txtPassword;
-    @FXML
-    private Button btnLogin;
 
     /**
      * This method initializes the Subscriber login screen
@@ -40,16 +38,16 @@ public class UserLoginFrameController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
+        ActionEvent event = new ActionEvent();
         try
         {
             if (Subscriber.getLocalSubscriber() != null)
             {
-                System.out.println("bob");
-                navigateTo(null, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Page");
+                navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Page");
             }
             else if (Librarian.getLocalLibrarian() != null)
             {
-                navigateTo(null, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Librarian Menu");
+                navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Librarian Menu");
             }
         }
         catch (Exception e)

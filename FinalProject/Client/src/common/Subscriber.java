@@ -18,7 +18,7 @@ public class Subscriber extends User implements Serializable
     // Subscriber's email address
     private String email;
     // Status to check if the subscriber is frozen (inactive)
-    private boolean statusIsFrozen = false;
+    private boolean statusIsFrozen;
 
     /**
      * Constructor to initialize a Subscriber object with all necessary details.

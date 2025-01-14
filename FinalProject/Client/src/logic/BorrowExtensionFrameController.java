@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 
 import static client.ClientGUIController.navigateTo;
+import static client.ClientGUIController.showAlert;
 
 public class BorrowExtensionFrameController
 {
@@ -85,9 +86,8 @@ public class BorrowExtensionFrameController
      * This method handles the extendButton click event to extend the book borrowing period
      *
      * @param event The action event triggered by clicking the extend button
-     * @throws Exception If there is an issue with the navigation
      */
-    public void extendButtonClicked(ActionEvent event) throws Exception
+    public void extendButtonClicked(ActionEvent event)
     {
         // Extract data from the fields
         String subscriberID = subscriberIdLabel.getText().trim();
@@ -139,21 +139,5 @@ public class BorrowExtensionFrameController
                 showAlert(Alert.AlertType.ERROR, "Error", "Unexpected response format from server.");
             }
         });
-    }
-
-    /**
-     * Helper method to display an alert.
-     *
-     * @param alertType The type of the alert (e.g., INFORMATION, ERROR)
-     * @param title     The title of the alert
-     * @param message   The message to display in the alert
-     */
-    private static void showAlert(Alert.AlertType alertType, String title, String message)
-    {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

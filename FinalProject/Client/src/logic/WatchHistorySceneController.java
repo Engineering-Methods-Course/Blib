@@ -1,6 +1,5 @@
 package logic;
 
-import common.Subscriber;
 import common.SubscriberHistory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -4,9 +4,6 @@ import client.ClientGUIController;
 import common.BorrowedBook;
 import common.ClientServerMessage;
 import common.Subscriber;
-import javafx.application.Platform;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -17,6 +14,7 @@ import javafx.util.Callback;
 import java.util.ArrayList;
 
 import static client.ClientGUIController.navigateTo;
+import static client.ClientGUIController.showAlert;
 
 public class WatchProfileFrameController
 {
@@ -56,32 +54,43 @@ public class WatchProfileFrameController
             updateSubscriberInfo(subscriber);
         }
         // Set up the borrowed books table columns
-        bookNameColumn.setCellValueFactory(new PropertyValueFactory<BorrowedBook, String>("bookName"));
-        borrowDateColumn.setCellValueFactory(new PropertyValueFactory<BorrowedBook, String>("borrowDate"));
-        returnDateColumn.setCellValueFactory(new PropertyValueFactory<BorrowedBook, String>("expectedReturnDate"));
+        bookNameColumn.setCellValueFactory(new PropertyValueFactory<>("bookName"));
+        borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
+        returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("expectedReturnDate"));
 
-        // Set up the extend button column
-        extendButtonColumn.setCellFactory(new Callback<TableColumn<BorrowedBook, Button>, TableCell<BorrowedBook, Button>>() {
+        // Set up the "extend button" column
+        extendButtonColumn.setCellFactory(new Callback<TableColumn<BorrowedBook, Button>, TableCell<BorrowedBook, Button>>()
+        {
             @Override
-            public TableCell<BorrowedBook, Button> call(TableColumn<BorrowedBook, Button> param) {
-                return new TableCell<BorrowedBook, Button>() {
+            public TableCell<BorrowedBook, Button> call(TableColumn<BorrowedBook, Button> param)
+            {
+                return new TableCell<BorrowedBook, Button>()
+                {
                     private final Button extendButton = new Button("Extend Borrow");
 
                     {
                         extendButton.setOnAction((ActionEvent event) -> {
-                            try {
+                            try
+                            {
                                 extendBorrowButtonClicked(event);
-                            } catch (Exception e) {
+                            }
+                            catch (Exception e)
+                            {
                                 e.printStackTrace();
                             }
                         });
                     }
+
                     @Override
-                    protected void updateItem(Button item, boolean empty) {
+                    protected void updateItem(Button item, boolean empty)
+                    {
                         super.updateItem(item, empty);
-                        if (empty) {
+                        if (empty)
+                        {
                             setGraphic(null);
-                        } else {
+                        }
+                        else
+                        {
                             setGraphic(extendButton);
                         }
                     }
@@ -135,34 +144,20 @@ public class WatchProfileFrameController
         // Get the selected BorrowedBook from the clicked row
         BorrowedBook selectedBook = borrowsTable.getSelectionModel().getSelectedItem();
 
-        if (selectedBook != null) {
+        if (selectedBook != null)
+        {
             // Save the selected book using the set method or pass it directly
             BorrowExtensionFrameController.setBorrowedBook(selectedBook); // Set the selected book in the Subscriber object, or use a different method
             // Navigate to the BorrowExtensionFrameController, passing the selected book
 
             navigateTo(event, "/gui/BorrowExtensionFrame.fxml", "/gui/Subscriber.css", "Extend Borrow Period");
 
-        } else {
+        }
+        else
+        {
             // If no book is selected, show an alert
             showAlert(Alert.AlertType.WARNING, "No Book Selected", "Please select a book to extend the borrow period.");
         }
-    }
-
-
-    /**
-     * Helper method to display an alert.
-     *
-     * @param alertType The type of the alert (e.g., INFORMATION, ERROR)
-     * @param title     The title of the alert
-     * @param message   The message to display in the alert
-     */
-    private static void showAlert(Alert.AlertType alertType, String title, String message)
-    {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     /**

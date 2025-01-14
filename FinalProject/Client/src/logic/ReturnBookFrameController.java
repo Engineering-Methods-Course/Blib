@@ -11,23 +11,12 @@ import javafx.scene.control.*;
 import java.util.ArrayList;
 
 import static client.ClientGUIController.navigateTo;
+import static client.ClientGUIController.showAlert;
 
 public class ReturnBookFrameController
 {
     @FXML
     private TextField idTextField;
-    @FXML
-    private Button searchButton;
-    @FXML
-    private Button backButton;
-    @FXML
-    private TableView<Book> booksTableView;
-    @FXML
-    private TableColumn<Book, String> serialNumberColumn;
-    @FXML
-    private TableColumn<Book, String> returnDateColumn;
-    @FXML
-    private TableColumn<Book, Button> actionColumn;
 
     /**
      * Initializes the table and sets up column bindings.
@@ -84,7 +73,9 @@ public class ReturnBookFrameController
     }
 
     /**
-     * @param msg
+     * Shows the response message from the server.
+     *
+     * @param msg The response message from the server.
      */
     public static void showReturnMessageResponse(ArrayList<String> msg)
     {
@@ -110,21 +101,5 @@ public class ReturnBookFrameController
                 showAlert(Alert.AlertType.ERROR, "Error", "Unexpected response format from server.");
             }
         });
-    }
-
-    /**
-     * Helper method to display an alert.
-     *
-     * @param alertType The type of the alert (e.g., INFORMATION, ERROR)
-     * @param title     The title of the alert
-     * @param message   The message to display in the alert
-     */
-    private static void showAlert(Alert.AlertType alertType, String title, String message)
-    {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

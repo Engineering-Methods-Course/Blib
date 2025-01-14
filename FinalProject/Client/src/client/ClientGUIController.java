@@ -1,6 +1,7 @@
 package client;
 
 import common.ClientServerMessage;
+import javafx.scene.control.Alert;
 import logic.ClientController;
 import logic.ClientIPFrameController;
 import javafx.application.Application;
@@ -10,10 +11,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class ClientGUIController extends Application
@@ -77,6 +74,22 @@ public class ClientGUIController extends Application
         // Show the updated stage
         currentStage.setResizable(true); // Enable window resizing
         currentStage.show();
+    }
+
+    /**
+     * Show an alert to the user with a given type, title, and message.
+     *
+     * @param type    The type of the alert (e.g., ERROR, WARNING, INFORMATION)
+     * @param title   The title of the alert
+     * @param message The message to be displayed
+     */
+    public static void showAlert(Alert.AlertType type, String title, String message)
+    {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     /**

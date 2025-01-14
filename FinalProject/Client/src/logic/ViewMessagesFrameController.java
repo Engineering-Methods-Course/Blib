@@ -24,9 +24,10 @@ public class ViewMessagesFrameController
     public TableColumn<LibrarianMessage, String> dateColumn;
     @FXML
     public TableColumn<LibrarianMessage, String> contentColumn;
-    @FXML
-    private Button backButton;
 
+    /**
+     * Initializes the View Messages Frame.
+     */
     public void initialize()
     {
         // Set up the columns in the table
@@ -41,7 +42,9 @@ public class ViewMessagesFrameController
     }
 
     /**
+     * Loads the messages into the table.
      *
+     * @param messages The messages to load into the table.
      */
     public void loadLibrarianMessages(ArrayList<LibrarianMessage> messages)
     {
