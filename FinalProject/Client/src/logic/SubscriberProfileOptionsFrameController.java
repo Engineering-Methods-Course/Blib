@@ -118,6 +118,14 @@ public class SubscriberProfileOptionsFrameController
     {
         //sets the local subscriber to null
         Subscriber.setLocalSubscriber(null);
+
+        // Sends a message to the server to log out
+        ClientServerMessage message = new ClientServerMessage(102, null);
+
+        // Sends the message to the server
+        ClientGUIController.chat.sendToServer(message);
+
+        // Navigates to the search home page
         navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
     }
 

@@ -1,6 +1,9 @@
 package logic;
 
+import client.ClientGUIController;
+import common.ClientServerMessage;
 import common.Librarian;
+import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -45,10 +48,16 @@ public class LibrarianProfileFrameController
      */
     public void logoutButtonClicked(ActionEvent event) throws Exception
     {
-        //sets the local librarian object to null to log out the librarian
+        //sets the local subscriber to null
         Librarian.setLocalLibrarian(null);
 
-        //navigates to the home page
+        // Sends a message to the server to log out
+        ClientServerMessage message = new ClientServerMessage(102, null);
+
+        // Sends the message to the server
+        ClientGUIController.chat.sendToServer(message);
+
+        // Navigates to the search home page
         navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
     }
 

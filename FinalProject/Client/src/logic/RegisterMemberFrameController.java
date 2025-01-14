@@ -40,7 +40,7 @@ public class RegisterMemberFrameController
         String email = txtEmail.getText();
 
         // alerts the user if any of the fields are empty
-        if (username.isEmpty() || name.isEmpty() || lastName.isEmpty() || phone.isEmpty() || email.isEmpty())
+        if (username.isEmpty() || name.isEmpty() || lastName.isEmpty() || regexMatcher("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", email) || regexMatcher("^\\+?[0-9. ()-]{7,}$", phone))
         {
             showAlert(AlertType.WARNING, "Input Error", "Please fill all fields.");
         }
@@ -70,5 +70,10 @@ public class RegisterMemberFrameController
     public void backButtonClicked(ActionEvent event) throws Exception
     {
         navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Register Member");
+    }
+
+    private boolean regexMatcher(String regex, String input)
+    {
+        return input.matches(regex);
     }
 }
