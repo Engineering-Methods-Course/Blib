@@ -1,5 +1,8 @@
 package logic;
 
+import client.ClientGUIController;
+import common.ClientServerMessage;
+import common.Subscriber;
 import common.SubscriberHistory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,8 +40,9 @@ public class WatchHistorySceneController
         actionTypeColumn.setCellValueFactory(new PropertyValueFactory<>("actionType"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-        // loads the table with the history of the user
-        //setHistory(Subscriber.getLocalSubscriber().getSubscriptionHistory());
+        // sends the server a request for the user's history
+        ClientServerMessage message = new ClientServerMessage(214, Subscriber.getLocalSubscriber().getSubscriptionHistory());
+        ClientGUIController.chat.sendToServer(message);
     }
 
     public void backButtonClicked(ActionEvent event) throws Exception

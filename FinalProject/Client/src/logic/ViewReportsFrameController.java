@@ -121,7 +121,7 @@ public class ViewReportsFrameController
         }
 
         // Generate the bar chart
-        generateBarChart("Accounts Frozen ", logEntries);
+        generateBarChart("Accounts Frozen", logEntries);
 
         // Generate the pie chart
         generatePieChart("Action Distribution", logEntries);

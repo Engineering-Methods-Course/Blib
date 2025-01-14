@@ -222,7 +222,8 @@ public class ClientController extends AbstractClient
                         }
                         else if (message.getMessageContent() instanceof List)
                         {
-                            @SuppressWarnings("unchecked") List<ArrayList<String>> history = (ArrayList<ArrayList<String>>) message.getMessageContent();
+                            @SuppressWarnings("unchecked")
+                            List<ArrayList<String>> history = (ArrayList<ArrayList<String>>) message.getMessageContent();
                             WatchHistorySceneController controller = loader.getController();
                             controller.setHistory(history);
                         }
