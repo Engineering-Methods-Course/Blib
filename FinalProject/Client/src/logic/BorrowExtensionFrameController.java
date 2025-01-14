@@ -93,7 +93,7 @@ public class BorrowExtensionFrameController
         String subscriberID = subscriberIdLabel.getText().trim();
         String copyID = bookIdLabel.getText().trim();
         LocalDate newReturnDate = newReturnDatePicker.getValue();
-        String librarianID = String.valueOf(Librarian.getLocalLibrarian().getLibrarianID());
+        String librarianID = String.valueOf(Librarian.getLocalLibrarian().getID());
 
         // Validate fields
         if (newReturnDate == null) {

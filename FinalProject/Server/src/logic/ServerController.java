@@ -2,11 +2,15 @@ package logic;
 
 
 import common.ClientServerMessage;
+import common.Librarian;
+import common.Subscriber;
+import common.User;
 import gui.ServerMonitorFrameController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class extends the AbstractServer class and implements the SubscriberController and LibrarianController interfaces.
@@ -14,12 +18,11 @@ import java.util.ArrayList;
  */
 public class ServerController extends AbstractServer {
 
+    private static final HashMap<Integer, ConnectionToClient> clients = new HashMap<>();
     private final ServerMonitorFrameController serverMonitorController;
     private DBController dbController;
-    private NotificationController notificationController;
-    private ScheduleController scheduleController;
-
-
+    private final NotificationController notificationController;
+    private final ScheduleController scheduleController;
 
     public ServerController(int port, ServerMonitorFrameController serverMonitorController) {
         super(port);
@@ -27,7 +30,6 @@ public class ServerController extends AbstractServer {
         notificationController = NotificationController.getInstance();
         scheduleController = ScheduleController.getInstance();
     }
-
 
     /**
      * This method overrides the one in the superclass. Called
@@ -66,7 +68,8 @@ public class ServerController extends AbstractServer {
             if (msg instanceof ClientServerMessage) {
                 /*
                  * 100 - user wants to log in to his account
-                 * 102 - user closed the app
+                 * 102 - user logged out
+                 * 104 - user closed the app
                  * 200 - subscriber wants to search a book by its name
                  * 202 - subscriber wants to search a book by its genre
                  * 204 - subscriber wants to search a book by its description
@@ -96,7 +99,14 @@ public class ServerController extends AbstractServer {
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
                                 // get the user details from the database
-                                client.sendToClient(new ClientServerMessage(101, dbController.userLogin((ArrayList<String>) message.getMessageContent())));
+                                User user = dbController.userLogin((ArrayList<String>) message.getMessageContent());
+                                if (user instanceof Subscriber) {
+                                    clients.put(((Subscriber) user).getID(), client);
+                                }
+                                if (user instanceof Librarian) {
+                                    clients.put(((Librarian) user).getID(), client);
+                                }
+                                client.sendToClient(new ClientServerMessage(101, user));
                                 System.out.println("user details were sent to client");
                             }
                             // message type isn't an arraylist
@@ -111,7 +121,24 @@ public class ServerController extends AbstractServer {
                         break;
                     case (102):
                         /**
-                         * Do: disconnect client from server
+                         * do: user logged out
+                         * in: user id (librarian or subscriber)
+                         */
+                        try {
+                            if (message.getMessageContent() instanceof Integer) {
+                                clients.remove((Integer) message.getMessageContent());
+                                System.out.println("User " + message.getMessageContent() + " logged out");
+                            } else {
+                                System.out.println("Cannot log out - message is not an integer (case 102)");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error: with user logout method (case 102)" + e);
+                        }
+                        client.sendToClient(null); // send null to client to make him stop waiting for a response
+                        break;
+                    case (104):
+                        /**
+                         * do: disconnect client from server
                          */
                         serverMonitorController.clientDisconnected(client);
                         client.sendToClient(null); // send null to client to make him stop waiting for a response
@@ -315,7 +342,7 @@ public class ServerController extends AbstractServer {
                             }}));
                         }
                         break;
-                    case(220):
+                    case (220):
                         /**
                          * do: Returns an array list of all of the book copies of a specific book
                          * in: String {copyID}
@@ -349,7 +376,7 @@ public class ServerController extends AbstractServer {
                                     add("fail");
                                     add("Cannot register account Message is not an ArrayList<String> (case 300)");
                                 }}));
-                            break;
+                                break;
                             }
                         } catch (Exception e) {
                             System.out.println("Error: with register method (case 300)" + e);
@@ -387,6 +414,7 @@ public class ServerController extends AbstractServer {
                             }};
                             client.sendToClient(new ClientServerMessage(303, response));
                             System.out.println("Error: with borrow method (case 302)" + e);
+                            break;
                         }
                         break;
                     case (304):
@@ -480,6 +508,7 @@ public class ServerController extends AbstractServer {
                 client.sendToClient(null);
             } catch (Exception e1) {
                 System.out.println("Error: sending null to client" + e1);
+
             }
         }
     }

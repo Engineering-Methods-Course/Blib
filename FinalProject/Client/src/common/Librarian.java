@@ -43,7 +43,7 @@ public class Librarian extends User implements Serializable {
      *
      * @return the ID of the librarian
      */
-    public int getLibrarianID() {
+    public int getID() {
         return librarianID;
     }
 
