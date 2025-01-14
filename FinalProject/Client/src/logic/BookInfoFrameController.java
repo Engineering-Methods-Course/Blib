@@ -105,7 +105,7 @@ public class BookInfoFrameController
      */
     public void orderBookButtonClicked(ActionEvent event) throws Exception
     {
-        //todo: implement the order book system
+       //sets a new arrayList and add the subscriber id of the current user and the book's serial number
         ArrayList<String> content = new ArrayList<>();
         content.add(String.valueOf(Subscriber.getLocalSubscriber().getID()));
         content.add(String.valueOf(localBook.getBookSerialNumber()));
@@ -121,9 +121,9 @@ public class BookInfoFrameController
             System.out.println("Error sending search message to server: " + e.getMessage());
         }
 
+        //if the book was ordered then pass to the search home page
         if(orderComplete)
         {
-            System.out.println(orderComplete);
             navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
         }
     }

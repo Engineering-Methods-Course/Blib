@@ -1,6 +1,8 @@
 package client;
 
 import common.ClientServerMessage;
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
 import logic.ClientController;
 import logic.ClientIPFrameController;
 import javafx.application.Application;
@@ -56,7 +58,8 @@ public class ClientGUIController extends Application
         }
 
         // Update the root node of the existing scene
-        currentStage.getScene().setRoot(newRoot);
+        currentStage.getScene().setRoot(newRoot);;
+        currentStage.setMaximized(true);
         currentStage.setTitle(stageTitle);
         currentStage.setOnCloseRequest(event1 -> {
             // Run exitAction() in a background thread to prevent blocking

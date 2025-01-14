@@ -12,6 +12,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import static client.ClientGUIController.navigateTo;
 
@@ -55,11 +57,16 @@ public class SearchHomePageFrameController
     @FXML
     public Button watchProfileButton;
 
+    @FXML
+    private VBox rootVBox;
+
     private static boolean canSearch = false; //Variable to check if we got results from the search
     private UserType user_type = UserType.User;
 
+    // initalizes the scene
     public void initialize()
     {
+
         String name = "";
         //need to check what user (user/client/librarian) enters the search
         if (Subscriber.getLocalSubscriber() != null)
@@ -80,7 +87,6 @@ public class SearchHomePageFrameController
             watchProfileButton.setVisible(!user_type.equals(UserType.User));
         }
         profileButton.setText("Hello " + name);
-        //watchProfileButton.setVisible()
 
         //set search by name to be the default search when opening the window
         nameRadio.setSelected(true);
@@ -165,8 +171,6 @@ public class SearchHomePageFrameController
      */
     public void search(ActionEvent event) throws Exception
     {
-        //todo: implement
-        //todo: use radio and either use the private methods of just send it from here
         int messageCode = 0;
         String messageContent = "";
 
@@ -195,6 +199,7 @@ public class SearchHomePageFrameController
 
         ClientServerMessage searchMessage = new ClientServerMessage(messageCode, messageContent);
 
+        //sends the message to the server
         try
         {
             ClientGUIController.chat.sendToServer(searchMessage);

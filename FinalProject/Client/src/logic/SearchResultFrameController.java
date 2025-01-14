@@ -44,22 +44,18 @@ public class SearchResultFrameController
     @FXML
     public void initialize()
     {
-        //todo: load search results from the database into the table
-        //searchResultTable = new TableView<>();
+        //creates the table in order to load the results into it
         searchResultTable.itemsProperty().bind(BookListProperty);
         searchResultTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
         bookNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
         genreColumn.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().get(1))));
-        //watchDetailsColumn.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().get(2)))); // Adjust property name
         watchDetailsColumn.setCellFactory(column -> new TableCell<List<String>, String>() {
-            private final Button button = new Button("View Details");
+            private final Button button = new Button("View Details"); //create a button inorder to view if the book can be ordered
             {
                 // Set the button action
                 button.setOnAction(event -> {
                     try {
                         getBookCopy(getTableView().getItems().get(getIndex()));
-                        //System.out.println(getTableView().getItems().get(getIndex()));
                         navigateTo(event, "/gui/BookInfoFrame.fxml","/gui/Subscriber.css", "Book information");
                     } catch (Exception e) {
                         throw new RuntimeException(e);
@@ -99,13 +95,14 @@ public class SearchResultFrameController
     }
 
     /**
+     *Method for setting a book for BookInfoFrameController window
      *
-     *
-     * @param listFromRow
+     * @param listFromRow -The book we want to load
      */
     private void getBookCopy(List<String> listFromRow)
     {
         Book bk=null;
+        //search for the book we want to load
         for(Book book : books)
         {
             if(listFromRow.contains(book.getBookName()) && listFromRow.contains(book.getBookGenre()))
@@ -114,6 +111,7 @@ public class SearchResultFrameController
             }
         }
 
+        //enter as long as the book exists in the book list
         if(bk!=null)
         {
             ClientServerMessage searchMessage = new ClientServerMessage(206,bk.getBookSerialNumber());

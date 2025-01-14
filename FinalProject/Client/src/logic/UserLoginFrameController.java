@@ -70,7 +70,15 @@ public class UserLoginFrameController implements Initializable
     {
         String username = txtUsername.getText();
         String password = txtPassword.getText();
-
+        /// ////////////////////////////
+        //have to remove, just for checking
+        boolean check=true;
+        if(check)
+        {
+            navigateTo(event, "/gui/ExpClientFrame.fxml", "/gui/Exp.css", "Profile Page");
+            return;
+        }
+        /// ////////////////////////////////////////
         if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty())
         {
             System.out.println("Username and password cannot be empty");
