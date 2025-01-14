@@ -1,6 +1,8 @@
 package client;
 
 import common.ClientServerMessage;
+import common.Librarian;
+import common.Subscriber;
 import javafx.scene.control.Alert;
 import logic.ClientController;
 import logic.ClientIPFrameController;
@@ -97,10 +99,22 @@ public class ClientGUIController extends Application
      */
     private static void exitAction()
     {
-        ClientServerMessage logOutMessage = new ClientServerMessage(104, null);
+        ClientServerMessage exitMessage = new ClientServerMessage(104, null);
+        ClientServerMessage logoutMessage = new ClientServerMessage(102, 0);
+
+        if(Subscriber.getLocalSubscriber() != null)
+        {
+            logoutMessage = new ClientServerMessage(102, Subscriber.getLocalSubscriber().getID());
+        }
+        else if (Librarian.getLocalLibrarian() != null)
+        {
+            logoutMessage = new ClientServerMessage(102, Librarian.getLocalLibrarian().getID());
+        }
+
         try
         {
-            ClientGUIController.chat.sendToServer(logOutMessage);
+            ClientGUIController.chat.sendToServer(exitMessage);
+            ClientGUIController.chat.sendToServer(logoutMessage);
             System.exit(0);
         }
         catch (Exception e)
