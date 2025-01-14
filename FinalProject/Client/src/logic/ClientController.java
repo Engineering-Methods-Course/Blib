@@ -475,6 +475,11 @@ public class ClientController extends AbstractClient
         alert.showAndWait();
     }
 
+    /**
+     * This method updates the subscriber details.
+     *
+     * @param newDetails The new details to be updated.
+     */
     private void updateSubscriberDetails(ArrayList<String> newDetails)
     {
         if (Boolean.parseBoolean(newDetails.get(0)))
@@ -490,6 +495,11 @@ public class ClientController extends AbstractClient
         }
     }
 
+    /**
+     * This method registers a new subscriber.
+     *
+     * @param message The message to be registered.
+     */
     private void registerNewSubscriberResponse(ClientServerMessage message)
     {
         if (message.getMessageContent() == null)
