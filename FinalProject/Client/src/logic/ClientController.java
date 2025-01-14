@@ -213,7 +213,6 @@ public class ClientController extends AbstractClient
                         }
                         break;
                     //Watch history response
-                    // !maybe not necessary
                     case 215:
                         if (message.getMessageContent() == null)
                         {
