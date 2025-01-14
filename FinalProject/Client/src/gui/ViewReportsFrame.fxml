@@ -1,50 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
-            prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="logic.ViewReportsFrameController">
-
-    <!-- Title for Reports -->
-    <Label layoutX="550.0" layoutY="34.0" prefHeight="50.0" prefWidth="180.0"
-           style="-fx-font-size: 24px; -fx-font-weight: bold;" text="REPORTS" textAlignment="CENTER"
-           AnchorPane.leftAnchor="550.0" AnchorPane.rightAnchor="550.0">
-        <font>
-            <Font size="55.0"/>
-        </font>
-    </Label>
-
-    <!-- Static Text for "Type" -->
-    <Label layoutX="127.0" layoutY="144.0" prefHeight="5.0" prefWidth="45.0" style="-fx-font-size: 16px;" text="Type"/>
-
-    <!-- Radio Buttons for X, Y, Z -->
-    <HBox layoutX="172.0" layoutY="148.0" prefHeight="16.0" prefWidth="155.0" spacing="10.0">
-        <RadioButton fx:id="radioX" text="X"/>
-        <RadioButton fx:id="radioY" text="Y"/>
-        <RadioButton fx:id="radioZ" text="Z"/>
-    </HBox>
-
-    <!-- Graph Placeholder (Using a LineChart for example) -->
-    <LineChart fx:id="lineChart" layoutX="100.0" layoutY="210.0" prefHeight="400" prefWidth="1080">
-        <xAxis>
-            <CategoryAxis fx:id="xAxis"/>
-        </xAxis>
-        <yAxis>
-            <NumberAxis fx:id="yAxis"/>
-        </yAxis>
-    </LineChart>
-
-    <!-- Back Button in the left corner -->
-    <Button layoutX="20" layoutY="730" onAction="#backButtonClicked" prefWidth="100" text="Back"
-            AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0"/>
-
-</AnchorPane>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ViewReportsFrameController">
+   <children>
+      <AnchorPane prefHeight="66.0" prefWidth="1280.0">
+         <children>
+            <ChoiceBox fx:id="reportChoiceBox" layoutX="1086.0" layoutY="20.0" prefWidth="150.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="1086.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="20.0" />
+            <Text layoutX="868.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose Report Type: " AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="868.0" AnchorPane.rightAnchor="194.81396484375" AnchorPane.topAnchor="20.0">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
+            <Button layoutX="22.0" layoutY="23.0" mnemonicParsing="false" text="Previous Month" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="1159.0" AnchorPane.topAnchor="23.0" />
+            <Button layoutX="281.0" layoutY="23.0" mnemonicParsing="false" text="Next Month" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="281.0" AnchorPane.rightAnchor="920.0" AnchorPane.topAnchor="23.0" />
+            <Text fx:id="monthField" layoutX="154.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Month&gt;" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="154.0" AnchorPane.rightAnchor="1027.57666015625" AnchorPane.topAnchor="23.0">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+      <ScrollPane prefHeight="677.0" prefWidth="1280.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1024.0" prefWidth="1259.0">
+               <children>
+                  <BarChart fx:id="barChart" layoutX="70.0" layoutY="38.0" prefHeight="499.0" prefWidth="1145.0" AnchorPane.bottomAnchor="487.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="38.0">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </BarChart>
+                  <PieChart fx:id="pieChart" layoutX="90.0" layoutY="578.0" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="90.0" AnchorPane.rightAnchor="669.0" AnchorPane.topAnchor="578.0" />
+                  <LineChart fx:id="lineChart" layoutX="715.0" layoutY="578.0" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="715.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="578.0">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </LineChart>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+      <AnchorPane prefHeight="49.0" prefWidth="1280.0">
+         <children>
+            <Button fx:id="backButton" layoutX="23.0" layoutY="12.0" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="1216.0" AnchorPane.topAnchor="12.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

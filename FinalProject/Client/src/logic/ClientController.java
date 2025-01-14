@@ -331,7 +331,8 @@ public class ClientController extends AbstractClient
                     case 311:
                         if (message.getMessageContent() instanceof ArrayList)
                         {
-                            @SuppressWarnings("unchecked") ArrayList<String> arrayMessageFromServer = (ArrayList<String>) message.getMessageContent();
+                            @SuppressWarnings("unchecked")
+                            ArrayList<String> arrayMessageFromServer = (ArrayList<String>) message.getMessageContent();
                             BorrowExtensionFrameController.showExtendMessageResponse(arrayMessageFromServer);
                         }
                         else
@@ -347,9 +348,10 @@ public class ClientController extends AbstractClient
                             System.out.println("Could not get logs");
                             Platform.runLater(() -> showErrorAlert("Error", "Could not get logs"));
                         }
-                        else if (message.getMessageContent() instanceof ArrayList)
+                        else if (message.getMessageContent() instanceof List)
                         {
-                            @SuppressWarnings("unchecked") ArrayList<String> logs = (ArrayList<String>) message.getMessageContent();
+                            @SuppressWarnings("unchecked")
+                            List<ArrayList<String>> logs = (ArrayList<ArrayList<String>>) message.getMessageContent();
                             ViewReportsFrameController controller = loader.getController();
                             controller.generateBorrowTimeReport(logs);
                         }
@@ -358,7 +360,8 @@ public class ClientController extends AbstractClient
                     case 315:
                         if (message.getMessageContent() instanceof ArrayList)
                         {
-                            @SuppressWarnings("unchecked") ArrayList<LibrarianMessage> messages = (ArrayList<LibrarianMessage>) message.getMessageContent();
+                            @SuppressWarnings("unchecked")
+                            ArrayList<LibrarianMessage> messages = (ArrayList<LibrarianMessage>) message.getMessageContent();
                             ViewMessagesFrameController controller = loader.getController();
                             controller.loadLibrarianMessages(messages);
                         }
@@ -371,7 +374,8 @@ public class ClientController extends AbstractClient
                         }
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
-                            @SuppressWarnings("unchecked") ArrayList<String> logs = (ArrayList<String>) message.getMessageContent();
+                            @SuppressWarnings("unchecked")
+                            List<ArrayList<String>> logs = (ArrayList<ArrayList<String>>) message.getMessageContent();
                             ViewReportsFrameController controller = loader.getController();
                             controller.generateSubscriberStatusReport(logs);
                         }
