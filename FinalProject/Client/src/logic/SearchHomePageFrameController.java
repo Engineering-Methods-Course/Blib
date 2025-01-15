@@ -73,6 +73,7 @@ public class SearchHomePageFrameController
         {
             user_type = UserType.Subscriber;
             name = Subscriber.getLocalSubscriber().getFirstName();
+
         }
         else if (Librarian.getLocalLibrarian() != null)
         {
@@ -86,6 +87,8 @@ public class SearchHomePageFrameController
             watchProfileButton.setDisable(!user_type.equals(UserType.User));
             watchProfileButton.setVisible(!user_type.equals(UserType.User));
         }
+        loginButton.setDisable(!user_type.equals(UserType.User));
+        loginButton.setVisible(user_type.equals(UserType.User));
         profileButton.setText("Hello " + name);
 
         //set search by name to be the default search when opening the window

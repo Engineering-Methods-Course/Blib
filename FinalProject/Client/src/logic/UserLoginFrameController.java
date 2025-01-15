@@ -72,6 +72,7 @@ public class UserLoginFrameController implements Initializable
         String password = txtPassword.getText();
         /// ////////////////////////////
         //have to remove, just for checking
+
         boolean check=true;
         if(check)
         {
@@ -105,7 +106,8 @@ public class UserLoginFrameController implements Initializable
         if (Subscriber.getLocalSubscriber() != null)
         {
             System.out.println("Subscriber logged in" + Subscriber.getLocalSubscriber());
-            navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Page");
+            //navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Page");
+            navigateTo(event, "/gui/ExpClientFrame.fxml", "/gui/Exp.css", "Profile Page");
         }
         else if (Librarian.getLocalLibrarian() != null)
         {
