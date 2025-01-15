@@ -3,7 +3,6 @@ package logic;
 import client.ClientGUIController;
 import common.ClientServerMessage;
 import common.Librarian;
-import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

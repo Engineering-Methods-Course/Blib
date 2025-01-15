@@ -45,12 +45,23 @@ public class WatchHistorySceneController
         ClientGUIController.chat.sendToServer(message);
     }
 
+    /**
+     * Handles the Back button click event.
+     *
+     * @param event      The ActionEvent triggered by clicking the button.
+     * @throws Exception If an error occurs during navigation.
+     */
     public void backButtonClicked(ActionEvent event) throws Exception
     {
         // go back to the previous scene
         navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Watch Profile");
     }
 
+    /**
+     * Sets the history of the subscriber in the table.
+     *
+     * @param history The history of the subscriber.
+     */
     public void setHistory(List<ArrayList<String>> history)
     {
         // helper Date object for easier reading

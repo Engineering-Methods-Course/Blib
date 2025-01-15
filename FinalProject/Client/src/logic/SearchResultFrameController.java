@@ -26,8 +26,6 @@ public class SearchResultFrameController
     public TableColumn<List<String>, String> bookNameColumn;
     @FXML
     public TableColumn<List<String>, String> genreColumn;
-    //@FXML
-    //public TableColumn locationColumn;
     @FXML
     public TableColumn<List<String>, String> watchDetailsColumn;
     @FXML
@@ -44,18 +42,14 @@ public class SearchResultFrameController
     @FXML
     public void initialize()
     {
-        //todo: load search results from the database into the table
-        //searchResultTable = new TableView<>();
         searchResultTable.itemsProperty().bind(BookListProperty);
         searchResultTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         bookNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
         genreColumn.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().get(1))));
-        //watchDetailsColumn.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().get(2)))); // Adjust property name
         watchDetailsColumn.setCellFactory(column -> new TableCell<List<String>, String>()
         {
             private final Button button = new Button("View Details");
-
             {
                 // Set the button action
                 button.setOnAction(event -> {
@@ -110,6 +104,7 @@ public class SearchResultFrameController
     }
 
     /**
+     *
      * @param listFromRow
      */
     private void getBookCopy(List<String> listFromRow)
@@ -148,24 +143,5 @@ public class SearchResultFrameController
     public void backButtonClicked(ActionEvent event) throws Exception
     {
         navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
-    }
-
-    /**
-     * This method adds a button to each row that will open a new frame with the book details in the watchDetailsColumn
-     */
-    private void addBookDetailsButton()
-    {
-        //todo: add a button to each row that will open a new frame with the book details in the watchDetailsColumn
-    }
-
-    /**
-     * This method handles the watchDetailsButton click event to navigate to the book info page
-     *
-     * @param event The action event triggered by clicking the watch details button
-     * @throws Exception If there is an issue with the navigation
-     */
-    public void watchDetailsButtonClicked(ActionEvent event) throws Exception
-    {
-        navigateTo(event, "/gui/BookInfoFrame.fxml", "/gui/Subscriber.css", "Book Info");
     }
 }

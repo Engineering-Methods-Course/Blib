@@ -4,7 +4,7 @@ public class BookCopy {
     private int bookSerialNumber;
     private int copyID;
     private String copyAvailability;
-    private String shelfLocation;;
+    private String shelfLocation;
 
     /**
      * Constructor to initialize a local BookCopy object with all necessary details from the server.

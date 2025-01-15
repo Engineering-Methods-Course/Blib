@@ -153,7 +153,6 @@ public class BookInfoFrameController
      */
     private void loadBookInfo()
     {
-        //todo: implement loadBookInfo
         bookName.setText(localBook.getBookName());
         bookGenre.setText(localBook.getBookGenre());
         bookdescription.setText(localBook.getBookDescription());

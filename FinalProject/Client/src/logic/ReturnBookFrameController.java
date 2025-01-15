@@ -1,7 +1,6 @@
 package logic;
 
 import client.ClientGUIController;
-import common.Book;
 import common.ClientServerMessage;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -17,15 +16,6 @@ public class ReturnBookFrameController
 {
     @FXML
     private TextField idTextField;
-
-    /**
-     * Initializes the table and sets up column bindings.
-     */
-    public void initialize()
-    {
-        //todo:
-
-    }
 
     /**
      * Handles the Back button click event.
