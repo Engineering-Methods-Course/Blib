@@ -1,6 +1,5 @@
 package logic;
 
-import java.lang.invoke.VolatileCallSite;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.Executors;
@@ -10,10 +9,13 @@ import java.util.concurrent.TimeUnit;
 public class ScheduleController {
 
     private static volatile ScheduleController instance;
+    private static DBController dbController;
     private final ScheduledExecutorService scheduler;
-    private static  DBController dbController;
-    private NotificationController notificationController;
+    private final NotificationController notificationController;
 
+    /**
+     * Constructor to initialize the ScheduleController object.
+     */
     private ScheduleController() {
         scheduler = Executors.newScheduledThreadPool(1);
         notificationController = NotificationController.getInstance();
@@ -21,6 +23,11 @@ public class ScheduleController {
         runDailyTask();
     }
 
+    /**
+     * This method creates a new instance of ScheduleController if it doesn't exist
+     *
+     * @return the instance of ScheduleController
+     */
     public static ScheduleController getInstance() {
         if (instance == null) {
             synchronized (ScheduleController.class) {
@@ -31,6 +38,7 @@ public class ScheduleController {
         }
         return instance;
     }
+
     /**
      * This method sets the scheduler for the export logs
      */
@@ -43,7 +51,7 @@ public class ScheduleController {
                 dbController.exportLogSubscribersStatus().run();
                 dbController.exportLogBorrowTime().run();
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Error in export log" + e);
             }
         }, initialDelay, period, TimeUnit.MILLISECONDS);
     }
@@ -62,7 +70,7 @@ public class ScheduleController {
                 dbController.checkDueBooks().run();
                 dbController.checkReservedBooks().run();
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Error in daily task" + e);
             }
         }, initialDelay, period, TimeUnit.MILLISECONDS);
     }
@@ -70,7 +78,7 @@ public class ScheduleController {
     /**
      * This method computes the initial delay
      *
-     * @param hour the hour
+     * @param hour   the hour
      * @param minute the minute
      * @param second the second
      * @return the initial delay
@@ -99,10 +107,11 @@ public class ScheduleController {
          */
         return nextRun.getTimeInMillis() - System.currentTimeMillis();
     }
+
     /**
      * This sets the scheduler for the first of the month
      *
-     * @param hour the hour
+     * @param hour   the hour
      * @param minute the minute
      * @param second the second
      * @return long the initial delay
@@ -122,17 +131,4 @@ public class ScheduleController {
         return nextRun.getTimeInMillis() - System.currentTimeMillis();
     }
 
-    /**
-     * This method stops the scheduler
-     */
-    public void stopScheduler() {
-        scheduler.shutdown();
-        try {
-            if (!scheduler.awaitTermination(60, TimeUnit.SECONDS)) {
-                scheduler.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            scheduler.shutdownNow();
-        }
-    }
 }

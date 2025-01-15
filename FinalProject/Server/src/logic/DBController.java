@@ -14,8 +14,8 @@ import java.util.List;
 
 public class DBController {
     private static volatile DBController instance;
-    Connection conn = null;
     private static NotificationController notificationController;
+    Connection conn = null;
 
 
     private DBController() {
@@ -32,14 +32,96 @@ public class DBController {
         if (instance == null) {
             synchronized (DBController.class) {
                 if (instance == null) {
-                    System.out.println("DBController was created successfully");
                     instance = new DBController();
                     notificationController = NotificationController.getInstance();
-
+                    System.out.println("DBController was created successfully");
                 }
             }
         }
         return instance;
+    }
+
+    /**
+     * This method exports the entire from last month and ignores the rest
+     *
+     * @param history The history of the subscriber
+     * @return List<ArrayList < String>>
+     */
+    public static List<ArrayList<String>> getLastMonthEntries(List<ArrayList<String>> history) {
+
+        List<ArrayList<String>> lastMonthEntries = new ArrayList<>();
+
+        /*
+         * Get the first and last day of last month
+         */
+
+        LocalDate now = LocalDate.now();
+        LocalDate firstDayOfLastMonth = now.minusMonths(1).withDayOfMonth(1);
+        LocalDate lastDayOfLastMonth = now.withDayOfMonth(1).minusDays(1);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+        /*
+         * Add the entries from last month to the lastMonthEntries array list
+         */
+
+        for (ArrayList<String> entry : history) {
+            LocalDate entryDate = LocalDate.parse(entry.get(0), formatter);
+            if (!entryDate.isBefore(firstDayOfLastMonth) && !entryDate.isAfter(lastDayOfLastMonth)) {
+                lastMonthEntries.add(entry);
+            }
+        }
+        return lastMonthEntries;
+    }
+
+    /**
+     * This method converts a Blob to a List<ArrayList<String>>
+     *
+     * @param blob The Blob
+     * @return List<ArrayList < String>>
+     * @throws IOException            If an error occurs
+     * @throws SQLException           If an error occurs
+     * @throws ClassNotFoundException If an error occurs
+     */
+    public static List<ArrayList<String>> convertBlobToList(Blob blob) throws IOException, SQLException, ClassNotFoundException {
+        byte[] bytes = blob.getBytes(1, (int) blob.length());
+        try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(bytes))) {
+            Object obj = ois.readObject();
+            if (obj instanceof List) {
+                return (List<ArrayList<String>>) obj;
+            } else {
+                throw new ClassCastException("Deserialized object is not of type List<ArrayList<String>>");
+            }
+        } catch (EOFException e) {
+            System.out.println("Error: Unexpected end of file while reading Blob data");
+            throw new IOException("Error: Unexpected end of file while reading Blob data", e);
+        }
+    }
+
+    /**
+     * This method converts a List<ArrayList<String>> to a Blob
+     *
+     * @param data The List<ArrayList<String>> data
+     * @return Blob
+     * @throws IOException  If an error occurs
+     * @throws SQLException If an error occurs
+     */
+    public static Blob convertToBlob(List<ArrayList<String>> data) throws IOException, SQLException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+            oos.writeObject(data);
+        }
+        byte[] bytes = baos.toByteArray();
+        return new SerialBlob(bytes);
+    }
+
+    /**
+     * This method writes new data into a List<ArrayList<String>>
+     *
+     * @param list    The List<ArrayList<String>> data
+     * @param newData The new data to be added
+     */
+    public static void writeDataToList(List<ArrayList<String>> list, ArrayList<String> newData) {
+        list.add(newData);
     }
 
     /**
@@ -74,6 +156,7 @@ public class DBController {
      */
     public User userLogin(ArrayList<String> messageContent) {
         try {
+            // Get the username and password from the message content
             String username = messageContent.get(0);
             String password = messageContent.get(1);
 
@@ -109,6 +192,7 @@ public class DBController {
                         /*
                          * get the subscriber subscription history where the subscriber ID matches the given value
                          */
+
                         String subscriptionHistoryQuery = "SELECT details FROM subscription_history WHERE subscription_history_id = ?";
                         PreparedStatement subscriptionHistoryStatement = conn.prepareStatement(subscriptionHistoryQuery);
                         subscriptionHistoryStatement.setInt(1, subRs.getInt("detailed_subscription_history"));
@@ -117,11 +201,11 @@ public class DBController {
                         /*
                          * Converts the subscription history Blob to a List of array lists and returns new subscriber based of the details
                          */
+
                         if (subscriptionHistoryRs.next()) {
                             Blob blobSubscriptionHistory = subscriptionHistoryRs.getBlob("details");
                             List<ArrayList<String>> subscriptionHistory = convertBlobToList(blobSubscriptionHistory);
                             return new Subscriber(subRs.getInt("subscriber_id"), subRs.getString("first_name"), subRs.getString("last_name"), subRs.getString("phone_number"), subRs.getString("email"), subRs.getInt("status") == 1, subscriptionHistory);
-
                         }
                     }
                 }
@@ -135,17 +219,20 @@ public class DBController {
                     PreparedStatement libStatement = conn.prepareStatement(libQuery);
                     libStatement.setInt(1, userId);
                     ResultSet subRs = libStatement.executeQuery();
+
                     /*
                      * If the query was successful returns a new librarian based of the details
                      */
+
                     if (subRs.next()) {
                         return new Librarian(subRs.getInt("librarian_id"), subRs.getString("first_name"), subRs.getString("last_name"));
                     }
                 }
             }
+
             // No subscriber found
-            System.out.println("No user found (userLogin)");
             return null;
+
         } catch (Exception e) {
             // If an error occur
             System.out.println("Error: Login Failed (userLogin) " + e);
@@ -177,15 +264,20 @@ public class DBController {
             /*
              * If the query was successful, add the values of the book to a list
              */
+
             while (rs.next()) {
                 Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("borrowed_copies"));
                 books.add(book);
             }
+
+            /*
+             * If no books were found
+             */
+
             if (books.isEmpty()) {
-                System.out.println("No books found (searchBookByName)");
                 return null;
             }
-            System.out.println("Books found (searchBookByName)");
+
             return books;
         } catch (SQLException e) {
             System.out.println("Error: With exporting books from sql (searchBookByName) " + e);
@@ -222,12 +314,17 @@ public class DBController {
                 Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("borrowed_copies"));
                 books.add(book);
             }
+
+            /*
+             * If no books were found
+             */
+
             if (books.isEmpty()) {
-                System.out.println("No books found (searchBookByName)");
                 return null;
             }
-            System.out.println("Books found (searchBookByGenre)");
+
             return books;
+
         } catch (SQLException e) {
             System.out.println("Error: With exporting books from sql (searchBookByGenre) " + e);
             return null;
@@ -262,11 +359,15 @@ public class DBController {
                 Book book = new Book(rs.getInt("serial_number"), rs.getString("name"), rs.getString("main_genre"), rs.getString("description"), rs.getInt("copies"), rs.getInt("reserved_copies"), rs.getInt("borrowed_copies"));
                 books.add(book);
             }
+
+            /*
+             * If no books were found
+             */
+
             if (books.isEmpty()) {
-                System.out.println("No books found (searchBookByName)");
                 return null;
             }
-            System.out.println("Books found (searchBookByDescription)");
+
             return books;
         } catch (SQLException e) {
             System.out.println("Error: With exporting books from sql (searchBookByDescription) " + e);
@@ -360,8 +461,8 @@ public class DBController {
                     }
                 }
             }
-            return response;
 
+            return response;
         } catch (Exception e) {
             System.out.println("Error: With checking the book availability (checkBookAvailability) " + e);
             return null;
@@ -380,7 +481,7 @@ public class DBController {
         try {
             int subscriberId = Integer.parseInt(messageContent.get(0));
             int serialNumber = Integer.parseInt(messageContent.get(1));
-            String bookName ;
+            String bookName;
 
             conn.setAutoCommit(false);
 
@@ -554,11 +655,19 @@ public class DBController {
                 borrowedBooks.add(borrow);
 
             }
+
+            /*
+             * No borrowed books found
+             */
+
             if (borrowedBooks.isEmpty()) {
-                System.out.println("No borrowed books found (showSubscriberBorrowedBooks)");
                 return null;
             }
-            System.out.println("Borrowed books found (showSubscriberBorrowedBooks)");
+
+            /*
+             * Return the borrowed books
+             */
+
             return borrowedBooks;
         } catch (SQLException e) {
             System.out.println("Error: With exporting borrowed books from sql (showSubscriberBorrowedBooks) " + e);
@@ -716,6 +825,45 @@ public class DBController {
     }
 
     /**
+     * case 214
+     * This method return the subscription history of the subscriber
+     *
+     * @param messageContent integer of the subscriber ID
+     * @return List of array lists containing the subscriber history
+     */
+    public List<ArrayList<String>> getSubscriberHistory(Integer messageContent) {
+        try {
+            List<ArrayList<String>> history = new ArrayList<>();
+
+            /*
+             * The query selects the detailed subscription history of the subscriber where the subscriber ID matches the given value
+             */
+
+            String historyQuery = "SELECT details FROM subscription_history WHERE subscription_history_id = (SELECT detailed_subscription_history FROM subscriber WHERE subscriber_id = ?)";
+            PreparedStatement historyStatement = conn.prepareStatement(historyQuery);
+            historyStatement.setInt(1, messageContent);
+            ResultSet historyRs = historyStatement.executeQuery();
+            /*
+             * If the query was successful, convert the Blob to a List of array lists
+             */
+            if (historyRs.next()) {
+                Blob blobHistory = historyRs.getBlob("details");
+                history = convertBlobToList(blobHistory);
+                return history;
+            }
+            /*
+             * No history found
+             */
+            else {
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("Error: With exporting subscriber history from sql (getSubscriberHistory) " + e);
+            return null;
+        }
+    }
+
+    /**
      * case 216
      * This method edits the subscriber details
      *
@@ -846,48 +994,6 @@ public class DBController {
             }
         }
         return response;
-    }
-
-    /**
-     * case 220
-     * This return an array list of all the copies of a specific book
-     *
-     * @param messageContent Array list containing the copyID
-     * @return Array list containing the book copies if successful and null if not
-     */
-    public ArrayList<BookCopy> getBookCopies(String messageContent) {
-        try {
-            //! may be deleted later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            ArrayList<BookCopy> bookCopies = new ArrayList<>();
-            int copyID = Integer.parseInt(messageContent);
-
-            /*
-             * The query selects all columns from the book_copy table where the serial number matches a given value
-             */
-
-            String findBookCopyQuery = "SELECT * FROM book_copy WHERE copy_id = ?";
-            PreparedStatement findBookCopyStatement = conn.prepareStatement(findBookCopyQuery);
-            findBookCopyStatement.setInt(1, copyID);
-            ResultSet rs = findBookCopyStatement.executeQuery();
-
-            /*
-             * If the query was successful, add the values of the book to a list
-             */
-
-            while (rs.next()) {
-                BookCopy bookCopy = new BookCopy(rs.getInt("copy_id"), rs.getInt("serial_number"), rs.getString("available"), rs.getString("shelf_location"));
-                bookCopies.add(bookCopy);
-            }
-            if (bookCopies.isEmpty()) {
-                System.out.println("No book copies found (getBookCopies)");
-                return null;
-            }
-            System.out.println("Book copies found (getBookCopies)");
-            return bookCopies;
-        } catch (SQLException e) {
-            System.out.println("Error: With exporting book copies from sql (getBookCopies) " + e);
-            return null;
-        }
     }
 
     /**
@@ -1108,8 +1214,6 @@ public class DBController {
                     }
                 }
             }
-
-            System.out.println("wasReserved: " + wasReserved);
 
             /*
              * Check if the book is reserved
@@ -1426,7 +1530,6 @@ public class DBController {
              */
 
             if (!subscribersList.isEmpty()) {
-                System.out.println("Subscribers list found (viewAllSubscribers)");
                 return subscribersList;
 
             }
@@ -1436,7 +1539,6 @@ public class DBController {
              */
 
             else {
-                System.out.println("No subscribers found (viewAllSubscribers)");
                 return null;
             }
 
@@ -1490,7 +1592,6 @@ public class DBController {
                     Blob blobSubscriptionHistory = subscriptionHistoryRs.getBlob("details");
                     List<ArrayList<String>> subscriptionHistory = convertBlobToList(blobSubscriptionHistory);
                     Subscriber subscriber = new Subscriber(getSubscriberRs.getInt("subscriber_id"), getSubscriberRs.getString("first_name"), getSubscriberRs.getString("last_name"), getSubscriberRs.getString("phone_number"), getSubscriberRs.getString("email"), getSubscriberRs.getInt("status") == 1, subscriptionHistory);
-                    System.out.println("Subscriber found (viewSubscriberDetails)");
                     return subscriber;
                 }
             }
@@ -1499,7 +1600,6 @@ public class DBController {
              * No subscriber found
              */
 
-            System.out.println("No subscriber found (viewSubscriberDetails)");
             return null;
 
         } catch (Exception e) {
@@ -1512,7 +1612,6 @@ public class DBController {
             return null;
         }
     }
-
 
     /**
      * case 310
@@ -1543,8 +1642,7 @@ public class DBController {
                     response.add("Subscriber is frozen");
                     return response;
                 }
-            }
-            else{
+            } else {
                 response.add("false");
                 response.add("Subscriber does not exist");
                 return response;
@@ -1564,8 +1662,7 @@ public class DBController {
                     response.add("the book had been reserved");
                     return response;
                 }
-            }
-            else{
+            } else {
                 response.add("false");
                 response.add("Book not found");
                 return response;
@@ -1604,8 +1701,7 @@ public class DBController {
             String librarianName;
             if (getLibrarianNameRs.next()) {
                 librarianName = getLibrarianNameRs.getString("first_name") + " " + getLibrarianNameRs.getString("last_name");
-            }
-            else{
+            } else {
                 response.add("false");
                 response.add("Librarian not found");
                 return response;
@@ -1701,7 +1797,7 @@ public class DBController {
             /*
              * If no logs were found returns null
              */
-            if(logs.isEmpty()){
+            if (logs.isEmpty()) {
                 return null;
             }
 
@@ -1754,7 +1850,7 @@ public class DBController {
             /*
              * If no logs were found returns null
              */
-            if(logs.isEmpty()){
+            if (logs.isEmpty()) {
                 return null;
             }
 
@@ -1772,7 +1868,7 @@ public class DBController {
      * @return ArrayList<String> containing the messages
      */
     public List<ArrayList<String>> ViewLibrarianMessages() {
-        try{
+        try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
             List<ArrayList<String>> messages = new ArrayList<>();
 
@@ -1798,7 +1894,7 @@ public class DBController {
             /*
              * If no messages were found returns null
              */
-            if(messages.isEmpty()){
+            if (messages.isEmpty()) {
                 return null;
             }
             return messages;
@@ -1807,35 +1903,6 @@ public class DBController {
             return null;
         }
 
-    }
-
-    /**
-     * This method exports the entire from last month
-     *
-     * @return List<ArrayList<String>>
-     */
-    public static List<ArrayList<String>> getLastMonthEntries(List<ArrayList<String>> history) {
-
-        List<ArrayList<String>> lastMonthEntries = new ArrayList<>();
-
-        /*
-         * Get the first and last day of last month
-         */
-        LocalDate now = LocalDate.now();
-        LocalDate firstDayOfLastMonth = now.minusMonths(1).withDayOfMonth(1);
-        LocalDate lastDayOfLastMonth = now.withDayOfMonth(1).minusDays(1);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-
-        /*
-         * Add the entries from last month to the lastMonthEntries array list
-         */
-        for (ArrayList<String> entry : history) {
-            LocalDate entryDate = LocalDate.parse(entry.get(0), formatter);
-            if (!entryDate.isBefore(firstDayOfLastMonth) && !entryDate.isAfter(lastDayOfLastMonth)) {
-                lastMonthEntries.add(entry);
-            }
-        }
-        return lastMonthEntries;
     }
 
     /**
@@ -1866,7 +1933,7 @@ public class DBController {
                     ResultSet GetSubscriberEmailRs = GetSubscriberEmailStatement.executeQuery();
                     if (GetSubscriberEmailRs.next()) {
                         String email = GetSubscriberEmailRs.getString("email");
-                        notificationController.sendEmail(email,subscriberId ,"Book available", "The book " + bookName + " is now available for you to borrow it will be reserved for you until the end of " + LocalDate.now().plusDays(2));
+                        notificationController.sendEmail(email, subscriberId, "Book available", "The book " + bookName + " is now available for you to borrow it will be reserved for you until the end of " + LocalDate.now().plusDays(2));
                     }
 
                     /*
@@ -1890,57 +1957,6 @@ public class DBController {
             throw new RuntimeException(e);
         }
     }
-
-    /**
-     * This method converts a Blob to a List<ArrayList<String>>
-     *
-     * @param blob The Blob
-     * @return List<ArrayList < String>>
-     * @throws IOException            If an error occurs
-     * @throws SQLException           If an error occurs
-     * @throws ClassNotFoundException If an error occurs
-     */
-    public static List<ArrayList<String>> convertBlobToList(Blob blob) throws IOException, SQLException, ClassNotFoundException {
-        byte[] bytes = blob.getBytes(1, (int) blob.length());
-        try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(bytes))) {
-            Object obj = ois.readObject();
-            if (obj instanceof List) {
-                return (List<ArrayList<String>>) obj;
-            } else {
-                throw new ClassCastException("Deserialized object is not of type List<ArrayList<String>>");
-            }
-        } catch (EOFException e) {
-            throw new IOException("Error: Unexpected end of file while reading Blob data", e);
-        }
-    }
-
-    /**
-     * This method converts a List<ArrayList<String>> to a Blob
-     *
-     * @param data The List<ArrayList<String>> data
-     * @return Blob
-     * @throws IOException  If an error occurs
-     * @throws SQLException If an error occurs
-     */
-    public static Blob convertToBlob(List<ArrayList<String>> data) throws IOException, SQLException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-            oos.writeObject(data);
-        }
-        byte[] bytes = baos.toByteArray();
-        return new SerialBlob(bytes);
-    }
-
-    /**
-     * This method writes new data into a List<ArrayList<String>>
-     *
-     * @param data    The List<ArrayList<String>> data
-     * @param newData The new data to be added
-     */
-    public static void writeDataToList(List<ArrayList<String>> data, ArrayList<String> newData) {
-        data.add(newData);
-    }
-
 
     /**
      * This method updates the history of a subscriber
@@ -1973,7 +1989,6 @@ public class DBController {
                 if (getHistoryRs.next()) {
                     Blob historyBlob = getHistoryRs.getBlob("details");
                     history = convertBlobToList(historyBlob);
-                    System.out.println("History found" + history);
                     //Write the new data into the history
                     writeDataToList(history, newData);
                 }
@@ -2031,9 +2046,8 @@ public class DBController {
      * add to database the message that was sent to the subscriber
      *
      * @param subscriberID the id of the subscriber
-     * @param message the message that was sent
-     * @param sent if the message was sent or not
-     *
+     * @param message      the message that was sent
+     * @param sent         if the message was sent or not
      */
     public void messagesToSubscriber(int subscriberID, String message, int sent) {
         try {
@@ -2052,7 +2066,7 @@ public class DBController {
      * add to database the message that was sent to the librarian
      *
      * @param message the message that was sent
-     * @param sent if the message was sent or not
+     * @param sent    if the message was sent or not
      */
     public void messagesToLibrarian(String message, int sent) {
         try {
@@ -2065,6 +2079,7 @@ public class DBController {
             System.out.println("Error: Adding message to librarian" + e);
         }
     }
+
     /**
      * This method checks if there are messages for the subscriber and returns them
      *
@@ -2100,6 +2115,7 @@ public class DBController {
             return null;
         }
     }
+
     /**
      * This method checks if there are messages for the librarian and returns them
      *
@@ -2183,6 +2199,7 @@ public class DBController {
 
         };
     }
+
     /**
      * This method exports the log of all borrowed book times
      */
@@ -2320,7 +2337,7 @@ public class DBController {
                         String phoneNumber = SubscriberContactInfoRs.getString("phone_number");
 
                         notificationController.sendEmail(email, subscriberId, "Book Return Reminder", "Reminder to return the book: " + bookName + " with copy ID: " + copyId + " by " + formattedExpectedDate);
-                        notificationController.sendSMSSimulator(subscriberId, "Reminder to return the book: " + bookName + " with copy ID: " + copyId + " by " + formattedExpectedDate+" was sent to phone number: "+phoneNumber);
+                        notificationController.sendSMSSimulator(subscriberId, "Reminder to return the book: " + bookName + " with copy ID: " + copyId + " by " + formattedExpectedDate + " was sent to phone number: " + phoneNumber);
 
                     }
                     /*
@@ -2375,5 +2392,6 @@ public class DBController {
             }
         };
     }
+
 
 }

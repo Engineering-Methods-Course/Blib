@@ -20,12 +20,12 @@ public class NotificationController {
     private static final HashMap<Integer, ConnectionToClient> librarianClients = new HashMap<>();
     private static volatile NotificationController instance;
     private static DBController dbController;
-    Properties properties = new Properties();
-    Authenticator authenticator;
     private final String from;
     private final String username;
     private final String password;
     private final String host;
+    Properties properties = new Properties();
+    Authenticator authenticator;
 
     /**
      * Constructor to initialize the NotificationController object.
@@ -60,10 +60,9 @@ public class NotificationController {
         if (instance == null) {
             synchronized (NotificationController.class) {
                 if (instance == null) {
-                    System.out.println("NotificationController was created successfully");
                     instance = new NotificationController();
                     dbController = DBController.getInstance();
-
+                    System.out.println("NotificationController was created successfully");
                 }
             }
         }
@@ -71,14 +70,34 @@ public class NotificationController {
     }
 
     /**
+     * This method sends a message to the librarian
+     *
+     * @param message the message to send
+     */
+    public static void notifyLibrarian(String message) {
+        if (librarianClients.isEmpty()) {
+            // update the database with the message
+            dbController.messagesToLibrarian(message, 0);
+            return;
+        }
+        for (ConnectionToClient client : librarianClients.values()) {
+            try {
+                dbController.messagesToLibrarian(message, 1);
+                client.sendToClient(new ClientServerMessage(107, message));
+            } catch (Exception e) {
+                System.out.println("Error sending message to librarian: " + e);
+            }
+        }
+    }
+
+    /**
      * This method sends an email to the recipient
      *
      * @param recipientEmail the recipient of the email
-     *
-     * @param subject   the subject of the email
-     * @param text      the text of the email
+     * @param subject        the subject of the email
+     * @param text           the text of the email
      */
-    public void sendEmail(String recipientEmail,int recipientID ,String subject, String text) {
+    public void sendEmail(String recipientEmail, int recipientID, String subject, String text) {
 
         Session session = Session.getInstance(properties, authenticator);
         try {
@@ -100,6 +119,7 @@ public class NotificationController {
 
         }
     }
+
     /**
      * This method simulates sending an SMS to the recipient
      *
@@ -112,31 +132,10 @@ public class NotificationController {
                 subscriberClients.get(subscriberId).sendToClient(new ClientServerMessage(107, message));
                 dbController.messagesToSubscriber(subscriberId, message, 1);
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Error sending SMS: " + e);
             }
         } else {
             dbController.messagesToSubscriber(subscriberId, message, 0);
-        }
-    }
-
-    /**
-     * This method sends a message to the librarian
-     *
-     * @param message the message to send
-     */
-    public static void notifyLibrarian(String message) {
-        if (librarianClients.isEmpty()) {
-            // update the database with the message
-            dbController.messagesToLibrarian(message, 0);
-            return;
-        }
-        for (ConnectionToClient client : librarianClients.values()) {
-            try {
-                dbController.messagesToLibrarian(message, 1);
-                client.sendToClient(new ClientServerMessage(107, message));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -169,7 +168,7 @@ public class NotificationController {
             try {
                 client.sendToClient(new ClientServerMessage(107, message));
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Error sending message to subscriber: " + e);
             }
         }
     }
@@ -187,7 +186,7 @@ public class NotificationController {
             try {
                 client.sendToClient(new ClientServerMessage(107, message));
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Error sending message to librarian: " + e);
             }
         }
 
