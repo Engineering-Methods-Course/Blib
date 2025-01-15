@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import ocsf.client.*;
-import common.ChatIF;
 
 import java.io.*;
 import java.sql.Connection;
@@ -16,11 +15,11 @@ import java.util.List;
 
 public class ClientController extends AbstractClient
 {
+    public static boolean awaitResponse = false;
     private Connection conn;
     private static ActionEvent storedActionEvent;
     private static FXMLLoader loader;
-    ChatIF clientUI;
-    public static boolean awaitResponse = false;
+    final ChatIF clientUI;
 
     /**
      * Constructs an instance of the chat client.

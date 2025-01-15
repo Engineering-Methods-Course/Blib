@@ -168,6 +168,18 @@ public class SubscriberProfileOptionsFrameController
         }
 
         // Extract subscriberID and copyID from the selected book
+        ClientServerMessage message = getClientServerMessage(selectedBook);
+
+        // Send the message to the server
+        try {
+            ClientGUIController.chat.sendToServer(message);
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Error sending extend borrow request to the server: " + e.getMessage());
+        }
+    }
+
+    private static ClientServerMessage getClientServerMessage(BorrowedBook selectedBook)
+    {
         String subscriberID = String.valueOf(Subscriber.getLocalSubscriber().getID());
         String copyID = String.valueOf(selectedBook.getCopyID()); // Assuming BorrowedBook has a getCopyID() method
 
@@ -177,14 +189,7 @@ public class SubscriberProfileOptionsFrameController
         extendRequestData.add(copyID);
 
         // Create the ClientServerMessage object with code 212 for extend borrow request
-        ClientServerMessage message = new ClientServerMessage(212, extendRequestData);
-
-        // Send the message to the server
-        try {
-            ClientGUIController.chat.sendToServer(message);
-        } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Error sending extend borrow request to the server: " + e.getMessage());
-        }
+        return new ClientServerMessage(212, extendRequestData);
     }
 
     public static void showExtendMessageResponse(ArrayList<String> msg) {
