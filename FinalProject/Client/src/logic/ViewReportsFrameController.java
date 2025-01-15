@@ -3,6 +3,7 @@ package logic;
 import client.ClientGUIController;
 import common.ClientServerMessage;
 import common.LogEntry;
+import common.MonthlyLog;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
@@ -82,18 +83,21 @@ public class ViewReportsFrameController
         ClientGUIController.chat.sendToServer(message);
     }
 
-    public void generateBorrowTimeReport(List<ArrayList<String>> reportData)
+    public void generateBorrowTimeReport(ArrayList<MonthlyLog> reportData)
     {
         // helper Date object for easier reading
         Date date;
 
         // Create an ArrayList<LogEntry> to store the data in
         ArrayList<LogEntry> logEntries = new ArrayList<>();
-        for (ArrayList<String> entry : reportData)
+        for (MonthlyLog monthlyLog : reportData)
         {
-            // Create a new LogEntry object and add it to the list
-            date = Date.from(LocalDateTime.parse(entry.get(0), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(ZoneId.systemDefault()).toInstant());
-            logEntries.add(new LogEntry(date, entry.get(1), entry.get(2)));
+            for (ArrayList<String> entry : monthlyLog.getLog())
+            {
+                // Create a new LogEntry object and add it to the list
+                date = Date.from(LocalDateTime.parse(entry.get(0), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(ZoneId.systemDefault()).toInstant());
+                logEntries.add(new LogEntry(date, entry.get(1), entry.get(2)));
+            }
         }
 
         // Generate the bar chart
@@ -106,18 +110,21 @@ public class ViewReportsFrameController
         generateLineChart("Actions Over Time", logEntries);
     }
 
-    public void generateSubscriberStatusReport(List<ArrayList<String>> reportData)
+    public void generateSubscriberStatusReport(ArrayList<MonthlyLog> reportData)
     {
         // helper Date object for easier reading
         Date date;
 
         // Create an ArrayList<LogEntry> to store the data in
         ArrayList<LogEntry> logEntries = new ArrayList<>();
-        for (ArrayList<String> entry : reportData)
+        for (MonthlyLog monthlyLog : reportData)
         {
-            // Create a new LogEntry object and add it to the list
-            date = Date.from(LocalDateTime.parse(entry.get(0), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(ZoneId.systemDefault()).toInstant());
-            logEntries.add(new LogEntry(date, entry.get(1), entry.get(2)));
+            for (ArrayList<String> entry : monthlyLog.getLog())
+            {
+                // Create a new LogEntry object and add it to the list
+                date = Date.from(LocalDateTime.parse(entry.get(0), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(ZoneId.systemDefault()).toInstant());
+                logEntries.add(new LogEntry(date, entry.get(1), entry.get(2)));
+            }
         }
 
         // Generate the bar chart

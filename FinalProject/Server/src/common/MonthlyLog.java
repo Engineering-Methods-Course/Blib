@@ -32,6 +32,4 @@ public class MonthlyLog implements Serializable {
     public List<ArrayList<String>> getLog() {
         return log;
     }
-
-
 }

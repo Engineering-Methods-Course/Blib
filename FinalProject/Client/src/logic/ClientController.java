@@ -348,12 +348,12 @@ public class ClientController extends AbstractClient
                             System.out.println("Could not get logs");
                             Platform.runLater(() -> showErrorAlert("Error", "Could not get logs"));
                         }
-                        else if (message.getMessageContent() instanceof List)
+                        else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked")
-                            List<ArrayList<String>> logs = (ArrayList<ArrayList<String>>) message.getMessageContent();
+                            ArrayList<MonthlyLog> logs = (ArrayList<MonthlyLog>) message.getMessageContent();
                             ViewReportsFrameController controller = loader.getController();
-                            //controller.generateBorrowTimeReport(logs);
+                            controller.generateBorrowTimeReport(logs);
                         }
                         break;
                     // View messages response
@@ -375,9 +375,9 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked")
-                            List<ArrayList<String>> logs = (ArrayList<ArrayList<String>>) message.getMessageContent();
+                            ArrayList<MonthlyLog> logs = (ArrayList<MonthlyLog>) message.getMessageContent();
                             ViewReportsFrameController controller = loader.getController();
-                            //controller.generateSubscriberStatusReport(logs);
+                            controller.generateSubscriberStatusReport(logs);
                         }
                         // Server has closed its connection
                     case 999:
