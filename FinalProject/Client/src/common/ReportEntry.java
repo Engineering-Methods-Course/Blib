@@ -1,8 +1,9 @@
 package common;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ReportEntry
+public class ReportEntry implements Serializable
 {
     private Date date;
     private String type;
