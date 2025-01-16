@@ -344,6 +344,7 @@ public class ClientController extends AbstractClient
                     case 313:
                         if (message.getMessageContent() == null)
                         {
+                            //todo: remove function call
                             ViewReportsFrameController controller = loader.getController();
                             controller.generateBorrowTimeReport(null);
                             System.out.println("Could not get logs");
@@ -366,10 +367,12 @@ public class ClientController extends AbstractClient
                             ViewMessagesFrameController controller = loader.getController();
                             controller.loadLibrarianMessages(messages);
                         }
+                        break;
                         // Handles the Subscriber Status report response
                     case 317:
                         if (message.getMessageContent() == null)
                         {
+                            //todo: remove function call
                             ViewReportsFrameController controller = loader.getController();
                             controller.generateSubscriberStatusReport(null);
                             System.out.println("Could not get logs");
@@ -382,6 +385,7 @@ public class ClientController extends AbstractClient
                             ViewReportsFrameController controller = loader.getController();
                             controller.generateSubscriberStatusReport(logs);
                         }
+                        break;
                         // Server has closed its connection
                     case 999:
                         Platform.runLater(() -> showErrorAlert("Server closed", "Server has closed its connection for maintenance"));
