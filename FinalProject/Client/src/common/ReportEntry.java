@@ -23,6 +23,7 @@ public class ReportEntry implements Serializable
         this.type = type;
         this.description = description;
     }
+
     /**
      * Gets the date of the report entry.
      *
@@ -32,6 +33,7 @@ public class ReportEntry implements Serializable
     {
         return date;
     }
+
     /**
      * Gets the type of the report entry.
      *
@@ -41,6 +43,7 @@ public class ReportEntry implements Serializable
     {
         return type;
     }
+
     /**
      * Gets the description of the report entry.
      *
@@ -50,8 +53,4 @@ public class ReportEntry implements Serializable
     {
         return description;
     }
-
-
-
-
 }

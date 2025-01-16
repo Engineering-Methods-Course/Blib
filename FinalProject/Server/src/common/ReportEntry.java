@@ -1,8 +1,9 @@
 package common;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ReportEntry
+public class ReportEntry implements Serializable
 {
     private Date date;
     private String type;
@@ -22,6 +23,7 @@ public class ReportEntry
         this.type = type;
         this.description = description;
     }
+
     /**
      * Gets the date of the report entry.
      *
@@ -31,6 +33,7 @@ public class ReportEntry
     {
         return date;
     }
+
     /**
      * Gets the type of the report entry.
      *
@@ -40,6 +43,7 @@ public class ReportEntry
     {
         return type;
     }
+
     /**
      * Gets the description of the report entry.
      *
@@ -49,8 +53,4 @@ public class ReportEntry
     {
         return description;
     }
-
-
-
-
 }
