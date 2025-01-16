@@ -43,9 +43,6 @@ public class ViewReportsFrameController
         // Add the report options to the ChoiceBox.
         reportChoiceBox.getItems().addAll("Borrow Times", "Subscriber Status");
 
-        // Set the default report to display.
-        reportChoiceBox.getSelectionModel().selectFirst();
-
         // Add a listener to handle changes in the selected item.
         reportChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> updateCharts());
 
@@ -54,6 +51,9 @@ public class ViewReportsFrameController
 
         // Add a listener to handle changes in the end date.
         endRangePicker.valueProperty().addListener((observable, oldValue, newValue) -> updateCharts());
+
+        // Set the default report to display.
+        reportChoiceBox.getSelectionModel().selectFirst();
     }
 
     private void updateCharts()
@@ -83,58 +83,54 @@ public class ViewReportsFrameController
         ClientGUIController.chat.sendToServer(message);
     }
 
+    /**
+     * Generates the reports based on the given data.
+     *
+     * @param reportData The data to generate the reports from.
+     */
     public void generateBorrowTimeReport(ArrayList<MonthlyReport> reportData)
     {
-        // helper Date object for easier reading
-        Date date;
-
         // Create an ArrayList<ReportEntry> to store the data in
-        ArrayList<ReportEntry> logEntries = new ArrayList<>();
+        ArrayList<ReportEntry> reportEntries = new ArrayList<>();
         for (MonthlyReport monthlyReport : reportData)
         {
-            for (ArrayList<String> entry : monthlyReport.getLog())
-            {
-                // Create a new ReportEntry object and add it to the list
-                date = Date.from(LocalDateTime.parse(entry.get(0), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(ZoneId.systemDefault()).toInstant());
-                logEntries.add(new ReportEntry(date, entry.get(1), entry.get(2)));
-            }
+            //adds all the report entries to the list
+            reportEntries.addAll(monthlyReport.getReport());
         }
 
         // Generate the bar chart
-        generateBarChart("Actions Per Day", logEntries);
+        generateBarChart("Actions Per Day", reportEntries);
 
         // Generate the pie chart
-        generatePieChart("Action Distribution", logEntries);
+        generatePieChart("Action Distribution", reportEntries);
 
         // Generate the line chart
-        generateLineChart("Actions Over Time", logEntries);
+        generateLineChart("Actions Over Time", reportEntries);
     }
 
+    /**
+     * Generates the reports based on the given data.
+     *
+     * @param reportData The data to generate the reports from.
+     */
     public void generateSubscriberStatusReport(ArrayList<MonthlyReport> reportData)
     {
-        // helper Date object for easier reading
-        Date date;
-
         // Create an ArrayList<ReportEntry> to store the data in
-        ArrayList<ReportEntry> logEntries = new ArrayList<>();
+        ArrayList<ReportEntry> reportEntries = new ArrayList<>();
         for (MonthlyReport monthlyReport : reportData)
         {
-            for (ArrayList<String> entry : monthlyReport.getLog())
-            {
-                // Create a new ReportEntry object and add it to the list
-                date = Date.from(LocalDateTime.parse(entry.get(0), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(ZoneId.systemDefault()).toInstant());
-                logEntries.add(new ReportEntry(date, entry.get(1), entry.get(2)));
-            }
+            //adds all the report entries to the list
+            reportEntries.addAll(monthlyReport.getReport());
         }
 
         // Generate the bar chart
-        generateBarChart("Accounts Frozen", logEntries);
+        generateBarChart("Accounts Frozen", reportEntries);
 
         // Generate the pie chart
-        generatePieChart("Action Distribution", logEntries);
+        generatePieChart("Action Distribution", reportEntries);
 
         // Generate the line chart
-        generateLineChart("Actions Over Time", logEntries);
+        generateLineChart("Actions Over Time", reportEntries);
     }
 
     /**
@@ -163,7 +159,7 @@ public class ViewReportsFrameController
         Map<String, Map<String, Integer>> actionCountMap = new HashMap<>();
 
         // Define the date formatter
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         // Process the log entries
         for (ReportEntry entry : logEntries) {
@@ -196,14 +192,14 @@ public class ViewReportsFrameController
      * Generates a pie chart based on the given log entries.
      *
      * @param chartName  The name of the chart.
-     * @param logEntries The log entries to generate the chart from.
+     * @param reportEntries The log entries to generate the chart from.
      */
-    private void generatePieChart(String chartName, ArrayList<ReportEntry> logEntries) {
+    private void generatePieChart(String chartName, ArrayList<ReportEntry> reportEntries) {
         // Create a map to count different types of actions
         Map<String, Integer> actionCountMap = new HashMap<>();
 
         // Process the log entries
-        for (ReportEntry entry : logEntries) {
+        for (ReportEntry entry : reportEntries) {
             String action = entry.getType();
 
             // Count the actions

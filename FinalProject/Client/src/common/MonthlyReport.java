@@ -8,9 +8,9 @@ import java.util.List;
 public class MonthlyReport implements Serializable {
 
     private final Date date;
-    private final ArrayList<MonthlyReport> report;
+    private final ArrayList<ReportEntry> report;
 
-    public MonthlyReport(Date date, ArrayList<MonthlyReport> report) {
+    public MonthlyReport(Date date, ArrayList<ReportEntry> report) {
         this.date = date;
         this.report = report;
     }
@@ -29,7 +29,7 @@ public class MonthlyReport implements Serializable {
      *
      * @return the log
      */
-    public ArrayList<MonthlyReport> getReport() {
+    public ArrayList<ReportEntry> getReport() {
         return report;
     }
 }
