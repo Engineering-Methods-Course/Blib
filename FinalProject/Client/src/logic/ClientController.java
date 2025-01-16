@@ -350,7 +350,7 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked")
-                            ArrayList<MonthlyLog> logs = (ArrayList<MonthlyLog>) message.getMessageContent();
+                            ArrayList<MonthlyReport> logs = (ArrayList<MonthlyReport>) message.getMessageContent();
                             ViewReportsFrameController controller = loader.getController();
                             controller.generateBorrowTimeReport(logs);
                         }
@@ -374,7 +374,7 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked")
-                            ArrayList<MonthlyLog> logs = (ArrayList<MonthlyLog>) message.getMessageContent();
+                            ArrayList<MonthlyReport> logs = (ArrayList<MonthlyReport>) message.getMessageContent();
                             ViewReportsFrameController controller = loader.getController();
                             controller.generateSubscriberStatusReport(logs);
                         }

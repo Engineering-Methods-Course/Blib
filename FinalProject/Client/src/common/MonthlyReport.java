@@ -5,15 +5,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MonthlyLog implements Serializable
-{
-    private final Date date;
-    private final List<ArrayList<String>> log;
+public class MonthlyReport implements Serializable {
 
-    public MonthlyLog(Date date, List<ArrayList<String>> log)
-    {
+    private final Date date;
+    private final ArrayList<MonthlyReport> report;
+
+    public MonthlyReport(Date date, ArrayList<MonthlyReport> report) {
         this.date = date;
-        this.log = log;
+        this.report = report;
     }
 
     /**
@@ -21,18 +20,16 @@ public class MonthlyLog implements Serializable
      *
      * @return the date
      */
-    public Date getDate()
-    {
+    public Date getDate() {
         return date;
     }
-
+    
     /**
      * This method returns the log
      *
      * @return the log
      */
-    public List<ArrayList<String>> getLog()
-    {
-        return log;
+    public ArrayList<MonthlyReport> getReport() {
+        return report;
     }
 }

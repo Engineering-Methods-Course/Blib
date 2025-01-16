@@ -3,16 +3,15 @@ package common;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-public class MonthlyLog implements Serializable {
+public class MonthlyReport implements Serializable {
 
     private final Date date;
-    private final List<ArrayList<String>> log;
+    private final ArrayList<MonthlyReport> report;
 
-    public MonthlyLog(Date date, List<ArrayList<String>> log) {
+    public MonthlyReport(Date date, ArrayList<MonthlyReport> report) {
         this.date = date;
-        this.log = log;
+        this.report = report;
     }
 
     /**
@@ -29,7 +28,7 @@ public class MonthlyLog implements Serializable {
      *
      * @return the log
      */
-    public List<ArrayList<String>> getLog() {
-        return log;
+    public ArrayList<MonthlyReport> getReport() {
+        return report;
     }
 }

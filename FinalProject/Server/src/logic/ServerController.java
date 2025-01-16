@@ -313,7 +313,7 @@ public class ServerController extends AbstractServer {
                         /*
                          * do: subscriber wants to view his history
                          * in: int
-                         * return: (id 215) ArrayList<MonthlyLog> {subscriber history}
+                         * return: (id 215) ArrayList<MonthlyReport> {subscriber history}
                          */
                         try {
                             if (message.getMessageContent() instanceof Integer) {
@@ -518,7 +518,7 @@ public class ServerController extends AbstractServer {
                         /*
                          * do: librarian wants to view Borrow Times Logs
                          * in: List<java.util.Date> [start date, end date]
-                         * return: (id 313) ArrayList<MonthlyLog> {borrow time logs}
+                         * return: (id 313) ArrayList<MonthlyReport> {borrow time logs}
                          */
                         try {
                             if (message.getMessageContent() instanceof List) {
@@ -537,7 +537,7 @@ public class ServerController extends AbstractServer {
                         /*
                          * do: librarian wants to view Subscriber Status Log
                          * in: List<java.util.Date> [start date, end date]
-                         * return: (id 315) ArrayList<MonthlyLog> {subscriber status logs}
+                         * return: (id 315) ArrayList<MonthlyReport> {subscriber status logs}
                          */
                         try {
                             if (message.getMessageContent() instanceof List) {

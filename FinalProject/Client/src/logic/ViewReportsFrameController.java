@@ -2,8 +2,8 @@ package logic;
 
 import client.ClientGUIController;
 import common.ClientServerMessage;
-import common.LogEntry;
-import common.MonthlyLog;
+import common.ReportEntry;
+import common.MonthlyReport;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
@@ -83,20 +83,20 @@ public class ViewReportsFrameController
         ClientGUIController.chat.sendToServer(message);
     }
 
-    public void generateBorrowTimeReport(ArrayList<MonthlyLog> reportData)
+    public void generateBorrowTimeReport(ArrayList<MonthlyReport> reportData)
     {
         // helper Date object for easier reading
         Date date;
 
-        // Create an ArrayList<LogEntry> to store the data in
-        ArrayList<LogEntry> logEntries = new ArrayList<>();
-        for (MonthlyLog monthlyLog : reportData)
+        // Create an ArrayList<ReportEntry> to store the data in
+        ArrayList<ReportEntry> logEntries = new ArrayList<>();
+        for (MonthlyReport monthlyReport : reportData)
         {
-            for (ArrayList<String> entry : monthlyLog.getLog())
+            for (ArrayList<String> entry : monthlyReport.getLog())
             {
-                // Create a new LogEntry object and add it to the list
+                // Create a new ReportEntry object and add it to the list
                 date = Date.from(LocalDateTime.parse(entry.get(0), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(ZoneId.systemDefault()).toInstant());
-                logEntries.add(new LogEntry(date, entry.get(1), entry.get(2)));
+                logEntries.add(new ReportEntry(date, entry.get(1), entry.get(2)));
             }
         }
 
@@ -110,20 +110,20 @@ public class ViewReportsFrameController
         generateLineChart("Actions Over Time", logEntries);
     }
 
-    public void generateSubscriberStatusReport(ArrayList<MonthlyLog> reportData)
+    public void generateSubscriberStatusReport(ArrayList<MonthlyReport> reportData)
     {
         // helper Date object for easier reading
         Date date;
 
-        // Create an ArrayList<LogEntry> to store the data in
-        ArrayList<LogEntry> logEntries = new ArrayList<>();
-        for (MonthlyLog monthlyLog : reportData)
+        // Create an ArrayList<ReportEntry> to store the data in
+        ArrayList<ReportEntry> logEntries = new ArrayList<>();
+        for (MonthlyReport monthlyReport : reportData)
         {
-            for (ArrayList<String> entry : monthlyLog.getLog())
+            for (ArrayList<String> entry : monthlyReport.getLog())
             {
-                // Create a new LogEntry object and add it to the list
+                // Create a new ReportEntry object and add it to the list
                 date = Date.from(LocalDateTime.parse(entry.get(0), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(ZoneId.systemDefault()).toInstant());
-                logEntries.add(new LogEntry(date, entry.get(1), entry.get(2)));
+                logEntries.add(new ReportEntry(date, entry.get(1), entry.get(2)));
             }
         }
 
@@ -154,7 +154,7 @@ public class ViewReportsFrameController
      * @param chartName  The name of the chart.
      * @param logEntries The log entries to generate the chart from.
      */
-    private void generateBarChart(String chartName, ArrayList<LogEntry> logEntries) {
+    private void generateBarChart(String chartName, ArrayList<ReportEntry> logEntries) {
         // Create a new series for the bar chart
         XYChart.Series<String, Number> barSeries = new XYChart.Series<>();
         barSeries.setName(chartName);
@@ -166,7 +166,7 @@ public class ViewReportsFrameController
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
         // Process the log entries
-        for (LogEntry entry : logEntries) {
+        for (ReportEntry entry : logEntries) {
             String date = entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
             String action = entry.getType();
 
@@ -198,12 +198,12 @@ public class ViewReportsFrameController
      * @param chartName  The name of the chart.
      * @param logEntries The log entries to generate the chart from.
      */
-    private void generatePieChart(String chartName, ArrayList<LogEntry> logEntries) {
+    private void generatePieChart(String chartName, ArrayList<ReportEntry> logEntries) {
         // Create a map to count different types of actions
         Map<String, Integer> actionCountMap = new HashMap<>();
 
         // Process the log entries
-        for (LogEntry entry : logEntries) {
+        for (ReportEntry entry : logEntries) {
             String action = entry.getType();
 
             // Count the actions
@@ -225,7 +225,7 @@ public class ViewReportsFrameController
      * @param chartName  The name of the chart.
      * @param logEntries The log entries to generate the chart from.
      */
-    private void generateLineChart(String chartName, ArrayList<LogEntry> logEntries) {
+    private void generateLineChart(String chartName, ArrayList<ReportEntry> logEntries) {
         // Create a new series for the line chart
         Map<String, XYChart.Series<String, Number>> seriesMap = new HashMap<>();
 
@@ -233,7 +233,7 @@ public class ViewReportsFrameController
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
         // Process the log entries
-        for (LogEntry entry : logEntries) {
+        for (ReportEntry entry : logEntries) {
             String date = entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
             String action = entry.getType();
 

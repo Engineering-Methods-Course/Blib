@@ -1760,9 +1760,9 @@ public class DBController {
      * This method return an array list containing a log of the subscribers borrow histories between two time frames
      *
      * @param messageContent The time frames
-     * @return ArrayList<MonthlyLog> containing the logs
+     * @return ArrayList<MonthlyReport> containing the logs
      */
-    public ArrayList<MonthlyLog> getBorrowTimeLogs(List<java.util.Date> messageContent) {
+    public ArrayList<MonthlyReport> getBorrowTimeLogs(List<java.util.Date> messageContent) {
 
         /*
          * Covert the dates received from the client to java.sql.Date from java.util.Date
@@ -1770,7 +1770,7 @@ public class DBController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Date startDate = Date.valueOf(messageContent.get(0).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter));
         Date endDate = Date.valueOf(messageContent.get(1).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter));
-        ArrayList<MonthlyLog> logs = new ArrayList<>();
+        ArrayList<MonthlyReport> logs = new ArrayList<>();
 
         /*
          * This query selects all columns from the log table where the export date is between given times and the log type is borrowTime
@@ -1784,13 +1784,13 @@ public class DBController {
 
             /*
              * Converts the Blob data to a List<ArrayList<String>>
-             * Creates a MonthlyLog object
+             * Creates a MonthlyReport object
              * And add it to the logs array list
              */
             while (logRs.next()) {
                 Blob dataBlob = logRs.getBlob("details");
                 List<ArrayList<String>> data = convertBlobToList(dataBlob);
-                MonthlyLog log = new MonthlyLog(logRs.getDate("export_date"), data);
+                MonthlyReport log = new MonthlyReport(logRs.getDate("export_date"), data);
                 logs.add(log);
             }
 
@@ -1813,9 +1813,9 @@ public class DBController {
      * This method return an array list containing a log of the subscribers status abnormalities between two time frames
      *
      * @param messageContent The time frames
-     * @return ArrayList<MonthlyLog> containing the logs
+     * @return ArrayList<MonthlyReport> containing the logs
      */
-    public ArrayList<MonthlyLog> getSubscriberStatusLogs(List<java.util.Date> messageContent) {
+    public ArrayList<MonthlyReport> getSubscriberStatusLogs(List<java.util.Date> messageContent) {
 
         /*
          * Covert the dates received from the client to java.sql.Date from java.util.Date
@@ -1823,7 +1823,7 @@ public class DBController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Date startDate = Date.valueOf(messageContent.get(0).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter));
         Date endDate = Date.valueOf(messageContent.get(1).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter));
-        ArrayList<MonthlyLog> logs = new ArrayList<>();
+        ArrayList<MonthlyReport> logs = new ArrayList<>();
 
         /*
          * This query selects all columns from the log table where the export date is between given times and the log type is borrowTime
@@ -1837,13 +1837,13 @@ public class DBController {
 
             /*
              * Converts the Blob data to a List<ArrayList<String>>
-             * Creates a MonthlyLog object
+             * Creates a MonthlyReport object
              * And add it to the logs array list
              */
             while (logRs.next()) {
                 Blob dataBlob = logRs.getBlob("details");
                 List<ArrayList<String>> data = convertBlobToList(dataBlob);
-                MonthlyLog log = new MonthlyLog(logRs.getDate("export_date"), data);
+                MonthlyReport log = new MonthlyReport(logRs.getDate("export_date"), data);
                 logs.add(log);
             }
 
