@@ -344,9 +344,6 @@ public class ClientController extends AbstractClient
                     case 313:
                         if (message.getMessageContent() == null)
                         {
-                            //todo: remove function call
-                            ViewReportsFrameController controller = loader.getController();
-                            controller.generateBorrowTimeReport(null);
                             System.out.println("Could not get logs");
                             Platform.runLater(() -> showErrorAlert("Error", "Could not get logs"));
                         }
@@ -372,9 +369,6 @@ public class ClientController extends AbstractClient
                     case 317:
                         if (message.getMessageContent() == null)
                         {
-                            //todo: remove function call
-                            ViewReportsFrameController controller = loader.getController();
-                            controller.generateSubscriberStatusReport(null);
                             System.out.println("Could not get logs");
                             Platform.runLater(() -> showErrorAlert("Error", "Could not get logs"));
                         }
