@@ -15,7 +15,7 @@ import java.util.List;
 public class DBController {
     private static volatile DBController instance;
     private static NotificationController notificationController;
-    Connection conn = null;
+    private Connection conn = null;
 
 
     private DBController() {
