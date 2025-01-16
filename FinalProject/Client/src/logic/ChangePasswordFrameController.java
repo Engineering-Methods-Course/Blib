@@ -34,16 +34,17 @@ public class ChangePasswordFrameController
      */
     public void clickUpdateButton(ActionEvent event) throws Exception
     {
-        if (!newPassField.getText().equals(confirmPassField.getText()))
-        {
+        if (newPassField.getText().isEmpty() || confirmPassField.getText().isEmpty()) {
+            System.out.println("Password fields cannot be empty");
+            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Password fields cannot be empty"));
+        } else if (!newPassField.getText().equals(confirmPassField.getText())) {
             System.out.println("Passwords do not match");
             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Passwords do not match"));
-        }
-        else
-        {
+        } else {
             ArrayList<String> messageContent = new ArrayList<>();
             messageContent.add(String.valueOf(Subscriber.getLocalSubscriber().getID()));
             messageContent.add(newPassField.getText());
+
             // Update the password
             ClientServerMessage message = new ClientServerMessage(218, messageContent);
 

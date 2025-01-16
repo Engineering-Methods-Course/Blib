@@ -44,7 +44,13 @@ public class ReturnBookFrameController
         if (copyID.isEmpty())
         {
             // Handle missing data (e.g., show an error dialog)
-            System.out.println("Please enter a valid Copy ID.");
+            showAlert(Alert.AlertType.ERROR, "Input Error", "Please enter a valid ID,cannot be empty");
+            return;
+        }
+        // Use regex to check if the copyID contains only numbers
+        if (!copyID.matches("^[0-9]+$")) {
+            // Handle invalid input (e.g., show an error dialog)
+            showAlert(Alert.AlertType.ERROR, "Input Error", "Copy ID must contain only numbers.");
             return;
         }
 

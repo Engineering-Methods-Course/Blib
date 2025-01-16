@@ -26,7 +26,7 @@ public class SearchSubscriberFrameController
 
         if (userIDText.isEmpty())
         {
-            System.out.println("Please enter a valid Copy ID.");
+            showAlert(Alert.AlertType.ERROR, "Input Error", "ID cannot be empty.");
             return;
         }
         int userID;
@@ -36,7 +36,7 @@ public class SearchSubscriberFrameController
         }
         catch (NumberFormatException e)
         {
-            System.out.println("Invalid Copy ID. Please enter a numeric value.");
+            showAlert(Alert.AlertType.ERROR, "Input Error", "Invalid Copy ID. Please enter a numeric value.");
             return;
         }
 

@@ -34,18 +34,34 @@ public class BorrowBookFrameController
      */
     public void initialize()
     {
+        // Set the borrow date to today's date
         borrowDatePicker.setValue(LocalDate.now());
+
+        // Prevent the user from selecting a date before today in borrowDatePicker
+        borrowDatePicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                // Disable all dates before today
+                setDisable(empty || date.isBefore(LocalDate.now()));
+            }
+        });
+
+        // Disable user interaction with the borrowDatePicker
+        borrowDatePicker.getEditor().setDisable(true); // Disable text editing
+        borrowDatePicker.setOnMouseClicked(event -> event.consume()); // Prevent calendar popup
+        borrowDatePicker.setOnKeyPressed(event -> event.consume()); // Disable keyboard interaction
+
+        // Set the default return date to 14 days from today
         returnDatePicker.setValue(LocalDate.now().plusDays(14));
 
         // disable Borrow date picker date selection
         borrowDatePicker.setDisable(true);
 
-        // Disable return dates before or equal to borrow date
-        returnDatePicker.setDayCellFactory(picker -> new DateCell()
-        {
+        // Prevent the user from selecting a return date earlier than or equal to borrow date
+        returnDatePicker.setDayCellFactory(picker -> new DateCell() {
             @Override
-            public void updateItem(LocalDate date, boolean empty)
-            {
+            public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
                 // Disable return dates before or including the borrow date
                 setDisable(empty || date.isBefore(borrowDatePicker.getValue().plusDays(1)));
@@ -81,6 +97,8 @@ public class BorrowBookFrameController
         {
             // Handle missing data (e.g., show an error dialog)
             System.out.println("Please fill all fields.");
+            showAlert(Alert.AlertType.ERROR, "Missing Information",
+                    "Please fill in all the fields: Subscriber ID, Book ID, and Return Date.");
             return;
         }
 

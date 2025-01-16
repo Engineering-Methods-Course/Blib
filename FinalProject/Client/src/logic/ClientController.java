@@ -317,7 +317,7 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Wrong Username(id)");
-                            Platform.runLater(() -> showErrorAlert("Search Error", "Wrong Username"));
+                            Platform.runLater(() -> showErrorAlert("Search Error", "Wrong ID,try again"));
                         }
                         else if (message.getMessageContent() instanceof Subscriber)
                         {

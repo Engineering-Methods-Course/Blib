@@ -4,6 +4,7 @@ import client.ClientGUIController;
 import common.ClientServerMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 
@@ -39,10 +40,22 @@ public class RegisterMemberFrameController
         String phone = txtPhone.getText();
         String email = txtEmail.getText();
 
-        // alerts the user if any of the fields are empty
-        if (username.isEmpty() || name.isEmpty() || lastName.isEmpty() || regexMatcher("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", email) || regexMatcher("^\\+?[0-9. ()-]{7,}$", phone))
-        {
-            showAlert(AlertType.WARNING, "Input Error", "Please fill all fields.");
+        // Check for empty fields
+        if (username.isEmpty() || name.isEmpty() || lastName.isEmpty() || email.isEmpty() || phone.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Input Error", "Please fill all fields.");
+            return;
+        }
+
+        // Validate email format
+        if (!regexMatcher("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", email)) {
+            showAlert(Alert.AlertType.WARNING, "Invalid Email", "Please enter a valid email address.");
+            return;
+        }
+
+        // Validate phone format
+        if (!regexMatcher("^\\+?[0-9. ()-]{7,}$", phone)) {
+            showAlert(Alert.AlertType.WARNING, "Invalid Phone Number", "Please enter a valid phone number.");
+            return;
         }
 
         ArrayList<String> messageContent = new ArrayList<>();

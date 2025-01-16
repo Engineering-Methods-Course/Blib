@@ -6,6 +6,7 @@ import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static client.ClientGUIController.navigateTo;
+import static client.ClientGUIController.showAlert;
 
 public class SubscriberEditProfileFrameController implements Initializable
 {
@@ -38,6 +40,10 @@ public class SubscriberEditProfileFrameController implements Initializable
         navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "My profile");
     }
 
+    public void initialize(){
+        loadProfileDetails();
+    }
+
     /**
      * This method handles the update button click event.
      * It sends the updated profile details to the server for updating.
@@ -47,13 +53,22 @@ public class SubscriberEditProfileFrameController implements Initializable
      */
     public void clickUpdateButton(ActionEvent event) throws Exception
     {
+        // Validate that the first name and last name are not empty
+        String firstName = txtFirstName.getText().trim();
+        String lastName = txtLastName.getText().trim();
+
+        if (firstName.isEmpty() || lastName.isEmpty()) {
+            // Show an alert if either field is empty
+            showAlert(Alert.AlertType.WARNING, "Input Error", "First name and last name cannot be empty.");
+            return;
+        }
         // Create a new Subscriber object with the updated details
         ArrayList<String> changedSubscriber = new ArrayList<>();
         changedSubscriber.add(String.valueOf(Subscriber.getLocalSubscriber().getID()));
         changedSubscriber.add(txtPhone.getText());
         changedSubscriber.add(txtEmail.getText());
-        changedSubscriber.add(txtFirstName.getText());
-        changedSubscriber.add(txtLastName.getText());
+        changedSubscriber.add(firstName); // Use the validated first name
+        changedSubscriber.add(lastName); // Use the validated last name
 
         System.out.println(changedSubscriber);
         // Create a ClientServerMessage with the subscriber and ID 203
