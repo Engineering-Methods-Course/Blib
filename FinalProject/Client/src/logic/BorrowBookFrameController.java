@@ -37,6 +37,9 @@ public class BorrowBookFrameController
         borrowDatePicker.setValue(LocalDate.now());
         returnDatePicker.setValue(LocalDate.now().plusDays(14));
 
+        // disable Borrow date picker date selection
+        borrowDatePicker.setDisable(true);
+
         // Disable return dates before or equal to borrow date
         returnDatePicker.setDayCellFactory(picker -> new DateCell()
         {
