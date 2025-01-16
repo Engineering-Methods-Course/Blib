@@ -370,6 +370,8 @@ public class ClientController extends AbstractClient
                     case 317:
                         if (message.getMessageContent() == null)
                         {
+                            ViewReportsFrameController controller = loader.getController();
+                            controller.generateSubscriberStatusReport(null);
                             System.out.println("Could not get logs");
                             Platform.runLater(() -> showErrorAlert("Error", "Could not get logs"));
                         }

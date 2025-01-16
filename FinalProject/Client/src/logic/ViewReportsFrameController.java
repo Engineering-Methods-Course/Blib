@@ -99,7 +99,6 @@ public class ViewReportsFrameController
     {
 
         /////////////////////////// TESTING ///////////////////////////
-
         // Create an ArrayList of MonthlyReport objects
         ArrayList<MonthlyReport> monthlyReports = new ArrayList<>();
 
@@ -115,34 +114,29 @@ public class ViewReportsFrameController
         calendar.set(2023, Calendar.OCTOBER, 3);
         ReportEntry reportEntry3 = new ReportEntry(calendar.getTime(), "borrow", "Book borrowed 2");
 
-        calendar.set(2023, Calendar.OCTOBER, 11);
+        calendar.set(2023, Calendar.OCTOBER, 1);
         ReportEntry reportEntry4 = new ReportEntry(calendar.getTime(), "return", "Book returned 2");
 
         calendar.set(2023, Calendar.OCTOBER, 5);
         ReportEntry reportEntry5 = new ReportEntry(calendar.getTime(), "borrow", "Book borrowed 3");
 
         // Create a list of ReportEntry objects
-        ArrayList<ReportEntry> reportEntries = new ArrayList<>();
-        reportEntries.add(reportEntry1);
-        reportEntries.add(reportEntry2);
-        reportEntries.add(reportEntry3);
-        reportEntries.add(reportEntry4);
-        reportEntries.add(reportEntry5);
+        ArrayList<ReportEntry> reportEntriesTest = new ArrayList<>();
+        reportEntriesTest.add(reportEntry1);
+        reportEntriesTest.add(reportEntry2);
+        reportEntriesTest.add(reportEntry3);
+        reportEntriesTest.add(reportEntry4);
+        reportEntriesTest.add(reportEntry5);
 
         // Create a MonthlyReport and add the ReportEntry list to it
-        MonthlyReport monthlyReportTest = new MonthlyReport(new Date(), reportEntries);
+        MonthlyReport monthlyReportTest = new MonthlyReport(new Date(), reportEntriesTest);
 
         // Add the MonthlyReport to the ArrayList
         monthlyReports.add(monthlyReportTest);
-
-        // Print the result
-        System.out.println("MonthlyReports: " + monthlyReports);
-
         ////////////////////////////////////////////////////////////////
 
         // Create an ArrayList<ReportEntry> to store the data in
-
-        //ArrayList<ReportEntry> reportEntries = new ArrayList<>();
+        ArrayList<ReportEntry> reportEntries = new ArrayList<>();
         for (MonthlyReport monthlyReport : monthlyReports)
         {
             //adds all the report entries to the list
@@ -152,7 +146,7 @@ public class ViewReportsFrameController
 
 
         // Generate the bar chart
-        generateBarChart("Actions Per Day", reportEntries);
+        generateBarChart("Actions Per Week", reportEntries);
 
         // Generate the pie chart
         generatePieChart("Borrows vs. Returns", reportEntries);
@@ -168,9 +162,46 @@ public class ViewReportsFrameController
      */
     public void generateSubscriberStatusReport(ArrayList<MonthlyReport> reportData)
     {
+        /////////////////////////// TESTING ///////////////////////////
+        // Create an ArrayList of MonthlyReport objects
+        ArrayList<MonthlyReport> monthlyReports = new ArrayList<>();
+
+        // Create 5 ReportEntry objects
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(2023, Calendar.OCTOBER, 1);
+        ReportEntry reportEntry1 = new ReportEntry(calendar.getTime(), "borrow", "Book borrowed 1");
+
+        calendar.set(2023, Calendar.OCTOBER, 10);
+        ReportEntry reportEntry2 = new ReportEntry(calendar.getTime(), "return", "Book returned 1");
+
+        calendar.set(2023, Calendar.OCTOBER, 3);
+        ReportEntry reportEntry3 = new ReportEntry(calendar.getTime(), "borrow", "Book borrowed 2");
+
+        calendar.set(2023, Calendar.OCTOBER, 1);
+        ReportEntry reportEntry4 = new ReportEntry(calendar.getTime(), "return", "Book returned 2");
+
+        calendar.set(2023, Calendar.OCTOBER, 5);
+        ReportEntry reportEntry5 = new ReportEntry(calendar.getTime(), "borrow", "Book borrowed 3");
+
+        // Create a list of ReportEntry objects
+        ArrayList<ReportEntry> reportEntriesTest = new ArrayList<>();
+        reportEntriesTest.add(reportEntry1);
+        reportEntriesTest.add(reportEntry2);
+        reportEntriesTest.add(reportEntry3);
+        reportEntriesTest.add(reportEntry4);
+        reportEntriesTest.add(reportEntry5);
+
+        // Create a MonthlyReport and add the ReportEntry list to it
+        MonthlyReport monthlyReportTest = new MonthlyReport(new Date(), reportEntriesTest);
+
+        // Add the MonthlyReport to the ArrayList
+        monthlyReports.add(monthlyReportTest);
+        ////////////////////////////////////////////////////////////////
+
         // Create an ArrayList<ReportEntry> to store the data in
         ArrayList<ReportEntry> reportEntries = new ArrayList<>();
-        for (MonthlyReport monthlyReport : reportData)
+        for (MonthlyReport monthlyReport : monthlyReports)
         {
             //adds all the report entries to the list
             reportEntries.addAll(monthlyReport.getReport());
@@ -285,7 +316,9 @@ public class ViewReportsFrameController
 
         // Process the log entries
         for (ReportEntry entry : logEntries) {
-            String date = entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
+            LocalDate date = entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate startOfWeek = date.with(DayOfWeek.SUNDAY);
+            String weekStart = startOfWeek.format(formatter);
             String action = entry.getType();
 
             // Initialize series if not already present
@@ -296,14 +329,14 @@ public class ViewReportsFrameController
             XYChart.Series<String, Number> series = seriesMap.get(action);
             boolean found = false;
             for (XYChart.Data<String, Number> data : series.getData()) {
-                if (data.getXValue().equals(date)) {
+                if (data.getXValue().equals(weekStart)) {
                     data.setYValue(data.getYValue().intValue() + 1);
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                series.getData().add(new XYChart.Data<>(date, 1));
+                series.getData().add(new XYChart.Data<>(weekStart, 1));
             }
         }
 
