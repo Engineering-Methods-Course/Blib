@@ -344,15 +344,17 @@ public class ClientController extends AbstractClient
                     case 313:
                         if (message.getMessageContent() == null)
                         {
+                            ViewReportsFrameController controller = loader.getController();
+                            controller.generateBorrowTimeReport(null);
                             System.out.println("Could not get logs");
                             Platform.runLater(() -> showErrorAlert("Error", "Could not get logs"));
                         }
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked")
-                            ArrayList<MonthlyReport> logs = (ArrayList<MonthlyReport>) message.getMessageContent();
+                            ArrayList<MonthlyReport> reports = (ArrayList<MonthlyReport>) message.getMessageContent();
                             ViewReportsFrameController controller = loader.getController();
-                            controller.generateBorrowTimeReport(logs);
+                            controller.generateBorrowTimeReport(reports);
                         }
                         break;
                     // View messages response

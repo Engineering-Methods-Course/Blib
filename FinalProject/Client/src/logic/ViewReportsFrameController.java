@@ -11,7 +11,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 
-import java.time.LocalDateTime;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -42,6 +43,12 @@ public class ViewReportsFrameController
     {
         // Add the report options to the ChoiceBox.
         reportChoiceBox.getItems().addAll("Borrow Times", "Subscriber Status");
+
+        // Set the default start date to the first day of the current month.
+        startRangePicker.setValue(LocalDate.now().withDayOfMonth(1));
+
+        // Set the default end date to the current date.
+        endRangePicker.setValue(LocalDate.now().withDayOfMonth(1).plusMonths(1).minusDays(1));
 
         // Add a listener to handle changes in the selected item.
         reportChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> updateCharts());
@@ -90,19 +97,65 @@ public class ViewReportsFrameController
      */
     public void generateBorrowTimeReport(ArrayList<MonthlyReport> reportData)
     {
-        // Create an ArrayList<ReportEntry> to store the data in
+
+        /////////////////////////// TESTING ///////////////////////////
+
+        // Create an ArrayList of MonthlyReport objects
+        ArrayList<MonthlyReport> monthlyReports = new ArrayList<>();
+
+        // Create 5 ReportEntry objects
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(2023, Calendar.OCTOBER, 1);
+        ReportEntry reportEntry1 = new ReportEntry(calendar.getTime(), "borrow", "Book borrowed 1");
+
+        calendar.set(2023, Calendar.OCTOBER, 10);
+        ReportEntry reportEntry2 = new ReportEntry(calendar.getTime(), "return", "Book returned 1");
+
+        calendar.set(2023, Calendar.OCTOBER, 3);
+        ReportEntry reportEntry3 = new ReportEntry(calendar.getTime(), "borrow", "Book borrowed 2");
+
+        calendar.set(2023, Calendar.OCTOBER, 11);
+        ReportEntry reportEntry4 = new ReportEntry(calendar.getTime(), "return", "Book returned 2");
+
+        calendar.set(2023, Calendar.OCTOBER, 5);
+        ReportEntry reportEntry5 = new ReportEntry(calendar.getTime(), "borrow", "Book borrowed 3");
+
+        // Create a list of ReportEntry objects
         ArrayList<ReportEntry> reportEntries = new ArrayList<>();
-        for (MonthlyReport monthlyReport : reportData)
+        reportEntries.add(reportEntry1);
+        reportEntries.add(reportEntry2);
+        reportEntries.add(reportEntry3);
+        reportEntries.add(reportEntry4);
+        reportEntries.add(reportEntry5);
+
+        // Create a MonthlyReport and add the ReportEntry list to it
+        MonthlyReport monthlyReportTest = new MonthlyReport(new Date(), reportEntries);
+
+        // Add the MonthlyReport to the ArrayList
+        monthlyReports.add(monthlyReportTest);
+
+        // Print the result
+        System.out.println("MonthlyReports: " + monthlyReports);
+
+        ////////////////////////////////////////////////////////////////
+
+        // Create an ArrayList<ReportEntry> to store the data in
+
+        //ArrayList<ReportEntry> reportEntries = new ArrayList<>();
+        for (MonthlyReport monthlyReport : monthlyReports)
         {
             //adds all the report entries to the list
             reportEntries.addAll(monthlyReport.getReport());
         }
 
+
+
         // Generate the bar chart
         generateBarChart("Actions Per Day", reportEntries);
 
         // Generate the pie chart
-        generatePieChart("Action Distribution", reportEntries);
+        generatePieChart("Borrows vs. Returns", reportEntries);
 
         // Generate the line chart
         generateLineChart("Actions Over Time", reportEntries);
@@ -161,14 +214,16 @@ public class ViewReportsFrameController
         // Define the date formatter
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-        // Process the log entries
+        // Process the log entries and count the actions per week
         for (ReportEntry entry : logEntries) {
-            String date = entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
+            LocalDate date = entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate startOfWeek = date.with(DayOfWeek.SUNDAY);
+            String weekStart = startOfWeek.format(formatter);
             String action = entry.getType();
 
             // Initialize the date map if not already present
-            actionCountMap.putIfAbsent(date, new HashMap<>());
-            Map<String, Integer> dateMap = actionCountMap.get(date);
+            actionCountMap.putIfAbsent(weekStart, new HashMap<>());
+            Map<String, Integer> dateMap = actionCountMap.get(weekStart);
 
             // Count the actions
             dateMap.put(action, dateMap.getOrDefault(action, 0) + 1);
@@ -180,7 +235,7 @@ public class ViewReportsFrameController
             for (Map.Entry<String, Integer> actionEntry : dateEntry.getValue().entrySet()) {
                 String action = actionEntry.getKey();
                 Integer count = actionEntry.getValue();
-                barSeries.getData().add(new XYChart.Data<>(date + " (" + action + ")", count));
+                barSeries.getData().add(new XYChart.Data<>(date, count));
             }
         }
 
