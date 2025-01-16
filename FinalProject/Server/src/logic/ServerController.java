@@ -522,7 +522,7 @@ public class ServerController extends AbstractServer {
                          */
                         try {
                             if (message.getMessageContent() instanceof List) {
-                                client.sendToClient(new ClientServerMessage(313, dbController.getBorrowTimeLogs((List<Date>) message.getMessageContent())));
+                                client.sendToClient(new ClientServerMessage(313, dbController.exportBorrowTimeLogs((List<Date>) message.getMessageContent())));
                                 System.out.println("Borrow Time Logs were sent to client");
                             } else {
                                 client.sendToClient(new ClientServerMessage(313, null));
@@ -541,7 +541,7 @@ public class ServerController extends AbstractServer {
                          */
                         try {
                             if (message.getMessageContent() instanceof List) {
-                                client.sendToClient(new ClientServerMessage(315, dbController.getSubscriberStatusLogs((List<Date>) message.getMessageContent())));
+                                client.sendToClient(new ClientServerMessage(315, dbController.exportSubscriberStatusLogs((List<Date>) message.getMessageContent())));
                                 System.out.println("Subscriber Status Logs were sent to client");
                             } else {
                                 client.sendToClient(new ClientServerMessage(315, null));

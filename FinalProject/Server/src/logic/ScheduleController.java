@@ -48,8 +48,7 @@ public class ScheduleController {
         scheduler.scheduleAtFixedRate(() -> {
             try {
                 System.out.println("Running daily task");
-                dbController.exportLogSubscribersStatus().run();
-                dbController.exportLogBorrowTime().run();
+                dbController.exportReport().run();
             } catch (Exception e) {
                 System.out.println("Error in export log" + e);
             }

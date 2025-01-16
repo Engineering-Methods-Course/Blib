@@ -105,13 +105,45 @@ public class DBController {
      * @throws IOException  If an error occurs
      * @throws SQLException If an error occurs
      */
-    public static Blob convertToBlob(List<ArrayList<String>> data) throws IOException, SQLException {
+    public static Blob convertListToBlob(List<ArrayList<String>> data) throws IOException, SQLException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
             oos.writeObject(data);
         }
         byte[] bytes = baos.toByteArray();
         return new SerialBlob(bytes);
+    }
+
+    /**
+     * This method updates the subscriber history
+     *
+     * @param data The data to convert to Blob
+     * @return Blob
+     * @throws SQLException If an error occurs
+     */
+    public static Blob convertMonthlyReportToBlob(MonthlyReport data) throws SQLException {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+            oos.writeObject(data);
+            byte[] bytes = baos.toByteArray();
+            return new SerialBlob(bytes);
+        } catch (Exception e) {
+            throw new SQLException("Error converting MonthlyReport to Blob", e);
+        }
+    }
+
+    /**
+     * This method converts a Blob to a MonthlyReport
+     *
+     * @param blob The Blob
+     * @return MonthlyReport
+     * @throws SQLException If an error occurs
+     */
+    public static MonthlyReport convertBlobToMonthlyReport(Blob blob) throws SQLException {
+        try (ByteArrayInputStream bais = new ByteArrayInputStream(blob.getBytes(1, (int) blob.length())); ObjectInputStream ois = new ObjectInputStream(bais)) {
+            return (MonthlyReport) ois.readObject();
+        } catch (Exception e) {
+            throw new SQLException("Error converting Blob to MonthlyReport", e);
+        }
     }
 
     /**
@@ -122,6 +154,49 @@ public class DBController {
      */
     public static void writeDataToList(List<ArrayList<String>> list, ArrayList<String> newData) {
         list.add(newData);
+    }
+
+    /**
+     * This method updates the subscriber history
+     *
+     * @param entry The entry to be added
+     * @param Type  The type of the report
+     */
+    public void addNewEntryToMonthlyReport(String Type, ReportEntry entry) {
+        try {
+
+            /*
+             * The query selects the details from the monthly report where the report type matches a given value
+             */
+
+            String getMonthlyReportQuery = "SELECT details FROM monthly_report WHERE report_type = ? AND ready_for_export = 0 ";
+            PreparedStatement getMonthlyReportStatement = conn.prepareStatement(getMonthlyReportQuery);
+            getMonthlyReportStatement.setString(1, Type);
+            ResultSet getMonthlyReportRs = getMonthlyReportStatement.executeQuery();
+            if (getMonthlyReportRs.next()) {
+
+                /*
+                 * Get the monthly report and add the new entry
+                 */
+
+                Blob blobMonthlyReport = getMonthlyReportRs.getBlob("details");
+                MonthlyReport monthlyReport = convertBlobToMonthlyReport(blobMonthlyReport);
+                monthlyReport.addNewEntry(entry);
+                Blob newBlobMonthlyReport = convertMonthlyReportToBlob(monthlyReport);
+
+                /*
+                 * The query updates the details of the monthly report where the report type matches a given value
+                 */
+
+                String updateMonthlyReportQuery = "UPDATE monthly_report SET details = ? WHERE report_type = ? AND ready_for_export = 0";
+                PreparedStatement updateMonthlyReportStatement = conn.prepareStatement(updateMonthlyReportQuery);
+                updateMonthlyReportStatement.setBlob(1, newBlobMonthlyReport);
+                updateMonthlyReportStatement.setString(2, Type);
+                updateMonthlyReportStatement.executeUpdate();
+            }
+        } catch (Exception e) {
+            System.out.println("Error: With adding new entry to the monthly report (addNewEntryToMonthlyReport) " + e);
+        }
     }
 
     /**
@@ -156,7 +231,11 @@ public class DBController {
      */
     public User userLogin(ArrayList<String> messageContent) {
         try {
-            // Get the username and password from the message content
+
+
+            /*
+             *  Get the username and password from the message content
+             */
             String username = messageContent.get(0);
             String password = messageContent.get(1);
 
@@ -585,6 +664,12 @@ public class DBController {
             updateHistory(subscriberId, "reserve", "Book: " + bookName + " of serial number: " + serialNumber + " has been reserved");
 
             /*
+             * Add the new entry to the monthly report
+             */
+
+            addNewEntryToMonthlyReport("borrowTime", new ReportEntry(new java.util.Date(), "reserve", bookName));
+
+            /*
              * Commit the transaction
              */
 
@@ -786,6 +871,12 @@ public class DBController {
              */
 
             updateHistory(subscriberId, "extend", "Return date for the book: " + bookName + " copy ID: " + copyId + " was extended by an extra week");
+
+            /*
+             * Add the new entry to the monthly report
+             */
+
+            addNewEntryToMonthlyReport("borrowTime", new ReportEntry(new java.util.Date(), "extend", bookName));
 
 
             /*
@@ -1035,7 +1126,7 @@ public class DBController {
             temp.add("Subscriber was registered");
             history.add(temp);
 
-            Blob historyBlob = convertToBlob(history);
+            Blob historyBlob = convertListToBlob(history);
             conn.setAutoCommit(false);
 
             /*
@@ -1083,6 +1174,13 @@ public class DBController {
             subscriberStatement.setString(5, messageContent.get(4));
             subscriberStatement.setInt(6, historyId);
             subscriberStatement.executeUpdate();
+
+            /*
+             * Add the new entry to the monthly report
+             */
+
+            addNewEntryToMonthlyReport("subscriberStatuses", new ReportEntry(new java.util.Date(), "register", String.valueOf(subscriberId)));
+
 
             /*
              * Commit the transaction
@@ -1262,7 +1360,7 @@ public class DBController {
 
             String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies + 1 WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
             PreparedStatement updateBookStatement = conn.prepareStatement(updateBookQuery);
-            updateBookStatement.setInt(1, copyId); // copy_id
+            updateBookStatement.setInt(1, copyId);
             updateBookStatement.executeUpdate();
 
 
@@ -1285,6 +1383,12 @@ public class DBController {
             DateTimeFormatter historyFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             String newReturnDate = returnDate.toLocalDate().format(historyFormatter);
             updateHistory(subscriberId, "borrow", "Borrowed the book: " + bookName + " copy ID: " + copyId + " Expected return date: " + newReturnDate);
+
+            /*
+             * Add the new entry to the monthly report
+             */
+
+            addNewEntryToMonthlyReport("borrowTime", new ReportEntry(new java.util.Date(), "borrow", bookName));
 
 
             /*
@@ -1430,13 +1534,16 @@ public class DBController {
 
 
             /*
-             * Update subscriber history
+             * Update subscriber history and add the new entry to the monthly report
              */
 
             if (lateReturn) {
                 updateHistory(subscriberId, "late return", "Book: " + bookName + " of copy ID: " + copyId + " was returned late account is frozen for a month");
+                addNewEntryToMonthlyReport("borrowTime", new ReportEntry(new java.util.Date(), "late return", bookName));
             } else {
                 updateHistory(subscriberId, "return", "Book: " + bookName + " of copy ID: " + copyId + " was returned");
+                addNewEntryToMonthlyReport("borrowTime", new ReportEntry(new java.util.Date(), "return", bookName));
+
             }
             /*
              * Check if the book was reserved
@@ -1726,6 +1833,12 @@ public class DBController {
             updateHistory(subscriberId, "extend", "Return date for the book: " + bookName + " copy ID: " + copyId + " was extended by librarian " + librarianName + " to " + newReturnDate);
 
             /*
+             * Add the new entry to the monthly report
+             */
+
+            addNewEntryToMonthlyReport("borrowTime", new ReportEntry(new java.util.Date(), "extend", bookName));
+
+            /*
              * Commit the transaction
              */
 
@@ -1762,7 +1875,7 @@ public class DBController {
      * @param messageContent The time frames
      * @return ArrayList<MonthlyReport> containing the logs
      */
-    public ArrayList<MonthlyReport> getBorrowTimeLogs(List<java.util.Date> messageContent) {
+    public ArrayList<MonthlyReport> exportBorrowTimeLogs(List<java.util.Date> messageContent) {
 
         /*
          * Covert the dates received from the client to java.sql.Date from java.util.Date
@@ -1770,38 +1883,37 @@ public class DBController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Date startDate = Date.valueOf(messageContent.get(0).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter));
         Date endDate = Date.valueOf(messageContent.get(1).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter));
-        ArrayList<MonthlyReport> logs = new ArrayList<>();
+        ArrayList<MonthlyReport> reports = new ArrayList<>();
 
         /*
          * This query selects all columns from the log table where the export date is between given times and the log type is borrowTime
          */
         try {
-            String logQuery = "SELECT * FROM log WHERE export_date BETWEEN ? AND ? AND log_type = 'borrowTime'";
-            PreparedStatement statement = conn.prepareStatement(logQuery);
+            String reportQuery = "SELECT * FROM monthly_report WHERE creation_date BETWEEN ? AND ? AND log_type = 'borrowTime' AND  ready_for_export = 1";
+            PreparedStatement statement = conn.prepareStatement(reportQuery);
             statement.setDate(1, startDate);
             statement.setDate(2, endDate);
-            ResultSet logRs = statement.executeQuery();
+            ResultSet reportRs = statement.executeQuery();
 
             /*
              * Converts the Blob data to a List<ArrayList<String>>
              * Creates a MonthlyReport object
              * And add it to the logs array list
              */
-            while (logRs.next()) {
-                Blob dataBlob = logRs.getBlob("details");
-                List<ArrayList<String>> data = convertBlobToList(dataBlob);
-                MonthlyReport log = new MonthlyReport(logRs.getDate("export_date"), data);
-                logs.add(log);
+            while (reportRs.next()) {
+                Blob dataBlob = reportRs.getBlob("details");
+                MonthlyReport monthlyReport = convertBlobToMonthlyReport(dataBlob);
+                reports.add(monthlyReport);
             }
 
             /*
              * If no logs were found returns null
              */
-            if (logs.isEmpty()) {
+            if (reports.isEmpty()) {
                 return null;
             }
 
-            return logs;
+            return reports;
         } catch (Exception e) {
             System.out.println("Error: Getting borrow time logs" + e);
             return null;
@@ -1815,7 +1927,7 @@ public class DBController {
      * @param messageContent The time frames
      * @return ArrayList<MonthlyReport> containing the logs
      */
-    public ArrayList<MonthlyReport> getSubscriberStatusLogs(List<java.util.Date> messageContent) {
+    public ArrayList<MonthlyReport> exportSubscriberStatusLogs(List<java.util.Date> messageContent) {
 
         /*
          * Covert the dates received from the client to java.sql.Date from java.util.Date
@@ -1823,38 +1935,37 @@ public class DBController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Date startDate = Date.valueOf(messageContent.get(0).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter));
         Date endDate = Date.valueOf(messageContent.get(1).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter));
-        ArrayList<MonthlyReport> logs = new ArrayList<>();
+        ArrayList<MonthlyReport> reports = new ArrayList<>();
 
         /*
          * This query selects all columns from the log table where the export date is between given times and the log type is borrowTime
          */
         try {
-            String logQuery = "SELECT * FROM log WHERE export_date BETWEEN ? AND ? AND log_type = 'subscriberStatuses'";
-            PreparedStatement statement = conn.prepareStatement(logQuery);
+            String reportQuery = "SELECT * FROM monthly_report WHERE creation_date BETWEEN ? AND ? AND log_type = 'subscriberStatuses' AND  ready_for_export = 1";
+            PreparedStatement statement = conn.prepareStatement(reportQuery);
             statement.setDate(1, startDate);
             statement.setDate(2, endDate);
-            ResultSet logRs = statement.executeQuery();
+            ResultSet reportRs = statement.executeQuery();
 
             /*
              * Converts the Blob data to a List<ArrayList<String>>
              * Creates a MonthlyReport object
              * And add it to the logs array list
              */
-            while (logRs.next()) {
-                Blob dataBlob = logRs.getBlob("details");
-                List<ArrayList<String>> data = convertBlobToList(dataBlob);
-                MonthlyReport log = new MonthlyReport(logRs.getDate("export_date"), data);
-                logs.add(log);
+            while (reportRs.next()) {
+                Blob dataBlob = reportRs.getBlob("details");
+                MonthlyReport monthlyReport = convertBlobToMonthlyReport(dataBlob);
+                reports.add(monthlyReport);
             }
 
             /*
              * If no logs were found returns null
              */
-            if (logs.isEmpty()) {
+            if (reports.isEmpty()) {
                 return null;
             }
 
-            return logs;
+            return reports;
         } catch (Exception e) {
             System.out.println("Error: Getting borrow time logs" + e);
             return null;
@@ -1947,7 +2058,9 @@ public class DBController {
                     updateReservationStatement.setString(3, bookName);
                     updateReservationStatement.executeUpdate();
 
-                    // Update subscriber history
+                    /*
+                     *  Update subscriber history
+                     */
                     updateHistory(subscriberId, "notified", "that the book " + bookName + " is available");
 
                 }
@@ -1989,7 +2102,9 @@ public class DBController {
                 if (getHistoryRs.next()) {
                     Blob historyBlob = getHistoryRs.getBlob("details");
                     history = convertBlobToList(historyBlob);
-                    //Write the new data into the history
+                    /*
+                     *   Write the new data into the history
+                     */
                     writeDataToList(history, newData);
                 }
 
@@ -1997,7 +2112,7 @@ public class DBController {
                  * Convert the csv file to a blob
                  */
                 if (history != null) {
-                    updatedHistoryBlob = convertToBlob(history);
+                    updatedHistoryBlob = convertListToBlob(history);
 
                     /*
                      * Update the history of the subscriber
@@ -2037,6 +2152,13 @@ public class DBController {
             freezeStatement.executeUpdate();
             // Update subscriber history
             updateHistory(subscriberId, "frozen", "Account was frozen reason: " + reason);
+
+            /*
+             * Add the new entry to the monthly report
+             */
+
+            addNewEntryToMonthlyReport("subscriberStatuses", new ReportEntry(new java.util.Date(), "frozen", String.valueOf(subscriberId)));
+
         } catch (SQLException e) {
             System.out.println("Error: Freezing account" + e);
         }
@@ -2152,97 +2274,45 @@ public class DBController {
      *
      * @return Runnable
      */
-    public Runnable exportLogSubscribersStatus() {
+    public Runnable exportReport() {
         return () -> {
             try {
-                List<ArrayList<String>> newLog = new ArrayList<>();
                 /*
-                 * This query selects all columns from the subscriber_history table
-                 * And checks whether the subscriber was frozen, unfrozen or newly registered this month
+                 * This query updates the ready_for_export column in the monthly_report table
                  */
-                String newLogQuery = "SELECT * FROM subscription_history";
-                PreparedStatement newLogStatement = conn.prepareStatement(newLogQuery);
-                ResultSet newLogRs = newLogStatement.executeQuery();
-                while (newLogRs.next()) {
-                    Blob historyBlob = newLogRs.getBlob("details");
-                    List<ArrayList<String>> subscriberHistory = convertBlobToList(historyBlob);
-                    List<ArrayList<String>> lastMonthEntries = getLastMonthEntries(subscriberHistory);
-
-                    /*
-                     * Add the entries to the new log according to the subscriber status abnormality
-                     */
-                    for (ArrayList<String> entry : lastMonthEntries) {
-                        if (entry.get(1).equals("frozen") || entry.get(1).equals("unfrozen") || entry.get(1).equals("register")) {
-                            newLog.add(entry);
-                        }
-                    }
-                }
+                String updateQuery = "UPDATE monthly_report SET ready_for_export = 1 WHERE ready_for_export = 0";
+                PreparedStatement updateStatement = conn.prepareStatement(updateQuery);
+                updateStatement.executeUpdate();
 
                 /*
-                 * Convert the data to a Blob
+                 *  Create new monthly reports
                  */
-                Blob dataBlob = convertToBlob(newLog);
+                java.util.Date date = new java.util.Date();
+                MonthlyReport monthlyReportSubscribersStatus = new MonthlyReport(date);
+                MonthlyReport monthlyReportBorrowTime = new MonthlyReport(date);
 
                 /*
-                 * Add the new log to the database
+                 * Convert both reports to Blobs
                  */
-                String newLogUpdateQuery = "INSERT INTO log (export_date, details, log_type) VALUES (?, ?, ?)";
-                PreparedStatement newLogUpdateStatement = conn.prepareStatement(newLogUpdateQuery);
-                newLogUpdateStatement.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
-                newLogUpdateStatement.setBlob(2, dataBlob);
-                newLogUpdateStatement.setString(3, "subscriberStatuses");
-                newLogUpdateStatement.executeUpdate();
 
-            } catch (Exception e) {
-                System.out.println("Error: Exporting log of subscribers status" + e);
-            }
-
-        };
-    }
-
-    /**
-     * This method exports the log of all borrowed book times
-     */
-    public Runnable exportLogBorrowTime() {
-        return () -> {
-            try {
-                List<ArrayList<String>> newLog = new ArrayList<>();
-                /*
-                 * This query selects all columns from the subscriber_history table
-                 * And checks whether the subscriber was frozen, unfrozen or newly registered this month
-                 */
-                String newLogQuery = "SELECT * FROM subscription_history";
-                PreparedStatement newLogStatement = conn.prepareStatement(newLogQuery);
-                ResultSet newLogRs = newLogStatement.executeQuery();
-                while (newLogRs.next()) {
-                    Blob historyBlob = newLogRs.getBlob("details");
-                    List<ArrayList<String>> subscriberHistory = convertBlobToList(historyBlob);
-                    List<ArrayList<String>> lastMonthEntries = getLastMonthEntries(subscriberHistory);
-
-                    /*
-                     * Add the entries to the new log according to the subscriber status abnormality
-                     */
-                    for (ArrayList<String> entry : lastMonthEntries) {
-                        if (entry.get(1).equals("borrow") || entry.get(1).equals("return") || entry.get(1).equals("late return") || entry.get(1).equals("extend") || entry.get(1).equals("reserve")) {
-                            newLog.add(entry);
-                        }
-                    }
-                }
+                Blob dataBlobSubscribersStatus = convertMonthlyReportToBlob(monthlyReportSubscribersStatus);
+                Blob dataBlobBorrowTime = convertMonthlyReportToBlob(monthlyReportBorrowTime);
 
                 /*
-                 * Convert the data to a Blob
+                 * Add the new reports to the database
                  */
-                Blob dataBlob = convertToBlob(newLog);
 
-                /*
-                 * Add the new log to the database
-                 */
-                String newLogUpdateQuery = "INSERT INTO log (export_date, details, log_type) VALUES (?, ?, ?)";
-                PreparedStatement newLogUpdateStatement = conn.prepareStatement(newLogUpdateQuery);
-                newLogUpdateStatement.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
-                newLogUpdateStatement.setBlob(2, dataBlob);
-                newLogUpdateStatement.setString(3, "borrowTime");
-                newLogUpdateStatement.executeUpdate();
+                String newReportQuery = "INSERT INTO monthly_report (details, log_type) VALUES (?, ?)";
+                PreparedStatement newReportStatement = conn.prepareStatement(newReportQuery);
+                newReportStatement.setBlob(1, dataBlobSubscribersStatus);
+                newReportStatement.setString(2, "subscriberStatuses");
+                newReportStatement.executeUpdate();
+
+                String newReportQuery2 = "INSERT INTO monthly_report (details, log_type) VALUES (?, ?)";
+                PreparedStatement newReportStatement2 = conn.prepareStatement(newReportQuery2);
+                newReportStatement2.setBlob(1, dataBlobBorrowTime);
+                newReportStatement2.setString(2, "borrowTime");
+                newReportStatement2.executeUpdate();
 
             } catch (Exception e) {
                 System.out.println("Error: Exporting log of subscribers status" + e);
@@ -2275,8 +2345,19 @@ public class DBController {
                             PreparedStatement unfreezeStatement = conn.prepareStatement(unfreezeQuery);
                             unfreezeStatement.setInt(1, subscriberId);
                             unfreezeStatement.executeUpdate();
-                            // Update subscriber history
+
+                            /*
+                             * Update subscriber history
+                             */
+
                             updateHistory(subscriberId, "unfrozen", "Account was unfrozen");
+
+                            /*
+                             * Add the new entry to the monthly report
+                             */
+
+                            addNewEntryToMonthlyReport("subscriberStatuses", new ReportEntry(new java.util.Date(), "unfrozen", String.valueOf(subscriberId)));
+
                         }
                     }
                 }

@@ -7,12 +7,28 @@ import java.util.Date;
 public class MonthlyReport implements Serializable {
 
     private final Date date;
-    private final ArrayList<MonthlyReport> report;
+    private ArrayList<ReportEntry> report;
 
-    public MonthlyReport(Date date, ArrayList<MonthlyReport> report) {
+    /**
+     * Constructor for the MonthlyReport class.
+     *
+     * @param date   The date of the report.
+     * @param report The report.
+     */
+    public MonthlyReport(Date date, ArrayList<ReportEntry> report) {
         this.date = date;
         this.report = report;
     }
+    /**
+     * Constructor for the MonthlyReport class.
+     *
+     * @param date The date of the report.
+     */
+    public MonthlyReport(Date date) {
+        this.date = date;
+        this.report = new ArrayList<>();
+    }
+
 
     /**
      * This method returns the date
@@ -28,7 +44,16 @@ public class MonthlyReport implements Serializable {
      *
      * @return the log
      */
-    public ArrayList<MonthlyReport> getReport() {
+    public ArrayList<ReportEntry> getReport() {
         return report;
+    }
+
+    /**
+     * This method adds a new entry to the report
+     *
+     * @param entry the entry to be added
+     */
+    public void addNewEntry(ReportEntry entry) {
+        report.add(entry);
     }
 }
