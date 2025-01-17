@@ -33,6 +33,9 @@ public class WatchHistorySceneController
     @FXML
     public TableView<SubscriberHistory> historyTable;
 
+    /**
+     * Initializes the Watch History Scene.
+     */
     public void initialize()
     {
         // set up the table to accept SubscriberHistory objects

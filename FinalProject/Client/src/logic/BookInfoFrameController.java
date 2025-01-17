@@ -114,7 +114,6 @@ public class BookInfoFrameController
      */
     public void orderBookButtonClicked(ActionEvent event) throws Exception
     {
-        //todo: implement the order book system
         ArrayList<String> content = new ArrayList<>();
         content.add(String.valueOf(Subscriber.getLocalSubscriber().getID()));
         content.add(String.valueOf(localBook.getBookSerialNumber()));

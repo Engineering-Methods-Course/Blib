@@ -48,7 +48,8 @@ public class SubscriberProfileOptionsFrameController
     public TableColumn<BorrowedBook, Button> extendButtonColumn;
     public Button watchHistoryButton;
 
-    public void initialize() {
+    public void initialize()
+    {
         // Load all the user info into the fields
         nameField.setText("Hello: " + Subscriber.getLocalSubscriber().getFirstName() + " " + Subscriber.getLocalSubscriber().getLastName());
         phoneNumberField.setText("Phone number: " + Subscriber.getLocalSubscriber().getPhoneNumber());
@@ -63,28 +64,38 @@ public class SubscriberProfileOptionsFrameController
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("expectedReturnDate"));
 
         // Set up the "extend button" column
-        extendButtonColumn.setCellFactory(new Callback<TableColumn<BorrowedBook, Button>, TableCell<BorrowedBook, Button>>() {
+        extendButtonColumn.setCellFactory(new Callback<TableColumn<BorrowedBook, Button>, TableCell<BorrowedBook, Button>>()
+        {
             @Override
-            public TableCell<BorrowedBook, Button> call(TableColumn<BorrowedBook, Button> param) {
-                return new TableCell<BorrowedBook, Button>() {
+            public TableCell<BorrowedBook, Button> call(TableColumn<BorrowedBook, Button> param)
+            {
+                return new TableCell<BorrowedBook, Button>()
+                {
                     private final Button extendButton = new Button("Extend Borrow");
 
                     {
                         extendButton.setOnAction((ActionEvent event) -> {
-                            try {
+                            try
+                            {
                                 extendBorrowButtonClicked(event);
-                            } catch (Exception e) {
+                            }
+                            catch (Exception e)
+                            {
                                 e.printStackTrace();
                             }
                         });
                     }
 
                     @Override
-                    protected void updateItem(Button item, boolean empty) {
+                    protected void updateItem(Button item, boolean empty)
+                    {
                         super.updateItem(item, empty);
-                        if (empty) {
+                        if (empty)
+                        {
                             setGraphic(null);
-                        } else {
+                        }
+                        else
+                        {
                             setGraphic(extendButton);
                         }
                     }
@@ -162,7 +173,8 @@ public class SubscriberProfileOptionsFrameController
         BorrowedBook selectedBook = borrowsTable.getSelectionModel().getSelectedItem();
 
         // Check if a book is selected
-        if (selectedBook == null) {
+        if (selectedBook == null)
+        {
             showAlert(Alert.AlertType.ERROR, "Error", "Please select a book to extend.");
             return;
         }
@@ -171,9 +183,12 @@ public class SubscriberProfileOptionsFrameController
         ClientServerMessage message = getClientServerMessage(selectedBook);
 
         // Send the message to the server
-        try {
+        try
+        {
             ClientGUIController.chat.sendToServer(message);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             showAlert(Alert.AlertType.ERROR, "Error", "Error sending extend borrow request to the server: " + e.getMessage());
         }
     }
@@ -192,24 +207,31 @@ public class SubscriberProfileOptionsFrameController
         return new ClientServerMessage(212, extendRequestData);
     }
 
-    public static void showExtendMessageResponse(ArrayList<String> msg) {
+    public static void showExtendMessageResponse(ArrayList<String> msg)
+    {
         Platform.runLater(() -> {
-            if (msg == null || msg.isEmpty()) {
+            if (msg == null || msg.isEmpty())
+            {
                 showAlert(Alert.AlertType.ERROR, "Error", "No response from server.");
                 return;
             }
             // Check if the first element in the message is "True" or "False"
             String status = msg.get(0); // Extract status (True or False)
 
-            if ("true".equals(status)) {
+            if ("true".equals(status))
+            {
                 // Extract explanation if available
                 String explanation = msg.size() > 1 ? msg.get(1) : "No additional information provided.";
                 showAlert(Alert.AlertType.INFORMATION, "Success", "The book return date was successfully extended! " + explanation);
-            } else if ("false".equals(status)) {
+            }
+            else if ("false".equals(status))
+            {
                 // Extract explanation if available
                 String explanation = msg.size() > 1 ? msg.get(1) : "Unknown error occurred.";
                 showAlert(Alert.AlertType.ERROR, "Extension Failed", "Reason: " + explanation);
-            } else {
+            }
+            else
+            {
                 showAlert(Alert.AlertType.ERROR, "Error", "Unexpected response format from server.");
             }
         });
@@ -240,7 +262,7 @@ public class SubscriberProfileOptionsFrameController
     /**
      * This method handles the watchHistoryButton click event to navigate to the borrow history frame
      *
-     * @param event      The action event triggered by clicking the watch history button
+     * @param event The action event triggered by clicking the watch history button
      * @throws Exception If there is an issue with the navigation
      */
     public void watchHistoryButtonClicked(ActionEvent event) throws Exception

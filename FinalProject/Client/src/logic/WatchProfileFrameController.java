@@ -41,7 +41,9 @@ public class WatchProfileFrameController
     @FXML
     public TableColumn<BorrowedBook, Button> extendButtonColumn;
 
-
+    /**
+     * Initializes the WatchProfileFrameController.
+     */
     public void initialize()
     {
         Subscriber subscriber = Subscriber.getWatchProfileSubscriber();
@@ -102,6 +104,11 @@ public class WatchProfileFrameController
         requestBorrowedBooks(Subscriber.getWatchProfileSubscriber().getID());
     }
 
+    /**
+     * Update the subscriber information on the UI
+     *
+     * @param subscriber The subscriber object to display
+     */
     public void updateSubscriberInfo(Subscriber subscriber)
     {
         txtFullName.setText(subscriber.getFirstName() + " " + subscriber.getLastName());
@@ -112,7 +119,9 @@ public class WatchProfileFrameController
     }
 
     /**
-     * Send the server request for borrowed books list
+     * Request the borrowed books for the user
+     *
+     * @param userID The user ID to request the borrowed books for
      */
     private void requestBorrowedBooks(int userID)
     {
@@ -129,7 +138,11 @@ public class WatchProfileFrameController
         }
     }
 
-
+    /**
+     * Load the borrowed books into the table
+     *
+     * @param borrowedBooks The list of borrowed books
+     */
     public void loadBorrowsTable(ArrayList<BorrowedBook> borrowedBooks)
     {
         // Adds the borrowed books to the table
@@ -139,6 +152,12 @@ public class WatchProfileFrameController
         }
     }
 
+    /**
+     * Handles the extendBorrowButton click event to extend the book borrowing period
+     *
+     * @param event      The action event triggered by clicking the extend button
+     * @throws Exception If there is an issue with the navigation
+     */
     public void extendBorrowButtonClicked(ActionEvent event) throws Exception
     {
         // Get the selected BorrowedBook from the clicked row
@@ -163,7 +182,7 @@ public class WatchProfileFrameController
     /**
      * Handles the Back button click event.
      *
-     * @param event The ActionEvent triggered by clicking the button.
+     * @param event      The ActionEvent triggered by clicking the button.
      * @throws Exception If an error occurs during navigation.
      */
     public void backButtonClicked(ActionEvent event) throws Exception

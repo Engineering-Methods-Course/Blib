@@ -85,6 +85,13 @@ public class RegisterMemberFrameController
         navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Register Member");
     }
 
+    /**
+     * This is a helper method checks if the input matches the regex pattern.
+     *
+     * @param regex The regex pattern to match.
+     * @param input The input to match against the regex pattern.
+     * @return      True if the input matches the regex pattern, false otherwise.
+     */
     private boolean regexMatcher(String regex, String input)
     {
         return input.matches(regex);

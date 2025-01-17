@@ -29,6 +29,14 @@ public class SubscriberEditProfileFrameController implements Initializable
     private TextField txtEmail;
 
     /**
+     * This method initializes the controller class.
+     * It is automatically called after the FXML file is loaded.
+     */
+    public void initialize(){
+        loadProfileDetails();
+    }
+
+    /**
      * This method handles the back button click event.
      * It navigates to the previous screen (PrototypeSubscriberProfileOptionsFrame.fxml).
      *
@@ -38,10 +46,6 @@ public class SubscriberEditProfileFrameController implements Initializable
     public void clickBackButton(ActionEvent event) throws Exception
     {
         navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "My profile");
-    }
-
-    public void initialize(){
-        loadProfileDetails();
     }
 
     /**

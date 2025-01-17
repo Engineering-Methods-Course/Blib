@@ -119,12 +119,10 @@ public class ClientController extends AbstractClient
                         break;
                     //search book response
                     case 201:
-                        //todo: handle search book response
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Book not found");
                             SearchHomePageFrameController.changeCanSearch(false);
-                            //todo: make it better
                             Platform.runLater(() -> showErrorAlert("Book Not Found", "There aren't any books like that"));
                         }
                         else
@@ -155,7 +153,6 @@ public class ClientController extends AbstractClient
                         break;
                     // Order book response
                     case 209:
-                        //todo: handle order book response
                         if (message.getMessageContent() == null)
                         {
                             Platform.runLater(() -> showErrorAlert("Book Not ordered", "Book not ordered"));
@@ -179,7 +176,6 @@ public class ClientController extends AbstractClient
                         }
                         break;
                     // Show borrowed list response
-                    //todo:check if the date is still minus 1 day or not
                     case 211:
                         if (message.getMessageContent() instanceof ArrayList)
                         {

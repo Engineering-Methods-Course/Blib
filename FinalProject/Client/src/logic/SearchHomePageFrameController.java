@@ -66,11 +66,13 @@ public class SearchHomePageFrameController
         {
             user_type = UserType.Subscriber;
             name = Subscriber.getLocalSubscriber().getFirstName();
+            loginButton.setVisible(false);
         }
         else if (Librarian.getLocalLibrarian() != null)
         {
             user_type = UserType.Librarian;
             name = Librarian.getLocalLibrarian().getFirstName();
+            loginButton.setVisible(false);
         }
         else
         {
@@ -165,8 +167,6 @@ public class SearchHomePageFrameController
      */
     public void search(ActionEvent event) throws Exception
     {
-        //todo: implement
-        //todo: use radio and either use the private methods of just send it from here
         int messageCode;
         String messageContent;
 
@@ -230,7 +230,6 @@ public class SearchHomePageFrameController
      */
     public void goToProfile(ActionEvent event) throws Exception
     {
-        //todo: implement logic to check if there's a user logged in and navigate to the appropriate page
         //check the instance of the current user and according to it navigate
         if (Subscriber.getLocalSubscriber() != null)
         {

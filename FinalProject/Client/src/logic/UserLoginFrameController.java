@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 import static client.ClientGUIController.navigateTo;
 
 
-public class UserLoginFrameController implements Initializable
+public class UserLoginFrameController
 {
     @FXML
     public Button backButton;
@@ -30,13 +30,8 @@ public class UserLoginFrameController implements Initializable
 
     /**
      * This method initializes the Subscriber login screen
-     * not used
-     *
-     * @param location  The primary stage to set the scene
-     * @param resources The primary stage to set the scene
      */
-    @Override
-    public void initialize(URL location, ResourceBundle resources)
+    public void initialize()
     {
         ActionEvent event = new ActionEvent();
         try
@@ -104,7 +99,7 @@ public class UserLoginFrameController implements Initializable
         }
         else
         {
-            System.out.println("Could not log in subscriber ");
+            System.out.println("Could not log in user ");
         }
     }
 

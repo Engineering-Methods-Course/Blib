@@ -9,9 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
+import javafx.scene.control.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -43,14 +41,12 @@ public class ViewReportsFrameController
      */
     public void initialize()
     {
+        // Initialize the date pickers to only allow month selection
+        initializeDatePicker(startRangePicker);
+        initializeDatePicker(endRangePicker);
+
         // Add the report options to the ChoiceBox.
         reportChoiceBox.getItems().addAll("Borrow Times", "Subscriber Status");
-
-        // Set the default start date to the first day of the current month.
-        startRangePicker.setValue(LocalDate.now().withDayOfMonth(1));
-
-        // Set the default end date to the current date.
-        endRangePicker.setValue(LocalDate.now().withDayOfMonth(1).plusMonths(1).minusDays(1));
 
         // Add a listener to handle changes in the selected item.
         reportChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> updateCharts());
@@ -74,6 +70,13 @@ public class ViewReportsFrameController
         int messageID = -1;
         Date startDate = Date.from(startRangePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date endDate = Date.from(endRangePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        // checks if the endDatePicker's date is later than the startDatePicker and if so, brings an error message
+        if(endDate.before(startDate))
+        {
+            ClientGUIController.showAlert(Alert.AlertType.ERROR, "Wrong date", "End date must be later than start date");
+            return;
+        }
 
         // clear the charts
         barChart.getData().clear();
@@ -392,5 +395,23 @@ public class ViewReportsFrameController
             lineChart.getData().addAll(seriesMap.values());
             lineChart.setTitle(chartName);
         });
+    }
+
+    /**
+     * Initializes the date picker to only allow month selection.
+     *
+     * @param datePicker The date picker to initialize.
+     */
+    private void initializeDatePicker(DatePicker datePicker) {
+        datePicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                // Disable all days except the first day of each month and all the dates after the previous month
+                setDisable(empty || date.getDayOfMonth() != 1 || date.isAfter(LocalDate.now().withDayOfMonth(1).minusDays(1)));
+            }
+        });
+        // Set the default value to the first day of the current month
+        datePicker.setValue(LocalDate.now().withDayOfMonth(1).minusMonths(1));
     }
 }
