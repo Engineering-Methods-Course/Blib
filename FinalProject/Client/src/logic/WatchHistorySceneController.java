@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -69,13 +68,16 @@ public class WatchHistorySceneController
     {
         // helper Date object for easier reading
         Date date;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime localDateTime;
 
         // create a list of SubscriberHistory objects
         List<SubscriberHistory> subscriberHistoryList = new ArrayList<>();
         for (ArrayList<String> historyItem : history)
         {
             System.out.println(historyItem);
-            date = Date.from(LocalDateTime.parse(historyItem.get(0), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(ZoneId.systemDefault()).toInstant());
+            localDateTime = LocalDateTime.parse(historyItem.get(0), formatter);
+            date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
             subscriberHistoryList.add(new SubscriberHistory(date, historyItem.get(1), historyItem.get(2)));
         }
 

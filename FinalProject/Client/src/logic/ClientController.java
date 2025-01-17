@@ -6,12 +6,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import ocsf.client.*;
-
 import java.io.*;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import static client.ClientGUIController.showAlert;
 
 public class ClientController extends AbstractClient
 {
@@ -96,7 +96,7 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Wrong Username(id) or Password");
-                            Platform.runLater(() -> showErrorAlert("Login error", "Wrong Username(id) or Password"));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR,"Login error", "Wrong Username(id) or Password"));
                         }
                         else if (message.getMessageContent() instanceof User)
                         {
@@ -115,7 +115,16 @@ public class ClientController extends AbstractClient
                         break;
                     // message to the client
                     case 107:
-                        //todo: handle message to the client
+                        if(message.getMessageContent() == null)
+                        {
+                            System.out.println("Could not get message");
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not get message"));
+                        }
+                        else if (message.getMessageContent() instanceof String)
+                        {
+                            String response = (String) message.getMessageContent();
+                            Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Message", response));
+                        }
                         break;
                     //search book response
                     case 201:
@@ -123,7 +132,7 @@ public class ClientController extends AbstractClient
                         {
                             System.out.println("Book not found");
                             SearchHomePageFrameController.changeCanSearch(false);
-                            Platform.runLater(() -> showErrorAlert("Book Not Found", "There aren't any books like that"));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Book Not Found", "There aren't any books like that"));
                         }
                         else
                         {
@@ -143,7 +152,7 @@ public class ClientController extends AbstractClient
                     case 207:
                         if (message.getMessageContent() == null)
                         {
-                            Platform.runLater(() -> showErrorAlert("Book Not Found", "Error with db"));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Book Not Found", "Error with db"));
                         }
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
@@ -155,7 +164,7 @@ public class ClientController extends AbstractClient
                     case 209:
                         if (message.getMessageContent() == null)
                         {
-                            Platform.runLater(() -> showErrorAlert("Book Not ordered", "Book not ordered"));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Book Not ordered", "Book not ordered"));
                             BookInfoFrameController.orderComplete = false;
                         }
                         else if (message.getMessageContent() instanceof ArrayList)
@@ -163,13 +172,13 @@ public class ClientController extends AbstractClient
                             @SuppressWarnings("unchecked") ArrayList<String> details = (ArrayList<String>) message.getMessageContent();
                             if (details.get(0).equals("true"))
                             {
-                                Platform.runLater(() -> showInformationAlert("Book ordered", "Book was ordered"));
+                                Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Book ordered", "Book was ordered"));
                                 BookInfoFrameController.orderComplete = true;
                                 System.out.println("Book Ordered Successfully");
                             }
                             else
                             {
-                                Platform.runLater(() -> showErrorAlert("Book ordered", details.get(1)));
+                                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Book ordered", details.get(1)));
                                 BookInfoFrameController.orderComplete = false;
                                 System.out.println("Book Ordered Failed");
                             }
@@ -204,7 +213,7 @@ public class ClientController extends AbstractClient
                         else
                         {
                             System.out.println("Invalid message content for case 311");
-                            Platform.runLater(() -> showErrorAlert("Data Error", "Expected an ArrayList for borrow extension."));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Data Error", "Expected an ArrayList for borrow extension."));
                         }
                         break;
                     //Watch history response
@@ -212,7 +221,7 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not get history");
-                            Platform.runLater(() -> showErrorAlert("Error", "Could not get history"));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not get history"));
                         }
                         else if (message.getMessageContent() instanceof List)
                         {
@@ -227,14 +236,14 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not update subscriber details");
-                            Platform.runLater(() -> showErrorAlert("Update error", "Could not update subscriber details"));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Update error", "Could not update subscriber details"));
 
                         }
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked") ArrayList<String> newDetails = (ArrayList<String>) message.getMessageContent();
                             updateSubscriberDetails(newDetails);
-                            Platform.runLater(() -> showInformationAlert("Update successful", "Subscriber details updated successfully"));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Update successful", "Subscriber details updated successfully"));
                         }
                         break;
                     //Edit login details response
@@ -242,18 +251,18 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not update login details");
-                            Platform.runLater(() -> showErrorAlert("Update error", "Could not update login details"));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Update error", "Could not update login details"));
                         }
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked") ArrayList<String> serverResponse = (ArrayList<String>) message.getMessageContent();
                             if (Boolean.parseBoolean(serverResponse.get(0)))
                             {
-                                Platform.runLater(() -> showInformationAlert("Update successful", "Login details updated successfully"));
+                                Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Update successful", "Login details updated successfully"));
                             }
                             else
                             {
-                                Platform.runLater(() -> showErrorAlert("Error", serverResponse.get(1)));
+                                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", serverResponse.get(1)));
                             }
                         }
                         break;
@@ -275,7 +284,7 @@ public class ClientController extends AbstractClient
                         {
                             // Log an error or display an error message if the response format is unexpected
                             System.err.println("Unexpected format for Borrow book response: " + messageContent);
-                            Platform.runLater(() -> showErrorAlert("Borrow Book Error", "Invalid response format from the server."));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Borrow Book Error", "Invalid response format from the server."));
                         }
                         break;
                     //Return book response
@@ -283,7 +292,7 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not return book");
-                            Platform.runLater(() -> showErrorAlert("Error", "Could not return book"));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not return book"));
                         }
                         else if (message.getMessageContent() instanceof ArrayList<?>)
                         {
@@ -296,7 +305,7 @@ public class ClientController extends AbstractClient
                         {
                             // Log an error or display an error message if the response format is unexpected
                             System.err.println("Unexpected format for Return book response: " + message.getMessageContent());
-                            Platform.runLater(() -> showErrorAlert("Return Book Error", "Invalid response format from the server."));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Return Book Error", "Invalid response format from the server."));
                         }
                         break;
                     // Get all subscribers list
@@ -304,7 +313,7 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not get all subscribers list");
-                            Platform.runLater(() -> showErrorAlert("Error", "Could not get all subscribers list"));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not get all subscribers list"));
                         }
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
@@ -318,7 +327,7 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Wrong Username(id)");
-                            Platform.runLater(() -> showErrorAlert("Search Error", "Wrong ID,try again"));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Search Error", "Wrong ID,try again"));
                         }
                         else if (message.getMessageContent() instanceof Subscriber)
                         {
@@ -332,7 +341,7 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not extend borrow");
-                            Platform.runLater(() -> showErrorAlert("Error", "Could not extend borrow"));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not extend borrow"));
                         }
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
@@ -343,7 +352,7 @@ public class ClientController extends AbstractClient
                         else
                         {
                             System.out.println("Invalid message content for case 311");
-                            Platform.runLater(() -> showErrorAlert("Data Error", "Expected an ArrayList for borrow extension."));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Data Error", "Expected an ArrayList for borrow extension."));
                         }
                         break;
                     // Watch logs response
@@ -351,7 +360,7 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not get logs");
-                            Platform.runLater(() -> showErrorAlert("Error", "Could not get logs"));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not get logs"));
                         }
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
@@ -366,7 +375,7 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not get messages");
-                            Platform.runLater(() -> showErrorAlert("Error", "Could not get messages"));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not get messages"));
                         }
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
@@ -381,7 +390,7 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not get logs");
-                            Platform.runLater(() -> showErrorAlert("Error", "Could not get logs"));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not get logs"));
                         }
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
@@ -393,7 +402,7 @@ public class ClientController extends AbstractClient
                         break;
                         // Server has closed its connection
                     case 999:
-                        Platform.runLater(() -> showErrorAlert("Server closed", "Server has closed its connection for maintenance"));
+                        Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Server closed", "Server has closed its connection for maintenance"));
                         break;
                     default:
                         System.out.println("Invalid command id");
@@ -456,38 +465,6 @@ public class ClientController extends AbstractClient
     }
 
     /**
-     * This method displays an error message onto the screen.
-     *
-     * @param message The string to be displayed.
-     */
-    private void showErrorAlert(String title, String message)
-    {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-        if (title.equals("Server has closed its connection"))
-        {
-            System.exit(0);
-        }
-    }
-
-    /**
-     * This method displays an INFORMATION message onto the screen.
-     *
-     * @param message The string to be displayed.
-     */
-    private void showInformationAlert(String title, String message)
-    {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    /**
      * This method updates the subscriber details.
      *
      * @param newDetails The new details to be updated.
@@ -503,7 +480,7 @@ public class ClientController extends AbstractClient
         }
         else
         {
-            Platform.runLater(() -> showErrorAlert("Update error", "Could not update subscriber details"));
+            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Update error", "Could not update subscriber details"));
         }
     }
 
@@ -517,7 +494,7 @@ public class ClientController extends AbstractClient
         if (message.getMessageContent() == null)
         {
             System.out.println("Could not register new subscriber");
-            Platform.runLater(() -> showErrorAlert("Registration error", "Could not register new subscriber"));
+            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Registration error", "Could not register new subscriber"));
         }
         else if (message.getMessageContent() instanceof ArrayList)
         {
@@ -525,11 +502,11 @@ public class ClientController extends AbstractClient
             @SuppressWarnings("unchecked") ArrayList<String> serverResponse = (ArrayList<String>) message.getMessageContent();
             if (Boolean.parseBoolean(serverResponse.get(0)))
             {
-                Platform.runLater(() -> showInformationAlert("Success", serverResponse.get(1)));
+                Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Success", serverResponse.get(1)));
             }
             else
             {
-                Platform.runLater(() -> showErrorAlert("Registration error", serverResponse.get(1)));
+                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Registration error", serverResponse.get(1)));
             }
         }
     }
