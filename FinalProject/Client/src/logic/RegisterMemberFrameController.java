@@ -6,8 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
-
 import java.util.ArrayList;
 
 import static client.ClientGUIController.navigateTo;
@@ -47,13 +45,13 @@ public class RegisterMemberFrameController
         }
 
         // Validate email format
-        if (!regexMatcher("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", email)) {
+        if (regexMatcher("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", email)) {
             showAlert(Alert.AlertType.WARNING, "Invalid Email", "Please enter a valid email address.");
             return;
         }
 
         // Validate phone format
-        if (!regexMatcher("^\\+?[0-9. ()-]{7,}$", phone)) {
+        if (regexMatcher("^\\+?[0-9. ()-]{7,}$", phone)) {
             showAlert(Alert.AlertType.WARNING, "Invalid Phone Number", "Please enter a valid phone number.");
             return;
         }
@@ -94,6 +92,6 @@ public class RegisterMemberFrameController
      */
     private boolean regexMatcher(String regex, String input)
     {
-        return input.matches(regex);
+        return !input.matches(regex);
     }
 }

@@ -104,8 +104,9 @@ public class SearchResultFrameController
     }
 
     /**
+     * This method gets the book copy from the server
      *
-     * @param listFromRow
+     * @param listFromRow - the list of strings from the row
      */
     private void getBookCopy(List<String> listFromRow)
     {

@@ -51,11 +51,6 @@ public class ClientController extends AbstractClient
         ClientController.loader = loader;
     }
 
-    public static FXMLLoader getLoader()
-    {
-        return loader;
-    }
-
     /**
      * This method handles all data that comes in from the server
      *

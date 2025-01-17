@@ -67,8 +67,6 @@ public class BorrowExtensionFrameController
 
     /**
      * This method gets the borrowed book object
-     *
-     * @return The borrowed book object
      */
     public static void setBorrowedBook(BorrowedBook borrowedBook) {
         BorrowExtensionFrameController.borrowedBookCopy = borrowedBook;
@@ -130,7 +128,7 @@ public class BorrowExtensionFrameController
     /**
      * This method shows the response message from the server after extending the book return date
      *
-     * @param msg
+     * @param msg The response message from the server
      */
     public static void showExtendMessageResponse(ArrayList<String> msg) {
         Platform.runLater(() -> {

@@ -124,7 +124,7 @@ public class ViewAllSubscribersFrameController
                 System.out.println("Invalid ID format: " + searchId);
             }
         }
-        else if (searchId == null || searchId.isEmpty())
+        else
         {
             subscribersTable.setItems(FXCollections.observableArrayList(allSubscribers));
         }

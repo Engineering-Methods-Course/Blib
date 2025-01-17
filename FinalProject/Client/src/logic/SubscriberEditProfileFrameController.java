@@ -5,13 +5,9 @@ import common.ClientServerMessage;
 import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 import static client.ClientGUIController.navigateTo;
 import static client.ClientGUIController.showAlert;
