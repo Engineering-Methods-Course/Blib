@@ -170,7 +170,6 @@ public class WatchProfileFrameController
             // Navigate to the BorrowExtensionFrameController, passing the selected book
 
             navigateTo(event, "/gui/BorrowExtensionFrame.fxml", "/gui/Subscriber.css", "Extend Borrow Period");
-
         }
         else
         {

@@ -62,8 +62,8 @@ public class RegisterMemberFrameController
         messageContent.add(username);
         messageContent.add(name);
         messageContent.add(lastName);
-        messageContent.add(email);
         messageContent.add(phone);
+        messageContent.add(email);
 
         ClientServerMessage message = new ClientServerMessage(300, messageContent);
 

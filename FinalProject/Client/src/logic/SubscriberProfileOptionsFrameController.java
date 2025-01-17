@@ -193,6 +193,12 @@ public class SubscriberProfileOptionsFrameController
         }
     }
 
+    /**
+     * creates a ClientServerMessage object with code 212 for extend borrow request
+     *
+     * @param selectedBook The selected borrowed book
+     * @return             The ClientServerMessage object
+     */
     private static ClientServerMessage getClientServerMessage(BorrowedBook selectedBook)
     {
         String subscriberID = String.valueOf(Subscriber.getLocalSubscriber().getID());
@@ -207,6 +213,11 @@ public class SubscriberProfileOptionsFrameController
         return new ClientServerMessage(212, extendRequestData);
     }
 
+    /**
+     * This method handles the extendBorrowButton click event to extend the book borrowing period
+     *
+     * @param msg The message received from the server
+     */
     public static void showExtendMessageResponse(ArrayList<String> msg)
     {
         Platform.runLater(() -> {

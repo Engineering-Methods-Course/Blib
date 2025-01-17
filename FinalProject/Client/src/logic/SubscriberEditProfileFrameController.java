@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 import static client.ClientGUIController.navigateTo;
 import static client.ClientGUIController.showAlert;
 
-public class SubscriberEditProfileFrameController implements Initializable
+public class SubscriberEditProfileFrameController
 {
     // FXML elements for labels
     @FXML
@@ -61,18 +61,20 @@ public class SubscriberEditProfileFrameController implements Initializable
         String firstName = txtFirstName.getText().trim();
         String lastName = txtLastName.getText().trim();
 
+        // Check if the first name and last name are empty and if so show an alert
         if (firstName.isEmpty() || lastName.isEmpty()) {
             // Show an alert if either field is empty
             showAlert(Alert.AlertType.WARNING, "Input Error", "First name and last name cannot be empty.");
             return;
         }
+
         // Create a new Subscriber object with the updated details
         ArrayList<String> changedSubscriber = new ArrayList<>();
         changedSubscriber.add(String.valueOf(Subscriber.getLocalSubscriber().getID()));
         changedSubscriber.add(txtPhone.getText());
         changedSubscriber.add(txtEmail.getText());
-        changedSubscriber.add(firstName); // Use the validated first name
-        changedSubscriber.add(lastName); // Use the validated last name
+        changedSubscriber.add(firstName);
+        changedSubscriber.add(lastName);
 
         System.out.println(changedSubscriber);
         // Create a ClientServerMessage with the subscriber and ID 203
@@ -94,17 +96,7 @@ public class SubscriberEditProfileFrameController implements Initializable
         // Set values in the text fields from the Subscriber object
         this.txtPhone.setText(Subscriber.getLocalSubscriber().getPhoneNumber());
         this.txtEmail.setText(Subscriber.getLocalSubscriber().getEmail());
-    }
-
-    /**
-     * Initializes the controller class. This method is automatically called
-     * after the FXML file is loaded.
-     *
-     * @param location The location used to resolve relative paths for the root object, or null if the location is not known.
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
-        loadProfileDetails();
+        this.txtFirstName.setText(Subscriber.getLocalSubscriber().getFirstName());
+        this.txtLastName.setText(Subscriber.getLocalSubscriber().getLastName());
     }
 }

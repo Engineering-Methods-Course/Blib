@@ -10,7 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
-
+import javafx.util.StringConverter;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -105,56 +105,13 @@ public class ViewReportsFrameController
      */
     public void generateBorrowTimeReport(ArrayList<MonthlyReport> reportData)
     {
-
-        /////////////////////////// TESTING ///////////////////////////
-        // Create an ArrayList of MonthlyReport objects
-        ArrayList<MonthlyReport> monthlyReports = new ArrayList<>();
-
-        // Create 5 ReportEntry objects
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.set(2023, Calendar.OCTOBER, 1);
-        ReportEntry reportEntry1 = new ReportEntry(calendar.getTime(), "borrow", "Book borrowed 1");
-
-        calendar.set(2023, Calendar.OCTOBER, 10);
-        ReportEntry reportEntry2 = new ReportEntry(calendar.getTime(), "return", "Book returned 1");
-
-        calendar.set(2023, Calendar.OCTOBER, 3);
-        ReportEntry reportEntry3 = new ReportEntry(calendar.getTime(), "borrow", "Book borrowed 2");
-
-        calendar.set(2023, Calendar.OCTOBER, 1);
-        ReportEntry reportEntry4 = new ReportEntry(calendar.getTime(), "return", "Book returned 2");
-
-        calendar.set(2023, Calendar.OCTOBER, 5);
-        ReportEntry reportEntry5 = new ReportEntry(calendar.getTime(), "borrow", "Book borrowed 3");
-
-        calendar.set(2023, Calendar.NOVEMBER, 5);
-        ReportEntry reportEntry6 = new ReportEntry(calendar.getTime(), "return", "Book borrowed 3");
-
-        // Create a list of ReportEntry objects
-        ArrayList<ReportEntry> reportEntriesTest = new ArrayList<>();
-        reportEntriesTest.add(reportEntry1);
-        reportEntriesTest.add(reportEntry2);
-        reportEntriesTest.add(reportEntry3);
-        reportEntriesTest.add(reportEntry4);
-        reportEntriesTest.add(reportEntry5);
-        reportEntriesTest.add(reportEntry6);
-
-        // Create a MonthlyReport and add the ReportEntry list to it
-        MonthlyReport monthlyReportTest = new MonthlyReport(new Date(), reportEntriesTest);
-
-        // Add the MonthlyReport to the ArrayList
-        monthlyReports.add(monthlyReportTest);
-        ////////////////////////////////////////////////////////////////
-
         // Create an ArrayList<ReportEntry> to store the data in
         ArrayList<ReportEntry> reportEntries = new ArrayList<>();
-        for (MonthlyReport monthlyReport : monthlyReports)
+        for (MonthlyReport monthlyReport : reportData)
         {
             //adds all the report entries to the list
             reportEntries.addAll(monthlyReport.getReport());
         }
-
 
         // Generate the bar chart
         generateBarChart("Actions Per Week", reportEntries);
@@ -173,50 +130,9 @@ public class ViewReportsFrameController
      */
     public void generateSubscriberStatusReport(ArrayList<MonthlyReport> reportData)
     {
-        /////////////////////////// TESTING ///////////////////////////
-        // Create an ArrayList of MonthlyReport objects
-        ArrayList<MonthlyReport> monthlyReports = new ArrayList<>();
-
-        // Create 5 ReportEntry objects
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.set(2023, Calendar.OCTOBER, 1);
-        ReportEntry reportEntry1 = new ReportEntry(calendar.getTime(), "Frozen", "Book borrowed 1");
-
-        calendar.set(2023, Calendar.OCTOBER, 10);
-        ReportEntry reportEntry2 = new ReportEntry(calendar.getTime(), "Frozen", "Book returned 1");
-
-        calendar.set(2023, Calendar.OCTOBER, 3);
-        ReportEntry reportEntry3 = new ReportEntry(calendar.getTime(), "Registered", "Book borrowed 2");
-
-        calendar.set(2023, Calendar.OCTOBER, 1);
-        ReportEntry reportEntry4 = new ReportEntry(calendar.getTime(), "Unfrozen", "Book returned 2");
-
-        calendar.set(2023, Calendar.OCTOBER, 5);
-        ReportEntry reportEntry5 = new ReportEntry(calendar.getTime(), "Unfrozen", "Book borrowed 3");
-
-        calendar.set(2023, Calendar.NOVEMBER, 5);
-        ReportEntry reportEntry6 = new ReportEntry(calendar.getTime(), "Registered", "Book borrowed 3");
-
-        // Create a list of ReportEntry objects
-        ArrayList<ReportEntry> reportEntriesTest = new ArrayList<>();
-        reportEntriesTest.add(reportEntry1);
-        reportEntriesTest.add(reportEntry2);
-        reportEntriesTest.add(reportEntry3);
-        reportEntriesTest.add(reportEntry4);
-        reportEntriesTest.add(reportEntry5);
-        reportEntriesTest.add(reportEntry6);
-
-        // Create a MonthlyReport and add the ReportEntry list to it
-        MonthlyReport monthlyReportTest = new MonthlyReport(new Date(), reportEntriesTest);
-
-        // Add the MonthlyReport to the ArrayList
-        monthlyReports.add(monthlyReportTest);
-        ////////////////////////////////////////////////////////////////
-
         // Create an ArrayList<ReportEntry> to store the data in
         ArrayList<ReportEntry> reportEntries = new ArrayList<>();
-        for (MonthlyReport monthlyReport : monthlyReports)
+        for (MonthlyReport monthlyReport : reportData)
         {
             //adds all the report entries to the list
             reportEntries.addAll(monthlyReport.getReport());
@@ -280,7 +196,6 @@ public class ViewReportsFrameController
             for (Map.Entry<String, Map<String, Integer>> dateEntry : actionCountMap.entrySet()) {
                 String date = dateEntry.getKey();
                 for (Map.Entry<String, Integer> actionEntry : dateEntry.getValue().entrySet()) {
-                    String action = actionEntry.getKey();
                     Integer count = actionEntry.getValue();
                     barSeries.getData().add(new XYChart.Data<>(date, count));
                 }
@@ -355,6 +270,7 @@ public class ViewReportsFrameController
             // Process the log entries
             for (ReportEntry entry : reportEntries)
             {
+                // Get the date and action
                 LocalDate date = entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 LocalDate startOfWeek = date.with(DayOfWeek.SUNDAY);
                 String weekStart = startOfWeek.format(formatter);
@@ -402,7 +318,33 @@ public class ViewReportsFrameController
      *
      * @param datePicker The date picker to initialize.
      */
-    private void initializeDatePicker(DatePicker datePicker) {
+    private void initializeDatePicker(DatePicker datePicker)
+    {
+        // Define the date formatter
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        // Set the date format
+        datePicker.setConverter(new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return formatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, formatter);
+                } else {
+                    return null;
+                }
+            }
+        });
+
+        // Disable all days except the first day of each month and all the dates after the previous month
         datePicker.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
@@ -411,6 +353,7 @@ public class ViewReportsFrameController
                 setDisable(empty || date.getDayOfMonth() != 1 || date.isAfter(LocalDate.now().withDayOfMonth(1).minusDays(1)));
             }
         });
+
         // Set the default value to the first day of the current month
         datePicker.setValue(LocalDate.now().withDayOfMonth(1).minusMonths(1));
     }

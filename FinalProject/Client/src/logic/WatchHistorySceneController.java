@@ -44,7 +44,7 @@ public class WatchHistorySceneController
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 
         // sends the server a request for the user's history
-        ClientServerMessage message = new ClientServerMessage(214, Subscriber.getLocalSubscriber().getSubscriptionHistory());
+        ClientServerMessage message = new ClientServerMessage(214, Subscriber.getLocalSubscriber().getID());
         ClientGUIController.chat.sendToServer(message);
     }
 
@@ -74,6 +74,7 @@ public class WatchHistorySceneController
         List<SubscriberHistory> subscriberHistoryList = new ArrayList<>();
         for (ArrayList<String> historyItem : history)
         {
+            System.out.println(historyItem);
             date = Date.from(LocalDateTime.parse(historyItem.get(0), DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(ZoneId.systemDefault()).toInstant());
             subscriberHistoryList.add(new SubscriberHistory(date, historyItem.get(1), historyItem.get(2)));
         }

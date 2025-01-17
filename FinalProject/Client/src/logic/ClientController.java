@@ -280,7 +280,12 @@ public class ClientController extends AbstractClient
                         break;
                     //Return book response
                     case 305:
-                        if (message.getMessageContent() instanceof ArrayList<?>)
+                        if (message.getMessageContent() == null)
+                        {
+                            System.out.println("Could not return book");
+                            Platform.runLater(() -> showErrorAlert("Error", "Could not return book"));
+                        }
+                        else if (message.getMessageContent() instanceof ArrayList<?>)
                         {
                             @SuppressWarnings("unchecked") ArrayList<String> response = (ArrayList<String>) message.getMessageContent();
 
@@ -324,7 +329,12 @@ public class ClientController extends AbstractClient
                         break;
                     // Extend borrow - librarian response
                     case 311:
-                        if (message.getMessageContent() instanceof ArrayList)
+                        if (message.getMessageContent() == null)
+                        {
+                            System.out.println("Could not extend borrow");
+                            Platform.runLater(() -> showErrorAlert("Error", "Could not extend borrow"));
+                        }
+                        else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked")
                             ArrayList<String> arrayMessageFromServer = (ArrayList<String>) message.getMessageContent();
@@ -353,7 +363,12 @@ public class ClientController extends AbstractClient
                         break;
                     // View messages response
                     case 315:
-                        if (message.getMessageContent() instanceof ArrayList)
+                        if (message.getMessageContent() == null)
+                        {
+                            System.out.println("Could not get messages");
+                            Platform.runLater(() -> showErrorAlert("Error", "Could not get messages"));
+                        }
+                        else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked")
                             ArrayList<LibrarianMessage> messages = (ArrayList<LibrarianMessage>) message.getMessageContent();

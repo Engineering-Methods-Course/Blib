@@ -6,18 +6,14 @@ import common.Librarian;
 import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 import static client.ClientGUIController.navigateTo;
-
+import static client.ClientGUIController.showAlert;
 
 public class UserLoginFrameController
 {
@@ -61,16 +57,19 @@ public class UserLoginFrameController
     @FXML
     public void clickLoginButton(ActionEvent event) throws Exception
     {
+        // Collect data from the form fields
         String username = txtUsername.getText();
         String password = txtPassword.getText();
 
+        // Check for empty fields
         if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty())
         {
             System.out.println("Username and password cannot be empty");
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Username and password cannot be empty");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.WARNING, "Input Error", "Please fill all fields.");
             return;
         }
+
+        // Create an ArrayList to store the login details
         ArrayList<String> loginDetails = new ArrayList<>();
         loginDetails.add(username);
         loginDetails.add(password);
@@ -78,15 +77,10 @@ public class UserLoginFrameController
         // Create a new ClientServerMessage with the login details and ID 100
         ClientServerMessage loginMessage = new ClientServerMessage(100, loginDetails);
 
-        try
-        {
-            ClientGUIController.chat.sendToServer(loginMessage);
-        }
-        catch (Exception e)
-        {
-            System.out.println("Error sending login message to server: " + e.getMessage());
-        }
+        // Send the login message to the server
+        ClientGUIController.chat.sendToServer(loginMessage);
 
+        // Wait for the server to respond and then check what user was logged in and redirect accordingly
         if (Subscriber.getLocalSubscriber() != null)
         {
             System.out.println("Subscriber logged in" + Subscriber.getLocalSubscriber());
