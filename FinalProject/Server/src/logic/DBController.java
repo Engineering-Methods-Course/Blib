@@ -2213,10 +2213,11 @@ public class DBController {
      */
     public void messagesToLibrarian(String message, int sent) {
         try {
-            String query = "INSERT INTO messages_to_librarian (message_content, sent) VALUES (?, ?)";
+            String query = "INSERT INTO messages_to_librarian (message_content, sent, message_date) VALUES (?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setString(1, message);
             statement.setInt(2, sent);
+            statement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
             statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error: Adding message to librarian" + e);
