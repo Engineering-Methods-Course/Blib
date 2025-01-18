@@ -736,6 +736,10 @@ public class DBController {
                 if (getBookNameRs.next()) {
                     bookName = getBookNameRs.getString("name");
                 }
+                System.out.println("TEST");
+                System.out.println(rs.getDate("borrowed_date").toString());
+                System.out.println(rs.getDate("expected_return_date").toString());
+                System.out.println("TEST");
                 BorrowedBook borrow = new BorrowedBook(rs.getInt("copy_id"), rs.getInt("subscriber_id"), bookName, rs.getDate("borrowed_date").toString(), rs.getDate("expected_return_date").toString(), rs.getDate("return_date") != null ? rs.getDate("return_date").toString() : null);
                 borrowedBooks.add(borrow);
 
@@ -1355,7 +1359,7 @@ public class DBController {
 
 
             /*
-             * The query update the amount of borrowed books in the book table
+             * The query updates the amount of borrowed books in the book table
              */
 
             String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies + 1 WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
@@ -2147,10 +2151,13 @@ public class DBController {
             String freezeQuery = "UPDATE subscriber SET status = ?,frozen_date = ? WHERE subscriber_id = ?";
             PreparedStatement freezeStatement = conn.prepareStatement(freezeQuery);
             freezeStatement.setInt(1, 1);
-            freezeStatement.setInt(2, subscriberId);
-            freezeStatement.setDate(3, Date.valueOf(LocalDate.now()));
+            freezeStatement.setDate(2, Date.valueOf(LocalDate.now()));
+            freezeStatement.setInt(3, subscriberId);
             freezeStatement.executeUpdate();
-            // Update subscriber history
+
+            /*
+             * Update subscriber history
+             */
             updateHistory(subscriberId, "frozen", "Account was frozen reason: " + reason);
 
             /*
