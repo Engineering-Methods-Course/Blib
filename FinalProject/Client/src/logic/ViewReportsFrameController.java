@@ -90,7 +90,7 @@ public class ViewReportsFrameController
         }
         else if (reportChoiceBox.getValue().equals("Subscriber Status"))
         {
-            messageID = 316;
+            messageID = 314;
         }
 
         // request the relevant data from the server
