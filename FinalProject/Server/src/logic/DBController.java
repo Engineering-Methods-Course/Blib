@@ -1287,6 +1287,20 @@ public class DBController {
             }
 
             /*
+             * This query checks if the subscriber already borrowed a book with the same serial number
+             */
+            String checkSameBookQuery = "SELECT COUNT(*) FROM borrow WHERE subscriber_id = ? AND status = 'borrowed' AND copy_id IN (SELECT copy_id FROM book_copy WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?))";
+            PreparedStatement checkSameBookStatement = conn.prepareStatement(checkSameBookQuery);
+            checkSameBookStatement.setInt(1, subscriberId);
+            checkSameBookStatement.setInt(2, copyId);
+            ResultSet checkSameBookRs = checkSameBookStatement.executeQuery();
+            if (checkSameBookRs.next() && checkSameBookRs.getInt(1) > 0) {
+                response.add("false");
+                response.add("Subscriber already borrowed a book with the same serial number");
+                return response;
+            }
+
+            /*
              * Check if the book is reserved by the subscriber
              */
 
