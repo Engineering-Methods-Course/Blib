@@ -37,6 +37,7 @@
 
 /* TextField Styles */
 .text-field {
+    -fx-font-size: 24px;
     -fx-background-color: #f0f4f8;
     -fx-text-fill: #334e68;
     -fx-border-color: #627d98;

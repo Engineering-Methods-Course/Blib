@@ -6,6 +6,10 @@ import common.Librarian;
 import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
@@ -19,6 +23,8 @@ import static client.ClientGUIController.navigateTo;
 
 public class SearchHomePageFrameController
 {
+    public VBox loadInto;
+
     private enum SearchType
     {
         NAME,
@@ -215,7 +221,16 @@ public class SearchHomePageFrameController
         //if there were was a result from the server, go to searchResultFrame
         if (canSearch)
         {
-            navigateTo(event, "/gui/SearchResultFrame.fxml", "/gui/Subscriber.css", "Search results");
+            //navigateTo(event, "/gui/SearchResultFrame.fxml", "/gui/Subscriber.css", "Search results");
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/SearchResultFrame.fxml"));
+            Node view = loader.load();
+
+            // Clear the existing content and set the new content
+            //.getChildren().clear();
+            //contentPane.getChildren().add(view);
+            
+            loadInto.getChildren().setAll(view);
         }
     }
 

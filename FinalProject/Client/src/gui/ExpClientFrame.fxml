@@ -4,14 +4,19 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ExpClientFrameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ExpClientFrameController">
    <children>
       <AnchorPane fx:id="menu" maxWidth="1.7976931348623157E308" prefHeight="1080.0" prefWidth="181.0" styleClass="menu" stylesheets="@Exp.css">
          <children>
-            <Text fx:id="UsernameText" layoutX="61.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello" wrappingWidth="60.13671875" />
-            <Button fx:id="searchButton" layoutX="23.0" layoutY="80.0" mnemonicParsing="false" onAction="#Press1" prefHeight="44.0" prefWidth="153.0" styleClass="buttonCheck" stylesheets="@Exp.css" text="Search">
+            <Text fx:id="UsernameText" layoutX="43.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello" wrappingWidth="112.13671875">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font></Text>
+            <Button fx:id="searchButton" layoutX="14.0" layoutY="154.0" mnemonicParsing="false" onAction="#Press1" prefHeight="44.0" prefWidth="171.0" styleClass="buttonCheck" stylesheets="@Exp.css" text="Search">
                <graphic>
                   <ImageView fitHeight="24.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -33,8 +38,29 @@
                   </ImageView>
                </graphic>
             </Button>
+            <AnchorPane fx:id="Anchor1" disable="true" layoutX="25.0" layoutY="214.0" prefHeight="601.0" prefWidth="138.0" stylesheets="@Exp.css" visible="false">
+               <children>
+                  <Button fx:id="borrowButton" layoutX="-1.0" layoutY="27.0" mnemonicParsing="false" onAction="#loadBorrow" prefWidth="171.0" styleClass="buttonCheck" stylesheets="@Exp.css" text="Borrow" />
+                  <Button fx:id="searchSubButton" layoutX="-1.0" layoutY="184.0" mnemonicParsing="false" onAction="#searchForSubscriber" prefWidth="171.0" styleClass="buttonCheck" stylesheets="@Exp.css" text="Search Subscriber" />
+                  <Button fx:id="viewAllButton" layoutX="-2.0" layoutY="263.0" mnemonicParsing="false" onAction="#watchSubscribersBtn" styleClass="buttonCheck" stylesheets="@Exp.css" text="View All Subscribers" />
+                  <Button layoutX="1.0" layoutY="340.0" mnemonicParsing="false" prefWidth="171.0" styleClass="buttonCheck" stylesheets="@Exp.css" text="View reports" />
+                  <Button fx:id="retunButton" layoutX="1.0" layoutY="100.0" mnemonicParsing="false" onAction="#returnBook" prefWidth="171.0" styleClass="buttonCheck" stylesheets="@Exp.css" text="Return" />
+                  <Button fx:id="RegisterButton" layoutX="-1.0" layoutY="434.0" mnemonicParsing="false" onAction="#RegisterMember" prefWidth="171.0" styleClass="buttonCheck" stylesheets="@Exp.css" text="Register member" />
+                  <Button layoutX="-1.0" layoutY="520.0" mnemonicParsing="false" prefWidth="171.0" styleClass="buttonCheck" stylesheets="@Exp.css" text="View messages" />
+               </children>
+            </AnchorPane>
+            <Button fx:id="logoutButton" layoutX="67.0" layoutY="868.0" mnemonicParsing="false" onAction="#logout" styleClass="buttonCheck" stylesheets="@Exp.css" text="Logout" />
+            <AnchorPane fx:id="Ancor2" disable="true" layoutX="41.0" layoutY="214.0" prefHeight="601.0" prefWidth="138.0" visible="false">
+               <children>
+                  <Button layoutY="14.0" mnemonicParsing="false" prefWidth="171.0" text="Edit details" />
+                  <Button layoutY="99.0" mnemonicParsing="false" prefWidth="171.0" text="Watch history" />
+                  <Button layoutY="170.0" mnemonicParsing="false" prefWidth="171.0" text="Change password" />
+               </children>
+            </AnchorPane>
+            <Line endX="100.0" layoutX="113.0" layoutY="144.0" startX="-100.0" />
+            <Text layoutX="69.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello" wrappingWidth="60.13674437999725" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="SceneChanger" disable="true" layoutX="196.0" prefHeight="1080.0" prefWidth="1726.0" stylesheets="@Exp.css" visible="false" />
+      <AnchorPane fx:id="SceneChanger" layoutX="232.0" layoutY="-3.0" prefHeight="1086.0" prefWidth="1687.0" stylesheets="@Exp.css" />
    </children>
 </AnchorPane>

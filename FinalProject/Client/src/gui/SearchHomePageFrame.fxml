@@ -11,48 +11,29 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox  maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
-      prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="logic.SearchHomePageFrameController">
+<VBox fx:id="loadInto" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.SearchHomePageFrameController">
     <children>
-        <HBox prefHeight="41.0" prefWidth="900.0" >
+        <HBox prefHeight="41.0" prefWidth="900.0">
             <children>
-                <Pane fx:id="menuPane" prefHeight="41.0" prefWidth="1307.0"/>
+                <Pane fx:id="menuPane" prefHeight="41.0" prefWidth="1307.0" />
             </children>
         </HBox>
         <AnchorPane fx:id="searchPane" prefHeight="758.0" prefWidth="1280.0">
             <children>
-                <Button fx:id="profileButton" blendMode="HARD_LIGHT" layoutX="1090.0" layoutY="2.0"
-                        mnemonicParsing="false" onAction="#goToProfile" text="Hello: &lt;User&gt;"/>
-                <Button fx:id="watchProfileButton" layoutX="959.0" layoutY="2.0" mnemonicParsing="false"
-                        onAction="#goToProfile" text="Watch Profile"/>
-                <Button fx:id="loginButton" layoutX="21.0" layoutY="2.0" mnemonicParsing="false" onAction="#login"
-                        text="Log In"/>
-                <Text layoutX="493.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search"
-                      AnchorPane.bottomAnchor="524.4990234375" AnchorPane.leftAnchor="493.0"
-                      AnchorPane.rightAnchor="545.30078125" AnchorPane.topAnchor="124.8994140625">
+                <Button fx:id="profileButton" blendMode="HARD_LIGHT" layoutX="1090.0" layoutY="2.0" mnemonicParsing="false" onAction="#goToProfile" text="Hello: &lt;User&gt;" />
+                <Button fx:id="watchProfileButton" layoutX="959.0" layoutY="2.0" mnemonicParsing="false" onAction="#goToProfile" text="Watch Profile" />
+                <Button fx:id="loginButton" layoutX="21.0" layoutY="2.0" mnemonicParsing="false" onAction="#login" text="Log In" />
+                <Text layoutX="493.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search" AnchorPane.bottomAnchor="524.4990234375" AnchorPane.leftAnchor="493.0" AnchorPane.rightAnchor="545.30078125" AnchorPane.topAnchor="124.8994140625">
                     <font>
-                        <Font name="Book Antiqua Italic" size="90.0"/>
+                        <Font name="Book Antiqua Italic" size="90.0" />
                     </font>
                 </Text>
-                <RadioButton fx:id="nameRadio" layoutX="306.0" layoutY="256.0" mnemonicParsing="false"
-                             onAction="#searchByName" text="By Name" AnchorPane.bottomAnchor="485.0"
-                             AnchorPane.leftAnchor="306.0" AnchorPane.rightAnchor="905.0" AnchorPane.topAnchor="256.0"/>
-                <RadioButton fx:id="genreRadio" layoutX="571.0" layoutY="256.0" mnemonicParsing="false"
-                             onAction="#searchByGenre" text="By Genre" AnchorPane.bottomAnchor="485.0"
-                             AnchorPane.leftAnchor="571.0" AnchorPane.rightAnchor="640.0" AnchorPane.topAnchor="256.0"/>
-                <RadioButton fx:id="descriptionRadio" layoutX="869.0" layoutY="256.0" mnemonicParsing="false"
-                             onAction="#searchByDescription" text="By Description" AnchorPane.bottomAnchor="485.0"
-                             AnchorPane.leftAnchor="869.0" AnchorPane.rightAnchor="313.0" AnchorPane.topAnchor="256.0"/>
-                <TextField fx:id="searchField" layoutX="301.0" layoutY="308.0" prefHeight="26.0" prefWidth="677.0"
-                           promptText="Search" AnchorPane.bottomAnchor="424.0" AnchorPane.leftAnchor="301.0"
-                           AnchorPane.rightAnchor="302.0" AnchorPane.topAnchor="308.0"/>
-                <TextArea fx:id="descriptionSearch" layoutX="301.0" layoutY="308.0" prefHeight="200.0" prefWidth="678.0"
-                          promptText="describe your book:" wrapText="true" AnchorPane.bottomAnchor="250.0"
-                          AnchorPane.leftAnchor="301.0" AnchorPane.rightAnchor="301.0" AnchorPane.topAnchor="308.0"/>
-                <Button fx:id="searchButton" layoutX="580.0" layoutY="552.0" minHeight="50.0" minWidth="100.0"
-                        mnemonicParsing="false" onAction="#search" text="Search" AnchorPane.bottomAnchor="181.0"
-                        AnchorPane.leftAnchor="580.0" AnchorPane.rightAnchor="648.0" AnchorPane.topAnchor="552.0"/>
+                <RadioButton fx:id="nameRadio" layoutX="306.0" layoutY="256.0" mnemonicParsing="false" onAction="#searchByName" text="By Name" AnchorPane.bottomAnchor="485.0" AnchorPane.leftAnchor="306.0" AnchorPane.rightAnchor="905.0" AnchorPane.topAnchor="256.0" />
+                <RadioButton fx:id="genreRadio" layoutX="571.0" layoutY="256.0" mnemonicParsing="false" onAction="#searchByGenre" text="By Genre" AnchorPane.bottomAnchor="485.0" AnchorPane.leftAnchor="571.0" AnchorPane.rightAnchor="640.0" AnchorPane.topAnchor="256.0" />
+                <RadioButton fx:id="descriptionRadio" layoutX="869.0" layoutY="256.0" mnemonicParsing="false" onAction="#searchByDescription" text="By Description" AnchorPane.bottomAnchor="485.0" AnchorPane.leftAnchor="869.0" AnchorPane.rightAnchor="313.0" AnchorPane.topAnchor="256.0" />
+                <TextField fx:id="searchField" layoutX="301.0" layoutY="308.0" prefHeight="26.0" prefWidth="677.0" promptText="Search" AnchorPane.bottomAnchor="424.0" AnchorPane.leftAnchor="301.0" AnchorPane.rightAnchor="302.0" AnchorPane.topAnchor="308.0" />
+                <TextArea fx:id="descriptionSearch" layoutX="301.0" layoutY="308.0" prefHeight="200.0" prefWidth="678.0" promptText="describe your book:" wrapText="true" AnchorPane.bottomAnchor="250.0" AnchorPane.leftAnchor="301.0" AnchorPane.rightAnchor="301.0" AnchorPane.topAnchor="308.0" />
+                <Button fx:id="searchButton" layoutX="580.0" layoutY="552.0" minHeight="50.0" minWidth="100.0" mnemonicParsing="false" onAction="#search" text="Search" AnchorPane.bottomAnchor="181.0" AnchorPane.leftAnchor="580.0" AnchorPane.rightAnchor="648.0" AnchorPane.topAnchor="552.0" />
             </children>
         </AnchorPane>
     </children>
