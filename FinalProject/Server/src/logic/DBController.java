@@ -240,10 +240,10 @@ public class DBController {
             String password = messageContent.get(1);
 
             /*
-             * The query selects all columns from the user table where the username matches a given value
+             * The query selects all columns from the user table where the username matches a given value (case sensitive)
              */
 
-            String userQuery = "SELECT type, user_id FROM users WHERE username = ? AND password = ? ";
+            String userQuery = "SELECT type, user_id FROM users WHERE BINARY username = ? AND BINARY password = ?";
             PreparedStatement userStatement = conn.prepareStatement(userQuery);
             userStatement.setString(1, username);
             userStatement.setString(2, password);
@@ -1101,10 +1101,10 @@ public class DBController {
             int historyId;
 
             /*
-             * Check if the username already exists
+             * Check if the username already exists (case-sensitive)
              */
 
-            String checkUserQuery = "SELECT COUNT(*) FROM users WHERE username = ?";
+            String checkUserQuery = "SELECT COUNT(*) FROM users WHERE BINARY username = ?";
             PreparedStatement checkUserStatement = conn.prepareStatement(checkUserQuery);
             checkUserStatement.setString(1, messageContent.get(0));
             ResultSet checkUserRs = checkUserStatement.executeQuery();
