@@ -48,6 +48,9 @@ public class SubscriberProfileOptionsFrameController
     public TableColumn<BorrowedBook, Button> extendButtonColumn;
     public Button watchHistoryButton;
 
+    /**
+     * This method is called when the frame is initialized
+     */
     public void initialize()
     {
         // Load all the user info into the fields
@@ -110,6 +113,11 @@ public class SubscriberProfileOptionsFrameController
         ClientGUIController.chat.sendToServer(message);
     }
 
+    /**
+     * This method loads the borrowed books into the table
+     *
+     * @param borrowedBooks The list of borrowed books
+     */
     public void loadBorrowsTable(ArrayList<BorrowedBook> borrowedBooks)
     {
         // Adds the borrowed books to the table
@@ -132,11 +140,11 @@ public class SubscriberProfileOptionsFrameController
      */
     public void logoutButtonClicked(ActionEvent event) throws Exception
     {
+        // Sends a message to the server to log out
+        ClientServerMessage message = new ClientServerMessage(102, Subscriber.getLocalSubscriber().getID());
+
         //sets the local subscriber to null
         Subscriber.setLocalSubscriber(null);
-
-        // Sends a message to the server to log out
-        ClientServerMessage message = new ClientServerMessage(102, null);
 
         // Sends the message to the server
         ClientGUIController.chat.sendToServer(message);

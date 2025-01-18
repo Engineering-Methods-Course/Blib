@@ -47,11 +47,11 @@ public class LibrarianProfileFrameController
      */
     public void logoutButtonClicked(ActionEvent event) throws Exception
     {
+        // Sends a message to the server to log out
+        ClientServerMessage message = new ClientServerMessage(102, Librarian.getLocalLibrarian().getID());
+
         //sets the local subscriber to null
         Librarian.setLocalLibrarian(null);
-
-        // Sends a message to the server to log out
-        ClientServerMessage message = new ClientServerMessage(102, null);
 
         // Sends the message to the server
         ClientGUIController.chat.sendToServer(message);
