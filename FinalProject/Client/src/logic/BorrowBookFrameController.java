@@ -6,7 +6,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -103,7 +102,7 @@ public class BorrowBookFrameController
         }
 
         // Format the return date
-        String formattedReturnDate = returnDate.atStartOfDay().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String formattedReturnDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(returnDate);
 
         // Create the ArrayList for message content
         ArrayList<String> dataToSend = new ArrayList<>();

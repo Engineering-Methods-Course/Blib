@@ -12,6 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static client.ClientGUIController.navigateTo;
 
@@ -34,7 +35,7 @@ public class ViewMessagesFrameController
         contentColumn.setCellValueFactory(new PropertyValueFactory<>("content"));
 
         // creates the message to request the messages from the server
-        ClientServerMessage message = new ClientServerMessage(314, null);
+        ClientServerMessage message = new ClientServerMessage(316, null);
 
         // sends the message to the server
         ClientGUIController.chat.sendToServer(message);
@@ -45,9 +46,18 @@ public class ViewMessagesFrameController
      *
      * @param messages The messages to load into the table.
      */
-    public void loadLibrarianMessages(ArrayList<LibrarianMessage> messages)
+    public void loadLibrarianMessages(List<ArrayList<String>> messages)
     {
-        ObservableList<LibrarianMessage> data = FXCollections.observableArrayList(messages);
+        // Create a list of LibrarianMessage objects
+        ArrayList<LibrarianMessage> messageList = new ArrayList<>();
+
+        for (ArrayList<String> message : messages)
+        {
+            messageList.add(new LibrarianMessage(message.get(0), message.get(1)));
+        }
+
+        // Load the messages into the table
+        ObservableList<LibrarianMessage> data = FXCollections.observableArrayList(messageList);
         messagesTableView.setItems(data);
     }
 

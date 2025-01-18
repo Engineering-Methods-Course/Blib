@@ -2002,9 +2002,9 @@ public class DBController {
             List<ArrayList<String>> messages = new ArrayList<>();
 
             /*
-             * This query selects all columns from the librarian_messages table
+             * This query selects all columns from the messages_to_librarian table
              */
-            String getMessagesQuery = "SELECT * FROM librarian_messages";
+            String getMessagesQuery = "SELECT * FROM messages_to_librarian";
             PreparedStatement getMessagesStatement = conn.prepareStatement(getMessagesQuery);
             ResultSet getMessagesRs = getMessagesStatement.executeQuery();
 

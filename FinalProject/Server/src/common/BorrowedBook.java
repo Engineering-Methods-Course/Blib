@@ -98,4 +98,24 @@ public class BorrowedBook implements Serializable
     {
         this.bookName = bookName;
     }
+
+    /**
+     * Sets the Expected Return Date of the copy.
+     *
+     * @param expectedReturnDate the Expected Return Date of the copy
+     */
+    public void setExpectedReturnDate(String expectedReturnDate)
+    {
+        this.expectedReturnDate = expectedReturnDate;
+    }
+
+    /**
+     * Sets the Borrow Date of the copy.
+     *
+     * @param borrowDate the Borrow Date of the copy
+     */
+    public void setBorrowDate(String borrowDate)
+    {
+        this.borrowDate = borrowDate;
+    }
 }

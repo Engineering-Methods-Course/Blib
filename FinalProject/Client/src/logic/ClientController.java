@@ -365,23 +365,8 @@ public class ClientController extends AbstractClient
                             controller.generateBorrowTimeReport(reports);
                         }
                         break;
-                    // View messages response
-                    case 315:
-                        if (message.getMessageContent() == null)
-                        {
-                            System.out.println("Could not get messages");
-                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not get messages"));
-                        }
-                        else if (message.getMessageContent() instanceof ArrayList)
-                        {
-                            @SuppressWarnings("unchecked")
-                            ArrayList<LibrarianMessage> messages = (ArrayList<LibrarianMessage>) message.getMessageContent();
-                            ViewMessagesFrameController controller = loader.getController();
-                            controller.loadLibrarianMessages(messages);
-                        }
-                        break;
                         // Handles the Subscriber Status report response
-                    case 317:
+                    case 315:
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not get logs");
@@ -393,6 +378,21 @@ public class ClientController extends AbstractClient
                             ArrayList<MonthlyReport> logs = (ArrayList<MonthlyReport>) message.getMessageContent();
                             ViewReportsFrameController controller = loader.getController();
                             controller.generateSubscriberStatusReport(logs);
+                        }
+                        break;
+                    // View messages response
+                    case 317:
+                        if (message.getMessageContent() == null)
+                        {
+                            System.out.println("Could not get messages");
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not get messages"));
+                        }
+                        else if (message.getMessageContent() instanceof ArrayList)
+                        {
+                            @SuppressWarnings("unchecked")
+                            List<ArrayList<String>> messages = (List<ArrayList<String>>) message.getMessageContent();
+                            ViewMessagesFrameController controller = loader.getController();
+                            controller.loadLibrarianMessages(messages);
                         }
                         break;
                         // Server has closed its connection

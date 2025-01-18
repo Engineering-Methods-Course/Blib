@@ -115,6 +115,11 @@ public class SubscriberProfileOptionsFrameController
         // Adds the borrowed books to the table
         for (BorrowedBook borrowedBook : borrowedBooks)
         {
+            // Adds a day to the return date and borrow date
+            borrowedBook.setExpectedReturnDate(addDay(borrowedBook.getExpectedReturnDate()));
+            borrowedBook.setBorrowDate(addDay(borrowedBook.getBorrowDate()));
+
+            // Adds the borrowed book to the table
             borrowsTable.getItems().add(borrowedBook);
         }
     }
@@ -279,5 +284,31 @@ public class SubscriberProfileOptionsFrameController
     public void watchHistoryButtonClicked(ActionEvent event) throws Exception
     {
         navigateTo(event, "/gui/WatchHistoryScene.fxml", "/gui/Subscriber.css", "Watch History");
+    }
+
+    /**
+     *  Adds a day to the borrow and return date
+     *
+     *  @param date The date to add a day to
+     *  @return The date with one day added
+     */
+    private String addDay(String date)
+    {
+        String[] dateParts = date.split("-");
+        int year = Integer.parseInt(dateParts[0]);
+        int month = Integer.parseInt(dateParts[1]);
+        int day = Integer.parseInt(dateParts[2]);
+        day++;
+        if (day > 31)
+        {
+            day = 1;
+            month++;
+            if (month > 12)
+            {
+                month = 1;
+                year++;
+            }
+        }
+        return year + "-" + month + "-" + day;
     }
 }
