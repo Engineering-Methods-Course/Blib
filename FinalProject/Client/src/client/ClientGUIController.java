@@ -60,6 +60,7 @@ public class ClientGUIController extends Application
         // Update the root node of the existing scene
         currentStage.getScene().setRoot(newRoot);
         currentStage.setTitle(stageTitle);
+        currentStage.setMaximized(true);
         currentStage.setOnCloseRequest(event1 -> {
             // Run exitAction() in a background thread to prevent blocking
             Task<Void> logOutTask = new Task<Void>() {

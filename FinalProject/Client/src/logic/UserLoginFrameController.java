@@ -34,11 +34,11 @@ public class UserLoginFrameController
         {
             if (Subscriber.getLocalSubscriber() != null)
             {
-                navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Page");
+                navigateTo(event, "/gui/MainFrame.fxml", "/gui/MainFrame.css", "Profile Page");
             }
             else if (Librarian.getLocalLibrarian() != null)
             {
-                navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Librarian Menu");
+                navigateTo(event, "/gui/MainFrame.fxml", "/gui/MainFrame.css", "Librarian Menu");
             }
         }
         catch (Exception e)
@@ -84,12 +84,12 @@ public class UserLoginFrameController
         if (Subscriber.getLocalSubscriber() != null)
         {
             System.out.println("Subscriber logged in" + Subscriber.getLocalSubscriber());
-            navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Page");
+            navigateTo(event, "/gui/MainFrame.fxml", "/gui/MainFrame.css", "Profile Page");
         }
         else if (Librarian.getLocalLibrarian() != null)
         {
             System.out.println("Librarian logged in" + Librarian.getLocalLibrarian());
-            navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Librarian Menu");
+            navigateTo(event, "/gui/MainFrame.fxml", "/gui/MainFrame.css", "Librarian Menu");
         }
         else
         {
