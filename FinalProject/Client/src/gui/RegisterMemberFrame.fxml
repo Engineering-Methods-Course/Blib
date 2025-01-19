@@ -7,54 +7,52 @@
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
       prefHeight="800.0" prefWidth="1280.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.RegisterMemberFrameController">
-    <children>
-        <!-- Title Section centered -->
-        <HBox alignment="CENTER" prefHeight="167.0" prefWidth="1280.0">
-            <Text text="Register Member">
-                <font>
-                    <Font name="Agency FB" size="50.0"/>
-                </font>
-            </Text>
+    <!-- Title Section centered -->
+    <HBox alignment="CENTER" prefHeight="167.0" prefWidth="1280.0">
+        <Text text="Register Member">
+            <font>
+                <Font name="Agency FB" size="50.0"/>
+            </font>
+        </Text>
+    </HBox>
+
+    <!-- Centered Content (Labels + TextFields) -->
+    <VBox alignment="CENTER" prefHeight="451.0" prefWidth="1280.0" spacing="20.0">
+        <!-- ID -->
+        <HBox alignment="CENTER" prefWidth="1280.0" spacing="10.0">
+            <Label prefWidth="100.0" text="Username:"/>
+            <TextField fx:id="txtUsername" prefWidth="200.0"/>
         </HBox>
 
-        <!-- Centered Content (Labels + TextFields) -->
-        <VBox alignment="CENTER" prefHeight="451.0" prefWidth="1280.0" spacing="20.0">
-            <!-- ID -->
-            <HBox alignment="CENTER" prefWidth="1280.0" spacing="10.0">
-                <Label prefWidth="100.0" text="Username:"/>
-                <TextField fx:id="txtUsername" prefWidth="200.0"/>
-            </HBox>
+        <!-- Name -->
+        <HBox alignment="CENTER" spacing="10.0">
+            <Label prefWidth="100.0" text="Name:"/>
+            <TextField fx:id="txtFirstName" prefWidth="200.0"/>
+        </HBox>
 
-            <!-- Name -->
-            <HBox alignment="CENTER" spacing="10.0">
-                <Label prefWidth="100.0" text="Name:"/>
-                <TextField fx:id="txtFirstName" prefWidth="200.0"/>
-            </HBox>
+        <!-- Last Name -->
+        <HBox alignment="CENTER" spacing="10.0">
+            <Label prefWidth="100.0" text="Last Name:"/>
+            <TextField fx:id="txtLastName" prefWidth="200.0"/>
+        </HBox>
 
-            <!-- Last Name -->
-            <HBox alignment="CENTER" spacing="10.0">
-                <Label prefWidth="100.0" text="Last Name:"/>
-                <TextField fx:id="txtLastName" prefWidth="200.0"/>
-            </HBox>
+        <!-- Phone -->
+        <HBox alignment="CENTER" spacing="10.0">
+            <Label prefWidth="100.0" text="Phone:"/>
+            <TextField fx:id="txtPhone" prefWidth="200.0"/>
+        </HBox>
 
-            <!-- Phone -->
-            <HBox alignment="CENTER" spacing="10.0">
-                <Label prefWidth="100.0" text="Phone:"/>
-                <TextField fx:id="txtPhone" prefWidth="200.0"/>
-            </HBox>
+        <!-- Email -->
+        <HBox alignment="CENTER" spacing="10.0">
+            <Label prefWidth="100.0" text="Email:"/>
+            <TextField fx:id="txtEmail" prefWidth="200.0"/>
+        </HBox>
 
-            <!-- Email -->
-            <HBox alignment="CENTER" spacing="10.0">
-                <Label prefWidth="100.0" text="Email:"/>
-                <TextField fx:id="txtEmail" prefWidth="200.0"/>
-            </HBox>
+        <!-- Register Button -->
+        <Button onAction="#clickRegisterButton" prefHeight="50.0" prefWidth="200.0"
+                text="Register"/>
+    </VBox>
 
-            <!-- Register Button -->
-            <Button onAction="#clickRegisterButton" prefHeight="50.0" prefWidth="200.0"
-                    text="Register"/>
-        </VBox>
-
-        <!-- Spacer to push the "Back" button to the bottom -->
-        <Region VBox.vgrow="ALWAYS"/>
-    </children>
+    <!-- Spacer to push the "Back" button to the bottom -->
+    <Region VBox.vgrow="ALWAYS"/>
 </VBox>
