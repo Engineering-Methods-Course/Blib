@@ -21,6 +21,7 @@ public class ScheduleController {
         notificationController = NotificationController.getInstance();
         dbController = DBController.getInstance();
         runDailyTask();
+        setSchedulerExportLog();
     }
 
     /**

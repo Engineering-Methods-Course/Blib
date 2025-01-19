@@ -56,7 +56,7 @@ public class WatchHistorySceneController
     public void backButtonClicked(ActionEvent event) throws Exception
     {
         // go back to the previous scene
-        navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Watch Profile");
+        navigateTo(event, "/gui/SubscriberProfileFrame.fxml", "/gui/Subscriber.css", "Watch Profile");
     }
 
     /**

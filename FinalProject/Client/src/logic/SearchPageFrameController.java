@@ -12,11 +12,15 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
+import static client.ClientGUIController.loadFrameIntoPane;
 import static client.ClientGUIController.navigateTo;
 
-public class SearchHomePageFrameController
+public class SearchPageFrameController
 {
+    public VBox searchFrame;
+
     private enum SearchType
     {
         NAME,
@@ -60,37 +64,12 @@ public class SearchHomePageFrameController
 
     public void initialize()
     {
-        String name = "";
-        //need to check what user (user/client/librarian) enters the search
-        if (Subscriber.getLocalSubscriber() != null)
-        {
-            user_type = UserType.Subscriber;
-            name = Subscriber.getLocalSubscriber().getFirstName();
-            loginButton.setVisible(false);
-        }
-        else if (Librarian.getLocalLibrarian() != null)
-        {
-            user_type = UserType.Librarian;
-            name = Librarian.getLocalLibrarian().getFirstName();
-            loginButton.setVisible(false);
-        }
-        else
-        {
-            profileButton.setDisable(!user_type.equals(UserType.User));
-            profileButton.setVisible(!user_type.equals(UserType.User));
-            watchProfileButton.setDisable(!user_type.equals(UserType.User));
-            watchProfileButton.setVisible(!user_type.equals(UserType.User));
-        }
-        profileButton.setText("Hello " + name);
-        //watchProfileButton.setVisible()
-
         //set search by name to be the default search when opening the window
         nameRadio.setSelected(true);
         searchType = SearchType.NAME;
 
         searchField.setVisible(true);
         descriptionSearch.setVisible(false);
-
     }
 
     /**
@@ -207,37 +186,8 @@ public class SearchHomePageFrameController
         //if there were was a result from the server, go to searchResultFrame
         if (canSearch)
         {
-            navigateTo(event, "/gui/SearchResultFrame.fxml", "/gui/Subscriber.css", "Search results");
+            loadFrameIntoPane((AnchorPane) searchFrame.getParent(), "/gui/SearchResultFrame.fxml");
         }
     }
 
-    /**
-     * This method handles the loginButton click event to navigate to the login page
-     *
-     * @param event The ActionEvent triggered by the login button click
-     * @throws Exception if there is an issue with the navigation
-     */
-    public void login(ActionEvent event) throws Exception
-    {
-        navigateTo(event, "/gui/UserLoginFrame.fxml", "/gui/Subscriber.css", "Login");
-    }
-
-    /**
-     * This method handles the profileButton click event to navigate to the profile page
-     *
-     * @param event the ActionEvent triggered by the profile button click
-     * @throws Exception if there is an issue with the navigation
-     */
-    public void goToProfile(ActionEvent event) throws Exception
-    {
-        //check the instance of the current user and according to it navigate
-        if (Subscriber.getLocalSubscriber() != null)
-        {
-            navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Page");
-        }
-        else if (Librarian.getLocalLibrarian() != null)
-        {
-            navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Librarian Menu");
-        }
-    }
 }

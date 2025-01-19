@@ -5,7 +5,6 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.ScrollPane?>
@@ -63,10 +62,5 @@
             </AnchorPane>
         </content>
       </ScrollPane>
-      <AnchorPane prefHeight="49.0" prefWidth="1280.0">
-         <children>
-            <Button fx:id="backButton" layoutX="23.0" layoutY="12.0" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="1216.0" AnchorPane.topAnchor="12.0" />
-         </children>
-      </AnchorPane>
    </children>
 </VBox>

@@ -18,7 +18,7 @@ import static client.ClientGUIController.showAlert;
 public class UserLoginFrameController
 {
     @FXML
-    public Button backButton;
+    public Button btnLogin;
     @FXML
     private TextField txtUsername;
     @FXML
@@ -95,17 +95,5 @@ public class UserLoginFrameController
         {
             System.out.println("Could not log in user ");
         }
-    }
-
-    /**
-     * This method handles the back button click event.
-     * It navigates to the previous screen (PrototypeWelcomeFrame.fxml).
-     *
-     * @param event The action event triggered by clicking the back button
-     * @throws Exception If there is an issue with the navigation
-     */
-    public void backButtonClicked(ActionEvent event) throws Exception
-    {
-        navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
     }
 }

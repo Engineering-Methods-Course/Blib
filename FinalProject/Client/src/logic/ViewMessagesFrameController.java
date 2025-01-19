@@ -61,15 +61,4 @@ public class ViewMessagesFrameController
         messagesTableView.setItems(data);
     }
 
-    /**
-     * Handles the Back button click event.
-     *
-     * @param actionEvent The ActionEvent triggered by clicking the button.
-     * @throws Exception If an error occurs during navigation.
-     */
-    public void backButtonClicked(ActionEvent actionEvent) throws Exception
-    {
-        // Navigate back to the previous screen (you can change the target screen as needed)
-        navigateTo(actionEvent, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Messages");
-    }
 }

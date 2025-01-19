@@ -7,10 +7,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+
 import java.util.ArrayList;
 
-import static client.ClientGUIController.navigateTo;
-import static client.ClientGUIController.showAlert;
+import static client.ClientGUIController.*;
 
 public class SubscriberEditProfileFrameController
 {
@@ -19,6 +21,7 @@ public class SubscriberEditProfileFrameController
     public TextField txtLastName;
     @FXML
     public TextField txtFirstName;
+    public VBox editInfoFrame;
     @FXML
     private TextField txtPhone;
     @FXML
@@ -41,7 +44,7 @@ public class SubscriberEditProfileFrameController
      */
     public void clickBackButton(ActionEvent event) throws Exception
     {
-        navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "My profile");
+        navigateTo(event, "/gui/SubscriberProfileFrame.fxml", "/gui/Subscriber.css", "My profile");
     }
 
     /**
@@ -80,7 +83,7 @@ public class SubscriberEditProfileFrameController
         ClientGUIController.chat.sendToServer(message);
 
         // Navigate to the previous screen
-        navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "Profile Page");
+        loadFrameIntoPane((AnchorPane) editInfoFrame.getParent(), "/gui/SubscriberProfileFrame.fxml");
     }
 
     /**

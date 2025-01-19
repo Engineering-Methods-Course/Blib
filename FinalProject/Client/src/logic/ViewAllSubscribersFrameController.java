@@ -9,11 +9,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static client.ClientGUIController.loadFrameIntoPane;
 import static client.ClientGUIController.navigateTo;
 
 public class ViewAllSubscribersFrameController
@@ -40,6 +42,7 @@ public class ViewAllSubscribersFrameController
     public TextField filterTextField;
     @FXML
     public Button backButton;
+    public AnchorPane allSubscribersFrame;
 
     private List<Subscriber> allSubscribers;
 
@@ -155,7 +158,7 @@ public class ViewAllSubscribersFrameController
         //wrapped in a try catch block so the button will not crash the program
         try
         {
-            navigateTo(event, "/gui/WatchProfileFrame.fxml", "/gui/Subscriber.css", "Watch Profile");
+            loadFrameIntoPane((AnchorPane) allSubscribersFrame.getParent(), "/gui/WatchProfileFrame.fxml");
         }
         catch (Exception e)
         {

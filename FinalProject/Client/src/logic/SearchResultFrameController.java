@@ -12,11 +12,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static client.ClientGUIController.loadFrameIntoPane;
 import static client.ClientGUIController.navigateTo;
+import static javafx.application.Application.launch;
 
 public class SearchResultFrameController
 {
@@ -35,6 +39,7 @@ public class SearchResultFrameController
     private final Property<ObservableList<List<String>>> BookListProperty = new SimpleObjectProperty<>(BookList);
 
     private static ArrayList<Book> books;
+    public VBox SearchResultFrame;
 
     /**
      * initializes the table with the books that were found
@@ -56,8 +61,7 @@ public class SearchResultFrameController
                     try
                     {
                         getBookCopy(getTableView().getItems().get(getIndex()));
-                        //System.out.println(getTableView().getItems().get(getIndex()));
-                        navigateTo(event, "/gui/BookInfoFrame.fxml", "/gui/Subscriber.css", "Book information");
+                        loadFrameIntoPane((AnchorPane) SearchResultFrame.getParent(), "/gui/BookInfoFrame.fxml");
                     }
                     catch (Exception e)
                     {
@@ -135,14 +139,4 @@ public class SearchResultFrameController
         }
     }
 
-    /**
-     * This method handles the backButton click event to navigate back to the previous frame
-     *
-     * @param event The action event triggered by clicking the back button
-     * @throws Exception If there is an issue with the navigation
-     */
-    public void backButtonClicked(ActionEvent event) throws Exception
-    {
-        navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
-    }
 }

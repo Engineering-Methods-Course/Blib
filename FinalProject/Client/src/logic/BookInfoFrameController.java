@@ -9,10 +9,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 
+import static client.ClientGUIController.loadFrameIntoPane;
 import static client.ClientGUIController.navigateTo;
 
 public class BookInfoFrameController
@@ -34,6 +37,7 @@ public class BookInfoFrameController
     public Button backButton;
     @FXML
     public Text TextForAvailability;
+    public VBox bookInfoFrame;
 
     /**
      * This method initializes the Book Info Frame
@@ -66,15 +70,6 @@ public class BookInfoFrameController
     private static ArrayList<String> Availability;
     public static boolean orderComplete = false;
 
-    /**
-     * This method gets the local book object
-     *
-     * @return The local book object
-     */
-    public static Book getLocalBook()
-    {
-        return localBook;
-    }
 
     /**
      * This method sets the local book object
@@ -84,16 +79,6 @@ public class BookInfoFrameController
     public static void setLocalBook(Book bookFromServer)
     {
         localBook = bookFromServer;
-    }
-
-    /**
-     * This method gets the availability of the book
-     *
-     * @return The availability of the book
-     */
-    public static ArrayList<String> getAvailability()
-    {
-        return Availability;
     }
 
     /**
@@ -132,7 +117,7 @@ public class BookInfoFrameController
         if (orderComplete)
         {
             System.out.println(orderComplete);
-            navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
+            loadFrameIntoPane((AnchorPane) bookInfoFrame.getParent(), "/gui/SearchPageFrame.fxml");
         }
     }
 
@@ -144,7 +129,7 @@ public class BookInfoFrameController
      */
     public void backButtonClicked(ActionEvent event) throws Exception
     {
-        navigateTo(event, "/gui/SearchResultFrame.fxml", "/gui/Subscriber.css", "Search Results");
+        loadFrameIntoPane((AnchorPane) bookInfoFrame.getParent(), "/gui/SearchResultFrame.fxml");
     }
 
     /**

@@ -8,14 +8,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 
-
-import static client.ClientGUIController.navigateTo;
-import static client.ClientGUIController.showAlert;
+import static client.ClientGUIController.*;
 
 public class SearchSubscriberFrameController
 {
-
+    @FXML
+    public AnchorPane searchSubscriberFrame;
     @FXML
     private TextField idTextField;
 
@@ -54,18 +54,8 @@ public class SearchSubscriberFrameController
         }
     }
 
-    /**
-     * Handles the Back button click event.
-     *
-     * @param event The ActionEvent triggered by clicking the button.
-     * @throws Exception If an error occurs during navigation.
-     */
-    public void backButtonClicked(ActionEvent event) throws Exception
-    {
-        navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Return");
-    }
 
-    public static void WatchProfileResponse(Subscriber subscriberFromServer)
+    public void WatchProfileResponse(Subscriber subscriberFromServer)
     {
         Platform.runLater(() -> {
             if (subscriberFromServer == null)
@@ -83,7 +73,7 @@ public class SearchSubscriberFrameController
                 {
                     try
                     {
-                        navigateTo(storedEvent, "/gui/WatchProfileFrame.fxml", "/gui/Subscriber.css", "Watch Profile");
+                        loadFrameIntoPane((AnchorPane) searchSubscriberFrame.getParent(), "/gui/WatchProfileFrame.fxml");
                     }
                     catch (Exception e)
                     {

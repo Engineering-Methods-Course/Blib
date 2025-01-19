@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ViewAllSubscribersFrameController">
+<AnchorPane fx:id="allSubscribersFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ViewAllSubscribersFrameController">
     <children>
         <!-- Title for All Subscribers -->
         <Label layoutX="550.0" layoutY="34.0" prefHeight="50.0" prefWidth="180.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="All Subscribers" textAlignment="CENTER" AnchorPane.leftAnchor="550.0" AnchorPane.rightAnchor="550.0">
@@ -49,8 +49,5 @@
                 </TableColumn>
             </columns>
         </TableView>
-
-        <!-- Back button in the left corner -->
-        <Button fx:id="backButton" layoutX="20.0" layoutY="560.0" onAction="#backButtonClicked" text="Back" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" />
     </children>
 </AnchorPane>

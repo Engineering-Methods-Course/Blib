@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import static client.ClientGUIController.navigateTo;
 import static client.ClientGUIController.showAlert;
 
-public class SubscriberProfileOptionsFrameController
+public class SubscriberProfileFrameController
 {
     @FXML
     public Button logoutButton;
@@ -58,7 +58,6 @@ public class SubscriberProfileOptionsFrameController
         phoneNumberField.setText("Phone number: " + Subscriber.getLocalSubscriber().getPhoneNumber());
         emailField.setText("Email: " + Subscriber.getLocalSubscriber().getEmail());
         statusTextField.setText("Account Status: " + (Subscriber.getLocalSubscriber().getStatusIsFrozen() ? "Frozen" : "Active"));
-        profileButton.setText("Hello: " + Subscriber.getLocalSubscriber().getFirstName() + " " + Subscriber.getLocalSubscriber().getLastName());
         userIDField.setText("User ID: " + Subscriber.getLocalSubscriber().getID());
 
         // Set up the borrowed books table columns
@@ -132,48 +131,6 @@ public class SubscriberProfileOptionsFrameController
         }
     }
 
-    /**
-     * This method handles the logoutButton click event to navigate to the search home page
-     *
-     * @param event The action event triggered by clicking the logout button
-     * @throws Exception If there is an issue with the navigation
-     */
-    public void logoutButtonClicked(ActionEvent event) throws Exception
-    {
-        // Sends a message to the server to log out
-        ClientServerMessage message = new ClientServerMessage(102, Subscriber.getLocalSubscriber().getID());
-
-        //sets the local subscriber to null
-        Subscriber.setLocalSubscriber(null);
-
-        // Sends the message to the server
-        ClientGUIController.chat.sendToServer(message);
-
-        // Navigates to the search home page
-        navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
-    }
-
-    /**
-     * This method handles the viewProfileButton click event to navigate to the subscriber profile options frame
-     *
-     * @param event The action event triggered by clicking the view profile button
-     * @throws Exception If there is an issue with the navigation
-     */
-    public void viewProfileButtonClicked(ActionEvent event) throws Exception
-    {
-        navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "My Profile");
-    }
-
-    /**
-     * This method handles the editProfileButton click event to navigate to the edit subscriber details frame
-     *
-     * @param event The action event triggered by clicking the edit profile button
-     * @throws Exception If there is an issue with the navigation
-     */
-    public void editProfileButtonCLicked(ActionEvent event) throws Exception
-    {
-        navigateTo(event, "/gui/SubscriberEditProfileFrame.fxml", "/gui/Subscriber.css", "Edit Profile");
-    }
 
     /**
      * This method handles the extendBorrowButton click event to send extension request
@@ -259,39 +216,6 @@ public class SubscriberProfileOptionsFrameController
                 showAlert(Alert.AlertType.ERROR, "Error", "Unexpected response format from server.");
             }
         });
-    }
-
-    /**
-     * This method handles the searchBookButton click event to navigate to the search home page
-     *
-     * @param event The action event triggered by clicking the search book button
-     * @throws Exception If there is an issue with the navigation
-     */
-    public void searchBookButtonClicked(ActionEvent event) throws Exception
-    {
-        navigateTo(event, "/gui/SearchHomePageFrame.fxml", "/gui/Subscriber.css", "Home Page");
-    }
-
-    /**
-     * This method handles the changePasswordButton click event to navigate to the change password frame
-     *
-     * @param event The action event triggered by clicking the change password button
-     * @throws Exception If there is an issue with the navigation
-     */
-    public void changePasswordButtonClicked(ActionEvent event) throws Exception
-    {
-        navigateTo(event, "/gui/ChangePasswordFrame.fxml", "/gui/Subscriber.css", "Change Password");
-    }
-
-    /**
-     * This method handles the watchHistoryButton click event to navigate to the borrow history frame
-     *
-     * @param event The action event triggered by clicking the watch history button
-     * @throws Exception If there is an issue with the navigation
-     */
-    public void watchHistoryButtonClicked(ActionEvent event) throws Exception
-    {
-        navigateTo(event, "/gui/WatchHistoryScene.fxml", "/gui/Subscriber.css", "Watch History");
     }
 
     /**

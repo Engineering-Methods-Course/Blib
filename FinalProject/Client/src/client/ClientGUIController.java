@@ -4,6 +4,7 @@ import common.ClientServerMessage;
 import common.Librarian;
 import common.Subscriber;
 import javafx.scene.control.Alert;
+import javafx.scene.layout.AnchorPane;
 import logic.ClientController;
 import logic.ClientIPFrameController;
 import javafx.application.Application;
@@ -13,6 +14,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.Objects;
 
 public class ClientGUIController extends Application
@@ -28,7 +31,7 @@ public class ClientGUIController extends Application
      * Navigates to a specified FXML destination, optionally applying a CSS file and setting the title of the new stage.
      *
      * @param event        The ActionEvent triggered by the user's interaction (e.g., button click).
-     * @param fxmlFilePath The path to the FXML file to load (e.g., "/gui/SearchHomePageFrame.fxml").
+     * @param fxmlFilePath The path to the FXML file to load (e.g., "/gui/SearchPageFrame.fxml").
      * @param cssFilePath  The optional path to the CSS file to style the new view (e.g., "/gui/Subscriber.css"). Pass null if no CSS is required.
      * @param stageTitle   The title for the new stage window (e.g., "Profile Options").
      * @throws Exception   If the FXML file cannot be loaded or another error occurs during navigation.
@@ -77,6 +80,25 @@ public class ClientGUIController extends Application
         // Show the updated stage
         currentStage.setResizable(true); // Enable window resizing
         currentStage.show();
+    }
+
+    /**
+     * Changes the scene to the specified FXML file within the parent container.
+     *
+     * @param parentContainer The parent container in which to display the new scene.
+     * @param scene           The path to the FXML file to load (e.g., "/gui/SearchPageFrame.fxml").
+     * @throws IOException    If the FXML file cannot be loaded or another error occurs during navigation.
+     */
+    public static void loadFrameIntoPane(AnchorPane parentContainer, String scene) throws IOException {
+        parentContainer.getChildren().clear();
+        FXMLLoader loader = new FXMLLoader(ClientGUIController.class.getResource(scene));
+        ClientController.setLoader(loader);
+        Node view = loader.load();
+        parentContainer.getChildren().add(view);
+        AnchorPane.setTopAnchor(view, 0.0);
+        AnchorPane.setRightAnchor(view, 0.0);
+        AnchorPane.setBottomAnchor(view, 0.0);
+        AnchorPane.setLeftAnchor(view, 0.0);
     }
 
     /**

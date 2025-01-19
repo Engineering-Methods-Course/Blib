@@ -126,12 +126,12 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Book not found");
-                            SearchHomePageFrameController.changeCanSearch(false);
+                            SearchPageFrameController.changeCanSearch(false);
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Book Not Found", "There aren't any books like that"));
                         }
                         else
                         {
-                            SearchHomePageFrameController.changeCanSearch(true);
+                            SearchPageFrameController.changeCanSearch(true);
                             if (message.getMessageContent() instanceof ArrayList)
                             {
                                 @SuppressWarnings("unchecked") ArrayList<Book> bookList = (ArrayList<Book>) message.getMessageContent();
@@ -139,7 +139,7 @@ public class ClientController extends AbstractClient
                             }
                             else
                             {
-                                SearchHomePageFrameController.changeCanSearch(false);
+                                SearchPageFrameController.changeCanSearch(false);
                             }
                         }
                         break;
@@ -184,10 +184,10 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked") ArrayList<BorrowedBook> messages = (ArrayList<BorrowedBook>) message.getMessageContent();
-                            // Handle SubscriberProfileOptionsFrameController
-                            if (loader.getController().getClass().getSimpleName().equals("SubscriberProfileOptionsFrameController"))
+                            // Handle SubscriberProfileFrameController
+                            if (loader.getController().getClass().getSimpleName().equals("SubscriberProfileFrameController"))
                             {
-                                SubscriberProfileOptionsFrameController controllerSubscriberOption = loader.getController();
+                                SubscriberProfileFrameController controllerSubscriberOption = loader.getController();
                                 controllerSubscriberOption.loadBorrowsTable(messages);
                             }
                             // Handle WatchProfileFrameController
@@ -203,7 +203,7 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked") ArrayList<String> arrayMessageFromServer = (ArrayList<String>) message.getMessageContent();
-                            SubscriberProfileOptionsFrameController.showExtendMessageResponse(arrayMessageFromServer);
+                            SubscriberProfileFrameController.showExtendMessageResponse(arrayMessageFromServer);
                         }
                         else
                         {
@@ -328,7 +328,8 @@ public class ClientController extends AbstractClient
                         {
                             Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
                             Subscriber.setWatchProfileSubscriber(subscriberFromServer);
-                            SearchSubscriberFrameController.WatchProfileResponse(subscriberFromServer);
+                            SearchSubscriberFrameController Controller = loader.getController();
+                            Controller.WatchProfileResponse(subscriberFromServer);
                         }
                         break;
                     // Extend borrow - librarian response

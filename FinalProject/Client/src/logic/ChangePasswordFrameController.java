@@ -9,11 +9,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 
-import static client.ClientGUIController.navigateTo;
-import static client.ClientGUIController.showAlert;
+import static client.ClientGUIController.*;
 
 public class ChangePasswordFrameController
 {
@@ -25,6 +26,7 @@ public class ChangePasswordFrameController
     public Button btnUpdate;
     @FXML
     public Button btnBack;
+    public VBox changePasswordFrame;
 
     /**
      * This method is called when the update button is clicked
@@ -52,18 +54,11 @@ public class ChangePasswordFrameController
             ClientGUIController.chat.sendToServer(message);
 
             // Navigate back to the profile options page
-            navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "My profile");
+            // Get the parent container and replace the content
+            AnchorPane parentContainer = (AnchorPane) changePasswordFrame.getParent();
+            loadFrameIntoPane(parentContainer, "/gui/SubscriberProfileFrame.fxml");
+
         }
     }
 
-    /**
-     * This method is called when the back button is clicked
-     *
-     * @param event The event that triggered this method
-     * @throws Exception If an error occurs during navigation
-     */
-    public void clickBackButton(ActionEvent event) throws Exception
-    {
-        navigateTo(event, "/gui/SubscriberProfileOptionsFrame.fxml", "/gui/Subscriber.css", "My profile");
-    }
 }
