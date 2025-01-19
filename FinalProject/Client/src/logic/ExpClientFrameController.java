@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -118,15 +119,29 @@ public class ExpClientFrameController {
         loadFrameIntoPane("/gui/RegisterMemberFrame.fxml");
     }
 
+    public void viewReports(ActionEvent actionEvent) throws IOException {
+        loadFrameIntoPane("/gui/ViewReportsFrame.fxml");
+    }
+
     public void loadFrameIntoPane(String dest) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(dest));
         Parent newContent = loader.load();
         SceneChanger.getChildren().clear();
         SceneChanger.getChildren().add(newContent);
+
         AnchorPane.setTopAnchor(newContent, 0.0);
         AnchorPane.setRightAnchor(newContent, 0.0);
         AnchorPane.setBottomAnchor(newContent, 0.0);
         AnchorPane.setLeftAnchor(newContent, 0.0);
+    }
+
+
+    public void editSubscriberDetails(ActionEvent actionEvent) throws IOException {
+        loadFrameIntoPane("/gui/SubscriberEditProfileFrame.fxml");
+    }
+
+    public void watchHistory(ActionEvent actionEvent) throws IOException {
+        ///
     }
 }
 

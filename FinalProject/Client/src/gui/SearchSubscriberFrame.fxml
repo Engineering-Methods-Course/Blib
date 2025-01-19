@@ -6,31 +6,31 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.SearchSubscriberFrameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.SearchSubscriberFrameController">
 
     <!-- Title Text: "Search for Subscriber" -->
-    <Text layoutX="429.0" layoutY="106.0" text="Search for Subscriber" textAlignment="CENTER">
+    <Text layoutX="429.0" layoutY="106.0" text="Search for Subscriber" textAlignment="CENTER" AnchorPane.leftAnchor="502.0" AnchorPane.rightAnchor="439.48828125">
         <font>
             <Font size="44.0" />
         </font>
     </Text>
 
     <!-- Instruction Text: "Enter the subscriber ID" -->
-    <Text layoutX="515.0" layoutY="125.0" text="Enter the subscriber's ID" textAlignment="CENTER">
+    <Text layoutX="515.0" layoutY="125.0" text="Enter the subscriber's ID" textAlignment="CENTER" AnchorPane.leftAnchor="502.0" AnchorPane.rightAnchor="439.48828125">
         <font>
             <Font size="16.0" />
         </font>
     </Text>
 
     <!-- TextField for subscriber ID input -->
-    <TextField fx:id="idTextField" layoutX="502.0" layoutY="320.0" prefWidth="250.0" />
+    <TextField fx:id="idTextField" layoutX="502.0" layoutY="320.0" prefWidth="250.0" AnchorPane.leftAnchor="502.0" AnchorPane.rightAnchor="528.0" />
 
     <!-- Button to "Watch Profile" -->
-    <Button fx:id="watchProfileButton" layoutX="527.0" layoutY="365.0" onAction="#watchProfileButtonClicked" prefWidth="200.0" style="-fx-font-size: 16px;" styleClass="buttonArt" stylesheets="@newPage.css" text="Watch Profile" />
+    <Button fx:id="watchProfileButton" layoutX="527.0" layoutY="365.0" onAction="#watchProfileButtonClicked" prefWidth="200.0" style="-fx-font-size: 16px;" styleClass="buttonArt" stylesheets="@newPage.css" text="Watch Profile" AnchorPane.leftAnchor="527.0" AnchorPane.rightAnchor="553.0" />
 
     <!-- Back button at the bottom-left -->
     <Button fx:id="backButton" layoutX="26.0" layoutY="755.0" onAction="#backButtonClicked" styleClass="buttonArt" stylesheets="@newPage.css" text="Back" />
-    <Text layoutX="502.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="subscriber's ID:" textAlignment="CENTER" wrappingWidth="250.0">
+    <Text layoutX="502.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="subscriber's ID:" textAlignment="CENTER" wrappingWidth="250.0" AnchorPane.leftAnchor="502.0" AnchorPane.rightAnchor="528.0">
         <font>
             <Font size="20.0" />
         </font>
