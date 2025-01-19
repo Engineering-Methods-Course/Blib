@@ -29,8 +29,6 @@
             </HBox>
         </VBox>
 
-        <!-- todo: add button: view profile -->
-
         <!-- TableView to display subscribers -->
         <TableView fx:id="subscribersTable" layoutX="20.0" layoutY="149.0" prefHeight="588.0" prefWidth="1240.0" AnchorPane.bottomAnchor="63.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
             <columns>

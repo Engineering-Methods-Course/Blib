@@ -17,6 +17,7 @@ import static client.ClientGUIController.showAlert;
 
 public class UserLoginFrameController
 {
+    // FXML attributes
     @FXML
     public Button btnLogin;
     @FXML

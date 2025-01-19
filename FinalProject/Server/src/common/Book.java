@@ -83,24 +83,4 @@ public class Book implements Serializable
     {
         return bookCopyNum;
     }
-
-    /**
-     * Gets the number of reserved copies of the book.
-     *
-     * @return the number of reserved copies of the book
-     */
-    public int getReservedCopyNum()
-    {
-        return reservedCopyNum;
-    }
-
-    /**
-     * Gets the number of borrowed copies of the book.
-     *
-     * @return the number of borrowed copies of the book
-     */
-    public int getBorrowedCopyNum()
-    {
-        return borrowedCopyNum;
-    }
 }

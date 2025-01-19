@@ -14,10 +14,10 @@ public class BorrowedBook implements Serializable
     /**
      * Constructor to initialize a local BorrowedBook object with all necessary details from the server.
      *
-     * @param copyID           - the ID of the copy
-     * @param borrowerID       - the ID of the borrower
-     * @param borrowDate       - the date the book was borrowed
-     * @param expectedReturnDate       - the date the book is to be returned
+     * @param copyID             - the ID of the copy
+     * @param borrowerID         - the ID of the borrower
+     * @param borrowDate         - the date the book was borrowed
+     * @param expectedReturnDate - the date the book is to be returned
      */
     public BorrowedBook(int copyID, int borrowerID, String bookName, String borrowDate, String expectedReturnDate, String returnDate)
     {
@@ -28,7 +28,6 @@ public class BorrowedBook implements Serializable
         this.expectedReturnDate = expectedReturnDate;
         this.returnDate = returnDate;
     }
-
 
     /**
      * Gets the ID of the copy.
@@ -75,7 +74,8 @@ public class BorrowedBook implements Serializable
      *
      * @return the date the book was returned
      */
-    public String getReturnDate(){
+    public String getReturnDate()
+    {
         return returnDate;
     }
 

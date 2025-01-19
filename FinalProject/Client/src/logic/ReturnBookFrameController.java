@@ -3,13 +3,11 @@ package logic;
 import client.ClientGUIController;
 import common.ClientServerMessage;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.util.ArrayList;
 
-import static client.ClientGUIController.navigateTo;
 import static client.ClientGUIController.showAlert;
 
 public class ReturnBookFrameController
@@ -18,24 +16,11 @@ public class ReturnBookFrameController
     private TextField idTextField;
 
     /**
-     * Handles the Back button click event.
-     *
-     * @param event The ActionEvent triggered by clicking the button.
-     * @throws Exception If an error occurs during navigation.
-     */
-    public void backButtonClicked(ActionEvent event) throws Exception
-    {
-        navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Return");
-    }
-
-    /**
      * Handles the Return button click event.
      * Sends the copy ID (from the text field) to the server with message code 304.
      * If the copy ID is empty, an error message is printed.
-     *
-     * @param actionEvent The ActionEvent triggered by the Return button.
      */
-    public void returnButtonClicked(ActionEvent actionEvent)
+    public void returnButtonClicked()
     {
         // Extract data from the text field
         String copyID = idTextField.getText().trim();
@@ -48,7 +33,8 @@ public class ReturnBookFrameController
             return;
         }
         // Use regex to check if the copyID contains only numbers
-        if (!copyID.matches("^[0-9]+$")) {
+        if (!copyID.matches("^[0-9]+$"))
+        {
             // Handle invalid input (e.g., show an error dialog)
             showAlert(Alert.AlertType.ERROR, "Input Error", "Copy ID must contain only numbers.");
             return;

@@ -11,20 +11,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
-//import com.opencsv.bean.CsvToBean;
-//import com.opencsv.bean.CsvToBeanBuilder;
 
 import java.util.ArrayList;
 
-import static client.ClientGUIController.navigateTo;
 import static client.ClientGUIController.showAlert;
 
 public class SubscriberProfileFrameController
 {
-    @FXML
-    public Button logoutButton;
-    @FXML
-    public Button profileButton;
+    // FXML attributes
     @FXML
     public Text nameField;
     @FXML
@@ -34,19 +28,17 @@ public class SubscriberProfileFrameController
     @FXML
     public Text emailField;
     @FXML
-    public Button editProfileButton;
-    @FXML
-    public Button searchBookButton;
-    @FXML
     public Text userIDField;
     @FXML
-    public Button changePasswordButton;
     public TableView<BorrowedBook> borrowsTable;
+    @FXML
     public TableColumn<BorrowedBook, String> bookNameColumn;
+    @FXML
     public TableColumn<BorrowedBook, String> borrowDateColumn;
+    @FXML
     public TableColumn<BorrowedBook, String> returnDateColumn;
+    @FXML
     public TableColumn<BorrowedBook, Button> extendButtonColumn;
-    public Button watchHistoryButton;
 
     /**
      * This method is called when the frame is initialized
@@ -79,7 +71,7 @@ public class SubscriberProfileFrameController
                         extendButton.setOnAction((ActionEvent event) -> {
                             try
                             {
-                                extendBorrowButtonClicked(event);
+                                extendBorrowButtonClicked();
                             }
                             catch (Exception e)
                             {
@@ -131,13 +123,10 @@ public class SubscriberProfileFrameController
         }
     }
 
-
     /**
      * This method handles the extendBorrowButton click event to send extension request
-     *
-     * @param event The action event triggered by clicking the extend borrow button
      */
-    public void extendBorrowButtonClicked(ActionEvent event)
+    public void extendBorrowButtonClicked()
     {
         // Get the selected borrowed book from the table
         BorrowedBook selectedBook = borrowsTable.getSelectionModel().getSelectedItem();
@@ -167,7 +156,7 @@ public class SubscriberProfileFrameController
      * creates a ClientServerMessage object with code 212 for extend borrow request
      *
      * @param selectedBook The selected borrowed book
-     * @return             The ClientServerMessage object
+     * @return The ClientServerMessage object
      */
     private static ClientServerMessage getClientServerMessage(BorrowedBook selectedBook)
     {
@@ -219,10 +208,10 @@ public class SubscriberProfileFrameController
     }
 
     /**
-     *  Adds a day to the borrow and return date
+     * Adds a day to the borrow and return date
      *
-     *  @param date The date to add a day to
-     *  @return The date with one day added
+     * @param date The date to add a day to
+     * @return The date with one day added
      */
     private String addDay(String date)
     {

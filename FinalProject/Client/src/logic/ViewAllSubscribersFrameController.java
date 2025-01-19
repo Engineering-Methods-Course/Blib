@@ -5,7 +5,6 @@ import common.ClientServerMessage;
 import common.Subscriber;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -16,10 +15,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static client.ClientGUIController.loadFrameIntoPane;
-import static client.ClientGUIController.navigateTo;
 
 public class ViewAllSubscribersFrameController
 {
+    // FXML attributes
     @FXML
     public TableColumn<Subscriber, Integer> idColumn;
     @FXML
@@ -41,9 +40,9 @@ public class ViewAllSubscribersFrameController
     @FXML
     public TextField filterTextField;
     @FXML
-    public Button backButton;
     public AnchorPane allSubscribersFrame;
 
+    // other class attributes
     private List<Subscriber> allSubscribers;
 
     /**
@@ -68,7 +67,7 @@ public class ViewAllSubscribersFrameController
                 watchButton.setOnAction(event -> {
                     Subscriber subscriber = getTableView().getItems().get(getIndex());
                     // Handle the watch profile action here
-                    watchProfileButtonClicked(event, subscriber);
+                    watchProfileButtonClicked(subscriber);
                 });
             }
 
@@ -93,7 +92,6 @@ public class ViewAllSubscribersFrameController
         //sends the message to the server
         ClientGUIController.chat.sendToServer(message);
     }
-
 
     /**
      * Adds the list of subscribers to the table.
@@ -134,22 +132,11 @@ public class ViewAllSubscribersFrameController
     }
 
     /**
-     * Handles the Back button click event.
-     *
-     * @param event The ActionEvent triggered by clicking the button.
-     * @throws Exception If an error occurs during navigation.
-     */
-    public void backButtonClicked(ActionEvent event) throws Exception
-    {
-        navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "All Subscribers");
-    }
-
-    /**
      * Handles the watch profile action.
      *
      * @param subscriber The subscriber whose profile is to be watched.
      */
-    private void watchProfileButtonClicked(ActionEvent event, Subscriber subscriber)
+    private void watchProfileButtonClicked(Subscriber subscriber)
     {
         // Sets the local watch profile subscriber
         Subscriber.setWatchProfileSubscriber(subscriber);

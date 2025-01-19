@@ -2,20 +2,15 @@ package logic;
 
 import client.ClientGUIController;
 import common.ClientServerMessage;
-import common.Librarian;
-import common.Subscriber;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import static client.ClientGUIController.loadFrameIntoPane;
-import static client.ClientGUIController.navigateTo;
 
 public class SearchPageFrameController
 {
@@ -37,12 +32,6 @@ public class SearchPageFrameController
 
     private SearchType searchType;
     @FXML
-    public Pane menuPane;
-    @FXML
-    public Button loginButton;
-    @FXML
-    public Button profileButton;
-    @FXML
     public AnchorPane searchPane;
     @FXML
     public RadioButton nameRadio;
@@ -56,8 +45,6 @@ public class SearchPageFrameController
     public TextArea descriptionSearch;
     @FXML
     public Button searchButton;
-    @FXML
-    public Button watchProfileButton;
 
     private static boolean canSearch = false; //Variable to check if we got results from the search
     private UserType user_type = UserType.User;
@@ -84,10 +71,8 @@ public class SearchPageFrameController
 
     /**
      * This method changes the search configuration to search by name
-     *
-     * @param event The ActionEvent triggered by the button click
      */
-    public void searchByName(ActionEvent event)
+    public void searchByName()
     {
         searchType = SearchType.NAME;
         changeAllRadioSelected(true, false, false);
@@ -98,10 +83,8 @@ public class SearchPageFrameController
 
     /**
      * This method changes the search configuration to search by genre
-     *
-     * @param event The ActionEvent triggered by the button click
      */
-    public void searchByGenre(ActionEvent event)
+    public void searchByGenre()
     {
         searchType = SearchType.GENRE;
         changeAllRadioSelected(false, true, false);
@@ -111,10 +94,8 @@ public class SearchPageFrameController
 
     /**
      * This method changes the search configuration to search by description
-     *
-     * @param event The ActionEvent triggered by the button click
      */
-    public void searchByDescription(ActionEvent event)
+    public void searchByDescription()
     {
         searchType = SearchType.DESCRIPTION;
         searchButton.setLayoutY(500);
@@ -141,10 +122,9 @@ public class SearchPageFrameController
     /**
      * This method handles the searchButton click event to search for books
      *
-     * @param event The ActionEvent triggered by the search button click
      * @throws Exception if there is an issue with the search
      */
-    public void search(ActionEvent event) throws Exception
+    public void search() throws Exception
     {
         int messageCode;
         String messageContent;
@@ -189,5 +169,4 @@ public class SearchPageFrameController
             loadFrameIntoPane((AnchorPane) searchFrame.getParent(), "/gui/SearchResultFrame.fxml");
         }
     }
-
 }

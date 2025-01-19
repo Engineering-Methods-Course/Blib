@@ -6,18 +6,16 @@ import common.ReportEntry;
 import common.MonthlyReport;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.util.StringConverter;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-
-import static client.ClientGUIController.navigateTo;
 
 public class ViewReportsFrameController
 {
@@ -72,7 +70,7 @@ public class ViewReportsFrameController
         Date endDate = Date.from(endRangePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         // checks if the endDatePicker's date is later than the startDatePicker and if so, brings an error message
-        if(endDate.before(startDate))
+        if (endDate.before(startDate))
         {
             ClientGUIController.showAlert(Alert.AlertType.ERROR, "Wrong date", "End date must be later than start date");
             return;
@@ -149,23 +147,13 @@ public class ViewReportsFrameController
     }
 
     /**
-     * Handles the Back button click event.
-     *
-     * @param event The ActionEvent triggered by clicking the button.
-     * @throws Exception If an error occurs during navigation.
-     */
-    public void backButtonClicked(ActionEvent event) throws Exception
-    {
-        navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Librian Profile");
-    }
-
-    /**
      * Generates a bar chart based on the given log entries.
      *
-     * @param chartName  The name of the chart.
+     * @param chartName     The name of the chart.
      * @param reportEntries The log entries to generate the chart from.
      */
-    private void generateBarChart(String chartName, ArrayList<ReportEntry> reportEntries) {
+    private void generateBarChart(String chartName, ArrayList<ReportEntry> reportEntries)
+    {
         Platform.runLater(() -> {
             // Create a new series for the bar chart
             XYChart.Series<String, Number> barSeries = new XYChart.Series<>();
@@ -178,7 +166,8 @@ public class ViewReportsFrameController
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
             // Process the log entries and count the actions per week
-            for (ReportEntry entry : reportEntries) {
+            for (ReportEntry entry : reportEntries)
+            {
                 LocalDate date = entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 LocalDate startOfWeek = date.with(DayOfWeek.SUNDAY);
                 String weekStart = startOfWeek.format(formatter);
@@ -193,9 +182,11 @@ public class ViewReportsFrameController
             }
 
             // Populate the bar chart with the action counts
-            for (Map.Entry<String, Map<String, Integer>> dateEntry : actionCountMap.entrySet()) {
+            for (Map.Entry<String, Map<String, Integer>> dateEntry : actionCountMap.entrySet())
+            {
                 String date = dateEntry.getKey();
-                for (Map.Entry<String, Integer> actionEntry : dateEntry.getValue().entrySet()) {
+                for (Map.Entry<String, Integer> actionEntry : dateEntry.getValue().entrySet())
+                {
                     Integer count = actionEntry.getValue();
                     barSeries.getData().add(new XYChart.Data<>(date, count));
                 }
@@ -252,7 +243,7 @@ public class ViewReportsFrameController
     /**
      * Generates a line chart based on the given log entries.
      *
-     * @param chartName  The name of the chart.
+     * @param chartName     The name of the chart.
      * @param reportEntries The log entries to generate the chart from.
      */
     private void generateLineChart(String chartName, ArrayList<ReportEntry> reportEntries)
@@ -324,30 +315,41 @@ public class ViewReportsFrameController
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         // Set the date format
-        datePicker.setConverter(new StringConverter<LocalDate>() {
+        datePicker.setConverter(new StringConverter<LocalDate>()
+        {
             @Override
-            public String toString(LocalDate date) {
-                if (date != null) {
+            public String toString(LocalDate date)
+            {
+                if (date != null)
+                {
                     return formatter.format(date);
-                } else {
+                }
+                else
+                {
                     return "";
                 }
             }
 
             @Override
-            public LocalDate fromString(String string) {
-                if (string != null && !string.isEmpty()) {
+            public LocalDate fromString(String string)
+            {
+                if (string != null && !string.isEmpty())
+                {
                     return LocalDate.parse(string, formatter);
-                } else {
+                }
+                else
+                {
                     return null;
                 }
             }
         });
 
         // Disable all days except the first day of each month and all the dates after the previous month
-        datePicker.setDayCellFactory(picker -> new DateCell() {
+        datePicker.setDayCellFactory(picker -> new DateCell()
+        {
             @Override
-            public void updateItem(LocalDate date, boolean empty) {
+            public void updateItem(LocalDate date, boolean empty)
+            {
                 super.updateItem(date, empty);
                 // Disable all days except the first day of each month and all the dates after the previous month
                 setDisable(empty || date.getDayOfMonth() != 1 || date.isAfter(LocalDate.now().withDayOfMonth(1).minusDays(1)));

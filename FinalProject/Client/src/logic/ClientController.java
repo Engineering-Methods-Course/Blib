@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import ocsf.client.*;
+
 import java.io.*;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public class ClientController extends AbstractClient
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Wrong Username(id) or Password");
-                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR,"Login error", "Wrong Username(id) or Password"));
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Login error", "Wrong Username(id) or Password"));
                         }
                         else if (message.getMessageContent() instanceof User)
                         {
@@ -110,7 +111,7 @@ public class ClientController extends AbstractClient
                         break;
                     // message to the client
                     case 107:
-                        if(message.getMessageContent() == null)
+                        if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not get message");
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not get message"));
@@ -366,7 +367,7 @@ public class ClientController extends AbstractClient
                             controller.generateBorrowTimeReport(reports);
                         }
                         break;
-                        // Handles the Subscriber Status report response
+                    // Handles the Subscriber Status report response
                     case 315:
                         if (message.getMessageContent() == null)
                         {
@@ -396,7 +397,7 @@ public class ClientController extends AbstractClient
                             controller.loadLibrarianMessages(messages);
                         }
                         break;
-                        // Server has closed its connection
+                    // Server has closed its connection
                     case 999:
                         Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Server closed", "Server has closed its connection for maintenance"));
                         break;

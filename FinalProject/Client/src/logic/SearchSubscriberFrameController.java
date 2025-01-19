@@ -14,11 +14,17 @@ import static client.ClientGUIController.*;
 
 public class SearchSubscriberFrameController
 {
+    // FXML attributes
     @FXML
     public AnchorPane searchSubscriberFrame;
     @FXML
     private TextField idTextField;
 
+    /**
+     * handles the watch profile button click event
+     *
+     * @param actionEvent the event that triggered the method
+     */
     public void watchProfileButtonClicked(ActionEvent actionEvent)
     {
         // Get the ID from the TextField
@@ -54,7 +60,11 @@ public class SearchSubscriberFrameController
         }
     }
 
-
+    /**
+     * Handles the response from the server for the watch profile request
+     *
+     * @param subscriberFromServer the subscriber that was returned from the server
+     */
     public void WatchProfileResponse(Subscriber subscriberFromServer)
     {
         Platform.runLater(() -> {

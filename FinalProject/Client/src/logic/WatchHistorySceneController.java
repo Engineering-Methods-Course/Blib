@@ -4,20 +4,18 @@ import client.ClientGUIController;
 import common.ClientServerMessage;
 import common.Subscriber;
 import common.SubscriberHistory;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static client.ClientGUIController.navigateTo;
 
 public class WatchHistorySceneController
 {
@@ -45,18 +43,6 @@ public class WatchHistorySceneController
         // sends the server a request for the user's history
         ClientServerMessage message = new ClientServerMessage(214, Subscriber.getLocalSubscriber().getID());
         ClientGUIController.chat.sendToServer(message);
-    }
-
-    /**
-     * Handles the Back button click event.
-     *
-     * @param event      The ActionEvent triggered by clicking the button.
-     * @throws Exception If an error occurs during navigation.
-     */
-    public void backButtonClicked(ActionEvent event) throws Exception
-    {
-        // go back to the previous scene
-        navigateTo(event, "/gui/SubscriberProfileFrame.fxml", "/gui/Subscriber.css", "Watch Profile");
     }
 
     /**

@@ -29,7 +29,6 @@ public class BorrowedBook implements Serializable
         this.returnDate = returnDate;
     }
 
-
     /**
      * Gets the ID of the copy.
      *

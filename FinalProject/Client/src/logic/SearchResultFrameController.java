@@ -8,7 +8,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -19,11 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static client.ClientGUIController.loadFrameIntoPane;
-import static client.ClientGUIController.navigateTo;
-import static javafx.application.Application.launch;
 
 public class SearchResultFrameController
 {
+    //FXML attributes
     @FXML
     public TableView<List<String>> searchResultTable;
     @FXML
@@ -33,13 +31,12 @@ public class SearchResultFrameController
     @FXML
     public TableColumn<List<String>, String> watchDetailsColumn;
     @FXML
-    public Button backButton;
+    public VBox SearchResultFrame;
 
+    //other class attributes
     private final ObservableList<List<String>> BookList = FXCollections.observableArrayList();
     private final Property<ObservableList<List<String>>> BookListProperty = new SimpleObjectProperty<>(BookList);
-
     private static ArrayList<Book> books;
-    public VBox SearchResultFrame;
 
     /**
      * initializes the table with the books that were found
@@ -55,6 +52,7 @@ public class SearchResultFrameController
         watchDetailsColumn.setCellFactory(column -> new TableCell<List<String>, String>()
         {
             private final Button button = new Button("View Details");
+
             {
                 // Set the button action
                 button.setOnAction(event -> {
@@ -138,5 +136,4 @@ public class SearchResultFrameController
             BookInfoFrameController.setLocalBook(bk);
         }
     }
-
 }

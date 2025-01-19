@@ -2,11 +2,10 @@ package common;
 
 import java.io.Serializable;
 
-public class Librarian extends User implements Serializable {
-
+public class Librarian extends User implements Serializable
+{
     private static Librarian localLibrarian = null;
     private final int librarianID;
-
 
     /**
      * Constructor to initialize a local Librarian object with all necessary details from the server.
@@ -15,7 +14,8 @@ public class Librarian extends User implements Serializable {
      * @param firstName   - the first name of the librarian
      * @param lastName    - the last name of the librarian
      */
-    public Librarian(int librarianID, String firstName, String lastName) {
+    public Librarian(int librarianID, String firstName, String lastName)
+    {
         super(firstName, lastName);
         this.librarianID = librarianID;
     }
@@ -25,7 +25,8 @@ public class Librarian extends User implements Serializable {
      *
      * @return the local librarian object
      */
-    public static Librarian getLocalLibrarian() {
+    public static Librarian getLocalLibrarian()
+    {
         return localLibrarian;
     }
 
@@ -34,7 +35,8 @@ public class Librarian extends User implements Serializable {
      *
      * @param localLibrarian the local librarian object
      */
-    public static void setLocalLibrarian(Librarian localLibrarian) {
+    public static void setLocalLibrarian(Librarian localLibrarian)
+    {
         Librarian.localLibrarian = localLibrarian;
     }
 
@@ -43,7 +45,8 @@ public class Librarian extends User implements Serializable {
      *
      * @return the ID of the librarian
      */
-    public int getID() {
+    public int getID()
+    {
         return librarianID;
     }
 
@@ -52,7 +55,8 @@ public class Librarian extends User implements Serializable {
      *
      * @return the first name of the librarian
      */
-    public String getFirstName() {
+    public String getFirstName()
+    {
         return firstName;
     }
 
@@ -61,9 +65,8 @@ public class Librarian extends User implements Serializable {
      *
      * @return the last name of the librarian
      */
-    public String getLastName() {
+    public String getLastName()
+    {
         return lastName;
     }
-
-
 }

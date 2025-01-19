@@ -8,140 +8,205 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.MainFrameController">
-   <children>
-      <AnchorPane fx:id="menu" maxWidth="1.7976931348623157E308" prefHeight="1080.0" prefWidth="190.0" styleClass="menu" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css">
-         <children>
-            <Text fx:id="UsernameText" layoutX="37.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="name" textAlignment="CENTER" wrappingWidth="150.13671875">
-               <font>
-                  <Font name="System Bold" size="19.0" />
-               </font></Text>
-            <ImageView fx:id="userPhoto" fitHeight="44.0" fitWidth="60.0" layoutX="91.0" layoutY="15.0" onMouseClicked="#ImageOnClick" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../resources/icons8-user-48.png" />
-               </image>
-            </ImageView>
-            <Button fx:id="LogoutButton" contentDisplay="TOP" disable="true" layoutX="8.0" layoutY="17.0" mnemonicParsing="false" onAction="#logout" prefHeight="38.0" prefWidth="87.0" styleClass="buttonCheck" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Logout" visible="false">
-               <graphic>
-                  <ImageView fitHeight="19.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../resources/icons8-logout-30.png" />
-                     </image>
-                  </ImageView>
-               </graphic></Button>
-            <Button fx:id="LoginButton" contentDisplay="TOP" layoutX="13.0" layoutY="18.0" mnemonicParsing="false" onAction="#OpenLogin" prefHeight="59.0" prefWidth="77.0" styleClass="buttonCheck" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Login">
-               <graphic>
-                  <ImageView fitHeight="59.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../resources/icons8-login-50.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <AnchorPane fx:id="Anchor1" disable="true" layoutX="25.0" layoutY="214.0" prefHeight="601.0" prefWidth="180.0" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" visible="false">
-               <children>
-                  <Button fx:id="borrowButton" alignment="CENTER" contentDisplay="TOP" layoutX="42.0" layoutY="52.0" mnemonicParsing="false" onAction="#loadBorrow" prefHeight="65.0" prefWidth="95.0" styleClass="buttonCheck" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Borrow">
-                     <graphic>
-                        <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/icons8-book-50.png" />
-                           </image>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
+            prefWidth="1920.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.MainFrameController">
+    <children>
+        <AnchorPane fx:id="menu" maxWidth="1.7976931348623157E308" prefHeight="1080.0" prefWidth="190.0"
+                    styleClass="menu" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css">
+            <children>
+                <Text fx:id="UsernameText" layoutX="37.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="name" textAlignment="CENTER" wrappingWidth="150.13671875">
+                    <font>
+                        <Font name="System Bold" size="19.0"/>
+                    </font>
+                </Text>
+                <ImageView fx:id="userPhoto" fitHeight="44.0" fitWidth="60.0" layoutX="91.0" layoutY="15.0"
+                           onMouseClicked="#ImageOnClick" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../resources/icons8-user-48.png"/>
+                    </image>
+                </ImageView>
+                <Button fx:id="LogoutButton" contentDisplay="TOP" disable="true" layoutX="8.0" layoutY="17.0"
+                        mnemonicParsing="false" onAction="#logout" prefHeight="38.0" prefWidth="87.0"
+                        styleClass="buttonCheck"
+                        stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Logout"
+                        visible="false">
+                    <graphic>
+                        <ImageView fitHeight="19.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../resources/icons8-logout-30.png"/>
+                            </image>
                         </ImageView>
-                     </graphic></Button>
-                  <Button fx:id="searchSubButton" contentDisplay="TOP" layoutX="9.0" layoutY="184.0" mnemonicParsing="false" onAction="#searchForSubscriber" prefHeight="64.0" prefWidth="158.0" styleClass="buttonCheck" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Search Subscriber">
-                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/icons8-search-50.png" />
-                           </image>
+                    </graphic>
+                </Button>
+                <Button fx:id="LoginButton" contentDisplay="TOP" layoutX="13.0" layoutY="18.0" mnemonicParsing="false"
+                        onAction="#OpenLogin" prefHeight="59.0" prefWidth="77.0" styleClass="buttonCheck"
+                        stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Login">
+                    <graphic>
+                        <ImageView fitHeight="59.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../resources/icons8-login-50.png"/>
+                            </image>
                         </ImageView>
-                     </graphic></Button>
-                  <Button fx:id="viewAllButton" contentDisplay="TOP" layoutX="1.0" layoutY="259.0" mnemonicParsing="false" onAction="#watchSubscribersBtn" prefHeight="61.0" prefWidth="174.0" styleClass="buttonCheck" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="View All Subscribers">
-                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/icons8-details-30.png" />
-                           </image>
+                    </graphic>
+                </Button>
+                <AnchorPane fx:id="Anchor1" disable="true" layoutX="25.0" layoutY="214.0" prefHeight="601.0"
+                            prefWidth="180.0" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css"
+                            visible="false">
+                    <children>
+                        <Button fx:id="borrowButton" alignment="CENTER" contentDisplay="TOP" layoutX="42.0"
+                                layoutY="52.0" mnemonicParsing="false" onAction="#loadBorrow" prefHeight="65.0"
+                                prefWidth="95.0" styleClass="buttonCheck"
+                                stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Borrow">
+                            <graphic>
+                                <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../resources/icons8-book-50.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="searchSubButton" contentDisplay="TOP" layoutX="9.0" layoutY="184.0"
+                                mnemonicParsing="false" onAction="#searchForSubscriber" prefHeight="64.0"
+                                prefWidth="158.0" styleClass="buttonCheck"
+                                stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css"
+                                text="Search Subscriber">
+                            <graphic>
+                                <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../resources/icons8-search-50.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="viewAllButton" contentDisplay="TOP" layoutX="1.0" layoutY="259.0"
+                                mnemonicParsing="false" onAction="#watchSubscribersBtn" prefHeight="61.0"
+                                prefWidth="174.0" styleClass="buttonCheck"
+                                stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css"
+                                text="View All Subscribers">
+                            <graphic>
+                                <ImageView fitHeight="24.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../resources/icons8-details-30.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="reportButton" contentDisplay="TOP" graphicTextGap="10.0" layoutX="23.0"
+                                layoutY="335.0" mnemonicParsing="false" onAction="#viewReports" prefHeight="68.0"
+                                prefWidth="131.0" styleClass="buttonCheck"
+                                stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css"
+                                text="View reports">
+                            <graphic>
+                                <ImageView fitHeight="24.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../resources/icons8-report-50.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="retunButton" alignment="CENTER" contentDisplay="TOP" layoutX="46.0"
+                                layoutY="117.0" mnemonicParsing="false" onAction="#returnBook" prefHeight="44.0"
+                                prefWidth="87.0" styleClass="buttonCheck"
+                                stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Return">
+                            <graphic>
+                                <ImageView fitHeight="25.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../resources/icons8-return-50.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="RegisterButton" contentDisplay="TOP" graphicTextGap="10.0" layoutX="10.0"
+                                layoutY="430.0" mnemonicParsing="false" onAction="#RegisterMember" prefHeight="68.0"
+                                prefWidth="158.0" styleClass="buttonCheck"
+                                stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css"
+                                text="Register member">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../resources/icons8-register-50.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="viewMessagesButton" contentDisplay="TOP" layoutX="18.0" layoutY="520.0"
+                                mnemonicParsing="false" onAction="#viewMessagesButtonClicked" prefHeight="67.0"
+                                prefWidth="140.0" styleClass="buttonCheck"
+                                stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css"
+                                text="View messages" textAlignment="CENTER">
+                            <graphic>
+                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../resources/icons8-message-32.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </children>
+                </AnchorPane>
+                <AnchorPane fx:id="Anchor2" disable="true" layoutX="28.0" layoutY="214.0" prefHeight="601.0"
+                            prefWidth="168.0" visible="false">
+                    <children>
+                        <Button fx:id="editSubDetailsButton" contentDisplay="TOP" layoutX="26.0" layoutY="47.0"
+                                mnemonicParsing="false" onAction="#editSubscriberDetails" prefHeight="71.0"
+                                prefWidth="119.0" styleClass="buttonCheck"
+                                stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css"
+                                text="Edit details">
+                            <graphic>
+                                <ImageView fitHeight="29.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../resources/icons8-edit-text-file-50.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="watchHistoryButton" contentDisplay="TOP" layoutX="15.0" layoutY="187.0"
+                                mnemonicParsing="false" onAction="#watchHistory" prefHeight="75.0" prefWidth="140.0"
+                                styleClass="buttonCheck" text="Watch history">
+                            <graphic>
+                                <ImageView fitHeight="24.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../resources/icons8-history-50.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="changePassword" alignment="CENTER" contentDisplay="TOP" layoutX="6.0"
+                                layoutY="118.0" mnemonicParsing="false" onAction="#changePassword" prefHeight="69.0"
+                                prefWidth="158.0" styleClass="buttonCheck" text="Change password">
+                            <graphic>
+                                <ImageView fitHeight="70.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../resources/icons8-password-64.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </children>
+                </AnchorPane>
+                <Line endX="100.0" layoutX="113.0" layoutY="144.0" startX="-100.0"/>
+                <Text fx:id="Hello" layoutX="91.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello"
+                      wrappingWidth="44.000000000000114">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Text>
+                <Button fx:id="searchButton" contentDisplay="TOP" layoutX="66.0" layoutY="148.0" mnemonicParsing="false"
+                        onAction="#Press1" prefHeight="66.0" prefWidth="95.0" styleClass="buttonCheck"
+                        stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Search">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../resources/icons8-search-50.png"/>
+                            </image>
                         </ImageView>
-                     </graphic></Button>
-                  <Button fx:id="reportButton" contentDisplay="TOP" graphicTextGap="10.0" layoutX="23.0" layoutY="335.0" mnemonicParsing="false" onAction="#viewReports" prefHeight="68.0" prefWidth="131.0" styleClass="buttonCheck" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="View reports">
-                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/icons8-report-50.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
-                  <Button fx:id="retunButton" alignment="CENTER" contentDisplay="TOP" layoutX="46.0" layoutY="117.0" mnemonicParsing="false" onAction="#returnBook" prefHeight="44.0" prefWidth="87.0" styleClass="buttonCheck" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Return">
-                     <graphic>
-                        <ImageView fitHeight="25.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/icons8-return-50.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
-                  <Button fx:id="RegisterButton" contentDisplay="TOP" graphicTextGap="10.0" layoutX="10.0" layoutY="430.0" mnemonicParsing="false" onAction="#RegisterMember" prefHeight="68.0" prefWidth="158.0" styleClass="buttonCheck" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Register member">
-                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/icons8-register-50.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
-                  <Button fx:id="viewMessagesButton" contentDisplay="TOP" layoutX="18.0" layoutY="520.0" mnemonicParsing="false" onAction="#viewMessagesButtonClicked" prefHeight="67.0" prefWidth="140.0" styleClass="buttonCheck" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="View messages" textAlignment="CENTER">
-                     <graphic>
-                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/icons8-message-32.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="Ancor2" disable="true" layoutX="28.0" layoutY="214.0" prefHeight="601.0" prefWidth="168.0" visible="false">
-               <children>
-                  <Button fx:id="editSubDetailsButton" contentDisplay="TOP" layoutX="26.0" layoutY="47.0" mnemonicParsing="false" onAction="#editSubscriberDetails" prefHeight="71.0" prefWidth="119.0" styleClass="buttonCheck" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Edit details">
-                     <graphic>
-                        <ImageView fitHeight="29.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/icons8-edit-text-file-50.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
-                  <Button fx:id="watchHistoryButton" contentDisplay="TOP" layoutX="15.0" layoutY="187.0" mnemonicParsing="false" onAction="#watchHistory" prefHeight="75.0" prefWidth="140.0" styleClass="buttonCheck" text="Watch history">
-                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/icons8-history-50.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
-                  <Button fx:id="changePassword" alignment="CENTER" contentDisplay="TOP" layoutX="6.0" layoutY="118.0" mnemonicParsing="false" onAction="#changePassword" prefHeight="69.0" prefWidth="158.0" styleClass="buttonCheck" text="Change password">
-                     <graphic>
-                        <ImageView fitHeight="70.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/icons8-password-64.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
-               </children>
-            </AnchorPane>
-            <Line endX="100.0" layoutX="113.0" layoutY="144.0" startX="-100.0" />
-            <Text fx:id="Hello" layoutX="91.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello" wrappingWidth="44.000000000000114">
-               <font>
-                  <Font size="18.0" />
-               </font></Text>
-            <Button fx:id="searchButton" contentDisplay="TOP" layoutX="66.0" layoutY="148.0" mnemonicParsing="false" onAction="#Press1" prefHeight="66.0" prefWidth="95.0" styleClass="buttonCheck" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Search">
-               <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../resources/icons8-search-50.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-      </AnchorPane>
-      <AnchorPane fx:id="SceneChanger" layoutX="242.0" layoutY="-3.0" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" />
-   </children>
+                    </graphic>
+                </Button>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="SceneChanger" layoutX="242.0" layoutY="-3.0" prefHeight="1087.0" prefWidth="1677.0"
+                    stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css"/>
+    </children>
 </AnchorPane>

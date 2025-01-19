@@ -7,25 +7,42 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="bookInfoFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.BookInfoFrameController">
+<VBox fx:id="bookInfoFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="logic.BookInfoFrameController">
     <children>
-        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="741.0" prefWidth="1281.0">
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                    prefHeight="741.0" prefWidth="1281.0">
             <children>
-                <Text layoutX="340.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book Name:" wrappingWidth="85.0" />
-                <Text fx:id="bookName" layoutX="453.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Pull Name From DB&gt;" textAlignment="CENTER" />
-                <Text layoutX="340.0" layoutY="248.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Genre:" wrappingWidth="85.0" />
-                <Text fx:id="bookGenre" layoutX="452.0" layoutY="248.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Pull Genre From DB&gt;" textAlignment="CENTER" />
-                <Text layoutX="340.0" layoutY="318.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" wrappingWidth="85.0" />
-                <TextArea fx:id="bookdescription" editable="false" layoutX="340.0" layoutY="330.0" prefHeight="200.0" prefWidth="533.0" text="&lt;Pull Description From DB&gt;" />
-                <Text fx:id="TextForAvailability" layoutX="340.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Location:" wrappingWidth="85.0" />
-                <Text fx:id="bookLocation" layoutX="453.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;Pull Location From DB&gt;" textAlignment="CENTER" />
-                  <Button fx:id="backButton" layoutX="217.0" layoutY="571.0" mnemonicParsing="false" onAction="#backButtonClicked" prefHeight="32.0" prefWidth="78.0" text="Back" AnchorPane.bottomAnchor="138.0" AnchorPane.leftAnchor="217.0" AnchorPane.rightAnchor="986.0" AnchorPane.topAnchor="571.0" />
-                  <Button fx:id="orderBookButton" layoutX="925.0" layoutY="578.0" mnemonicParsing="false" onAction="#orderBookButtonClicked" prefHeight="32.0" prefWidth="78.0" text="Order" AnchorPane.bottomAnchor="131.0" AnchorPane.leftAnchor="925.0" AnchorPane.rightAnchor="278.0" AnchorPane.topAnchor="578.0" />
+                <Text layoutX="340.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book Name:"
+                      wrappingWidth="85.0"/>
+                <Text fx:id="bookName" layoutX="453.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="&lt;Pull Name From DB&gt;" textAlignment="CENTER"/>
+                <Text layoutX="340.0" layoutY="248.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Genre:"
+                      wrappingWidth="85.0"/>
+                <Text fx:id="bookGenre" layoutX="452.0" layoutY="248.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="&lt;Pull Genre From DB&gt;" textAlignment="CENTER"/>
+                <Text layoutX="340.0" layoutY="318.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:"
+                      wrappingWidth="85.0"/>
+                <TextArea fx:id="bookdescription" editable="false" layoutX="340.0" layoutY="330.0" prefHeight="200.0"
+                          prefWidth="533.0" text="&lt;Pull Description From DB&gt;"/>
+                <Text fx:id="TextForAvailability" layoutX="340.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="Location:" wrappingWidth="85.0"/>
+                <Text fx:id="bookLocation" layoutX="453.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="&lt;Pull Location From DB&gt;" textAlignment="CENTER"/>
+                <Button fx:id="backButton" layoutX="217.0" layoutY="571.0" mnemonicParsing="false"
+                        onAction="#backButtonClicked" prefHeight="32.0" prefWidth="78.0" text="Back"
+                        AnchorPane.bottomAnchor="138.0" AnchorPane.leftAnchor="217.0" AnchorPane.rightAnchor="986.0"
+                        AnchorPane.topAnchor="571.0"/>
+                <Button fx:id="orderBookButton" layoutX="925.0" layoutY="578.0" mnemonicParsing="false"
+                        onAction="#orderBookButtonClicked" prefHeight="32.0" prefWidth="78.0" text="Order"
+                        AnchorPane.bottomAnchor="131.0" AnchorPane.leftAnchor="925.0" AnchorPane.rightAnchor="278.0"
+                        AnchorPane.topAnchor="578.0"/>
             </children>
         </AnchorPane>
         <HBox prefHeight="100.0" prefWidth="200.0">
             <children>
-                <AnchorPane prefHeight="59.0" prefWidth="1294.0" />
+                <AnchorPane prefHeight="59.0" prefWidth="1294.0"/>
             </children>
         </HBox>
     </children>

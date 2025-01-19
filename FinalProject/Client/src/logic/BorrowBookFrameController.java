@@ -3,14 +3,13 @@ package logic;
 import client.ClientGUIController;
 import common.ClientServerMessage;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import static client.ClientGUIController.navigateTo;
 import static client.ClientGUIController.showAlert;
 
 public class BorrowBookFrameController
@@ -24,8 +23,6 @@ public class BorrowBookFrameController
     @FXML
     public DatePicker returnDatePicker;
     @FXML
-    public Button btnBack;
-    @FXML
     public Button borrowButton;
 
     /**
@@ -37,9 +34,11 @@ public class BorrowBookFrameController
         borrowDatePicker.setValue(LocalDate.now());
 
         // Prevent the user from selecting a date before today in borrowDatePicker
-        borrowDatePicker.setDayCellFactory(picker -> new DateCell() {
+        borrowDatePicker.setDayCellFactory(picker -> new DateCell()
+        {
             @Override
-            public void updateItem(LocalDate date, boolean empty) {
+            public void updateItem(LocalDate date, boolean empty)
+            {
                 super.updateItem(date, empty);
                 // Disable all dates before today
                 setDisable(empty || date.isBefore(LocalDate.now()));
@@ -58,9 +57,11 @@ public class BorrowBookFrameController
         borrowDatePicker.setDisable(true);
 
         // Prevent the user from selecting a return date earlier than or equal to borrow date
-        returnDatePicker.setDayCellFactory(picker -> new DateCell() {
+        returnDatePicker.setDayCellFactory(picker -> new DateCell()
+        {
             @Override
-            public void updateItem(LocalDate date, boolean empty) {
+            public void updateItem(LocalDate date, boolean empty)
+            {
                 super.updateItem(date, empty);
                 // Disable return dates before or including the borrow date
                 setDisable(empty || date.isBefore(borrowDatePicker.getValue().plusDays(1)));
@@ -70,21 +71,8 @@ public class BorrowBookFrameController
 
     /**
      * This method is called when the borrow button is clicked
-     *
-     * @param event The event that triggered this method
-     * @throws Exception If an error occurs during navigation
      */
-    public void backButtonClicked(ActionEvent event) throws Exception
-    {
-        navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Librarian Profile");
-    }
-
-    /**
-     * This method is called when the borrow button is clicked
-     *
-     * @param event The event that triggered this method
-     */
-    public void borrowButtonClicked(ActionEvent event)
+    public void borrowButtonClicked()
     {
         // Extract data from the fields
         String subscriberID = subscriberIDTextField.getText().trim();

@@ -3,16 +3,15 @@ package logic;
 import client.ClientGUIController;
 import common.ClientServerMessage;
 import common.Subscriber;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-
 import java.util.ArrayList;
 
-import static client.ClientGUIController.*;
+import static client.ClientGUIController.loadFrameIntoPane;
+import static client.ClientGUIController.showAlert;
 
 public class SubscriberEditProfileFrameController
 {
@@ -36,25 +35,12 @@ public class SubscriberEditProfileFrameController
     }
 
     /**
-     * This method handles the back button click event.
-     * It navigates to the previous screen (PrototypeSubscriberProfileOptionsFrame.fxml).
-     *
-     * @param event The action event triggered by clicking the back button
-     * @throws Exception If there is an issue with the navigation
-     */
-    public void clickBackButton(ActionEvent event) throws Exception
-    {
-        navigateTo(event, "/gui/SubscriberProfileFrame.fxml", "/gui/Subscriber.css", "My profile");
-    }
-
-    /**
      * This method handles the update button click event.
      * It sends the updated profile details to the server for updating.
      *
-     * @param event The action event triggered by clicking the update button
      * @throws Exception If there is an issue with the navigation
      */
-    public void clickUpdateButton(ActionEvent event) throws Exception
+    public void clickUpdateButton() throws Exception
     {
         // Validate that the first name and last name are not empty
         String firstName = txtFirstName.getText().trim();

@@ -8,16 +8,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 import java.util.ArrayList;
 
-import static client.ClientGUIController.navigateTo;
+import static client.ClientGUIController.loadFrameIntoPane;
 import static client.ClientGUIController.showAlert;
 
 public class WatchProfileFrameController
 {
+    @FXML
+    public VBox extendBorrowLibrarian;
     @FXML
     private Text txtFullName;
     @FXML
@@ -74,7 +78,7 @@ public class WatchProfileFrameController
                         extendButton.setOnAction((ActionEvent event) -> {
                             try
                             {
-                                extendBorrowButtonClicked(event);
+                                extendBorrowButtonClicked();
                             }
                             catch (Exception e)
                             {
@@ -160,10 +164,9 @@ public class WatchProfileFrameController
     /**
      * Handles the extendBorrowButton click event to extend the book borrowing period
      *
-     * @param event      The action event triggered by clicking the extend button
      * @throws Exception If there is an issue with the navigation
      */
-    public void extendBorrowButtonClicked(ActionEvent event) throws Exception
+    public void extendBorrowButtonClicked() throws Exception
     {
         // Get the selected BorrowedBook from the clicked row
         BorrowedBook selectedBook = borrowsTable.getSelectionModel().getSelectedItem();
@@ -172,9 +175,9 @@ public class WatchProfileFrameController
         {
             // Save the selected book using the set method or pass it directly
             BorrowExtensionFrameController.setBorrowedBook(selectedBook); // Set the selected book in the Subscriber object, or use a different method
-            // Navigate to the BorrowExtensionFrameController, passing the selected book
 
-            navigateTo(event, "/gui/BorrowExtensionFrame.fxml", "/gui/Subscriber.css", "Extend Borrow Period");
+            // Navigate to the BorrowExtensionFrameController, passing the selected book
+            loadFrameIntoPane((AnchorPane) extendBorrowLibrarian.getParent(), "/gui/BorrowExtensionFrame.fxml");
         }
         else
         {
@@ -184,22 +187,10 @@ public class WatchProfileFrameController
     }
 
     /**
-     * Handles the Back button click event.
+     * Adds a day to the borrow and return date
      *
-     * @param event      The ActionEvent triggered by clicking the button.
-     * @throws Exception If an error occurs during navigation.
-     */
-    public void backButtonClicked(ActionEvent event) throws Exception
-    {
-        Subscriber.setWatchProfileSubscriber(null);
-        navigateTo(event, "/gui/LibrarianProfileFrame.fxml", "/gui/Subscriber.css", "Return");
-    }
-
-    /**
-     *  Adds a day to the borrow and return date
-     *
-     *  @param date The date to add a day to
-     *  @return The date with one day added
+     * @param date The date to add a day to
+     * @return The date with one day added
      */
     private String addDay(String date)
     {

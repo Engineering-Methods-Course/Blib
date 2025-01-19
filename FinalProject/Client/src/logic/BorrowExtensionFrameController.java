@@ -3,7 +3,6 @@ package logic;
 import client.ClientGUIController;
 import common.*;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ import java.time.format.DateTimeFormatter;
 
 import java.time.LocalDate;
 
-import static client.ClientGUIController.navigateTo;
 import static client.ClientGUIController.showAlert;
 
 public class BorrowExtensionFrameController
@@ -72,24 +70,11 @@ public class BorrowExtensionFrameController
         BorrowExtensionFrameController.borrowedBookCopy = borrowedBook;
     }
 
-
-    /**
-     * This method handles the backButton click event to navigate back to the previous frame
-     *
-     * @param event The action event triggered by clicking the back button
-     * @throws Exception If there is an issue with the navigation
-     */
-    public void backButtonClicked(ActionEvent event) throws Exception
-    {
-        navigateTo(event, "/gui/WatchProfileFrame.fxml", "/gui/Subscriber.css", "Watch Profile");
-    }
-
     /**
      * This method handles the extendButton click event to extend the book borrowing period
      *
-     * @param event The action event triggered by clicking the extend button
      */
-    public void extendButtonClicked(ActionEvent event)
+    public void extendButtonClicked()
     {
         // Extract data from the fields
         String subscriberID = subscriberIdLabel.getText().trim();

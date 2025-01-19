@@ -5,7 +5,6 @@ import common.ClientServerMessage;
 import common.LibrarianMessage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -13,8 +12,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static client.ClientGUIController.navigateTo;
 
 public class ViewMessagesFrameController
 {
@@ -60,5 +57,4 @@ public class ViewMessagesFrameController
         ObservableList<LibrarianMessage> data = FXCollections.observableArrayList(messageList);
         messagesTableView.setItems(data);
     }
-
 }

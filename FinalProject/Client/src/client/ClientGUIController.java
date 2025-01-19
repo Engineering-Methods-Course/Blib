@@ -34,9 +34,10 @@ public class ClientGUIController extends Application
      * @param fxmlFilePath The path to the FXML file to load (e.g., "/gui/SearchPageFrame.fxml").
      * @param cssFilePath  The optional path to the CSS file to style the new view (e.g., "/gui/Subscriber.css"). Pass null if no CSS is required.
      * @param stageTitle   The title for the new stage window (e.g., "Profile Options").
-     * @throws Exception   If the FXML file cannot be loaded or another error occurs during navigation.
+     * @throws Exception If the FXML file cannot be loaded or another error occurs during navigation.
      */
-    public static void navigateTo(ActionEvent event, String fxmlFilePath, String cssFilePath, String stageTitle) throws Exception {
+    public static void navigateTo(ActionEvent event, String fxmlFilePath, String cssFilePath, String stageTitle) throws Exception
+    {
         // Get the current stage
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -53,9 +54,12 @@ public class ClientGUIController extends Application
         // Optionally add a CSS file if provided
         if (cssFilePath != null && !cssFilePath.isEmpty())
         {
-            if (ClientGUIController.class.getResource(cssFilePath) != null) {
+            if (ClientGUIController.class.getResource(cssFilePath) != null)
+            {
                 newRoot.getStylesheets().add(Objects.requireNonNull(ClientGUIController.class.getResource(cssFilePath)).toExternalForm());
-            } else {
+            }
+            else
+            {
                 System.out.println("CSS file not found: " + cssFilePath);
             }
         }
@@ -66,9 +70,11 @@ public class ClientGUIController extends Application
         currentStage.setMaximized(true);
         currentStage.setOnCloseRequest(event1 -> {
             // Run exitAction() in a background thread to prevent blocking
-            Task<Void> logOutTask = new Task<Void>() {
+            Task<Void> logOutTask = new Task<Void>()
+            {
                 @Override
-                protected Void call(){
+                protected Void call()
+                {
                     exitAction();  // Call your logout action in the background
                     return null;
                 }
@@ -87,9 +93,10 @@ public class ClientGUIController extends Application
      *
      * @param parentContainer The parent container in which to display the new scene.
      * @param scene           The path to the FXML file to load (e.g., "/gui/SearchPageFrame.fxml").
-     * @throws IOException    If the FXML file cannot be loaded or another error occurs during navigation.
+     * @throws IOException If the FXML file cannot be loaded or another error occurs during navigation.
      */
-    public static void loadFrameIntoPane(AnchorPane parentContainer, String scene) throws IOException {
+    public static void loadFrameIntoPane(AnchorPane parentContainer, String scene) throws IOException
+    {
         parentContainer.getChildren().clear();
         FXMLLoader loader = new FXMLLoader(ClientGUIController.class.getResource(scene));
         ClientController.setLoader(loader);
@@ -118,14 +125,14 @@ public class ClientGUIController extends Application
     }
 
     /**
-     *  The method is called when the program is closed, it sends a disconnect message to the server
+     * The method is called when the program is closed, it sends a disconnect message to the server
      */
     private static void exitAction()
     {
-        ClientServerMessage exitMessage = new ClientServerMessage(104, null);
         ClientServerMessage logoutMessage = new ClientServerMessage(102, 0);
+        ClientServerMessage exitMessage = new ClientServerMessage(104, null);
 
-        if(Subscriber.getLocalSubscriber() != null)
+        if (Subscriber.getLocalSubscriber() != null)
         {
             logoutMessage = new ClientServerMessage(102, Subscriber.getLocalSubscriber().getID());
         }
@@ -136,8 +143,8 @@ public class ClientGUIController extends Application
 
         try
         {
-            ClientGUIController.chat.sendToServer(exitMessage);
             ClientGUIController.chat.sendToServer(logoutMessage);
+            ClientGUIController.chat.sendToServer(exitMessage);
             System.exit(0);
         }
         catch (Exception e)
@@ -148,8 +155,9 @@ public class ClientGUIController extends Application
 
     /**
      * The start method is called when the program is run, it starts the ClientIPFrameController
+     *
      * @param primaryStage The stage to be displayed
-     * @throws Exception   If an error occurs during the start
+     * @throws Exception If an error occurs during the start
      */
     @Override
     public void start(Stage primaryStage) throws Exception

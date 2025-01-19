@@ -5,22 +5,18 @@ import common.Book;
 import common.ClientServerMessage;
 import common.Librarian;
 import common.Subscriber;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-
 import java.util.ArrayList;
 
 import static client.ClientGUIController.loadFrameIntoPane;
-import static client.ClientGUIController.navigateTo;
 
 public class BookInfoFrameController
 {
-
     @FXML
     public Text bookName;
     @FXML
@@ -37,7 +33,13 @@ public class BookInfoFrameController
     public Button backButton;
     @FXML
     public Text TextForAvailability;
+    @FXML
     public VBox bookInfoFrame;
+
+    //other controller attributes
+    private static Book localBook = null;
+    private static ArrayList<String> Availability;
+    public static boolean orderComplete = false;
 
     /**
      * This method initializes the Book Info Frame
@@ -66,11 +68,6 @@ public class BookInfoFrameController
         }
     }
 
-    private static Book localBook = null;
-    private static ArrayList<String> Availability;
-    public static boolean orderComplete = false;
-
-
     /**
      * This method sets the local book object
      *
@@ -94,10 +91,9 @@ public class BookInfoFrameController
     /**
      * This method handles the orderBookButton click event to order the book
      *
-     * @param event The ActionEvent triggered by the user's interaction (e.g., button click).
      * @throws Exception If there is an issue with the navigation
      */
-    public void orderBookButtonClicked(ActionEvent event) throws Exception
+    public void orderBookButtonClicked() throws Exception
     {
         ArrayList<String> content = new ArrayList<>();
         content.add(String.valueOf(Subscriber.getLocalSubscriber().getID()));
@@ -124,22 +120,10 @@ public class BookInfoFrameController
     /**
      * This method handles the backButton click event to return to the previous page
      *
-     * @param event The ActionEvent triggered by the user's interaction (e.g., button click).
      * @throws Exception If there is an issue with the navigation
      */
-    public void backButtonClicked(ActionEvent event) throws Exception
+    public void backButtonClicked() throws Exception
     {
         loadFrameIntoPane((AnchorPane) bookInfoFrame.getParent(), "/gui/SearchResultFrame.fxml");
-    }
-
-    /**
-     * This method loads the book information
-     */
-    private void loadBookInfo()
-    {
-        bookName.setText(localBook.getBookName());
-        bookGenre.setText(localBook.getBookGenre());
-        bookdescription.setText(localBook.getBookDescription());
-        bookAvailCopyNum.setText(String.valueOf(localBook.getBookCopyNum()));
     }
 }
