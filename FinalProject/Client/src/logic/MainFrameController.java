@@ -36,7 +36,9 @@ public class MainFrameController
     public AnchorPane Anchor2;
     public Button borrowButton;
     public Button LogoutButton;
-    public Text Hello;
+    public Button subscriberProfileButton;
+    public Button librarianProfileButton;
+    public Button MainSceenButton;
 
     /**
      * This method initializes the MainFrameController.
@@ -52,32 +54,40 @@ public class MainFrameController
             UsernameText.setVisible(false);
             Image image = new Image("/resources/icons8-book-50.png");
             userPhoto.setImage(image);
-            Hello.setVisible(false);
         }
 
         if (Subscriber.getLocalSubscriber() != null)
         {
             loadFrameIntoPane(SceneChanger, "/gui/SubscriberProfileFrame.fxml");
-            UsernameText.setText(Subscriber.getLocalSubscriber().getFirstName());
+            UsernameText.setText(Subscriber.getLocalSubscriber().getFirstName() + " " + Subscriber.getLocalSubscriber().getLastName());
             LoginButton.setDisable(true);
             LoginButton.setVisible(false);
             LogoutButton.setVisible(true);
             LogoutButton.setDisable(false);
             Anchor2.setVisible(true);
             Anchor2.setDisable(false);
+            MainSceenButton.setVisible(false);
+            MainSceenButton.setDisable(true);
+            subscriberProfileButton.setVisible(true);
+            subscriberProfileButton.setDisable(false);
+
 
         }
 
         if (Librarian.getLocalLibrarian() != null)
         {
             loadFrameIntoPane(SceneChanger, "/gui/WelcomeScreen.fxml");
-            UsernameText.setText(Librarian.getLocalLibrarian().getFirstName());
+            UsernameText.setText(Librarian.getLocalLibrarian().getFirstName() + " " + Librarian.getLocalLibrarian().getLastName());
             LoginButton.setDisable(true);
             LoginButton.setVisible(false);
             LogoutButton.setVisible(true);
             LogoutButton.setDisable(false);
             Anchor1.setVisible(true);
             Anchor1.setDisable(false);
+            MainSceenButton.setVisible(false);
+            MainSceenButton.setDisable(true);
+            librarianProfileButton.setVisible(true);
+            librarianProfileButton.setDisable(false);
         }
     }
 
@@ -170,5 +180,13 @@ public class MainFrameController
     public void changePassword() throws IOException
     {
         loadFrameIntoPane(SceneChanger, "/gui/changePasswordFrame.fxml");
+    }
+
+    public void loadSubscriberProfile(ActionEvent actionEvent) throws IOException {
+        loadFrameIntoPane(SceneChanger, "/gui/SubscriberProfileFrame.fxml");
+    }
+
+    public void loadMainSceen(ActionEvent actionEvent) throws IOException {
+        loadFrameIntoPane(SceneChanger, "/gui/WelcomeScreen.fxml");
     }
 }
