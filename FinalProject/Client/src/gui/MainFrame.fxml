@@ -13,7 +13,7 @@
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.MainFrameController">
     <children>
         <AnchorPane fx:id="menu" maxWidth="1.7976931348623157E308" prefHeight="1080.0" prefWidth="190.0"
-                    styleClass="menu" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css">
+                    styleClass="menu" stylesheets="@/gui/MainFrame.css">
             <children>
                 <Text fx:id="UsernameText" layoutX="37.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0"
                       text="name" textAlignment="CENTER" wrappingWidth="150.13671875">
@@ -30,7 +30,7 @@
                 <Button fx:id="LogoutButton" contentDisplay="TOP" disable="true" layoutX="8.0" layoutY="17.0"
                         mnemonicParsing="false" onAction="#logout" prefHeight="38.0" prefWidth="87.0"
                         styleClass="buttonCheck"
-                        stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Logout"
+                        stylesheets="@/gui/MainFrame.css" text="Logout"
                         visible="false">
                     <graphic>
                         <ImageView fitHeight="19.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
@@ -42,7 +42,7 @@
                 </Button>
                 <Button fx:id="LoginButton" contentDisplay="TOP" layoutX="13.0" layoutY="18.0" mnemonicParsing="false"
                         onAction="#OpenLogin" prefHeight="59.0" prefWidth="77.0" styleClass="buttonCheck"
-                        stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Login">
+                        stylesheets="@/gui/MainFrame.css" text="Login">
                     <graphic>
                         <ImageView fitHeight="59.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -52,13 +52,13 @@
                     </graphic>
                 </Button>
                 <AnchorPane fx:id="Anchor1" disable="true" layoutX="25.0" layoutY="214.0" prefHeight="601.0"
-                            prefWidth="180.0" stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css"
+                            prefWidth="180.0" stylesheets="@/gui/MainFrame.css"
                             visible="false">
                     <children>
                         <Button fx:id="borrowButton" alignment="CENTER" contentDisplay="TOP" layoutX="42.0"
                                 layoutY="52.0" mnemonicParsing="false" onAction="#loadBorrow" prefHeight="65.0"
                                 prefWidth="95.0" styleClass="buttonCheck"
-                                stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Borrow">
+                                stylesheets="@/gui/MainFrame.css" text="Borrow">
                             <graphic>
                                 <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -70,7 +70,7 @@
                         <Button fx:id="searchSubButton" contentDisplay="TOP" layoutX="9.0" layoutY="184.0"
                                 mnemonicParsing="false" onAction="#searchForSubscriber" prefHeight="64.0"
                                 prefWidth="158.0" styleClass="buttonCheck"
-                                stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css"
+                                stylesheets="@/gui/MainFrame.css"
                                 text="Search Subscriber">
                             <graphic>
                                 <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
@@ -83,7 +83,7 @@
                         <Button fx:id="viewAllButton" contentDisplay="TOP" layoutX="1.0" layoutY="259.0"
                                 mnemonicParsing="false" onAction="#watchSubscribersBtn" prefHeight="61.0"
                                 prefWidth="174.0" styleClass="buttonCheck"
-                                stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css"
+                                stylesheets="@/gui/MainFrame.css"
                                 text="View All Subscribers">
                             <graphic>
                                 <ImageView fitHeight="24.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
@@ -96,7 +96,7 @@
                         <Button fx:id="reportButton" contentDisplay="TOP" graphicTextGap="10.0" layoutX="23.0"
                                 layoutY="335.0" mnemonicParsing="false" onAction="#viewReports" prefHeight="68.0"
                                 prefWidth="131.0" styleClass="buttonCheck"
-                                stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css"
+                                stylesheets="@/gui/MainFrame.css"
                                 text="View reports">
                             <graphic>
                                 <ImageView fitHeight="24.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -109,7 +109,7 @@
                         <Button fx:id="retunButton" alignment="CENTER" contentDisplay="TOP" layoutX="46.0"
                                 layoutY="117.0" mnemonicParsing="false" onAction="#returnBook" prefHeight="44.0"
                                 prefWidth="87.0" styleClass="buttonCheck"
-                                stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Return">
+                                stylesheets="@/gui/MainFrame.css" text="Return">
                             <graphic>
                                 <ImageView fitHeight="25.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -121,7 +121,7 @@
                         <Button fx:id="RegisterButton" contentDisplay="TOP" graphicTextGap="10.0" layoutX="10.0"
                                 layoutY="430.0" mnemonicParsing="false" onAction="#RegisterMember" prefHeight="68.0"
                                 prefWidth="158.0" styleClass="buttonCheck"
-                                stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css"
+                                stylesheets="@/gui/MainFrame.css"
                                 text="Register member">
                             <graphic>
                                 <ImageView fitHeight="20.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
@@ -134,7 +134,7 @@
                         <Button fx:id="viewMessagesButton" contentDisplay="TOP" layoutX="18.0" layoutY="520.0"
                                 mnemonicParsing="false" onAction="#viewMessagesButtonClicked" prefHeight="67.0"
                                 prefWidth="140.0" styleClass="buttonCheck"
-                                stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css"
+                                stylesheets="@/gui/MainFrame.css"
                                 text="View messages" textAlignment="CENTER">
                             <graphic>
                                 <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
@@ -152,7 +152,7 @@
                         <Button fx:id="editSubDetailsButton" contentDisplay="TOP" layoutX="26.0" layoutY="47.0"
                                 mnemonicParsing="false" onAction="#editSubscriberDetails" prefHeight="71.0"
                                 prefWidth="119.0" styleClass="buttonCheck"
-                                stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css"
+                                stylesheets="@/gui/MainFrame.css"
                                 text="Edit details">
                             <graphic>
                                 <ImageView fitHeight="29.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
@@ -195,7 +195,7 @@
                 </Text>
                 <Button fx:id="searchButton" contentDisplay="TOP" layoutX="66.0" layoutY="148.0" mnemonicParsing="false"
                         onAction="#Press1" prefHeight="66.0" prefWidth="95.0" styleClass="buttonCheck"
-                        stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css" text="Search">
+                        stylesheets="@/gui/MainFrame.css" text="Search">
                     <graphic>
                         <ImageView fitHeight="24.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -207,6 +207,6 @@
             </children>
         </AnchorPane>
         <AnchorPane fx:id="SceneChanger" layoutX="242.0" layoutY="-3.0" prefHeight="1087.0" prefWidth="1677.0"
-                    stylesheets="@../../../../../../OneDrive/שולחן העבודה/New folder/Exp.css"/>
+                    stylesheets="@/gui/MainFrame.css"/>
     </children>
 </AnchorPane>
