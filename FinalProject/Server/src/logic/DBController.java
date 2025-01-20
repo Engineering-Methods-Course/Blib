@@ -1471,15 +1471,6 @@ public class DBController {
             }
 
             /*
-             * The query updates the amount of borrowed books in the book table
-             */
-
-            String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies - 1" + " WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
-            PreparedStatement updateBookStatement = conn.prepareStatement(updateBookQuery);
-            updateBookStatement.setInt(1, copyId);
-            updateBookStatement.executeUpdate();
-
-            /*
              * The query selects from borrow table subscriber_id where copy_id matches the given value
              * and the status is borrowed
              */
@@ -1512,6 +1503,16 @@ public class DBController {
                 response.add("Book not found");
                 return response;
             }
+
+
+            /*
+             * The query updates the amount of borrowed books in the book table
+             */
+
+            String updateBookQuery = "UPDATE book SET borrowed_copies = borrowed_copies - 1" + " WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+            PreparedStatement updateBookStatement = conn.prepareStatement(updateBookQuery);
+            updateBookStatement.setInt(1, copyId);
+            updateBookStatement.executeUpdate();
 
             /*
              * Check if late return
