@@ -161,7 +161,7 @@ public class ClientGUIController extends Application
      *
      * @param errorMessage The error message to display.
      */
-    public static void showError(TextField textFieldToChange, Label labelToChange, String errorMessage)
+    public static void showErrorListenField(TextField textFieldToChange, Label labelToChange, String errorMessage)
     {
         // Show the error label with the provided message
         labelToChange.setText(errorMessage);
