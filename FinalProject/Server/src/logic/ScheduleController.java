@@ -48,7 +48,8 @@ public class ScheduleController {
         long period = TimeUnit.DAYS.toMillis(30);
         scheduler.scheduleAtFixedRate(() -> {
             try {
-                System.out.println("Running daily task");
+                System.out.println("Running monthly task");
+                System.out.println("Exporting report");
                 dbController.exportReport().run();
             } catch (Exception e) {
                 System.out.println("Error in export log" + e);
@@ -66,8 +67,11 @@ public class ScheduleController {
         scheduler.scheduleAtFixedRate(() -> {
             try {
                 System.out.println("Running daily task");
+                System.out.println("Unfreezing accounts");
                 dbController.unfreezeAccount().run();
+                System.out.println("Checking due books");
                 dbController.checkDueBooks().run();
+                System.out.println("Checking reserved books");
                 dbController.checkReservedBooks().run();
             } catch (Exception e) {
                 System.out.println("Error in daily task" + e);

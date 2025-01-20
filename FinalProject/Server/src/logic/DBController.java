@@ -2039,7 +2039,7 @@ public class DBController {
     public void checkReservation(String bookName) {
         try {
             int subscriberId;
-            String checkReservationQuery = "SELECT subscriber_id, notify FROM reservation WHERE serial_number = (SELECT serial_number FROM book WHERE name = ?) ORDER BY reserve_date ASC LIMIT 1";
+            String checkReservationQuery = "SELECT subscriber_id, notify FROM reservation WHERE serial_number = (SELECT serial_number FROM book WHERE name = ?) AND notify = 0 ORDER BY reserve_date ASC LIMIT 1";
             PreparedStatement checkReservationStatement = conn.prepareStatement(checkReservationQuery);
             checkReservationStatement.setString(1, bookName);
             ResultSet checkReservationRs = checkReservationStatement.executeQuery();
@@ -2320,13 +2320,13 @@ public class DBController {
                  * Add the new reports to the database
                  */
 
-                String newReportQuery = "INSERT INTO monthly_report (details, log_type) VALUES (?, ?)";
+                String newReportQuery = "INSERT INTO monthly_report (details, report_type) VALUES (?, ?)";
                 PreparedStatement newReportStatement = conn.prepareStatement(newReportQuery);
                 newReportStatement.setBlob(1, dataBlobSubscribersStatus);
                 newReportStatement.setString(2, "subscriberStatuses");
                 newReportStatement.executeUpdate();
 
-                String newReportQuery2 = "INSERT INTO monthly_report (details, log_type) VALUES (?, ?)";
+                String newReportQuery2 = "INSERT INTO monthly_report (details, report_type) VALUES (?, ?)";
                 PreparedStatement newReportStatement2 = conn.prepareStatement(newReportQuery2);
                 newReportStatement2.setBlob(1, dataBlobBorrowTime);
                 newReportStatement2.setString(2, "borrowTime");
@@ -2484,6 +2484,14 @@ public class DBController {
                     deleteReservationStatement.setInt(1, subscriberId);
                     deleteReservationStatement.setInt(2, serialNumber);
                     deleteReservationStatement.executeUpdate();
+
+                    /*
+                     *  Update Book reservation amount
+                     */
+                    String updateBookQuery = "UPDATE book SET reserved_copies = reserved_copies - 1 WHERE serial_number = ?";
+                    PreparedStatement updateBookStatement = conn.prepareStatement(updateBookQuery);
+                    updateBookStatement.setInt(1, serialNumber);
+                    updateBookStatement.executeUpdate();
 
                 }
             } catch (SQLException e) {
