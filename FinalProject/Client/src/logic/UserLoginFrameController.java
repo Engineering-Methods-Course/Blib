@@ -6,14 +6,11 @@ import common.Librarian;
 import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+
 import java.util.ArrayList;
 
-import static client.ClientGUIController.navigateTo;
-import static client.ClientGUIController.showAlert;
+import static client.ClientGUIController.*;
 
 public class UserLoginFrameController
 {
@@ -24,6 +21,10 @@ public class UserLoginFrameController
     private TextField txtUsername;
     @FXML
     private PasswordField txtPassword;
+    @FXML
+    private Label lblUserNameError;
+    @FXML
+    private Label lblPasswordError;
 
     /**
      * This method initializes the Subscriber login screen
@@ -46,6 +47,23 @@ public class UserLoginFrameController
         {
             System.out.println("Error initializing login screen: " + e.getMessage());
         }
+        // Add listeners to the fields for error handling
+        txtUsername.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.trim().isEmpty()) {
+                showErrorListenField(txtUsername, lblUserNameError, "Username cannot be empty");
+            } else {
+                resetErrorState(txtUsername, lblUserNameError);
+            }
+        });
+
+        txtPassword.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.trim().isEmpty()) {
+                showErrorListenField(txtPassword, lblPasswordError, "Password cannot be empty");
+            } else {
+                resetErrorState(txtPassword, lblPasswordError);
+            }
+        });
+
     }
 
     /**
