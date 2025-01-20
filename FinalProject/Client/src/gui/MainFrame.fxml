@@ -22,7 +22,7 @@
                     </font>
                 </Text>
                 <ImageView fx:id="userPhoto" fitHeight="44.0" fitWidth="60.0" layoutX="91.0" layoutY="15.0"
-                           onMouseClicked="#ImageOnClick" pickOnBounds="true" preserveRatio="true">
+                           onMouseClicked="#ImageOnClick" pickOnBounds="true" preserveRatio="true" styleClass="hand-cursor">
                     <image>
                         <Image url="@../resources/icons8-user-48.png"/>
                     </image>

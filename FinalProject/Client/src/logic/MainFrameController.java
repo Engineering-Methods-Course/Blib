@@ -93,8 +93,11 @@ public class MainFrameController
 
     }
 
-    public void ImageOnClick()
+    public void ImageOnClick() throws IOException
     {
+
+        loadFrameIntoPane(SceneChanger, "/gui/SubscriberProfileFrame.fxml");
+
     }
 
     public void logout(ActionEvent actionEvent) throws Exception

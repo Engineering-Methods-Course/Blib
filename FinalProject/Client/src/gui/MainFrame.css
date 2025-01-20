@@ -89,3 +89,8 @@
     -fx-background-color: linear-gradient(to bottom, rgb(50, 81, 238), rgba(250, 240, 240, 0));
     -fx-cursor: hand;
 }
+
+#userPhoto {
+    -fx-cursor: hand;
+}
+
