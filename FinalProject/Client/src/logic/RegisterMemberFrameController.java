@@ -4,14 +4,25 @@ import client.ClientGUIController;
 import common.ClientServerMessage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
 
-import static client.ClientGUIController.showAlert;
+import static client.ClientGUIController.*;
 
 public class RegisterMemberFrameController
 {
+    @FXML
+    public Label lblPhoneError;
+    @FXML
+    public Label lblEmailError;
+    @FXML
+    public Label lblNameError;
+    @FXML
+    public Label lblLastNameError;
+    @FXML
+    public Label lblUserNameError;
     @FXML
     private TextField txtUsername;
     @FXML
@@ -22,6 +33,60 @@ public class RegisterMemberFrameController
     private TextField txtPhone;
     @FXML
     private TextField txtEmail;
+
+
+    /**
+     * Initializes the listeners for all text fields to handle real-time validation.
+     */
+    @FXML
+    public void initialize()
+    {
+        // Username field listener
+        txtUsername.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                showErrorListenField(txtUsername, lblUserNameError, "Username cannot be empty");
+            } else {
+                resetErrorState(txtUsername, lblUserNameError);
+            }
+        });
+
+        // First Name field listener
+        txtFirstName.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                showErrorListenField(txtFirstName, lblNameError, "First Name cannot be empty");
+            } else {
+                resetErrorState(txtFirstName, lblNameError);
+            }
+        });
+
+        // Last Name field listener
+        txtLastName.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                showErrorListenField(txtLastName, lblLastNameError, "Last Name cannot be empty");
+            } else {
+                resetErrorState(txtLastName, lblLastNameError);
+            }
+        });
+
+        // Phone field listener
+        txtPhone.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (regexMatcher("^\\+?[0-9. ()-]{7,}$", newValue)) {
+                showErrorListenField(txtPhone, lblPhoneError, "Invalid phone number format");
+            } else {
+                resetErrorState(txtPhone, lblPhoneError);
+            }
+        });
+
+        // Email field listener
+        txtEmail.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (regexMatcher("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", newValue)) {
+                showErrorListenField(txtEmail, lblEmailError, "Invalid email format");
+            } else {
+                resetErrorState(txtEmail, lblEmailError);
+            }
+        });
+    }
+
 
     /**
      * Handles the Register button click event.
