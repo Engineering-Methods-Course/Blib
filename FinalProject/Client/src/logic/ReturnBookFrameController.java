@@ -36,7 +36,7 @@ public class ReturnBookFrameController
         {
             // Handle missing data (e.g., show an error dialog)
             showAlert(Alert.AlertType.ERROR, "Input Error", "Please enter a valid ID,cannot be empty");
-            showError(idTextField,errorLabel,"please enter a valid ID, cannot be empty");
+            showErrorListenField(idTextField,errorLabel,"please enter a valid ID, cannot be empty");
             return;
         }
         // Use regex to check if the copyID contains only numbers
@@ -106,7 +106,7 @@ public class ReturnBookFrameController
                 String copyID = newValue.trim();
                 // Check for empty value or invalid format
                 if (!copyID.isEmpty() &&!copyID.matches("^[0-9]+$")) {
-                    showError(idTextField,errorLabel,"Copy ID must contain only numbers.");
+                    showErrorListenField(idTextField,errorLabel,"Copy ID must contain only numbers.");
                 } else {
                     resetErrorState(idTextField,errorLabel);
                 }
