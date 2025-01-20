@@ -96,7 +96,12 @@ public class MainFrameController
     public void ImageOnClick() throws IOException
     {
 
-        loadFrameIntoPane(SceneChanger, "/gui/SubscriberProfileFrame.fxml");
+        if (Subscriber.getLocalSubscriber() != null){
+            loadFrameIntoPane(SceneChanger, "/gui/SubscriberProfileFrame.fxml");
+        }
+        else{
+            loadFrameIntoPane(SceneChanger, "/gui/WelcomeScreen.fxml");
+        }
 
     }
 
