@@ -63,7 +63,7 @@ public class BookInfoFrameController
 
         if (Subscriber.getLocalSubscriber() == null && Librarian.getLocalLibrarian() == null || Availability.get(0).equals("true"))
         {
-            orderBookButton.setDisable(false);
+            orderBookButton.setDisable(true);
             orderBookButton.setVisible(false);
         }
     }

@@ -3,11 +3,15 @@ package client;
 import common.ClientServerMessage;
 import common.Librarian;
 import common.Subscriber;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
+import javafx.scene.transform.Scale;
+import javafx.stage.Screen;
 import logic.ClientController;
 import logic.ClientIPFrameController;
 import javafx.application.Application;
@@ -68,6 +72,20 @@ public class ClientGUIController extends Application
         }
 
         // Update the root node of the existing scene
+        /// /////test for setting a sizeable screen
+        Screen screen = Screen.getPrimary();
+        currentStage.setWidth(screen.getBounds().getWidth());
+        currentStage.setHeight(screen.getBounds().getHeight());
+        double scaleX = screen.getBounds().getWidth()/1920.0;
+        double scaleY = screen.getBounds().getHeight()/1080.0;
+        double scaleD = Math.min(scaleX, scaleY);
+        Scale scale = new Scale(scaleD, scaleD);
+        newRoot.getTransforms().add(scale);
+        scale.xProperty().bind(currentStage.widthProperty().divide(1920));
+        scale.yProperty().bind(currentStage.heightProperty().divide(1080));
+
+        /// //
+
         currentStage.getScene().setRoot(newRoot);
         currentStage.setTitle(stageTitle);
         currentStage.setMaximized(true);

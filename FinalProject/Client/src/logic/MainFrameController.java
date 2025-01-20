@@ -5,6 +5,7 @@ import common.Librarian;
 import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -47,7 +48,7 @@ public class MainFrameController
      */
     public void initialize() throws IOException
     {
-
+        SceneChanger.setStyle("-fx-background-color: lightblue; -fx-border-color: black; -fx-border-width: 2;");
         if (Subscriber.getLocalSubscriber() == null && Librarian.getLocalLibrarian() == null)
         {
             loadFrameIntoPane(SceneChanger, "/gui/WelcomeScreen.fxml");
