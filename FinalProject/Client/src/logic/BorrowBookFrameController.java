@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import static client.ClientGUIController.showAlert;
+import static client.ClientGUIController.*;
 
 public class BorrowBookFrameController
 {
@@ -24,6 +24,10 @@ public class BorrowBookFrameController
     public DatePicker returnDatePicker;
     @FXML
     public Button borrowButton;
+    @FXML
+    public Label ErrorSubscriberID;
+    @FXML
+    public Label ErrorBookID;
 
     /**
      * This method is called when the borrow button is clicked
@@ -67,7 +71,15 @@ public class BorrowBookFrameController
                 setDisable(empty || date.isBefore(borrowDatePicker.getValue().plusDays(1)));
             }
         });
+
+        // Add listeners to validate subscriberID and bookID fields as the user types
+        subscriberIDTextField.textProperty().addListener((observable, oldValue, newValue) -> validateSubscriberID(newValue));
+        bookIDTextField.textProperty().addListener((observable, oldValue, newValue) -> validateBookID(newValue));
+
+
     }
+
+
 
     /**
      * This method is called when the borrow button is clicked
@@ -83,7 +95,6 @@ public class BorrowBookFrameController
         if (subscriberID.isEmpty() || copyID.isEmpty() || returnDate == null)
         {
             // Handle missing data (e.g., show an error dialog)
-            System.out.println("Please fill all fields.");
             showAlert(Alert.AlertType.ERROR, "Missing Information",
                     "Please fill in all the fields: Subscriber ID, Book ID, and Return Date.");
             return;
@@ -135,5 +146,38 @@ public class BorrowBookFrameController
                 showAlert(Alert.AlertType.ERROR, "Error", "Unexpected response format from server.");
             }
         });
+    }
+
+
+    /**
+     * Validate the subscriber ID field.
+     *
+     * @param subscriberID The input value of the subscriber ID field.
+     */
+    private void validateSubscriberID(String subscriberID) {
+        if (subscriberID.isEmpty()) {
+            showErrorListenField(subscriberIDTextField,ErrorSubscriberID, "Subscriber ID cannot be empty.");
+            return;
+        } else if (!subscriberID.matches("^[0-9]+$")) {
+            showErrorListenField(subscriberIDTextField,ErrorSubscriberID, "Subscriber ID must contain only numbers.");
+            return;
+        }
+        resetErrorState(subscriberIDTextField,ErrorSubscriberID);
+    }
+
+    /**
+     * Validate the book ID field.
+     *
+     * @param bookID The input value of the book ID field.
+     */
+    private void validateBookID(String bookID) {
+        if (bookID.isEmpty()) {
+            showErrorListenField(bookIDTextField,ErrorBookID, "Book ID cannot be empty.");
+            return;
+        } else if (!bookID.matches("^[0-9]+$")) {
+            showErrorListenField(bookIDTextField,ErrorBookID,"Book ID must contain only numbers.");
+            return;
+        }
+        resetErrorState(bookIDTextField,ErrorBookID);
     }
 }
