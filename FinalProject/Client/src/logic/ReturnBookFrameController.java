@@ -3,6 +3,8 @@ package logic;
 import client.ClientGUIController;
 import common.ClientServerMessage;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -12,6 +14,10 @@ import static client.ClientGUIController.showAlert;
 
 public class ReturnBookFrameController
 {
+    @FXML
+    public Label errorLabel;
+    @FXML
+    public Button btnReturn;
     @FXML
     private TextField idTextField;
 
@@ -30,6 +36,7 @@ public class ReturnBookFrameController
         {
             // Handle missing data (e.g., show an error dialog)
             showAlert(Alert.AlertType.ERROR, "Input Error", "Please enter a valid ID,cannot be empty");
+            showError("please enter a valid ID, cannot be empty");
             return;
         }
         // Use regex to check if the copyID contains only numbers
@@ -37,8 +44,10 @@ public class ReturnBookFrameController
         {
             // Handle invalid input (e.g., show an error dialog)
             showAlert(Alert.AlertType.ERROR, "Input Error", "Copy ID must contain only numbers.");
+            //showError("Copy ID must contain only numbers.");
             return;
         }
+        resetErrorState();
 
         // Create the ClientServerMessage object with code 304 and the copy ID as the message content
         ClientServerMessage message = new ClientServerMessage(304, copyID);
@@ -81,6 +90,49 @@ public class ReturnBookFrameController
             else
             {
                 showAlert(Alert.AlertType.ERROR, "Error", "Unexpected response format from server.");
+            }
+        });
+    }
+
+
+    /**
+     * Shows the error state: sets the TextField border to red and displays the error label.
+     *
+     * @param errorMessage The error message to display.
+     */
+    private void showError(String errorMessage)
+    {
+        // Show the error label with the provided message
+        errorLabel.setText(errorMessage);
+        errorLabel.setVisible(true);
+        // Set the TextField border to red
+        idTextField.setStyle("-fx-border-color: red;");
+        errorLabel.setStyle("-fx-text-fill: red;");
+    }
+
+    /**
+     * Resets the error state (removes red border and hides the error label).
+     */
+    private void resetErrorState()
+    {
+        errorLabel.setVisible(false);
+        idTextField.setStyle(""); // Reset the style
+
+    }
+
+    public void initialize() {
+        // Listen to changes in the text field
+        idTextField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // Validate the input as the user types
+                String copyID = newValue.trim();
+                // Check for empty value or invalid format
+                if (!copyID.isEmpty() &&!copyID.matches("^[0-9]+$")) {
+                    showError("Copy ID must contain only numbers.");
+                } else {
+                    resetErrorState();
+                }
             }
         });
     }

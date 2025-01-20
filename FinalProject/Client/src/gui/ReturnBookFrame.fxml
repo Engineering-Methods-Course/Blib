@@ -1,46 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
-      prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="logic.ReturnBookFrameController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ReturnBookFrameController">
     <!-- Spacer to center content vertically -->
     <AnchorPane VBox.vgrow="ALWAYS">
-        <Text layoutX="576.0" layoutY="269.0" text="Copy Book ID:" textAlignment="CENTER">
+        <!-- Title Text -->
+        <Text layoutX="473.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Return Book" textAlignment="CENTER" wrappingWidth="300.0">
             <font>
-                <Font name="Agency FB" size="27.0"/>
+                <Font size="41.0" />
             </font>
         </Text>
-        <TextField fx:id="idTextField" layoutX="508.0" layoutY="284.0" prefWidth="250.0"/>
-        <Button layoutX="533.0" layoutY="344.0" onAction="#returnButtonClicked"
-                prefWidth="200.0" style="-fx-font-size: 16px;" text="Return"/>
-        <Text layoutX="473.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Return Book"
-              textAlignment="CENTER" wrappingWidth="300.0">
+
+        <!-- Description Text -->
+        <Text layoutX="507.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter the book copy id number " textAlignment="CENTER" wrappingWidth="231.19921875">
             <font>
-                <Font size="41.0"/>
+                <Font size="17.0" />
             </font>
         </Text>
-        <Text layoutX="507.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="Enter the book copy id number " textAlignment="CENTER" wrappingWidth="231.19921875">
-            <font>
-                <Font size="17.0"/>
-            </font>
-        </Text>
+
+        <!-- TextField for entering book ID -->
+        <TextField fx:id="idTextField" layoutX="508.0" layoutY="210.0" prefWidth="250.0" />
+
+        <!-- Error label to show when the input is invalid -->
+        <Label fx:id="errorLabel" layoutX="508.0" layoutY="248.0" text="Error Message " textFill="red" visible="false" />
+
+        <!-- Return Button -->
+        <Button fx:id="btnReturn" layoutX="533.0" layoutY="300.0" onAction="#returnButtonClicked" prefWidth="200.0" style="-fx-font-size: 16px;" text="Return" />
     </AnchorPane>
 
-    <!-- Centered HBox containing "Copy ID:", TextField, and Return button -->
-    <VBox alignment="CENTER"
-          spacing="10.0"><!-- HBox to ensure TextField and Button have fixed widths and are centered -->
-        <HBox alignment="CENTER" spacing="10.0"/>
-    </VBox>
-
     <!-- Spacer to push the content down and center it vertically -->
-    <AnchorPane prefHeight="9.0" prefWidth="1280.0" VBox.vgrow="ALWAYS"/>
+    <AnchorPane prefHeight="9.0" prefWidth="1280.0" VBox.vgrow="ALWAYS" />
 </VBox>
