@@ -7,6 +7,8 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
@@ -18,7 +20,32 @@ public class SearchSubscriberFrameController
     @FXML
     public AnchorPane searchSubscriberFrame;
     @FXML
+    public Button watchProfileButton;
+    @FXML
+    public Label lblSubscriberIDError;
+    @FXML
     private TextField idTextField;
+
+    @FXML
+    public void initialize() {
+        // Adding listener to the ID TextField
+        idTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            validateSubscriberID(newValue);
+        });
+    }
+
+    private void validateSubscriberID(String newValue) {
+        if (newValue.trim().isEmpty()) {
+            // Call showErrorListenField to display the error
+            showErrorListenField(idTextField, lblSubscriberIDError, "ID cannot be empty.");
+        } else if (!newValue.matches("\\d+")) {  // Check if the input is numeric
+            // Call showErrorListenField to display the error
+            showErrorListenField(idTextField, lblSubscriberIDError, "Invalid ID. Please enter a numeric value.");
+        } else {
+            // Reset error state if the input is valid
+            resetErrorState(idTextField, lblSubscriberIDError);
+        }
+    }
 
     /**
      * handles the watch profile button click event
