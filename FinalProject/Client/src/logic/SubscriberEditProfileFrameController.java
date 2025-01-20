@@ -5,13 +5,13 @@ import common.ClientServerMessage;
 import common.Subscriber;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 
-import static client.ClientGUIController.loadFrameIntoPane;
-import static client.ClientGUIController.showAlert;
+import static client.ClientGUIController.*;
 
 public class SubscriberEditProfileFrameController
 {
@@ -21,10 +21,19 @@ public class SubscriberEditProfileFrameController
     @FXML
     public TextField txtFirstName;
     public VBox editInfoFrame;
+
     @FXML
     private TextField txtPhone;
     @FXML
     private TextField txtEmail;
+    @FXML
+    public Label lblLastNameError;
+    @FXML
+    public Label lblFirstNameError;
+    @FXML
+    public Label lblPhoneError;
+    @FXML
+    public Label lblEmailError;
 
     /**
      * This method initializes the controller class.
@@ -32,6 +41,7 @@ public class SubscriberEditProfileFrameController
      */
     public void initialize(){
         loadProfileDetails();
+        addValidationListeners();
     }
 
     /**
@@ -83,5 +93,47 @@ public class SubscriberEditProfileFrameController
         this.txtEmail.setText(Subscriber.getLocalSubscriber().getEmail());
         this.txtFirstName.setText(Subscriber.getLocalSubscriber().getFirstName());
         this.txtLastName.setText(Subscriber.getLocalSubscriber().getLastName());
+    }
+
+    private void addValidationListeners() {
+        // Listener for First Name TextField
+        txtFirstName.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.trim().isEmpty()) {
+                showErrorListenField(txtFirstName, lblFirstNameError, "First name cannot be empty.");
+            } else {
+                resetErrorState(txtFirstName, lblFirstNameError);
+            }
+        });
+
+        // Listener for Last Name TextField
+        txtLastName.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.trim().isEmpty()) {
+                showErrorListenField(txtLastName, lblLastNameError, "Last name cannot be empty.");
+            } else {
+                resetErrorState(txtLastName, lblLastNameError);
+            }
+        });
+
+        // Listener for Phone TextField
+        txtPhone.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.trim().isEmpty()) {
+                showErrorListenField(txtPhone, lblPhoneError, "Phone number cannot be empty.");
+            } else if (!newValue.matches("^05\\d{8}$")) {  // Match phone number starting with '05' and followed by 8 digits
+                showErrorListenField(txtPhone, lblPhoneError, "Invalid phone number. It must start with '05' and be followed by 8 digits.");
+            } else {
+                resetErrorState(txtPhone, lblPhoneError);
+            }
+        });
+
+        // Listener for Email TextField (Check for a valid email format)
+        txtEmail.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.trim().isEmpty()) {
+                showErrorListenField(txtEmail, lblEmailError, "Email cannot be empty.");
+            } else if (!newValue.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {  // Check for a valid email format
+                showErrorListenField(txtEmail, lblEmailError, "Invalid email format.");
+            } else {
+                resetErrorState(txtEmail, lblEmailError);
+            }
+        });
     }
 }

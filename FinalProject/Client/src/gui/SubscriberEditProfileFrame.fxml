@@ -7,38 +7,40 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="editInfoFrame" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-      minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.SubscriberEditProfileFrameController">
+<VBox fx:id="editInfoFrame" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.SubscriberEditProfileFrameController">
     <!-- Spacer to push content towards the center -->
-    <Region VBox.vgrow="ALWAYS"/>
+    <Region VBox.vgrow="ALWAYS" />
 
     <!-- Centered Content (Labels + TextFields) -->
     <VBox alignment="CENTER" spacing="20.0">
         <HBox alignment="CENTER" spacing="10.0">
-            <Label prefWidth="100.0" text="First Name:"/>
-            <TextField fx:id="txtFirstName" prefWidth="200.0"/>
+            <Label prefWidth="100.0" text="First Name:" />
+            <TextField fx:id="txtFirstName" prefWidth="200.0" />
         </HBox>
+      <Label fx:id="lblFirstNameError" text="First Name Error" visible="false" />
         <HBox alignment="CENTER" spacing="10.0">
-            <Label prefWidth="100.0" text="Last Name:"/>
-            <TextField fx:id="txtLastName" prefWidth="200.0"/>
+            <Label prefWidth="100.0" text="Last Name:" />
+            <TextField fx:id="txtLastName" prefWidth="200.0" />
         </HBox>
+      <Label fx:id="lblLastNameError" text="Last name error" visible="false" />
         <!-- Phone -->
         <HBox alignment="CENTER" spacing="10.0">
-            <Label prefWidth="100.0" text="Phone:"/>
-            <TextField fx:id="txtPhone" prefWidth="200.0"/>
+            <Label prefWidth="100.0" text="Phone:" />
+            <TextField fx:id="txtPhone" prefWidth="200.0" />
         </HBox>
+      <Label fx:id="lblPhoneError" text="phone Error" visible="false" />
 
         <!-- Email -->
         <HBox alignment="CENTER" spacing="10.0">
-            <Label prefWidth="100.0" text="Email:"/>
-            <TextField fx:id="txtEmail" prefWidth="200.0"/>
+            <Label prefWidth="100.0" text="Email:" />
+            <TextField fx:id="txtEmail" prefWidth="200.0" />
         </HBox>
     </VBox>
+   <Label fx:id="lblEmailError" text="Email Error" visible="false" />
 
     <!-- Update Button -->
-    <Button onAction="#clickUpdateButton" prefHeight="50.0" prefWidth="200.0" text="Update"/>
+    <Button onAction="#clickUpdateButton" prefHeight="50.0" prefWidth="200.0" text="Update" />
 
     <!-- Spacer to push the "Back" button to the bottom -->
-    <Region prefHeight="0.0" prefWidth="1280.0" VBox.vgrow="ALWAYS"/>
+    <Region prefHeight="0.0" prefWidth="1280.0" VBox.vgrow="ALWAYS" />
 </VBox>
