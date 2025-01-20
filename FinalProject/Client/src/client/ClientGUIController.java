@@ -4,6 +4,9 @@ import common.ClientServerMessage;
 import common.Librarian;
 import common.Subscriber;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import logic.ClientController;
 import logic.ClientIPFrameController;
@@ -151,6 +154,30 @@ public class ClientGUIController extends Application
         {
             System.out.println("Error sending login message to server: " + e.getMessage());
         }
+    }
+
+    /**
+     * Shows the error state: sets the TextField border to red and displays the error label.
+     *
+     * @param errorMessage The error message to display.
+     */
+    public static void showError(TextField textFieldToChange, Label labelToChange, String errorMessage)
+    {
+        // Show the error label with the provided message
+        labelToChange.setText(errorMessage);
+        labelToChange.setVisible(true);
+        // Set the TextField border to red
+        textFieldToChange.setStyle("-fx-border-color: red;");
+        labelToChange.setStyle("-fx-text-fill: red;");
+    }
+
+    /**
+     * Resets the error state (removes red border and hides the error label).
+     */
+    public static void resetErrorState(TextField textFieldToReset,Label labelToReset)
+    {
+        labelToReset.setVisible(false);
+        textFieldToReset.setStyle(""); // Reset the style
     }
 
     /**

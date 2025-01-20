@@ -10,7 +10,7 @@ import javafx.scene.control.*;
 
 import java.util.ArrayList;
 
-import static client.ClientGUIController.showAlert;
+import static client.ClientGUIController.*;
 
 public class ReturnBookFrameController
 {
@@ -36,7 +36,7 @@ public class ReturnBookFrameController
         {
             // Handle missing data (e.g., show an error dialog)
             showAlert(Alert.AlertType.ERROR, "Input Error", "Please enter a valid ID,cannot be empty");
-            showError("please enter a valid ID, cannot be empty");
+            showError(idTextField,errorLabel,"please enter a valid ID, cannot be empty");
             return;
         }
         // Use regex to check if the copyID contains only numbers
@@ -47,7 +47,7 @@ public class ReturnBookFrameController
             //showError("Copy ID must contain only numbers.");
             return;
         }
-        resetErrorState();
+        resetErrorState(idTextField,errorLabel);
 
         // Create the ClientServerMessage object with code 304 and the copy ID as the message content
         ClientServerMessage message = new ClientServerMessage(304, copyID);
@@ -95,30 +95,7 @@ public class ReturnBookFrameController
     }
 
 
-    /**
-     * Shows the error state: sets the TextField border to red and displays the error label.
-     *
-     * @param errorMessage The error message to display.
-     */
-    private void showError(String errorMessage)
-    {
-        // Show the error label with the provided message
-        errorLabel.setText(errorMessage);
-        errorLabel.setVisible(true);
-        // Set the TextField border to red
-        idTextField.setStyle("-fx-border-color: red;");
-        errorLabel.setStyle("-fx-text-fill: red;");
-    }
 
-    /**
-     * Resets the error state (removes red border and hides the error label).
-     */
-    private void resetErrorState()
-    {
-        errorLabel.setVisible(false);
-        idTextField.setStyle(""); // Reset the style
-
-    }
 
     public void initialize() {
         // Listen to changes in the text field
@@ -129,9 +106,9 @@ public class ReturnBookFrameController
                 String copyID = newValue.trim();
                 // Check for empty value or invalid format
                 if (!copyID.isEmpty() &&!copyID.matches("^[0-9]+$")) {
-                    showError("Copy ID must contain only numbers.");
+                    showError(idTextField,errorLabel,"Copy ID must contain only numbers.");
                 } else {
-                    resetErrorState();
+                    resetErrorState(idTextField,errorLabel);
                 }
             }
         });
