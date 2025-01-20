@@ -40,8 +40,6 @@ public class WatchHistorySceneController
         actionTypeColumn.setCellValueFactory(new PropertyValueFactory<>("actionType"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-        historyTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
         // sends the server a request for the user's history
         ClientServerMessage message = new ClientServerMessage(214, Subscriber.getLocalSubscriber().getID());
         ClientGUIController.chat.sendToServer(message);

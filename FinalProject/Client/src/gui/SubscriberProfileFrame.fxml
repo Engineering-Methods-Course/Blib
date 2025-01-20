@@ -7,53 +7,50 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
-      prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="logic.SubscriberProfileFrameController">
-    <AnchorPane prefHeight="759.0" prefWidth="1280.0">
-        <TableView fx:id="borrowsTable" layoutX="42.0" layoutY="371.0" prefHeight="366.0" prefWidth="1199.0"
-                   AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="42.0" AnchorPane.rightAnchor="39.0"
-                   AnchorPane.topAnchor="371.0">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.SubscriberProfileFrameController">
+    <AnchorPane prefHeight="1087.0" prefWidth="1677.0" VBox.vgrow="ALWAYS">
+        <!-- Borrowed Books Table with VGrow for resizing -->
+        <TableView fx:id="borrowsTable" layoutX="50.0" layoutY="278.0" maxHeight="800.0" maxWidth="1000.0" prefHeight="700.0" prefWidth="1000.0">
             <columns>
-                <TableColumn fx:id="bookNameColumn" prefWidth="131.0" text="Book Name"/>
-                <TableColumn fx:id="borrowDateColumn" prefWidth="103.0" text="Borrow Date"/>
-                <TableColumn fx:id="returnDateColumn" minWidth="0.0" prefWidth="498.0" text="Return Date"/>
-                <TableColumn fx:id="extendButtonColumn" minWidth="0.0" prefWidth="466.0" text="Extend Borrow"/>
+                <TableColumn fx:id="bookNameColumn" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Book Name" />
+                <TableColumn fx:id="borrowDateColumn" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Borrow Date" />
+                <TableColumn fx:id="returnDateColumn" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Return Date" />
+                <TableColumn fx:id="extendButtonColumn" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Extend Options" />
             </columns>
         </TableView>
-        <Text fx:id="nameField" layoutX="45.0" layoutY="39.8984375" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="&lt;First Name + Last Name&gt;" wrappingWidth="568.708984375"
-              AnchorPane.bottomAnchor="711.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="14.0">
+
+        <!-- Name Field -->
+        <Text fx:id="nameField" layoutX="50.0" layoutY="82.0" text="John Doe" wrappingWidth="568.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="36.677734375">
             <font>
-                <Font size="24.0"/>
+                <Font size="42.0" />
             </font>
         </Text>
-        <Text fx:id="phoneNumberField" layoutX="34.0" layoutY="120.8984375" strokeType="OUTSIDE"
-              strokeWidth="0.0" text="&lt;Phone Number&gt;" wrappingWidth="469.708984375"
-              AnchorPane.bottomAnchor="630.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="95.0">
+
+        <!-- Phone Number -->
+        <Text fx:id="phoneNumberField" layoutX="50.0" layoutY="163.0" text="555-1234" wrappingWidth="469.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="137.1015625">
             <font>
-                <Font size="24.0"/>
+                <Font size="24.0" />
             </font>
         </Text>
-        <Text fx:id="statusTextField" layoutX="45.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="&lt;Status&gt;" wrappingWidth="627.708984375" AnchorPane.bottomAnchor="549.0"
-              AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="176.0">
+
+        <!-- Status -->
+        <Text fx:id="statusTextField" layoutX="50.0" layoutY="244.0" text="Active" wrappingWidth="627.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="218.1015625">
             <font>
-                <Font size="24.0"/>
+                <Font size="24.0" />
             </font>
         </Text>
-        <Text fx:id="emailField" layoutX="34.0" layoutY="80.8984375" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="&lt;Email Address&gt;" wrappingWidth="496.708984375" AnchorPane.bottomAnchor="670.0"
-              AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="55.0">
+
+        <!-- Email -->
+        <Text fx:id="emailField" layoutX="50.0" layoutY="123.0" text="email@example.com" wrappingWidth="496.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="97.1015625">
             <font>
-                <Font size="24.0"/>
+                <Font size="24.0" />
             </font>
         </Text>
-        <Text fx:id="userIDField" layoutX="45.0" layoutY="161.8984375" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="&lt;User ID&gt;" wrappingWidth="665.708984375" AnchorPane.bottomAnchor="589.0"
-              AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="136.0">
+
+        <!-- User ID -->
+        <Text fx:id="userIDField" layoutX="50.0" layoutY="204.0" text="UserID123" wrappingWidth="665.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="178.1015625">
             <font>
-                <Font size="24.0"/>
+                <Font size="24.0" />
             </font>
         </Text>
     </AnchorPane>
