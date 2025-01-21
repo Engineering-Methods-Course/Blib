@@ -7,17 +7,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.RegisterMemberFrameController">
     <!-- Title Section centered -->
     <HBox alignment="CENTER" prefHeight="167.0" prefWidth="1280.0">
-        <Text text="Register Member">
-            <font>
-                <Font name="Agency FB" size="50.0" />
-            </font>
-        </Text>
+      <children>
+          <Label alignment="CENTER" layoutX="560.0" layoutY="158.0" style="-fx-font-size: 36px; -fx-font-weight: bold;" text="REGISTER MEMBER" />
+      </children>
     </HBox>
 
     <!-- Each Label + TextField + Error in its own row -->
@@ -25,7 +21,7 @@
 
         <!-- Username Row -->
         <HBox alignment="CENTER" spacing="10.0">
-            <Label prefWidth="100.0" text="Username:" />
+            <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Username:" />
             <TextField fx:id="txtUsername" prefWidth="200.0" />
         </HBox>
         <HBox alignment="CENTER">
@@ -37,7 +33,7 @@
 
         <!-- Name Row -->
         <HBox alignment="CENTER" spacing="10.0">
-            <Label prefWidth="100.0" text="Name:" />
+            <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Name:" />
             <TextField fx:id="txtFirstName" prefWidth="200.0" />
         </HBox>
         <HBox alignment="CENTER">
@@ -49,7 +45,7 @@
 
         <!-- Last Name Row -->
         <HBox alignment="CENTER" spacing="10.0">
-            <Label prefWidth="100.0" text="Last Name:" />
+            <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Last Name:" />
             <TextField fx:id="txtLastName" prefWidth="200.0" />
         </HBox>
         <HBox alignment="CENTER">
@@ -61,7 +57,7 @@
 
         <!-- Phone Row -->
         <HBox alignment="CENTER" spacing="10.0">
-            <Label prefWidth="100.0" text="Phone:" />
+            <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Phone:" />
             <TextField fx:id="txtPhone" prefWidth="200.0" />
         </HBox>
         <HBox alignment="CENTER">
@@ -73,7 +69,7 @@
 
         <!-- Email Row -->
         <HBox alignment="CENTER" spacing="10.0">
-            <Label prefWidth="100.0" text="Email:" />
+            <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Email:" />
             <TextField fx:id="txtEmail" prefWidth="200.0" />
         </HBox>
         <HBox alignment="CENTER">

@@ -8,21 +8,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="searchSubscriberFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.SearchSubscriberFrameController">
-
-    <!-- Title Text: "Search for Subscriber" -->
-    <Text layoutX="429.0" layoutY="106.0" text="Search for Subscriber" textAlignment="CENTER" AnchorPane.leftAnchor="550.0">
-        <font>
-            <Font size="44.0" />
-        </font>
-    </Text>
-
-    <!-- Instruction Text: "Enter the subscriber ID" -->
-    <Text layoutX="527.0" layoutY="123.0" text="Enter the subscriber's ID" textAlignment="CENTER" AnchorPane.leftAnchor="660.0">
-        <font>
-            <Font size="16.0" />
-        </font>
-    </Text>
+<AnchorPane fx:id="searchSubscriberFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.SearchSubscriberFrameController">
+    <Label alignment="CENTER" layoutX="560.0" layoutY="158.0" style="-fx-font-size: 36px; -fx-font-weight: bold;" text="SEARCH FOR SUBSCRIBER" />
 
     <!-- TextField for subscriber ID input -->
     <TextField fx:id="idTextField" layoutX="502.0" layoutY="320.0" prefWidth="250.0" AnchorPane.leftAnchor="640.0" />
