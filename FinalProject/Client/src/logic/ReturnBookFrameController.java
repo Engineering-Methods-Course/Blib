@@ -3,8 +3,6 @@ package logic;
 import client.ClientGUIController;
 import common.ClientServerMessage;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -29,23 +27,19 @@ public class ReturnBookFrameController
     public void initialize()
     {
         // Listen to changes in the text field
-        idTextField.textProperty().addListener(new ChangeListener<String>()
-        {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
-            {
-                // Validate the input as the user types
-                String copyID = newValue.trim();
+        idTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 
-                // Check for empty value or invalid format
-                if (!copyID.isEmpty() && !copyID.matches("^[0-9]+$"))
-                {
-                    showErrorListenField(idTextField, errorLabel, "Copy ID must contain only numbers.");
-                }
-                else
-                {
-                    resetErrorState(idTextField, errorLabel);
-                }
+            // Validate the input as the user types
+            String copyID = newValue.trim();
+
+            // Check for empty value or invalid format
+            if (!copyID.isEmpty() && !copyID.matches("^[0-9]+$"))
+            {
+                showErrorListenField(idTextField, errorLabel, "Copy ID must contain only numbers.");
+            }
+            else
+            {
+                resetErrorState(idTextField, errorLabel);
             }
         });
     }

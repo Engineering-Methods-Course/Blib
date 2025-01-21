@@ -26,16 +26,13 @@ public class SearchSubscriberFrameController
     @FXML
     private TextField idTextField;
 
-
     /**
      * Initializes the SearchSubscriberFrameController.
      */
     public void initialize()
     {
         // Adding listener to the ID TextField
-        idTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            validateSubscriberID(newValue);
-        });
+        idTextField.textProperty().addListener((observable, oldValue, newValue) -> validateSubscriberID(newValue));
     }
 
     /**
