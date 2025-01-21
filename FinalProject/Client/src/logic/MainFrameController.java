@@ -45,7 +45,7 @@ public class MainFrameController
     @FXML
     public Button librarianProfileButton;
     @FXML
-    public Button MainSceenButton;
+    public Button MainSceneButton;
 
     /**
      * This method initializes the MainFrameController.
@@ -79,8 +79,8 @@ public class MainFrameController
             LogoutButton.setDisable(false);
             Anchor2.setVisible(true);
             Anchor2.setDisable(false);
-            MainSceenButton.setVisible(false);
-            MainSceenButton.setDisable(true);
+            MainSceneButton.setVisible(false);
+            MainSceneButton.setDisable(true);
             subscriberProfileButton.setVisible(true);
             subscriberProfileButton.setDisable(false);
         }
@@ -97,8 +97,8 @@ public class MainFrameController
             LogoutButton.setDisable(false);
             Anchor1.setVisible(true);
             Anchor1.setDisable(false);
-            MainSceenButton.setVisible(false);
-            MainSceenButton.setDisable(true);
+            MainSceneButton.setVisible(false);
+            MainSceneButton.setDisable(true);
             librarianProfileButton.setVisible(true);
             librarianProfileButton.setDisable(false);
         }

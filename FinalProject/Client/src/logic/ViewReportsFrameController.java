@@ -351,7 +351,7 @@ public class ViewReportsFrameController
             {
                 super.updateItem(date, empty);
                 // Disable all days except the first day of each month and all the dates after the previous month
-                setDisable(empty || date.getDayOfMonth() != 1 || date.isAfter(LocalDate.now().withDayOfMonth(1).minusDays(1)));
+                setDisable(empty || date.getDayOfMonth() != 1 );
             }
         });
 
