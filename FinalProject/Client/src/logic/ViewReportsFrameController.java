@@ -19,6 +19,7 @@ import java.util.*;
 
 public class ViewReportsFrameController
 {
+    // The FXML elements
     @FXML
     public DatePicker startRangePicker;
     @FXML
@@ -201,8 +202,7 @@ public class ViewReportsFrameController
             NumberAxis yAxis = (NumberAxis) barChart.getYAxis();
             yAxis.setLabel("Count of Actions");
 
-            // Clear existing data and add the new series to the bar chart
-            barChart.getData().clear();
+            // Adds the new series to the bar chart
             barChart.getData().add(barSeries);
             barChart.setTitle(chartName);
         });
@@ -297,8 +297,7 @@ public class ViewReportsFrameController
             xAxis.setLabel("Date");
             xAxis.setCategories(FXCollections.observableArrayList(allDates));
 
-            // Clear existing data and add the new series to the line chart
-            lineChart.getData().clear();
+            // Adds the new series to the line chart
             lineChart.getData().addAll(seriesMap.values());
             lineChart.setTitle(chartName);
         });

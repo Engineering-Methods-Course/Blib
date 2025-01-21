@@ -19,6 +19,7 @@ import java.util.List;
 
 public class WatchHistorySceneController
 {
+    // The FXML elements
     @FXML
     public TableColumn<SubscriberHistory, Date> dateColumn;
     @FXML

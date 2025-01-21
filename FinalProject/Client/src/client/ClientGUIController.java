@@ -3,13 +3,10 @@ package client;
 import common.ClientServerMessage;
 import common.Librarian;
 import common.Subscriber;
-import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
 import javafx.scene.transform.Scale;
 import javafx.stage.Screen;
 import logic.ClientController;
@@ -27,8 +24,14 @@ import java.util.Objects;
 
 public class ClientGUIController extends Application
 {
+    // The chat client
     public static ChatClient chat;
 
+    /**
+     * The main method is called when the program is run, it launches the program.
+     *
+     * @param args The arguments passed to the program
+     */
     public static void main(String[] args)
     {
         launch(args);
@@ -72,7 +75,8 @@ public class ClientGUIController extends Application
         }
 
         // Update the root node of the existing scene
-        /// /////test for setting a sizeable screen
+        // Set the new scene to the same size as the current screen
+        // Scale the new scene to fit the current screen
         Screen screen = Screen.getPrimary();
         currentStage.setWidth(screen.getBounds().getWidth());
         currentStage.setHeight(screen.getBounds().getHeight());
@@ -84,8 +88,7 @@ public class ClientGUIController extends Application
         scale.xProperty().bind(currentStage.widthProperty().divide(1920));
         scale.yProperty().bind(currentStage.heightProperty().divide(1080));
 
-        /// //
-
+        // Set the new scene as the root of the current stage
         currentStage.getScene().setRoot(newRoot);
         currentStage.setTitle(stageTitle);
         currentStage.setMaximized(true);
@@ -118,11 +121,16 @@ public class ClientGUIController extends Application
      */
     public static void loadFrameIntoPane(AnchorPane parentContainer, String scene) throws IOException
     {
+        // Clear the parent container and load the new FXML file
         parentContainer.getChildren().clear();
+
+        // Load the new FXML file
         FXMLLoader loader = new FXMLLoader(ClientGUIController.class.getResource(scene));
         ClientController.setLoader(loader);
         Node view = loader.load();
         parentContainer.getChildren().add(view);
+
+        // Set the new view to fill the parent container
         AnchorPane.setTopAnchor(view, 0.0);
         AnchorPane.setRightAnchor(view, 0.0);
         AnchorPane.setBottomAnchor(view, 0.0);
@@ -138,10 +146,15 @@ public class ClientGUIController extends Application
      */
     public static void showAlert(Alert.AlertType type, String title, String message)
     {
+        // Create a new alert with the specified type, title, and message
         Alert alert = new Alert(type);
+
+        // Set the alert title and message
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+
+        // Set the alert size to be larger
         alert.showAndWait();
     }
 
@@ -150,9 +163,11 @@ public class ClientGUIController extends Application
      */
     private static void exitAction()
     {
+        // Create a new message to send to the server
         ClientServerMessage logoutMessage = new ClientServerMessage(102, 0);
         ClientServerMessage exitMessage = new ClientServerMessage(104, null);
 
+        // Check if a subscriber or librarian is logged in and set the message accordingly
         if (Subscriber.getLocalSubscriber() != null)
         {
             logoutMessage = new ClientServerMessage(102, Subscriber.getLocalSubscriber().getID());
@@ -162,16 +177,9 @@ public class ClientGUIController extends Application
             logoutMessage = new ClientServerMessage(102, Librarian.getLocalLibrarian().getID());
         }
 
-        try
-        {
-            ClientGUIController.chat.sendToServer(logoutMessage);
-            ClientGUIController.chat.sendToServer(exitMessage);
-            System.exit(0);
-        }
-        catch (Exception e)
-        {
-            System.out.println("Error sending login message to server: " + e.getMessage());
-        }
+        // Send the message to the server and exit the program
+        ClientGUIController.chat.sendToServer(logoutMessage);
+        ClientGUIController.chat.sendToServer(exitMessage);
     }
 
     /**
@@ -184,6 +192,7 @@ public class ClientGUIController extends Application
         // Show the error label with the provided message
         labelToChange.setText(errorMessage);
         labelToChange.setVisible(true);
+
         // Set the TextField border to red
         textFieldToChange.setStyle("-fx-border-color: red;");
         labelToChange.setStyle("-fx-text-fill: red;");
@@ -207,6 +216,7 @@ public class ClientGUIController extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
+        // Start the ClientIPFrameController
         ClientIPFrameController aFrame = new ClientIPFrameController();
         aFrame.start(primaryStage);
     }

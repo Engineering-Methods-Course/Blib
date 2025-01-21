@@ -31,13 +31,18 @@ public class UserLoginFrameController
      */
     public void initialize()
     {
+        // Create an ActionEvent object
         ActionEvent event = new ActionEvent();
+
+        // Check if the user is already logged in and redirect accordingly
         try
         {
+            // Check if the user is a subscriber that's already logged in
             if (Subscriber.getLocalSubscriber() != null)
             {
                 navigateTo(event, "/gui/MainFrame.fxml", "/gui/MainFrame.css", "Profile Page");
             }
+            // Check if the user is a librarian that's already logged in
             else if (Librarian.getLocalLibrarian() != null)
             {
                 navigateTo(event, "/gui/MainFrame.fxml", "/gui/MainFrame.css", "Librarian Menu");
@@ -47,23 +52,31 @@ public class UserLoginFrameController
         {
             System.out.println("Error initializing login screen: " + e.getMessage());
         }
+
         // Add listeners to the fields for error handling
+        // Check if the username field is empty with a listener
         txtUsername.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.trim().isEmpty()) {
+            if (newValue.trim().isEmpty())
+            {
                 showErrorListenField(txtUsername, lblUserNameError, "Username cannot be empty");
-            } else {
+            }
+            else
+            {
                 resetErrorState(txtUsername, lblUserNameError);
             }
         });
 
+        // Check if the password field is empty with a listener
         txtPassword.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.trim().isEmpty()) {
+            if (newValue.trim().isEmpty())
+            {
                 showErrorListenField(txtPassword, lblPasswordError, "Password cannot be empty");
-            } else {
+            }
+            else
+            {
                 resetErrorState(txtPassword, lblPasswordError);
             }
         });
-
     }
 
     /**

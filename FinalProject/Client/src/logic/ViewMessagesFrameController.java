@@ -15,6 +15,7 @@ import java.util.List;
 
 public class ViewMessagesFrameController
 {
+    // The FXML elements
     @FXML
     public TableView<LibrarianMessage> messagesTableView;
     @FXML
@@ -48,12 +49,13 @@ public class ViewMessagesFrameController
         // Create a list of LibrarianMessage objects
         ArrayList<LibrarianMessage> messageList = new ArrayList<>();
 
+        // Create a LibrarianMessage object for each message and add it to the list
         for (ArrayList<String> message : messages)
         {
             messageList.add(new LibrarianMessage(message.get(0), message.get(1)));
         }
 
-        // Load the messages into the table
+        // converts the list to an observable list and sets it to the table
         ObservableList<LibrarianMessage> data = FXCollections.observableArrayList(messageList);
         messagesTableView.setItems(data);
     }

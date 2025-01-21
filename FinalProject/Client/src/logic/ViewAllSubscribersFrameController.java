@@ -61,9 +61,10 @@ public class ViewAllSubscribersFrameController
         // Set up the watch profile column with a button
         watchProfileColumn.setCellFactory(param -> new TableCell<Subscriber, Void>()
         {
+            // The button to watch the profile
             private final Button watchButton = new Button("Watch Profile");
-
             {
+                // Set the button's action
                 watchButton.setOnAction(event -> {
                     Subscriber subscriber = getTableView().getItems().get(getIndex());
                     // Handle the watch profile action here
@@ -72,6 +73,7 @@ public class ViewAllSubscribersFrameController
             }
 
             @Override
+            // Update the cell item
             protected void updateItem(Void item, boolean empty)
             {
                 super.updateItem(item, empty);
@@ -100,8 +102,13 @@ public class ViewAllSubscribersFrameController
      */
     public void addToTable(ArrayList<Subscriber> subscribers)
     {
+        // Set the list of all subscribers
         allSubscribers = subscribers;
+
+        // Create an observable list of subscribers and set it to the table
         ObservableList<Subscriber> subscriberList = FXCollections.observableArrayList(subscribers);
+
+        // Set the items in the table
         subscribersTable.setItems(subscriberList);
     }
 
@@ -111,15 +118,23 @@ public class ViewAllSubscribersFrameController
      */
     public void onFilterButtonClicked()
     {
+        // Get the search ID from the filter text field
         String searchId = filterTextField.getText();
+
+        // If the search ID is not empty, filter the subscribers list
         if (searchId != null && !searchId.isEmpty())
         {
+            // Try to parse the search ID to an integer
             try
             {
+                // Filter the subscribers list by the search ID
                 int id = Integer.parseInt(searchId);
                 List<Subscriber> filteredList = allSubscribers.stream().filter(subscriber -> subscriber.getID() == id).collect(Collectors.toList());
+
+                // Set the filtered list to the table
                 subscribersTable.setItems(FXCollections.observableArrayList(filteredList));
             }
+            // Handle the case where the search ID is not a valid integer
             catch (NumberFormatException e)
             {
                 System.out.println("Invalid ID format: " + searchId);

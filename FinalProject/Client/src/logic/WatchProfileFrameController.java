@@ -20,6 +20,7 @@ import static client.ClientGUIController.showAlert;
 
 public class WatchProfileFrameController
 {
+    // The FXML elements
     @FXML
     public VBox extendBorrowLibrarian;
     @FXML
@@ -50,6 +51,7 @@ public class WatchProfileFrameController
      */
     public void initialize()
     {
+        // Get the static subscriber object
         Subscriber subscriber = Subscriber.getWatchProfileSubscriber();
         if (subscriber == null)
         {
@@ -57,8 +59,10 @@ public class WatchProfileFrameController
         }
         else
         {
+            // Update the subscriber information on the UI
             updateSubscriberInfo(subscriber);
         }
+
         // Set up the borrowed books table columns
         bookNameColumn.setCellValueFactory(new PropertyValueFactory<>("bookName"));
         borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
@@ -109,7 +113,7 @@ public class WatchProfileFrameController
     }
 
     /**
-     * Update the subscriber information on the UI
+     * Update the subscriber information on the UI by setting the test fields
      *
      * @param subscriber The subscriber object to display
      */
@@ -131,15 +135,9 @@ public class WatchProfileFrameController
     {
         // Create a message with code 210 and userID
         ClientServerMessage message = new ClientServerMessage(210, userID);
-        try
-        {
-            // Send the message to the server
-            ClientGUIController.chat.sendToServer(message);
-        }
-        catch (Exception e)
-        {
-            System.out.println("Error sending request for borrowed books: " + e.getMessage());
-        }
+
+        // Send the message to the server
+        ClientGUIController.chat.sendToServer(message);
     }
 
     /**
@@ -194,21 +192,32 @@ public class WatchProfileFrameController
      */
     private String addDay(String date)
     {
+        // Split the date into parts
         String[] dateParts = date.split("-");
+
+        //parses the date parts into integers
         int year = Integer.parseInt(dateParts[0]);
         int month = Integer.parseInt(dateParts[1]);
         int day = Integer.parseInt(dateParts[2]);
+
+        // Adds a day to the date
         day++;
+
+        // Checks if the day is greater than 31 and if so adds a month and resets the day
         if (day > 31)
         {
             day = 1;
             month++;
+
+            // Checks if the month is greater than 12 and if so adds a year and resets the month
             if (month > 12)
             {
                 month = 1;
                 year++;
             }
         }
+
+        // Returns the new date
         return year + "-" + month + "-" + day;
     }
 }

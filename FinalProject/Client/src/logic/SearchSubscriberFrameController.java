@@ -26,22 +26,39 @@ public class SearchSubscriberFrameController
     @FXML
     private TextField idTextField;
 
-    @FXML
-    public void initialize() {
+
+    /**
+     * Initializes the SearchSubscriberFrameController.
+     */
+    public void initialize()
+    {
         // Adding listener to the ID TextField
         idTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             validateSubscriberID(newValue);
         });
     }
 
-    private void validateSubscriberID(String newValue) {
-        if (newValue.trim().isEmpty()) {
+    /**
+     * Validates the subscriber ID
+     *
+     * @param newValue the new value of the TextField
+     */
+    private void validateSubscriberID(String newValue)
+    {
+        // Get the ID TextField and check if it's empty
+        if (newValue.trim().isEmpty())
+        {
             // Call showErrorListenField to display the error
             showErrorListenField(idTextField, lblSubscriberIDError, "ID cannot be empty.");
-        } else if (!newValue.matches("\\d+")) {  // Check if the input is numeric
+        }
+        // Check if the input is numeric using regex
+        else if (!newValue.matches("\\d+"))
+        {
             // Call showErrorListenField to display the error
             showErrorListenField(idTextField, lblSubscriberIDError, "Invalid ID. Please enter a numeric value.");
-        } else {
+        }
+        else
+        {
             // Reset error state if the input is valid
             resetErrorState(idTextField, lblSubscriberIDError);
         }
@@ -57,34 +74,37 @@ public class SearchSubscriberFrameController
         // Get the ID from the TextField
         String userIDText = idTextField.getText().trim();
 
+        // Validate the ID and show an error if it's invalid
         if (userIDText.isEmpty())
         {
             showAlert(Alert.AlertType.ERROR, "Input Error", "ID cannot be empty.");
             return;
         }
+
+        //a helper variable to store the user ID
         int userID;
+
+        // Try to parse the ID to an integer
         try
         {
+            // Parse the ID to an integer and store it in the userID variable
             userID = Integer.parseInt(userIDText);
         }
+        // Handle the case where the ID is not a valid integer
         catch (NumberFormatException e)
         {
             showAlert(Alert.AlertType.ERROR, "Input Error", "Invalid Copy ID. Please enter a numeric value.");
             return;
         }
 
+        // Create a new ClientServerMessage with the ID 308 and the user ID
         ClientServerMessage message = new ClientServerMessage(308, userID);
-        try
-        {
-            // Store the ActionEvent to pass it to the response handler
-            ClientController.setActionEvent(actionEvent);
-            // Send the request to the server
-            ClientGUIController.chat.sendToServer(message);
-        }
-        catch (Exception e)
-        {
-            System.out.println("Error sending request to the server: " + e.getMessage());
-        }
+
+        // Store the ActionEvent to pass it to the response handler
+        ClientController.setActionEvent(actionEvent);
+
+        // Send the request to the server
+        ClientGUIController.chat.sendToServer(message);
     }
 
     /**
@@ -95,6 +115,7 @@ public class SearchSubscriberFrameController
     public void WatchProfileResponse(Subscriber subscriberFromServer)
     {
         Platform.runLater(() -> {
+            // Check if the subscriber is null and show an error
             if (subscriberFromServer == null)
             {
                 showAlert(Alert.AlertType.ERROR, "Error", "Subscriber not found or invalid ID.");
@@ -106,10 +127,13 @@ public class SearchSubscriberFrameController
 
                 // Retrieve the stored ActionEvent and navigate
                 ActionEvent storedEvent = ClientController.getStoredActionEvent();
+
+                // Check if the stored event is not null
                 if (storedEvent != null)
                 {
                     try
                     {
+                        // Load the WatchProfileFrame
                         loadFrameIntoPane((AnchorPane) searchSubscriberFrame.getParent(), "/gui/WatchProfileFrame.fxml");
                     }
                     catch (Exception e)

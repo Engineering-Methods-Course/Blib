@@ -61,13 +61,15 @@ public class SubscriberProfileFrameController
         extendButtonColumn.setCellFactory(new Callback<TableColumn<BorrowedBook, Button>, TableCell<BorrowedBook, Button>>()
         {
             @Override
+            // This method creates a button in the table cell
             public TableCell<BorrowedBook, Button> call(TableColumn<BorrowedBook, Button> param)
             {
                 return new TableCell<BorrowedBook, Button>()
                 {
+                    // The button to extend the borrow
                     private final Button extendButton = new Button("Extend Borrow");
-
                     {
+                        // Set the button's action
                         extendButton.setOnAction((ActionEvent event) -> {
                             try
                             {
@@ -81,6 +83,7 @@ public class SubscriberProfileFrameController
                     }
 
                     @Override
+                    // Update the cell item
                     protected void updateItem(Button item, boolean empty)
                     {
                         super.updateItem(item, empty);
@@ -142,14 +145,8 @@ public class SubscriberProfileFrameController
         ClientServerMessage message = getClientServerMessage(selectedBook);
 
         // Send the message to the server
-        try
-        {
-            ClientGUIController.chat.sendToServer(message);
-        }
-        catch (Exception e)
-        {
-            showAlert(Alert.AlertType.ERROR, "Error", "Error sending extend borrow request to the server: " + e.getMessage());
-        }
+        ClientGUIController.chat.sendToServer(message);
+
     }
 
     /**
@@ -180,6 +177,7 @@ public class SubscriberProfileFrameController
     public static void showExtendMessageResponse(ArrayList<String> msg)
     {
         Platform.runLater(() -> {
+            // Check if the response is null or empty, and display an error
             if (msg == null || msg.isEmpty())
             {
                 showAlert(Alert.AlertType.ERROR, "Error", "No response from server.");
@@ -188,18 +186,21 @@ public class SubscriberProfileFrameController
             // Check if the first element in the message is "True" or "False"
             String status = msg.get(0); // Extract status (True or False)
 
+            // Show the appropriate message based on the status
             if ("true".equals(status))
             {
                 // Extract explanation if available
                 String explanation = msg.size() > 1 ? msg.get(1) : "No additional information provided.";
                 showAlert(Alert.AlertType.INFORMATION, "Success", "The book return date was successfully extended! " + explanation);
             }
+            // Show an error message if the extension failed
             else if ("false".equals(status))
             {
                 // Extract explanation if available
                 String explanation = msg.size() > 1 ? msg.get(1) : "Unknown error occurred.";
                 showAlert(Alert.AlertType.ERROR, "Extension Failed", "Reason: " + explanation);
             }
+            // Show an error message if the response format is unexpected
             else
             {
                 showAlert(Alert.AlertType.ERROR, "Error", "Unexpected response format from server.");
@@ -215,21 +216,32 @@ public class SubscriberProfileFrameController
      */
     private String addDay(String date)
     {
+        // Split the date into parts
         String[] dateParts = date.split("-");
+
+        //parses the date parts into integers
         int year = Integer.parseInt(dateParts[0]);
         int month = Integer.parseInt(dateParts[1]);
         int day = Integer.parseInt(dateParts[2]);
+
+        // Adds a day to the date
         day++;
+
+        // Checks if the day is greater than 31 and if so adds a month and resets the day
         if (day > 31)
         {
             day = 1;
             month++;
+
+            // Checks if the month is greater than 12 and if so adds a year and resets the month
             if (month > 12)
             {
                 month = 1;
                 year++;
             }
         }
+
+        // Returns the new date
         return year + "-" + month + "-" + day;
     }
 }

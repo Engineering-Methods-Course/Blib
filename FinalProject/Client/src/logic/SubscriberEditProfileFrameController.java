@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+
 import java.util.ArrayList;
 
 import static client.ClientGUIController.*;
@@ -20,8 +21,8 @@ public class SubscriberEditProfileFrameController
     public TextField txtLastName;
     @FXML
     public TextField txtFirstName;
+    @FXML
     public VBox editInfoFrame;
-
     @FXML
     private TextField txtPhone;
     @FXML
@@ -37,10 +38,13 @@ public class SubscriberEditProfileFrameController
 
     /**
      * This method initializes the controller class.
-     * It is automatically called after the FXML file is loaded.
      */
-    public void initialize(){
+    public void initialize()
+    {
+        // Load the profile details into the text fields
         loadProfileDetails();
+
+        // Add validation listeners to the text fields
         addValidationListeners();
     }
 
@@ -57,13 +61,14 @@ public class SubscriberEditProfileFrameController
         String lastName = txtLastName.getText().trim();
 
         // Check if the first name and last name are empty and if so show an alert
-        if (firstName.isEmpty() || lastName.isEmpty()) {
+        if (firstName.isEmpty() || lastName.isEmpty())
+        {
             // Show an alert if either field is empty
             showAlert(Alert.AlertType.WARNING, "Input Error", "First name and last name cannot be empty.");
             return;
         }
 
-        // Create a new Subscriber object with the updated details
+        // Create a new ArrayList to store the updated subscriber details
         ArrayList<String> changedSubscriber = new ArrayList<>();
         changedSubscriber.add(String.valueOf(Subscriber.getLocalSubscriber().getID()));
         changedSubscriber.add(txtPhone.getText());
@@ -71,7 +76,9 @@ public class SubscriberEditProfileFrameController
         changedSubscriber.add(firstName);
         changedSubscriber.add(lastName);
 
+        // Print the updated subscriber details for logging
         System.out.println(changedSubscriber);
+
         // Create a ClientServerMessage with the subscriber and ID 203
         ClientServerMessage message = new ClientServerMessage(216, changedSubscriber);
 
@@ -95,43 +102,70 @@ public class SubscriberEditProfileFrameController
         this.txtLastName.setText(Subscriber.getLocalSubscriber().getLastName());
     }
 
-    private void addValidationListeners() {
+    /**
+     * This method adds validation listeners to the text fields.
+     * It checks for empty fields and invalid formats.
+     */
+    private void addValidationListeners()
+    {
         // Listener for First Name TextField
         txtFirstName.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.trim().isEmpty()) {
+            // Check if the field is empty and show an error if it is
+            if (newValue.trim().isEmpty())
+            {
                 showErrorListenField(txtFirstName, lblFirstNameError, "First name cannot be empty.");
-            } else {
+            }
+            else
+            {
                 resetErrorState(txtFirstName, lblFirstNameError);
             }
         });
 
         // Listener for Last Name TextField
         txtLastName.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.trim().isEmpty()) {
+            // Check if the field is empty and show an error if it is
+            if (newValue.trim().isEmpty())
+            {
                 showErrorListenField(txtLastName, lblLastNameError, "Last name cannot be empty.");
-            } else {
+            }
+            else
+            {
                 resetErrorState(txtLastName, lblLastNameError);
             }
         });
 
         // Listener for Phone TextField
         txtPhone.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.trim().isEmpty()) {
+            // Check if the field is empty and show an error if it is
+            if (newValue.trim().isEmpty())
+            {
                 showErrorListenField(txtPhone, lblPhoneError, "Phone number cannot be empty.");
-            } else if (!newValue.matches("^05\\d{8}$")) {  // Match phone number starting with '05' and followed by 8 digits
+            }
+            // Match phone number starting with '05' and followed by 8 digits using regex
+            else if (!newValue.matches("^05\\d{8}$"))
+            {
                 showErrorListenField(txtPhone, lblPhoneError, "Invalid phone number. It must start with '05' and be followed by 8 digits.");
-            } else {
+            }
+            else
+            {
                 resetErrorState(txtPhone, lblPhoneError);
             }
         });
 
         // Listener for Email TextField (Check for a valid email format)
         txtEmail.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.trim().isEmpty()) {
+            // Check if the field is empty and show an error if it is
+            if (newValue.trim().isEmpty())
+            {
                 showErrorListenField(txtEmail, lblEmailError, "Email cannot be empty.");
-            } else if (!newValue.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {  // Check for a valid email format
+            }
+            // Check for a valid email format using regex
+            else if (!newValue.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$"))
+            {
                 showErrorListenField(txtEmail, lblEmailError, "Invalid email format.");
-            } else {
+            }
+            else
+            {
                 resetErrorState(txtEmail, lblEmailError);
             }
         });
