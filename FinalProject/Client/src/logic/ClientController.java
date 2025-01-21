@@ -89,6 +89,7 @@ public class ClientController extends AbstractClient
                 {
                     //login response from the server
                     case 101:
+                        //display an error if the message content is null
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Wrong Username(id) or Password");
@@ -97,11 +98,13 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof User)
                         {
                             User user = (User) message.getMessageContent();
+                            //if the user is a subscriber, set the local instance of Subscriber to it
                             if (user instanceof Subscriber)
                             {
                                 Subscriber subscriberFromServer = (Subscriber) user;
                                 Subscriber.setLocalSubscriber(subscriberFromServer);
                             }
+                            //if the user is a librarian, set the local instance of Librarian to it
                             else if (user instanceof Librarian)
                             {
                                 Librarian librarianFromServer = (Librarian) user;
@@ -111,6 +114,7 @@ public class ClientController extends AbstractClient
                         break;
                     // message to the client
                     case 107:
+                        //display an error if the message content is null
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not get message");
@@ -124,6 +128,7 @@ public class ClientController extends AbstractClient
                         break;
                     //search book response
                     case 201:
+                        //display an error if the message content is null
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Book not found");
@@ -132,20 +137,19 @@ public class ClientController extends AbstractClient
                         }
                         else
                         {
-                            SearchPageFrameController.changeCanSearch(true);
                             if (message.getMessageContent() instanceof ArrayList)
                             {
+                                //Indicate that the search results were successful by setting the flag to true.
+                                SearchPageFrameController.changeCanSearch(true);
                                 @SuppressWarnings("unchecked") ArrayList<Book> bookList = (ArrayList<Book>) message.getMessageContent();
+                                //pass the list of books to the searchResultFrameController
                                 SearchResultFrameController.setBookArray(bookList);
-                            }
-                            else
-                            {
-                                SearchPageFrameController.changeCanSearch(false);
                             }
                         }
                         break;
                     //Show book details response
                     case 207:
+                        //display an error if the message content is null
                         if (message.getMessageContent() == null)
                         {
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Book Not Found", "Error with db"));
@@ -153,11 +157,13 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked") ArrayList<String> details = (ArrayList<String>) message.getMessageContent();
+                            //pass the list with the availability of the book to BookInfoFrameController
                             BookInfoFrameController.setAvailability(details);
                         }
                         break;
                     // Order book response
                     case 209:
+                        //display an error if the message content is null
                         if (message.getMessageContent() == null)
                         {
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Book Not ordered", "Book not ordered"));
@@ -166,15 +172,19 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked") ArrayList<String> details = (ArrayList<String>) message.getMessageContent();
+                            //if the book order process ended successfully shows a correct message for it
                             if (details.get(0).equals("true"))
                             {
                                 Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Book ordered", "Book was ordered"));
+                                //signals that the order process is done
                                 BookInfoFrameController.orderComplete = true;
                                 System.out.println("Book Ordered Successfully");
                             }
+                            //if the order failed, show an error message for it
                             else
                             {
                                 Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Book ordered", details.get(1)));
+                                //signals that the order process ended in failure
                                 BookInfoFrameController.orderComplete = false;
                                 System.out.println("Book Ordered Failed");
                             }
@@ -201,11 +211,13 @@ public class ClientController extends AbstractClient
                         break;
                     //Extend book borrow - subscriber response
                     case 213:
+                        //if the content is an instance of arraylist, pass it to SubscriberProfileFrameController
                         if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked") ArrayList<String> arrayMessageFromServer = (ArrayList<String>) message.getMessageContent();
                             SubscriberProfileFrameController.showExtendMessageResponse(arrayMessageFromServer);
                         }
+                        //display an error message
                         else
                         {
                             System.out.println("Invalid message content for case 311");
@@ -214,11 +226,13 @@ public class ClientController extends AbstractClient
                         break;
                     //Watch history response
                     case 215:
+                        //display an error if the message content is null
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not get history");
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not get history"));
                         }
+                        //if the content is an instance of List, pass it to WatchHistorySceneController's
                         else if (message.getMessageContent() instanceof List)
                         {
                             @SuppressWarnings("unchecked")
@@ -229,12 +243,14 @@ public class ClientController extends AbstractClient
                         break;
                     //Edit subscriber details
                     case 217:
+                        //display an error if the message content is null
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not update subscriber details");
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Update error", "Could not update subscriber details"));
 
                         }
+                        //if content is instance of arraylist, pass it to updateSubscriberDetails and display a successful message
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked") ArrayList<String> newDetails = (ArrayList<String>) message.getMessageContent();
@@ -244,6 +260,7 @@ public class ClientController extends AbstractClient
                         break;
                     //Edit login details response
                     case 219:
+                        //display an error if the message content is null
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not update login details");
@@ -252,10 +269,12 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked") ArrayList<String> serverResponse = (ArrayList<String>) message.getMessageContent();
+                            //if the first element is true, display successful update message
                             if (Boolean.parseBoolean(serverResponse.get(0)))
                             {
                                 Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Update successful", "Login details updated successfully"));
                             }
+                            //if false, display an error message
                             else
                             {
                                 Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", serverResponse.get(1)));
@@ -264,7 +283,27 @@ public class ClientController extends AbstractClient
                         break;
                     //Register new subscriber response
                     case 301:
-                        registerNewSubscriberResponse(message);
+                        //display an error if the message content is null
+                        if (message.getMessageContent() == null)
+                        {
+                            System.out.println("Could not register new subscriber");
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Registration error", "Could not register new subscriber"));
+                        }
+                        else if (message.getMessageContent() instanceof ArrayList)
+                        {
+                            // casts the message content to an ArrayList and gives a pop-up message to the librarian
+                            @SuppressWarnings("unchecked") ArrayList<String> serverResponse = (ArrayList<String>) message.getMessageContent();
+                            //if the first element of the content is true, show a success message
+                            if (Boolean.parseBoolean(serverResponse.get(0)))
+                            {
+                                Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Success", serverResponse.get(1)));
+                            }
+                            //if false, show an error message
+                            else
+                            {
+                                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Registration error", serverResponse.get(1)));
+                            }
+                        }
                         break;
                     //Borrow book response
                     case 303:
@@ -285,6 +324,7 @@ public class ClientController extends AbstractClient
                         break;
                     //Return book response
                     case 305:
+                        //display an error if the message content is null
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not return book");
@@ -306,20 +346,25 @@ public class ClientController extends AbstractClient
                         break;
                     // Get all subscribers list
                     case 307:
+                        //display an error if the message content is null
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not get all subscribers list");
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not get all subscribers list"));
                         }
+                        //if the content is instance of arrayList, pass it to ViewAllSubscribersFrameController's addToTable
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked") ArrayList<Subscriber> subscribers = (ArrayList<Subscriber>) message.getMessageContent();
+                            // Retrieve the controller for the "View All Subscribers" frame.
                             ViewAllSubscribersFrameController controller = loader.getController();
+                            // Pass the list of subscribers to the controller to populate the table view.
                             controller.addToTable(subscribers);
                         }
                         break;
                     // Watch subscriber details response
                     case 309:
+                        //display an error if the message content is null
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Wrong Username(id)");
@@ -329,23 +374,28 @@ public class ClientController extends AbstractClient
                         {
                             Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
                             Subscriber.setWatchProfileSubscriber(subscriberFromServer);
+                            //retrieve the controller for "SearchSubscriberFrameController" frame.
                             SearchSubscriberFrameController Controller = loader.getController();
+                            //pass the subscriber to the controller
                             Controller.WatchProfileResponse(subscriberFromServer);
                         }
                         break;
                     // Extend borrow - librarian response
                     case 311:
+                        //display an error if the message content is null
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not extend borrow");
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not extend borrow"));
                         }
+                        //if the content is instance of arraylist, pass it to BorrowExtensionFrameController's showExtendMessageResponse
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked")
                             ArrayList<String> arrayMessageFromServer = (ArrayList<String>) message.getMessageContent();
                             BorrowExtensionFrameController.showExtendMessageResponse(arrayMessageFromServer);
                         }
+                        //if the content is not, show error message
                         else
                         {
                             System.out.println("Invalid message content for case 311");
@@ -354,6 +404,7 @@ public class ClientController extends AbstractClient
                         break;
                     // Watch logs response
                     case 313:
+                        //display an error if the message content is null
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not get logs");
@@ -363,12 +414,15 @@ public class ClientController extends AbstractClient
                         {
                             @SuppressWarnings("unchecked")
                             ArrayList<MonthlyReport> reports = (ArrayList<MonthlyReport>) message.getMessageContent();
+                            //retrieve the controller for " ViewReportsFrameController" frame.
                             ViewReportsFrameController controller = loader.getController();
+                            //pass the reports to the controller
                             controller.generateBorrowTimeReport(reports);
                         }
                         break;
                     // Handles the Subscriber Status report response
                     case 315:
+                        //display an error if the message content is null
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not get logs");
@@ -378,22 +432,30 @@ public class ClientController extends AbstractClient
                         {
                             @SuppressWarnings("unchecked")
                             ArrayList<MonthlyReport> logs = (ArrayList<MonthlyReport>) message.getMessageContent();
+                            //retrieve the controller for " ViewReportsFrameController" frame.
                             ViewReportsFrameController controller = loader.getController();
+                            //pass the logs to the controller
                             controller.generateSubscriberStatusReport(logs);
                         }
                         break;
                     // View messages response
                     case 317:
+                        //display an error if the message content is null
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not get messages");
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not get messages"));
                         }
+
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked")
                             List<ArrayList<String>> messages = (List<ArrayList<String>>) message.getMessageContent();
+
+                            //retrieve the controller for "ViewMessagesFrameController" frame.
                             ViewMessagesFrameController controller = loader.getController();
+
+                            //pass the message to the controller
                             controller.loadLibrarianMessages(messages);
                         }
                         break;

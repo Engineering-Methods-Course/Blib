@@ -47,10 +47,12 @@ public class BookInfoFrameController
      */
     public void initialize()
     {
-        //loadBookInfo();
+        //set the text according to the book that is being viewed
         bookName.setText(localBook.getBookName());
         bookGenre.setText(localBook.getBookGenre());
         bookdescription.setText(localBook.getBookDescription());
+
+        //check if the book is available or not and sets its location or closest return copy date accordingly
         if (Availability.get(0).equals("true"))
         {
             TextForAvailability.setText("Book Location: ");
@@ -62,6 +64,7 @@ public class BookInfoFrameController
             bookLocation.setText(Availability.get(1));
         }
 
+        //if the user that views the book is subscriber allow him to view order button, other than him hide it
         if (Subscriber.getLocalSubscriber() == null && Librarian.getLocalLibrarian() == null || Availability.get(0).equals("true"))
         {
             orderBookButton.setDisable(true);
@@ -97,6 +100,7 @@ public class BookInfoFrameController
     public void orderBookButtonClicked() throws Exception
     {
         ArrayList<String> content = new ArrayList<>();
+        //adds to the content of message the subscriber id and the serial number of the book
         content.add(String.valueOf(Subscriber.getLocalSubscriber().getID()));
         content.add(String.valueOf(localBook.getBookSerialNumber()));
 
@@ -106,9 +110,9 @@ public class BookInfoFrameController
         // Send the message to the server
         ClientGUIController.chat.sendToServer(searchMessage);
 
+        //if the order action was completed, move back to the search home page
         if (orderComplete)
         {
-            System.out.println(orderComplete);
             loadFrameIntoPane((AnchorPane) bookInfoFrame.getParent(), "/gui/SearchPageFrame.fxml");
         }
     }

@@ -114,25 +114,38 @@ public class BorrowBookFrameController
 
     }
 
+    /**
+     * The method displays an appropriate response message for the borrowing process.
+     *
+     * @param msg -msg an ArrayList of strings containing the server's response.
+     *            {Success/failure,explanation}
+     */
     public static void showBorrowMessageResponse(ArrayList<String> msg)
     {
+        // Ensure the UI update runs on the JavaFX Application Thread.
         Platform.runLater(() -> {
+            //checks if the response is null or empty, and display an error
             if (msg == null || msg.isEmpty())
             {
                 showAlert(Alert.AlertType.ERROR, "Error", "No response from server.");
                 return;
             }
 
+            //extract the status from the response
             String status = msg.get(0);
+
+            //if the borrow was successful, show the correct message
             if ("true".equals(status))
             {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "The book was borrowed successfully!");
             }
+            //if the borrow failed, show an error with the reason to it
             else if ("false".equals(status))
             {
                 String explanation = msg.size() > 1 ? msg.get(1) : "Unknown error occurred.";
                 showAlert(Alert.AlertType.ERROR, "Borrow Failed", "Reason: " + explanation);
             }
+            // Handles unexpected response, generates a generic error
             else
             {
                 showAlert(Alert.AlertType.ERROR, "Error", "Unexpected response format from server.");
