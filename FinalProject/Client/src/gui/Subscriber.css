@@ -34,7 +34,7 @@
     -fx-background-color: #334e68;
 }
 
-/* TextField Styles */
+/* TextField Styles
 .text-field {
     -fx-background-color: #f0f4f8;
     -fx-text-fill: #334e68;
@@ -44,6 +44,8 @@
     -fx-padding: 8px;
     -fx-font-family: "Segoe UI", sans-serif;
 }
+
+ */
 
 .text-field:focused {
     -fx-border-color: #486581;

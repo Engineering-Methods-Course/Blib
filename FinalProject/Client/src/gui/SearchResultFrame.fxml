@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="SearchResultFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="logic.SearchResultFrameController">
-    <TableView fx:id="searchResultTable" prefHeight="995.0" prefWidth="1920.0">
-        <columns>
-            <TableColumn fx:id="bookNameColumn" prefWidth="342.0" text="Book Name"/>
-            <TableColumn fx:id="genreColumn" prefWidth="415.0" text="Genre"/>
-            <TableColumn fx:id="watchDetailsColumn" prefWidth="522.0" text="Watch Details"/>
-        </columns>
-    </TableView>
+<VBox fx:id="SearchResultFrame" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.SearchResultFrameController">
+   <AnchorPane>
+      <children>
+          <Label alignment="CENTER" prefHeight="54.0" prefWidth="1544.0" style="-fx-font-size: 36px; -fx-font-weight: bold;" text="SEARCH RESULT" />
+          <TableView fx:id="searchResultTable" layoutX="14.0" layoutY="137.0" prefHeight="738.0" prefWidth="1523.0">
+              <columns>
+                  <TableColumn fx:id="bookNameColumn" prefWidth="342.0" text="Book Name" />
+                  <TableColumn fx:id="genreColumn" prefWidth="415.0" text="Genre" />
+                  <TableColumn fx:id="watchDetailsColumn" prefWidth="522.0" text="Watch Details" />
+              </columns>
+          </TableView>
+      </children>
+   </AnchorPane>
 </VBox>
