@@ -17,6 +17,7 @@ import static client.ClientGUIController.loadFrameIntoPane;
 
 public class BookInfoFrameController
 {
+    // FXML attributes
     @FXML
     public Text bookName;
     @FXML
@@ -99,16 +100,11 @@ public class BookInfoFrameController
         content.add(String.valueOf(Subscriber.getLocalSubscriber().getID()));
         content.add(String.valueOf(localBook.getBookSerialNumber()));
 
+        // Create a new message to send to the server
         ClientServerMessage searchMessage = new ClientServerMessage(208, content);
 
-        try
-        {
-            ClientGUIController.chat.sendToServer(searchMessage);
-        }
-        catch (Exception e)
-        {
-            System.out.println("Error sending search message to server: " + e.getMessage());
-        }
+        // Send the message to the server
+        ClientGUIController.chat.sendToServer(searchMessage);
 
         if (orderComplete)
         {

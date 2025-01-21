@@ -116,7 +116,7 @@
                </children>
                 </AnchorPane>
                 <Line endX="143.5" layoutX="111.0" layoutY="147.0" startX="-109.0" />
-                <Button fx:id="searchButton" contentDisplay="TOP" layoutX="-1.0" layoutY="156.0" mnemonicParsing="false" onAction="#Press1" prefHeight="86.0" prefWidth="254.0" styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Search Book" textAlignment="CENTER">
+                <Button fx:id="searchButton" contentDisplay="TOP" layoutX="-1.0" layoutY="156.0" mnemonicParsing="false" onAction="#searchButton" prefHeight="86.0" prefWidth="254.0" styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Search Book" textAlignment="CENTER">
                <font>
                   <Font size="96.0" />
                </font>
@@ -137,7 +137,7 @@
                         </ImageView>
                </graphic>
                 </Button>
-                <Button fx:id="LoginButton" contentDisplay="TOP" layoutX="9.0" layoutY="15.0" mnemonicParsing="false" onAction="#OpenLogin" prefHeight="86.0" prefWidth="105.0" styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Login">
+                <Button fx:id="LoginButton" contentDisplay="TOP" layoutX="9.0" layoutY="15.0" mnemonicParsing="false" onAction="#openLogin" prefHeight="86.0" prefWidth="105.0" styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Login">
                     <graphic>
                         <ImageView fitHeight="39.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -148,14 +148,14 @@
                 </Button>
             <Button fx:id="subscriberProfileButton" disable="true" layoutX="146.0" layoutY="12.0" mnemonicParsing="false" onAction="#loadSubscriberProfile" styleClass="buttonCheck" stylesheets="@MainFrame.css" visible="false">
                <graphic>
-                      <ImageView fx:id="userPhoto" fitHeight="57.0" fitWidth="56.0" onMouseClicked="#ImageOnClick" pickOnBounds="true" preserveRatio="true" styleClass="hand-cursor">
+                      <ImageView fx:id="userPhoto" fitHeight="57.0" fitWidth="56.0" onMouseClicked="#imageOnClick" pickOnBounds="true" preserveRatio="true" styleClass="hand-cursor">
                           <image>
                               <Image url="@../resources/icons8-user-48.png" />
                           </image>
                       </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="librarianProfileButton" disable="true" layoutX="146.0" layoutY="12.0" mnemonicParsing="false" onAction="#loadMainSceen" styleClass="buttonCheck" stylesheets="@MainFrame.css" visible="false">
+            <Button fx:id="librarianProfileButton" disable="true" layoutX="146.0" layoutY="12.0" mnemonicParsing="false" onAction="#loadMainScene" styleClass="buttonCheck" stylesheets="@MainFrame.css" visible="false">
                <graphic>
                   <ImageView fx:id="librarianPhoto" fitHeight="57.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -164,9 +164,9 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="MainSceenButton" layoutX="146.0" layoutY="12.0" mnemonicParsing="false" onAction="#loadMainSceen" styleClass="buttonCheck" stylesheets="@MainFrame.css">
+            <Button fx:id="MainSceenButton" layoutX="146.0" layoutY="12.0" mnemonicParsing="false" onAction="#loadMainScene" styleClass="buttonCheck" stylesheets="@MainFrame.css">
                <graphic>
-                  <ImageView fx:id="userPhoto1" fitHeight="57.0" fitWidth="56.0" onMouseClicked="#ImageOnClick" pickOnBounds="true" preserveRatio="true" styleClass="hand-cursor">
+                  <ImageView fx:id="userPhoto1" fitHeight="57.0" fitWidth="56.0" onMouseClicked="#imageOnClick" pickOnBounds="true" preserveRatio="true" styleClass="hand-cursor">
                      <image>
                         <Image url="@../resources/icons8-library-50.png" />
                      </image>

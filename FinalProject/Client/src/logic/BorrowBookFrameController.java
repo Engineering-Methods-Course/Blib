@@ -14,6 +14,7 @@ import static client.ClientGUIController.*;
 
 public class BorrowBookFrameController
 {
+    // FXML attributes
     @FXML
     public TextField bookIDTextField;
     @FXML
@@ -75,11 +76,7 @@ public class BorrowBookFrameController
         // Add listeners to validate subscriberID and bookID fields as the user types
         subscriberIDTextField.textProperty().addListener((observable, oldValue, newValue) -> validateSubscriberID(newValue));
         bookIDTextField.textProperty().addListener((observable, oldValue, newValue) -> validateBookID(newValue));
-
-
     }
-
-
 
     /**
      * This method is called when the borrow button is clicked
@@ -112,14 +109,9 @@ public class BorrowBookFrameController
         // Create the ClientServerMessage object
         ClientServerMessage message = new ClientServerMessage(302, dataToSend);
 
-        try
-        {
-            ClientGUIController.chat.sendToServer(message);
-        }
-        catch (Exception e)
-        {
-            System.out.println("Error sending borrow request to the server: " + e.getMessage());
-        }
+        // Send the message to the server
+        ClientGUIController.chat.sendToServer(message);
+
     }
 
     public static void showBorrowMessageResponse(ArrayList<String> msg)
@@ -148,21 +140,28 @@ public class BorrowBookFrameController
         });
     }
 
-
     /**
      * Validate the subscriber ID field.
      *
      * @param subscriberID The input value of the subscriber ID field.
      */
-    private void validateSubscriberID(String subscriberID) {
-        if (subscriberID.isEmpty()) {
-            showErrorListenField(subscriberIDTextField,ErrorSubscriberID, "Subscriber ID cannot be empty.");
-            return;
-        } else if (!subscriberID.matches("^[0-9]+$")) {
-            showErrorListenField(subscriberIDTextField,ErrorSubscriberID, "Subscriber ID must contain only numbers.");
+    private void validateSubscriberID(String subscriberID)
+    {
+        // checks if the subscriber ID is empty
+        if (subscriberID.isEmpty())
+        {
+            showErrorListenField(subscriberIDTextField, ErrorSubscriberID, "Subscriber ID cannot be empty.");
             return;
         }
-        resetErrorState(subscriberIDTextField,ErrorSubscriberID);
+        // checks if the subscriber ID contains only numbers
+        else if (!subscriberID.matches("^[0-9]+$"))
+        {
+            showErrorListenField(subscriberIDTextField, ErrorSubscriberID, "Subscriber ID must contain only numbers.");
+            return;
+        }
+
+        // Reset error state if the input is valid
+        resetErrorState(subscriberIDTextField, ErrorSubscriberID);
     }
 
     /**
@@ -170,14 +169,22 @@ public class BorrowBookFrameController
      *
      * @param bookID The input value of the book ID field.
      */
-    private void validateBookID(String bookID) {
-        if (bookID.isEmpty()) {
-            showErrorListenField(bookIDTextField,ErrorBookID, "Book ID cannot be empty.");
-            return;
-        } else if (!bookID.matches("^[0-9]+$")) {
-            showErrorListenField(bookIDTextField,ErrorBookID,"Book ID must contain only numbers.");
+    private void validateBookID(String bookID)
+    {
+        // checks if the book ID is empty
+        if (bookID.isEmpty())
+        {
+            showErrorListenField(bookIDTextField, ErrorBookID, "Book ID cannot be empty.");
             return;
         }
-        resetErrorState(bookIDTextField,ErrorBookID);
+        // checks if the book ID contains only numbers
+        else if (!bookID.matches("^[0-9]+$"))
+        {
+            showErrorListenField(bookIDTextField, ErrorBookID, "Book ID must contain only numbers.");
+            return;
+        }
+
+        // Reset error state if the input is valid
+        resetErrorState(bookIDTextField, ErrorBookID);
     }
 }

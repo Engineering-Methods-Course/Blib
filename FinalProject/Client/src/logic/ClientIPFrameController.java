@@ -16,6 +16,7 @@ import static client.ClientGUIController.navigateTo;
 
 public class ClientIPFrameController
 {
+    // FXML attributes
     @FXML
     private TextField txtIP;
     @FXML
@@ -29,9 +30,11 @@ public class ClientIPFrameController
      */
     public void start(Stage primaryStage) throws Exception
     {
+        // Load the FXML file
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/gui/ClientIPFrame.fxml")));
         Parent root = loader.load();
 
+        // Set the scene
         Scene scene = new Scene(root);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/gui/Subscriber.css")).toExternalForm());
         primaryStage.setScene(scene);
@@ -49,9 +52,11 @@ public class ClientIPFrameController
     @FXML
     public void clickEnterButton(ActionEvent event) throws Exception
     {
+        // Get the IP address and port from the text fields
         String ipAddress = txtIP.getText().trim();
         String portText = txtPort.getText().trim();
 
+        // Check if the IP address and port are empty
         if (ipAddress.isEmpty() || portText.isEmpty())
         {
             System.out.println("Both IP address and Port must be entered.");
@@ -60,17 +65,22 @@ public class ClientIPFrameController
 
         try
         {
+            // Check if the port is a valid number
             int port = Integer.parseInt(portText);
 
+            // Initialize the chat client
             ClientGUIController.chat = new ChatClient(ipAddress, port, new FXMLLoader());
 
+            // Navigate to the main frame
             navigateTo(event, "/gui/MainFrame.fxml", "/gui/MainFrame.css", "Home Page");
         }
+        // Handle the case where the port is not a valid number
         catch (NumberFormatException e)
         {
             System.out.println("Port must be a valid number.");
             throw e;
         }
+        // Handle the case where the client cannot be initialized
         catch (Exception e)
         {
             System.out.println("Failed to initialize client: " + e.getMessage());

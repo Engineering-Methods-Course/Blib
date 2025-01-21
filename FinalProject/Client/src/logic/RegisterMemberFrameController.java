@@ -13,6 +13,7 @@ import static client.ClientGUIController.*;
 
 public class RegisterMemberFrameController
 {
+    // FXML attributes
     @FXML
     public Label lblPhoneError;
     @FXML
@@ -87,7 +88,6 @@ public class RegisterMemberFrameController
         });
     }
 
-
     /**
      * Handles the Register button click event.
      */
@@ -121,6 +121,7 @@ public class RegisterMemberFrameController
             return;
         }
 
+        // Create an ArrayList to store the registration details
         ArrayList<String> messageContent = new ArrayList<>();
         messageContent.add(username);
         messageContent.add(name);
@@ -128,6 +129,7 @@ public class RegisterMemberFrameController
         messageContent.add(phone);
         messageContent.add(email);
 
+        // Create a message to send to the server
         ClientServerMessage message = new ClientServerMessage(300, messageContent);
 
         // Send the message to the server
@@ -143,6 +145,7 @@ public class RegisterMemberFrameController
      */
     private boolean regexMatcher(String regex, String input)
     {
+        // matches the string to the regex pattern
         return !input.matches(regex);
     }
 }

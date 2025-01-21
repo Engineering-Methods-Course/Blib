@@ -41,18 +41,19 @@ public class SearchResultFrameController
     /**
      * initializes the table with the books that were found
      */
-    @FXML
     public void initialize()
     {
+        // bind the table to the list
         searchResultTable.itemsProperty().bind(BookListProperty);
         searchResultTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
+        // set the columns
         bookNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
         genreColumn.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().get(1))));
         watchDetailsColumn.setCellFactory(column -> new TableCell<List<String>, String>()
         {
+            // Create the button
             private final Button button = new Button("View Details");
-
             {
                 // Set the button action
                 button.setOnAction(event -> {
@@ -85,7 +86,7 @@ public class SearchResultFrameController
             }
         });
 
-        //runs on the book list and adds each book to the table
+        //iterates on the book list and adds each book to the table
         for (Book book : books)
         {
             List<String> row = new ArrayList<>();
@@ -112,7 +113,10 @@ public class SearchResultFrameController
      */
     private void getBookCopy(List<String> listFromRow)
     {
+        // Create a book object
         Book bk = null;
+
+        // search for the book in the list
         for (Book book : books)
         {
             if (listFromRow.contains(book.getBookName()) && listFromRow.contains(book.getBookGenre()))
@@ -121,18 +125,19 @@ public class SearchResultFrameController
             }
         }
 
+        // If the book was found
         if (bk != null)
         {
+            // Create the message to send to the server
             ClientServerMessage searchMessage = new ClientServerMessage(206, bk.getBookSerialNumber());
+
+            // Print the message content
             System.out.println(searchMessage.getMessageContent());
-            try
-            {
-                ClientGUIController.chat.sendToServer(searchMessage);
-            }
-            catch (Exception e)
-            {
-                System.out.println("Error sending search message to server: " + e.getMessage());
-            }
+
+            // Send the message to the server
+            ClientGUIController.chat.sendToServer(searchMessage);
+
+            // Set the local book
             BookInfoFrameController.setLocalBook(bk);
         }
     }

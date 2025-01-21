@@ -14,12 +14,41 @@ import static client.ClientGUIController.*;
 
 public class ReturnBookFrameController
 {
+    // FXML attributes
     @FXML
     public Label errorLabel;
     @FXML
     public Button btnReturn;
     @FXML
     private TextField idTextField;
+
+    /**
+     * Initializes the controller.
+     * Adds a listener to the text field to validate the input.
+     */
+    public void initialize()
+    {
+        // Listen to changes in the text field
+        idTextField.textProperty().addListener(new ChangeListener<String>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
+            {
+                // Validate the input as the user types
+                String copyID = newValue.trim();
+
+                // Check for empty value or invalid format
+                if (!copyID.isEmpty() && !copyID.matches("^[0-9]+$"))
+                {
+                    showErrorListenField(idTextField, errorLabel, "Copy ID must contain only numbers.");
+                }
+                else
+                {
+                    resetErrorState(idTextField, errorLabel);
+                }
+            }
+        });
+    }
 
     /**
      * Handles the Return button click event.
@@ -36,7 +65,7 @@ public class ReturnBookFrameController
         {
             // Handle missing data (e.g., show an error dialog)
             showAlert(Alert.AlertType.ERROR, "Input Error", "Please enter a valid ID,cannot be empty");
-            showErrorListenField(idTextField,errorLabel,"please enter a valid ID, cannot be empty");
+            showErrorListenField(idTextField, errorLabel, "please enter a valid ID, cannot be empty");
             return;
         }
         // Use regex to check if the copyID contains only numbers
@@ -47,20 +76,15 @@ public class ReturnBookFrameController
             //showError("Copy ID must contain only numbers.");
             return;
         }
-        resetErrorState(idTextField,errorLabel);
+
+        // Reset the error state
+        resetErrorState(idTextField, errorLabel);
 
         // Create the ClientServerMessage object with code 304 and the copy ID as the message content
         ClientServerMessage message = new ClientServerMessage(304, copyID);
 
-        try
-        {
-            // Send the message to the server
-            ClientGUIController.chat.sendToServer(message);
-        }
-        catch (Exception e)
-        {
-            System.out.println("Error sending return request to the server: " + e.getMessage());
-        }
+        // Send the message to the server
+        ClientGUIController.chat.sendToServer(message);
     }
 
     /**
@@ -71,13 +95,17 @@ public class ReturnBookFrameController
     public static void showReturnMessageResponse(ArrayList<String> msg)
     {
         Platform.runLater(() -> {
+            // Check if the response is null or empty, and display an error
             if (msg == null || msg.isEmpty())
             {
                 showAlert(Alert.AlertType.ERROR, "Error", "No response from server.");
                 return;
             }
 
+            // Extract status
             String status = msg.get(0);
+
+            // Check the status and show the appropriate message
             if ("true".equals(status))
             {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "The book was returned successfully!");
@@ -90,26 +118,6 @@ public class ReturnBookFrameController
             else
             {
                 showAlert(Alert.AlertType.ERROR, "Error", "Unexpected response format from server.");
-            }
-        });
-    }
-
-
-
-
-    public void initialize() {
-        // Listen to changes in the text field
-        idTextField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // Validate the input as the user types
-                String copyID = newValue.trim();
-                // Check for empty value or invalid format
-                if (!copyID.isEmpty() &&!copyID.matches("^[0-9]+$")) {
-                    showErrorListenField(idTextField,errorLabel,"Copy ID must contain only numbers.");
-                } else {
-                    resetErrorState(idTextField,errorLabel);
-                }
             }
         });
     }

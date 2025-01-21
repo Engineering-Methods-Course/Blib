@@ -18,6 +18,7 @@ import static client.ClientGUIController.*;
 
 public class ChangePasswordFrameController
 {
+    // FXML attributes
     @FXML
     public TextField newPassField;
     @FXML
@@ -31,6 +32,7 @@ public class ChangePasswordFrameController
     @FXML
     public Label lblConfirmError;
 
+    // other class attributes
     private boolean isNewPassFieldTouched = false;
     private boolean isConfirmPassFieldTouched = false;
 
@@ -38,27 +40,35 @@ public class ChangePasswordFrameController
     /**
      * Initializes the controller by setting up field listeners.
      */
-    public void initialize() {
+    public void initialize()
+    {
         // Add listener for newPassField
         newPassField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (isNewPassFieldTouched) {
+            if (isNewPassFieldTouched)
+            {
                 validateNewPassword(newValue);
             }
         });
 
+        // Add listener for newPassField
         newPassField.setOnMouseClicked(event -> isNewPassFieldTouched = true);
+        // Add listener for newPassField
         newPassField.setOnKeyPressed(event -> isNewPassFieldTouched = true);
 
         // Add listener for confirmPassField
         confirmPassField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (isConfirmPassFieldTouched) {
+            if (isConfirmPassFieldTouched)
+            {
                 validateConfirmPassword(newValue);
             }
         });
 
+        // Add listener for confirmPassField
         confirmPassField.setOnMouseClicked(event -> isConfirmPassFieldTouched = true);
+        // Add listener for confirmPassField
         confirmPassField.setOnKeyPressed(event -> isConfirmPassFieldTouched = true);
     }
+
     /**
      * This method is called when the update button is clicked
      *
@@ -66,11 +76,13 @@ public class ChangePasswordFrameController
      */
     public void clickUpdateButton() throws Exception
     {
+        // Check if the password fields are empty
         if (newPassField.getText().isEmpty() || confirmPassField.getText().isEmpty())
         {
             System.out.println("Password fields cannot be empty");
             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Password fields cannot be empty"));
         }
+        // checks if the new password is less than 6 characters
         else if (!newPassField.getText().equals(confirmPassField.getText()))
         {
             System.out.println("Passwords do not match");
@@ -78,6 +90,7 @@ public class ChangePasswordFrameController
         }
         else
         {
+            // creates an array list to store the subscriber ID and the new password
             ArrayList<String> messageContent = new ArrayList<>();
             messageContent.add(String.valueOf(Subscriber.getLocalSubscriber().getID()));
             messageContent.add(newPassField.getText());
@@ -92,7 +105,6 @@ public class ChangePasswordFrameController
             // Get the parent container and replace the content
             AnchorPane parentContainer = (AnchorPane) changePasswordFrame.getParent();
             loadFrameIntoPane(parentContainer, "/gui/SubscriberProfileFrame.fxml");
-
         }
     }
 
@@ -101,12 +113,21 @@ public class ChangePasswordFrameController
      *
      * @param newPassword The input value of the new password field.
      */
-    private void validateNewPassword(String newPassword) {
-        if (newPassword.isEmpty()) {
+    private void validateNewPassword(String newPassword)
+    {
+        // Check if the new password is empty
+        if (newPassword.isEmpty())
+        {
             showErrorListenField(newPassField, lblNewPasswordError, "New password cannot be empty.");
-        } else if (newPassword.length() < 6) {
+        }
+        // Check if the new password is less than 6 characters
+        else if (newPassword.length() < 6)
+        {
             showErrorListenField(newPassField, lblNewPasswordError, "Password must be at least 6 characters long.");
-        } else {
+        }
+        // reset the error state
+        else
+        {
             resetErrorState(newPassField, lblNewPasswordError);
         }
     }
@@ -116,14 +137,22 @@ public class ChangePasswordFrameController
      *
      * @param confirmPassword The input value of the confirmation password field.
      */
-    private void validateConfirmPassword(String confirmPassword) {
-        if (confirmPassword.isEmpty()) {
+    private void validateConfirmPassword(String confirmPassword)
+    {
+        // Check if the "confirm password" is empty
+        if (confirmPassword.isEmpty())
+        {
             showErrorListenField(confirmPassField, lblConfirmError, "Confirm password cannot be empty.");
-        } else if (!confirmPassword.equals(newPassField.getText())) {
+        }
+        // check if the "confirm password" field is not equal to the "new password" field
+        else if (!confirmPassword.equals(newPassField.getText()))
+        {
             showErrorListenField(confirmPassField, lblConfirmError, "Passwords do not match.");
-        } else {
+        }
+        // reset the error state
+        else
+        {
             resetErrorState(confirmPassField, lblConfirmError);
         }
     }
-
 }

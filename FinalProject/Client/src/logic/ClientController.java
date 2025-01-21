@@ -480,31 +480,4 @@ public class ClientController extends AbstractClient
             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Update error", "Could not update subscriber details"));
         }
     }
-
-    /**
-     * This method registers a new subscriber.
-     *
-     * @param message The message to be registered.
-     */
-    private void registerNewSubscriberResponse(ClientServerMessage message)
-    {
-        if (message.getMessageContent() == null)
-        {
-            System.out.println("Could not register new subscriber");
-            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Registration error", "Could not register new subscriber"));
-        }
-        else if (message.getMessageContent() instanceof ArrayList)
-        {
-            // casts the message content to an ArrayList and gives a pop-up message to the librarian
-            @SuppressWarnings("unchecked") ArrayList<String> serverResponse = (ArrayList<String>) message.getMessageContent();
-            if (Boolean.parseBoolean(serverResponse.get(0)))
-            {
-                Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Success", serverResponse.get(1)));
-            }
-            else
-            {
-                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Registration error", serverResponse.get(1)));
-            }
-        }
-    }
 }
