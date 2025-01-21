@@ -60,3 +60,15 @@
     -fx-border-radius: 10px;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 5);
 }
+
+/* Text field specific style */
+.text-field-style {
+    -fx-text-fill: #334e68; /* Muted dark blue */
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+/* Text field specific style */
+.text-field-name {
+    -fx-font-size: 40px; /* Larger font size for the name */
+}

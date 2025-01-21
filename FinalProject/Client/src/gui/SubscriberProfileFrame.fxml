@@ -20,38 +20,24 @@
         </TableView>
 
         <!-- Name Field -->
-        <Text fx:id="nameField" layoutX="50.0" layoutY="82.0" text="John Doe" wrappingWidth="568.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="36.677734375">
-            <font>
-                <Font size="42.0" />
-            </font>
+        <Text fx:id="nameField" text="John Doe" wrappingWidth="568.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="36.677734375" styleClass="text-field-style,text-field-name">
         </Text>
 
         <!-- Phone Number -->
-        <Text fx:id="phoneNumberField" layoutX="50.0" layoutY="163.0" text="555-1234" wrappingWidth="469.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="137.1015625">
-            <font>
-                <Font size="24.0" />
-            </font>
+        <Text fx:id="phoneNumberField" text="555-1234" wrappingWidth="469.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="137.1015625" styleClass="text-field-style">
         </Text>
 
         <!-- Status -->
-        <Text fx:id="statusTextField" layoutX="50.0" layoutY="244.0" text="Active" wrappingWidth="627.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="218.1015625">
-            <font>
-                <Font size="24.0" />
-            </font>
+        <Text fx:id="statusTextField" text="Active" wrappingWidth="627.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="218.1015625" styleClass="text-field-style">
         </Text>
 
         <!-- Email -->
-        <Text fx:id="emailField" layoutX="50.0" layoutY="123.0" text="email@example.com" wrappingWidth="496.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="97.1015625">
-            <font>
-                <Font size="24.0" />
-            </font>
+        <Text fx:id="emailField" text="email@example.com" wrappingWidth="496.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="97.1015625" styleClass="text-field-style">
+
         </Text>
 
         <!-- User ID -->
-        <Text fx:id="userIDField" layoutX="50.0" layoutY="204.0" text="UserID123" wrappingWidth="665.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="178.1015625">
-            <font>
-                <Font size="24.0" />
-            </font>
+        <Text fx:id="userIDField" text="UserID123" wrappingWidth="665.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="178.1015625" styleClass="text-field-style">
         </Text>
     </AnchorPane>
 </VBox>
