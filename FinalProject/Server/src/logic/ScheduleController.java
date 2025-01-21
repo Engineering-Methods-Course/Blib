@@ -11,17 +11,17 @@ public class ScheduleController {
     private static volatile ScheduleController instance;
     private static DBController dbController;
     private final ScheduledExecutorService scheduler;
-    private final NotificationController notificationController;
 
     /**
      * Constructor to initialize the ScheduleController object.
      */
     private ScheduleController() {
         scheduler = Executors.newScheduledThreadPool(1);
-        notificationController = NotificationController.getInstance();
         dbController = DBController.getInstance();
         runDailyTask();
+        setSchedulerWeeklyTask();
         setSchedulerExportLog();
+
     }
 
     /**
@@ -51,6 +51,7 @@ public class ScheduleController {
                 System.out.println("Running monthly task");
                 System.out.println("Exporting report");
                 dbController.exportReport().run();
+                System.out.println("finished monthly task");
             } catch (Exception e) {
                 System.out.println("Error in export log" + e);
             }
@@ -73,10 +74,57 @@ public class ScheduleController {
                 dbController.checkDueBooks().run();
                 System.out.println("Checking reserved books");
                 dbController.checkReservedBooks().run();
+                System.out.println("finished daily task");
             } catch (Exception e) {
                 System.out.println("Error in daily task" + e);
             }
         }, initialDelay, period, TimeUnit.MILLISECONDS);
+    }
+    /**
+     * This method sets the scheduler for a weekly task.
+     */
+    public void setSchedulerWeeklyTask() {
+        long initialDelay = computeInitialDelayForNextWeek(6, 0, 0);
+        long period = TimeUnit.DAYS.toMillis(7);
+        scheduler.scheduleAtFixedRate(() -> {
+            try {
+                System.out.println("Running weekly task");
+                System.out.println("Checking subscribers status");
+                dbController.checkSubscribersStatus().run();
+                System.out.println("finished weekly task");
+            } catch (Exception e) {
+                System.out.println("Error in weekly task" + e);
+            }
+        }, initialDelay, period, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * This method computes the initial delay for the next week.
+     *
+     * @param hour   the hour
+     * @param minute the minute
+     * @param second the second
+     * @return the initial delay
+     */
+    private long computeInitialDelayForNextWeek(int hour, int minute, int second) {
+        Calendar nextRun = Calendar.getInstance();
+
+        // Set the next run time to the specified inputs
+        nextRun.set(Calendar.HOUR_OF_DAY, hour);
+        nextRun.set(Calendar.MINUTE, minute);
+        nextRun.set(Calendar.SECOND, second);
+        nextRun.set(Calendar.MILLISECOND, 0);
+
+        // Set the day of the week to the desired day (e.g., Calendar.MONDAY)
+        nextRun.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+
+        // If the next run time is before the current time, add one week
+        if (nextRun.getTimeInMillis() <= System.currentTimeMillis()) {
+            nextRun.add(Calendar.WEEK_OF_YEAR, 1);
+        }
+
+        // Return the difference between the next run time and the current time
+        return nextRun.getTimeInMillis() - System.currentTimeMillis();
     }
 
     /**

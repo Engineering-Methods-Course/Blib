@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class DBController {
@@ -1175,12 +1176,6 @@ public class DBController {
             subscriberStatement.setInt(6, historyId);
             subscriberStatement.executeUpdate();
 
-            /*
-             * Add the new entry to the monthly report
-             */
-
-            addNewEntryToMonthlyReport("subscriberStatuses", new ReportEntry(new java.util.Date(), "register", String.valueOf(subscriberId)));
-
 
             /*
              * Commit the transaction
@@ -2171,12 +2166,6 @@ public class DBController {
              */
             updateHistory(subscriberId, "frozen", "Account was frozen reason: " + reason);
 
-            /*
-             * Add the new entry to the monthly report
-             */
-
-            addNewEntryToMonthlyReport("subscriberStatuses", new ReportEntry(new java.util.Date(), "frozen", String.valueOf(subscriberId)));
-
         } catch (SQLException e) {
             System.out.println("Error: Freezing account" + e);
         }
@@ -2296,9 +2285,11 @@ public class DBController {
     public Runnable exportReport() {
         return () -> {
             try {
+
                 /*
                  * This query updates the ready_for_export column in the monthly_report table
-                 */
+                */
+
                 String updateQuery = "UPDATE monthly_report SET ready_for_export = 1 WHERE ready_for_export = 0";
                 PreparedStatement updateStatement = conn.prepareStatement(updateQuery);
                 updateStatement.executeUpdate();
@@ -2306,6 +2297,7 @@ public class DBController {
                 /*
                  *  Create new monthly reports
                  */
+
                 java.util.Date date = new java.util.Date();
                 MonthlyReport monthlyReportSubscribersStatus = new MonthlyReport(date);
                 MonthlyReport monthlyReportBorrowTime = new MonthlyReport(date);
@@ -2371,11 +2363,6 @@ public class DBController {
 
                             updateHistory(subscriberId, "unfrozen", "Account was unfrozen");
 
-                            /*
-                             * Add the new entry to the monthly report
-                             */
-
-                            addNewEntryToMonthlyReport("subscriberStatuses", new ReportEntry(new java.util.Date(), "unfrozen", String.valueOf(subscriberId)));
 
                         }
                     }
@@ -2501,5 +2488,38 @@ public class DBController {
         };
     }
 
+    /**
+     * This method checks the status of the subscribers
+     * and adds the status to the monthly report
+     *
+     * @return Runnable
+     */
+    public Runnable checkSubscribersStatus() {
+        return () -> {
+            try {
+                int frozenCouner = 0;
+                int activeCounter = 0;
 
+                /*
+                 * check subscribers status
+                 */
+                String query = "SELECT status FROM subscriber";
+                PreparedStatement statement = conn.prepareStatement(query);
+                ResultSet rs = statement.executeQuery();
+                while (rs.next()) {
+                    if (rs.getInt("status") == 1) {
+                        frozenCouner++;
+                    } else {
+                        activeCounter++;
+                    }
+                }
+                addNewEntryToMonthlyReport("subscriberStatuses", new ReportEntry(new java.util.Date(), "frozen", String.valueOf(frozenCouner)));
+                addNewEntryToMonthlyReport("subscriberStatuses", new ReportEntry(new java.util.Date(), "active", String.valueOf(activeCounter)));
+
+
+            } catch (SQLException e) {
+                System.out.println("Error: Checking reserved books" + e);
+            }
+        };
+    }
 }
