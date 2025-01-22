@@ -2,99 +2,134 @@ package logic;
 
 import client.ClientGUIController;
 import common.ClientServerMessage;
-import common.ReportEntry;
 import common.MonthlyReport;
+import common.ReportEntry;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.util.StringConverter;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-public class ViewReportsFrameController
-{
+public class ViewReportsFrameController {
     // The FXML elements
-    @FXML
-    public DatePicker startRangePicker;
-    @FXML
-    public DatePicker endRangePicker;
     @FXML
     public ChoiceBox<String> reportChoiceBox;
     @FXML
     public Button backButton;
     @FXML
-    public BarChart<String, Number> barChart;
+    public BarChart<String, Number> BorrowChart;
     @FXML
-    public PieChart pieChart;
-    @FXML
-    public LineChart<String, Number> lineChart;
+    public LineChart<String, Number> subscriberStatusesChart;
 
-    /**
-     * Initializes the ViewReportsFrameController.
-     */
-    public void initialize()
-    {
-        // Initialize the date pickers to only allow month selection
-        initializeDatePicker(startRangePicker);
-        initializeDatePicker(endRangePicker);
+    public ChoiceBox<Integer> startYear;
+    public ChoiceBox<String> startMonth;
+    public ChoiceBox<Integer> endYear;
+    public ChoiceBox<String> endMonth;
+    public RadioButton borrowReportRadio;
+    public RadioButton subscriberStatusesReportRadio;
+    public Button generateReport;
+    private ToggleGroup reportToggleGroup;
 
-        // Add the report options to the ChoiceBox.
-        reportChoiceBox.getItems().addAll("Borrow Times", "Subscriber Status");
 
-        // Add a listener to handle changes in the selected item.
-        reportChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> updateCharts());
+    public void initialize() {
+        // Initialize the ToggleGroup and add the radio buttons to it
+        ToggleGroup reportToggleGroup = new ToggleGroup();
+        borrowReportRadio.setToggleGroup(reportToggleGroup);
+        subscriberStatusesReportRadio.setToggleGroup(reportToggleGroup);
 
-        // Add a listener to handle changes in the start date.
-        startRangePicker.valueProperty().addListener((observable, oldValue, newValue) -> updateCharts());
+        // Set the visibility of both charts to false at the start
+        BorrowChart.setVisible(false);
+        subscriberStatusesChart.setVisible(false);
 
-        // Add a listener to handle changes in the end date.
-        endRangePicker.valueProperty().addListener((observable, oldValue, newValue) -> updateCharts());
+        // Set the default start year to the current year
+        int currentYear = Year.now().getValue();
+        ObservableList<Integer> years = FXCollections.observableArrayList(
+                IntStream.rangeClosed(currentYear - 5, currentYear).boxed().collect(Collectors.toList())
+        );
 
-        // Set the default report to display.
-        reportChoiceBox.getSelectionModel().selectFirst();
+        startYear.setItems(years);
+        endYear.setItems(years);
+        startYear.setValue(currentYear);
+        endYear.setValue(currentYear);
+
+        // Create a list of month names
+        ObservableList<String> months = FXCollections.observableArrayList(
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+        );
+
+        // Set the items of the startMonth and endMonth ChoiceBox elements
+        startMonth.setItems(months);
+        endMonth.setItems(months);
+
+        // Set the default month to the current month
+        startMonth.setValue("January");
+        endMonth.setValue("January");
+
+
+        // Add event handler to the generateReport button
+        generateReport.setOnAction(event -> updateCharts());
     }
 
-    /**
-     * Updates the charts based on the selected report type and date range.
-     */
-    private void updateCharts()
-    {
-        // helper variables for the message ID and date range
-        int messageID = -1;
-        Date startDate = Date.from(startRangePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date endDate = Date.from(endRangePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+    private void switchChartVisibility() {
+        if (borrowReportRadio.isSelected()) {
+            BorrowChart.setVisible(true);
+            subscriberStatusesChart.setVisible(false);
+        } else if (subscriberStatusesReportRadio.isSelected()) {
+            BorrowChart.setVisible(false);
+            subscriberStatusesChart.setVisible(true);
+        }
+    }
 
-        // checks if the endDatePicker's date is later than the startDatePicker and if so, brings an error message
-        if (endDate.before(startDate))
-        {
+    private void updateCharts() {
+        // Helper variables for the message ID and date range
+        int messageID = -1;
+
+        // Retrieve the selected start and end month and year
+        int startYearValue = (int) startYear.getValue();
+        int endYearValue = (int) endYear.getValue();
+        Month startMonthValue = Month.valueOf(startMonth.getValue().toUpperCase());
+        Month endMonthValue = Month.valueOf(endMonth.getValue().toUpperCase());
+
+        // Create LocalDate objects for the start and end dates
+        LocalDate startDate = LocalDate.of(startYearValue, startMonthValue, 1);
+        LocalDate endDate = LocalDate.of(endYearValue, endMonthValue, 1);
+
+        // Convert LocalDate to Date
+        Date startDateConverted = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date endDateConverted = Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        // Check if the endDate is before the startDate and if so, bring an error message
+        if (endDateConverted.before(startDateConverted)) {
             ClientGUIController.showAlert(Alert.AlertType.ERROR, "Wrong date", "End date must be later than start date");
             return;
         }
 
-        // clear the charts
-        barChart.getData().clear();
-        pieChart.getData().clear();
-        lineChart.getData().clear();
+        // Clear the charts
+        BorrowChart.getData().clear();
+        subscriberStatusesChart.getData().clear();
 
-        // update the current report type
-        if (reportChoiceBox.getValue().equals("Borrow Times"))
-        {
+        // Update the current report type based on the selected radio button
+        if (borrowReportRadio.isSelected()) {
             messageID = 312;
-        }
-        else if (reportChoiceBox.getValue().equals("Subscriber Status"))
-        {
+        } else if (subscriberStatusesReportRadio.isSelected()) {
             messageID = 314;
         }
 
-        // request the relevant data from the server
-        ClientServerMessage message = new ClientServerMessage(messageID, Arrays.asList(startDate, endDate));
+        // Request the relevant data from the server
+        ClientServerMessage message = new ClientServerMessage(messageID, Arrays.asList(startDateConverted, endDateConverted));
         ClientGUIController.chat.sendToServer(message);
+
+        // Show the appropriate chart based on the selected radio button
+        switchChartVisibility();
     }
 
     /**
@@ -102,12 +137,10 @@ public class ViewReportsFrameController
      *
      * @param reportData The data to generate the reports from.
      */
-    public void generateBorrowTimeReport(ArrayList<MonthlyReport> reportData)
-    {
+    public void generateBorrowTimeReport(ArrayList<MonthlyReport> reportData) {
         // Create an ArrayList<ReportEntry> to store the data in
         ArrayList<ReportEntry> reportEntries = new ArrayList<>();
-        for (MonthlyReport monthlyReport : reportData)
-        {
+        for (MonthlyReport monthlyReport : reportData) {
             //adds all the report entries to the list
             reportEntries.addAll(monthlyReport.getReport());
         }
@@ -115,8 +148,6 @@ public class ViewReportsFrameController
         // Generate the bar chart
         generateBarChart("Actions Per Week", reportEntries);
 
-        // Generate the pie chart
-        generatePieChart("Borrows vs. Returns", reportEntries);
 
         // Generate the line chart
         generateLineChart("Returns and Borrows Over Time", reportEntries);
@@ -127,12 +158,10 @@ public class ViewReportsFrameController
      *
      * @param reportData The data to generate the reports from.
      */
-    public void generateSubscriberStatusReport(ArrayList<MonthlyReport> reportData)
-    {
+    public void generateSubscriberStatusReport(ArrayList<MonthlyReport> reportData) {
         // Create an ArrayList<ReportEntry> to store the data in
         ArrayList<ReportEntry> reportEntries = new ArrayList<>();
-        for (MonthlyReport monthlyReport : reportData)
-        {
+        for (MonthlyReport monthlyReport : reportData) {
             //adds all the report entries to the list
             reportEntries.addAll(monthlyReport.getReport());
         }
@@ -140,8 +169,6 @@ public class ViewReportsFrameController
         // Generate the bar chart
         generateBarChart("Status Changes per Week", reportEntries);
 
-        // Generate the pie chart
-        generatePieChart("Freezing vs. Registering vs. Unfreezing", reportEntries);
 
         // Generate the line chart
         generateLineChart("Status Changes Over Time", reportEntries);
@@ -153,90 +180,58 @@ public class ViewReportsFrameController
      * @param chartName     The name of the chart.
      * @param reportEntries The log entries to generate the chart from.
      */
-    private void generateBarChart(String chartName, ArrayList<ReportEntry> reportEntries)
-    {
+    private void generateBarChart(String chartName, ArrayList<ReportEntry> reportEntries) {
         Platform.runLater(() -> {
-            // Create a new series for the bar chart
-            XYChart.Series<String, Number> barSeries = new XYChart.Series<>();
-            barSeries.setName(chartName);
+            // Create new series for each action type
+            XYChart.Series<String, Number> borrowSeries = new XYChart.Series<>();
+            borrowSeries.setName("Borrows");
+            XYChart.Series<String, Number> returnSeries = new XYChart.Series<>();
+            returnSeries.setName("Returns");
+            XYChart.Series<String, Number> lateReturnSeries = new XYChart.Series<>();
+            lateReturnSeries.setName("Late Returns");
 
-            // Create a map to count actions per day
+            // Create a map to count actions per week
             Map<String, Map<String, Integer>> actionCountMap = new HashMap<>();
 
-            // Define the date formatter
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            // Define the week formatter
+            DateTimeFormatter weekFormatter = DateTimeFormatter.ofPattern("YYYY-'W'ww");
 
             // Process the log entries and count the actions per week
-            for (ReportEntry entry : reportEntries)
-            {
+            for (ReportEntry entry : reportEntries) {
                 LocalDate date = entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                LocalDate startOfWeek = date.with(DayOfWeek.SUNDAY);
-                String weekStart = startOfWeek.format(formatter);
+                String week = date.format(weekFormatter);
                 String action = entry.getType();
 
-                // Initialize the date map if not already present
-                actionCountMap.putIfAbsent(weekStart, new HashMap<>());
-                Map<String, Integer> dateMap = actionCountMap.get(weekStart);
+                // Initialize the week map if not already present
+                actionCountMap.putIfAbsent(week, new HashMap<>());
+                Map<String, Integer> weekMap = actionCountMap.get(week);
 
                 // Count the actions
-                dateMap.put(action, dateMap.getOrDefault(action, 0) + 1);
+                weekMap.put(action, weekMap.getOrDefault(action, 0) + 1);
             }
 
             // Populate the bar chart with the action counts
-            for (Map.Entry<String, Map<String, Integer>> dateEntry : actionCountMap.entrySet())
-            {
-                String date = dateEntry.getKey();
-                for (Map.Entry<String, Integer> actionEntry : dateEntry.getValue().entrySet())
-                {
-                    Integer count = actionEntry.getValue();
-                    barSeries.getData().add(new XYChart.Data<>(date, count));
-                }
+            for (Map.Entry<String, Map<String, Integer>> weekEntry : actionCountMap.entrySet()) {
+                String week = weekEntry.getKey();
+                Map<String, Integer> weekMap = weekEntry.getValue();
+
+                borrowSeries.getData().add(new XYChart.Data<>(week, weekMap.getOrDefault("Borrow", 0)));
+                returnSeries.getData().add(new XYChart.Data<>(week, weekMap.getOrDefault("Return", 0)));
+                lateReturnSeries.getData().add(new XYChart.Data<>(week, weekMap.getOrDefault("Late Return", 0)));
             }
 
-            // Configure the x-axis to handle date values
-            CategoryAxis xAxis = (CategoryAxis) barChart.getXAxis();
-            xAxis.setLabel("Date");
+            // Configure the x-axis to handle week values
+            CategoryAxis xAxis = (CategoryAxis) BorrowChart.getXAxis();
+            xAxis.setLabel("Week");
             xAxis.setCategories(FXCollections.observableArrayList(actionCountMap.keySet()));
 
             // Configure the y-axis
-            NumberAxis yAxis = (NumberAxis) barChart.getYAxis();
+            NumberAxis yAxis = (NumberAxis) BorrowChart.getYAxis();
             yAxis.setLabel("Count of Actions");
 
             // Adds the new series to the bar chart
-            barChart.getData().add(barSeries);
-            barChart.setTitle(chartName);
-        });
-    }
-
-    /**
-     * Generates a pie chart based on the given log entries.
-     *
-     * @param chartName     The name of the chart.
-     * @param reportEntries The log entries to generate the chart from.
-     */
-    private void generatePieChart(String chartName, ArrayList<ReportEntry> reportEntries)
-    {
-        Platform.runLater(() -> {
-            // Create a map to count different types of actions
-            Map<String, Integer> actionCountMap = new HashMap<>();
-
-            // Process the log entries
-            for (ReportEntry entry : reportEntries)
-            {
-                String action = entry.getType();
-
-                // Count the actions
-                actionCountMap.put(action, actionCountMap.getOrDefault(action, 0) + 1);
-            }
-
-            // Populate the pie chart with the action counts
-            for (Map.Entry<String, Integer> entry : actionCountMap.entrySet())
-            {
-                pieChart.getData().add(new PieChart.Data(entry.getKey(), entry.getValue()));
-            }
-
-            // Set the name for the pie chart
-            pieChart.setTitle(chartName);
+            BorrowChart.getData().addAll(borrowSeries, returnSeries, lateReturnSeries);
+            BorrowChart.setTitle(chartName);
         });
     }
 
@@ -246,8 +241,7 @@ public class ViewReportsFrameController
      * @param chartName     The name of the chart.
      * @param reportEntries The log entries to generate the chart from.
      */
-    private void generateLineChart(String chartName, ArrayList<ReportEntry> reportEntries)
-    {
+    private void generateLineChart(String chartName, ArrayList<ReportEntry> reportEntries) {
         Platform.runLater(() -> {
             // Create a new series for the line chart
             Map<String, XYChart.Series<String, Number>> seriesMap = new HashMap<>();
@@ -259,8 +253,7 @@ public class ViewReportsFrameController
             Set<String> allDates = new TreeSet<>();
 
             // Process the log entries
-            for (ReportEntry entry : reportEntries)
-            {
+            for (ReportEntry entry : reportEntries) {
                 // Get the date and action
                 LocalDate date = entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 LocalDate startOfWeek = date.with(DayOfWeek.SUNDAY);
@@ -277,29 +270,26 @@ public class ViewReportsFrameController
                 // Count the actions
                 XYChart.Series<String, Number> series = seriesMap.get(action);
                 boolean found = false;
-                for (XYChart.Data<String, Number> data : series.getData())
-                {
-                    if (data.getXValue().equals(weekStart))
-                    {
+                for (XYChart.Data<String, Number> data : series.getData()) {
+                    if (data.getXValue().equals(weekStart)) {
                         data.setYValue(data.getYValue().intValue() + 1);
                         found = true;
                         break;
                     }
                 }
-                if (!found)
-                {
+                if (!found) {
                     series.getData().add(new XYChart.Data<>(weekStart, 1));
                 }
             }
 
             // Configure the x-axis to handle date values
-            CategoryAxis xAxis = (CategoryAxis) lineChart.getXAxis();
+            CategoryAxis xAxis = (CategoryAxis) subscriberStatusesChart.getXAxis();
             xAxis.setLabel("Date");
             xAxis.setCategories(FXCollections.observableArrayList(allDates));
 
             // Adds the new series to the line chart
-            lineChart.getData().addAll(seriesMap.values());
-            lineChart.setTitle(chartName);
+            subscriberStatusesChart.getData().addAll(seriesMap.values());
+            subscriberStatusesChart.setTitle(chartName);
         });
     }
 
@@ -308,50 +298,38 @@ public class ViewReportsFrameController
      *
      * @param datePicker The date picker to initialize.
      */
-    private void initializeDatePicker(DatePicker datePicker)
-    {
+    private void initializeDatePicker(DatePicker datePicker) {
         // Define the date formatter
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         // Set the date format
-        datePicker.setConverter(new StringConverter<LocalDate>()
-        {
+        datePicker.setConverter(new StringConverter<LocalDate>() {
             @Override
-            public String toString(LocalDate date)
-            {
-                if (date != null)
-                {
+            public String toString(LocalDate date) {
+                if (date != null) {
                     return formatter.format(date);
-                }
-                else
-                {
+                } else {
                     return "";
                 }
             }
 
             @Override
-            public LocalDate fromString(String string)
-            {
-                if (string != null && !string.isEmpty())
-                {
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
                     return LocalDate.parse(string, formatter);
-                }
-                else
-                {
+                } else {
                     return null;
                 }
             }
         });
 
         // Disable all days except the first day of each month and all the dates after the previous month
-        datePicker.setDayCellFactory(picker -> new DateCell()
-        {
+        datePicker.setDayCellFactory(picker -> new DateCell() {
             @Override
-            public void updateItem(LocalDate date, boolean empty)
-            {
+            public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
                 // Disable all days except the first day of each month and all the dates after the previous month
-                setDisable(empty || date.getDayOfMonth() != 1 );
+                setDisable(empty || date.getDayOfMonth() != 1);
             }
         });
 
