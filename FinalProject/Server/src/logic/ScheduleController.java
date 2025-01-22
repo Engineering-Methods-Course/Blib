@@ -18,9 +18,9 @@ public class ScheduleController {
     private ScheduleController() {
         scheduler = Executors.newScheduledThreadPool(1);
         dbController = DBController.getInstance();
-        runDailyTask();
+        setSchedulerDailyTask();
         setSchedulerWeeklyTask();
-        setSchedulerExportLog();
+        setSchedulerMonthlyTask();
 
     }
 
@@ -43,9 +43,17 @@ public class ScheduleController {
     /**
      * This method sets the scheduler for the export logs
      */
-    public void setSchedulerExportLog() {
+    public void setSchedulerMonthlyTask() {
+
+        /*
+         * Set the initial delay to the first of the month
+         */
         long initialDelay = computeInitialDelayForFirstOfMonth(1, 0, 0);
         long period = TimeUnit.DAYS.toMillis(30);
+
+        /*
+         * Schedule the task to run every month
+         */
         scheduler.scheduleAtFixedRate(() -> {
             try {
                 System.out.println("Running monthly task");
@@ -62,9 +70,17 @@ public class ScheduleController {
     /**
      * This method runs the daily task
      */
-    public void runDailyTask() {
+    public void setSchedulerDailyTask() {
+
+        /*
+         * Set the initial delay to run the task every day at 7:00:00
+         */
         long initialDelay = computeInitialDelayEvreyDayAtTime(7, 0, 0);
         long period = TimeUnit.DAYS.toMillis(1);
+
+        /*
+         * Schedule the task to run every day
+         */
         scheduler.scheduleAtFixedRate(() -> {
             try {
                 System.out.println("Running daily task");
@@ -84,8 +100,16 @@ public class ScheduleController {
      * This method sets the scheduler for a weekly task.
      */
     public void setSchedulerWeeklyTask() {
+
+        /*
+         * Set the initial delay to run the task every Sunday at 6:00:00
+         */
         long initialDelay = computeInitialDelayForNextWeek(6, 0, 0);
         long period = TimeUnit.DAYS.toMillis(7);
+
+        /*
+         * Schedule the task to run every week
+         */
         scheduler.scheduleAtFixedRate(() -> {
             try {
                 System.out.println("Running weekly task");
@@ -109,21 +133,29 @@ public class ScheduleController {
     private long computeInitialDelayForNextWeek(int hour, int minute, int second) {
         Calendar nextRun = Calendar.getInstance();
 
-        // Set the next run time to the specified inputs
+        /*
+         * Set the next run time to the specified inputs
+         */
         nextRun.set(Calendar.HOUR_OF_DAY, hour);
         nextRun.set(Calendar.MINUTE, minute);
         nextRun.set(Calendar.SECOND, second);
         nextRun.set(Calendar.MILLISECOND, 0);
 
-        // Set the day of the week to the desired day (e.g., Calendar.MONDAY)
+        /*
+         * Set the day of the week to the desired day (e.g., Calendar.MONDAY)
+         */
         nextRun.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 
-        // If the next run time is before the current time, add one week
+        /*
+         * If the next run time is before the current time, add one week
+         */
         if (nextRun.getTimeInMillis() <= System.currentTimeMillis()) {
             nextRun.add(Calendar.WEEK_OF_YEAR, 1);
         }
 
-        // Return the difference between the next run time and the current time
+        /*
+         * Return the difference between the next run time and the current time
+         */
         return nextRun.getTimeInMillis() - System.currentTimeMillis();
     }
 
@@ -169,6 +201,10 @@ public class ScheduleController {
      * @return long the initial delay
      */
     private long computeInitialDelayForFirstOfMonth(int hour, int minute, int second) {
+
+        /*
+         * Set the next run time to the first of the month
+         */
         Calendar nextRun = Calendar.getInstance();
         nextRun.set(Calendar.HOUR_OF_DAY, hour);
         nextRun.set(Calendar.MINUTE, minute);
@@ -176,10 +212,16 @@ public class ScheduleController {
         nextRun.set(Calendar.MILLISECOND, 0);
         nextRun.set(Calendar.DAY_OF_MONTH, 1);
 
+        /*
+         * If the next run time is before the current time, add one month
+         */
         if (nextRun.getTime().before(new Date())) {
             nextRun.add(Calendar.MONTH, 1);
         }
 
+        /*
+         * Return the difference between the next run time and the current time
+         */
         return nextRun.getTimeInMillis() - System.currentTimeMillis();
     }
 

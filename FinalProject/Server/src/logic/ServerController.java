@@ -62,6 +62,37 @@ public class ServerController extends AbstractServer {
     }
 
     /**
+     * This method overrides the one in the superclass.  Called
+     * when the server starts listening for connections.
+     */
+    protected void serverStarted() {
+        System.out.println("Server listening for connections on port " + getPort());
+        // connect to the database (get instance)
+        this.dbController = DBController.getInstance();
+    }
+
+    /**
+     * This method overrides the one in the superclass.  Called
+     * when the server stops listening for connections.
+     */
+    protected void serverStopped() {
+        System.out.println("Server has stopped listening for connections.");
+    }
+
+    /**
+     * This method sends a message to all clients connected to the server.
+     *
+     * @param message The message to be sent to all clients.
+     */
+    public void sendMessagesToAllClients(ClientServerMessage message) {
+        try {
+            sendToAllClients(message);
+        } catch (Exception e) {
+            System.out.println("Error: sending message to all clients" + e);
+        }
+    }
+
+    /**
      * This method handles any messages received from the client.
      *
      * @param msg    The message received from the client. (msg contains the id of the message and the message content)
@@ -99,27 +130,37 @@ public class ServerController extends AbstractServer {
                 ClientServerMessage message = (ClientServerMessage) msg;
                 switch (message.getId()) {
                     case (100):
+
                         /*
-                         * do: user wants to log in to his account
-                         * in: arraylist<username,password>
-                         * return:(id 101) subscriber / librarian base of the username
+                         * Do: user wants to login
+                         * In: arraylist<username,password>
+                         * Return:(id 101) subscriber / librarian base of the username
                          */
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
-                                // get the user details from the database
+
                                 User user = dbController.userLogin((ArrayList<String>) message.getMessageContent());
+
                                 if (user instanceof Subscriber) {
-                                    // add the subscriber to the list of subscriber clients
+
+                                    /*
+                                     * Add the subscriber to the list of subscriber clients
+                                     */
                                     notificationController.addSubscriberClients(((Subscriber) user).getID(), client);
                                 }
                                 if (user instanceof Librarian) {
-                                    // add the librarian to the list of librarian clients
+                                    /*
+                                     * Add the librarian to the list of librarian clients
+                                     */
                                     notificationController.addLibrarianClients(((Librarian) user).getID(), client);
                                 }
                                 client.sendToClient(new ClientServerMessage(101, user));
                                 System.out.println("user details were sent to client");
                             }
-                            // message type isn't an arraylist
+
+                            /*
+                             * If the message is not an ArrayList<String> send a message to the client
+                             */
                             else {
                                 client.sendToClient(new ClientServerMessage(101, null));
                                 System.out.println("Cannot log in the account - message is not an ArrayList<String> (case 100)");
@@ -130,12 +171,17 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (102):
+
                         /*
-                         * do: user logged out
-                         * in: user id (librarian or subscriber)
+                         * Do: user logs out
+                         * In: user id (librarian or subscriber)
                          */
                         try {
                             if (message.getMessageContent() instanceof Integer) {
+
+                                /*
+                                 * Remove the subscriber or librarian from the list of subscriber clients
+                                 */
                                 notificationController.removeSubscriberClients((Integer) message.getMessageContent());
                                 notificationController.removeLibrarianClients((Integer) message.getMessageContent());
                                 System.out.println("User " + message.getMessageContent() + " logged out");
@@ -149,17 +195,19 @@ public class ServerController extends AbstractServer {
                         System.out.println("User " + client + " logged out");
                         break;
                     case (104):
+
                         /*
-                         * do: disconnect client from server
+                         * Do: disconnect client from server
                          */
                         serverMonitorController.clientDisconnected(client);
                         client.sendToClient(null); // send null to client to make him stop waiting for a response
                         System.out.println("Client " + client + " disconnected");
                         break;
                     case (200):
+
                         /*
-                         * do: subscriber wants to search a book by its name
-                         * in: string
+                         * Do: subscriber searches a book by its name
+                         * In: string
                          * return: (id 201) arraylist<book>
                          */
                         if (message.getMessageContent() instanceof String) {
@@ -179,10 +227,11 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (202):
+
                         /*
-                         * do: subscriber wants to search a book by its genre
-                         * in: string
-                         * return: (id 201) arraylist<book>
+                         * Do: subscriber searches a book by its genre
+                         * In: string
+                         * Return: (id 201) arraylist<book>
                          */
                         try {
                             if (message.getMessageContent() instanceof String) {
@@ -199,10 +248,11 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (204):
+
                         /*
-                         * do: subscriber wants to search a book by its description
-                         * in: string
-                         * return: (id 201) arraylist<book>
+                         * Do: subscriber searches a book by its description
+                         * In: string
+                         * Return: (id 201) arraylist<book>
                          */
                         try {
                             if (message.getMessageContent() instanceof String) {
@@ -220,10 +270,11 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (206):
+
                         /*
-                         * do: subscriber wants to  check book availability of a specific book
-                         * in: int
-                         * return: (id 207) book
+                         * Do: subscriber checks book availability of a specific book
+                         * In: int
+                         * Return: (id 207) book
                          */
                         try {
                             if (message.getMessageContent() instanceof Integer) {
@@ -239,10 +290,11 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (208):
+
                         /*
-                         * do: subscriber wants to reserve a book
-                         * in: ArrayList<String> {subscriber id, book id}
-                         * return: (id 209) arraylist<string> {success/fail, error message}
+                         * Do: subscriber reserves a book
+                         * In: ArrayList<String> {subscriber id, book id}
+                         * Return: (id 209) arraylist<string> {success/fail, error message}
                          */
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
@@ -264,10 +316,11 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (210):
+
                         /*
-                         * do: subscriber wants to see his borrowed book list
-                         * in: int
-                         * return: (id 211) arraylist<book>
+                         * Do: subscriber views his borrowed books list
+                         * In: int
+                         * Return: (id 211) arraylist<book>
                          */
                         try {
                             if (message.getMessageContent() instanceof Integer) {
@@ -285,10 +338,11 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (212):
+
                         /*
-                         * do: subscriber wants to extend his borrow time
-                         * in: ArrayList<String> {subscriber id, copy id}
-                         * return: (id 213) ArrayList<String> {success/fail, error message}
+                         * Do: subscriber extends a borrowed books borrow time
+                         * In: ArrayList<String> {subscriber id, copy id}
+                         * Return: (id 213) ArrayList<String> {success/fail, error message}
                          */
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
@@ -310,10 +364,11 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (214):
+
                         /*
-                         * do: subscriber wants to view his history
-                         * in: int
-                         * return: (id 215) ArrayList<MonthlyReport> {subscriber history}
+                         * Do: subscriber views his history
+                         * In: int
+                         * Return: (id 215) ArrayList<MonthlyReport> {subscriber history}
                          */
                         try {
                             if (message.getMessageContent() instanceof Integer) {
@@ -329,10 +384,11 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (216):
+
                         /*
-                         * do: subscriber wants to edit his personal information
-                         * in: ArrayList<String>
-                         * return: (id 217) arraylist<string> {success/fail, error message}
+                         * Do: subscriber edits his personal information
+                         * In: ArrayList<String>
+                         * Return: (id 217) arraylist<string> {success/fail, error message}
                          */
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
@@ -354,10 +410,11 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (218):
+
                         /*
-                         * do: subscriber wants to edit his login information
-                         * in: int
-                         * return: (id 217) arraylist<string> {success/fail, error message}
+                         * Do: subscriber edits his login information
+                         * In: int
+                         * Return: (id 217) arraylist<string> {success/fail, error message}
                          */
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
@@ -379,10 +436,11 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (300):
+
                         /*
-                         * do: librarian wants to register a new subscriber into the system
-                         * in: ArrayList<String> {subscriber details}
-                         * return: (id 301) ArrayList<String> {success/fail, error message}
+                         * Do: librarian registers a new subscriber into the system
+                         * In: ArrayList<String> {subscriber details}
+                         * Return: (id 301) ArrayList<String> {success/fail, error message}
                          */
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
@@ -404,10 +462,11 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (302):
+
                         /*
-                         * do: librarian borrows a book to a subscriber
-                         * in: ArrayList<String> {subscriber id, book id, return date}
-                         * return: (id 303) ArrayList<String> {success/fail, error message}
+                         * Do: librarian borrows a book to a subscriber
+                         * In: ArrayList<String> {subscriber id, book id, return date}
+                         * Return: (id 303) ArrayList<String> {success/fail, error message}
                          */
                         ArrayList<String> response = null;
                         try {
@@ -434,10 +493,11 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (304):
+
                         /*
-                         * do: librarian returns a book of a subscriber to the library
-                         * in: String {book id}
-                         * return: (id 305) ArrayList<String> {success/fail, error message}
+                         * Do: librarian returns a book of a subscriber to the library
+                         * In: String {book id}
+                         * Return: (id 305) ArrayList<String> {success/fail, error message}
                          */
                         try {
                             if (message.getMessageContent() instanceof String) {
@@ -455,10 +515,11 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (306):
+
                         /*
-                         * do: librarian wants to view subscribers in the system
-                         * in: none
-                         * return: (id 307) arraylist<subscriber>
+                         * Do: librarian views all subscribers in the system
+                         * In: none
+                         * Return: (id 307) arraylist<subscriber>
                          */
                         try {
                             client.sendToClient(new ClientServerMessage(307, dbController.viewAllSubscribers()));
@@ -470,10 +531,11 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (308):
+
                         /*
-                         * do: librarian wants to view details of a specific subscriber
-                         * in: Int {subscriber id}
-                         * return: (id 309) subscriber
+                         * Do: librarian views the details of a specific subscriber
+                         * In: Int {subscriber id}
+                         * Return: (id 309) subscriber
                          */
                         try {
                             if (message.getMessageContent() instanceof Integer) {
@@ -490,10 +552,11 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (310):
+
                         /*
-                         * do: librarian wants to extend the borrow time for a book that was borrowed by a subscriber
-                         * in: ArrayList<String> {subscriber id, book id, return date(yyyy-MM-dd HH:mm:ss), librarian id}
-                         * return: (id 311) ArrayList<String> {success/fail, error message}
+                         * Do: librarian extends the borrow time for a book that was borrowed by a subscriber
+                         * In: ArrayList<String> {subscriber id, book id, return date(yyyy-MM-dd HH:mm:ss), librarian id}
+                         * Return: (id 311) ArrayList<String> {success/fail, error message}
                          */
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
@@ -515,10 +578,11 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (312):
+
                         /*
-                         * do: librarian wants to view Borrow Times Logs
-                         * in: List<java.util.Date> [start date, end date]
-                         * return: (id 313) ArrayList<MonthlyReport> {borrow time logs}
+                         * Do: librarian views the Borrow Times Log
+                         * In: List<java.util.Date> [start date, end date]
+                         * Return: (id 313) ArrayList<MonthlyReport> {borrow time logs}
                          */
                         try {
                             if (message.getMessageContent() instanceof List) {
@@ -534,10 +598,11 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (314):
+
                         /*
-                         * do: librarian wants to view Subscriber Status Log
-                         * in: List<java.util.Date> [start date, end date]
-                         * return: (id 315) ArrayList<MonthlyReport> {subscriber status logs}
+                         * Do: librarian views the Subscriber Status Log
+                         * In: List<java.util.Date> [start date, end date]
+                         * Return: (id 315) ArrayList<MonthlyReport> {subscriber status logs}
                          */
                         try {
                             if (message.getMessageContent() instanceof List) {
@@ -553,9 +618,10 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (316):
+
                         /*
-                         * do: librarian wants to view messages
-                         * return: (id 317) ArrayList<String> {messages}
+                         * Do: librarian views her messages
+                         * Return: (id 317) ArrayList<String> {messages}
                          */
                         try {
                             client.sendToClient(new ClientServerMessage(317, dbController.ViewLibrarianMessages()));
@@ -579,37 +645,6 @@ public class ServerController extends AbstractServer {
                 System.out.println("Error: sending null to client" + e1);
 
             }
-        }
-    }
-
-    /**
-     * This method overrides the one in the superclass.  Called
-     * when the server starts listening for connections.
-     */
-    protected void serverStarted() {
-        System.out.println("Server listening for connections on port " + getPort());
-        // connect to the database (get instance)
-        this.dbController = DBController.getInstance();
-    }
-
-    /**
-     * This method overrides the one in the superclass.  Called
-     * when the server stops listening for connections.
-     */
-    protected void serverStopped() {
-        System.out.println("Server has stopped listening for connections.");
-    }
-
-    /**
-     * This method sends a message to all clients connected to the server.
-     *
-     * @param message The message to be sent to all clients.
-     */
-    public void sendMessagesToAllClients(ClientServerMessage message) {
-        try {
-            sendToAllClients(message);
-        } catch (Exception e) {
-            System.out.println("Error: sending message to all clients" + e);
         }
     }
 }

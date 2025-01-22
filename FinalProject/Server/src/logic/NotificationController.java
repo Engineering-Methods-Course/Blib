@@ -31,18 +31,25 @@ public class NotificationController {
      * Constructor to initialize the NotificationController object.
      */
     private NotificationController() {
-        // Load the .env file to get the email address and password
+        /*
+         * Load the .env file to get the email address and password
+         */
         Dotenv dotenv = Dotenv.load();
         from = dotenv.get("EMAIL_ADDRESS");
         username = dotenv.get("EMAIL_ADDRESS");
         password = dotenv.get("EMAIL_PASSWORD");
         host = "smtp.gmail.com";
-        // Set the properties for the email
+
+        /*
+         * Set the properties for the email
+         */
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.host", host);
         properties.put("mail.smtp.port", "587");
-        // Create an authenticator object to authenticate the email
+        /*
+         * Create an authenticator object to authenticate the email
+         */
         authenticator = new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -76,10 +83,17 @@ public class NotificationController {
      */
     public static void notifyLibrarian(String message) {
         if (librarianClients.isEmpty()) {
-            // update the database with the message
+
+            /*
+             * Update the database with the message
+             */
             dbController.messagesToLibrarian(message, 0);
             return;
         }
+
+        /*
+         * Send the message to all the librarian clients
+         */
         for (ConnectionToClient client : librarianClients.values()) {
             try {
                 dbController.messagesToLibrarian(message, 1);
@@ -128,14 +142,26 @@ public class NotificationController {
      * @param message      the text of the email
      */
     public void sendSMSSimulator(int subscriberId, String message) {
+
+        /*
+         * Check if the subscriber is connected
+         */
         if (subscriberClients.containsKey(subscriberId)) {
             try {
+
+                /*
+                 * Send the message to the subscriber
+                 */
                 subscriberClients.get(subscriberId).sendToClient(new ClientServerMessage(107, message));
                 dbController.messagesToSubscriber(subscriberId, message, 1);
             } catch (Exception e) {
                 System.out.println("Error sending SMS: " + e);
             }
         } else {
+
+            /*
+             * Update the database with the message
+             */
             dbController.messagesToSubscriber(subscriberId, message, 0);
         }
     }
@@ -160,11 +186,19 @@ public class NotificationController {
      * @param client       the client
      */
     public void addSubscriberClients(int subscriberID, ConnectionToClient client) {
+
+        /*
+         * Add the subscriber client to the list of subscriber clients
+         */
         subscriberClients.put(subscriberID, client);
         ArrayList<String> messages = dbController.checkSubscriberMessages(subscriberID);
         if (messages == null) {
             return;
         }
+
+        /*
+         * Send the messages to the subscriber
+         */
         for (String message : messages) {
             try {
                 client.sendToClient(new ClientServerMessage(107, message));
@@ -181,8 +215,16 @@ public class NotificationController {
      * @param client      the client
      */
     public void addLibrarianClients(int librarianID, ConnectionToClient client) {
+
+        /*
+         * Add the librarian client to the list of librarian clients
+         */
         librarianClients.put(librarianID, client);
         ArrayList<String> messages = dbController.checkLibrarianMessages();
+
+        /*
+         * Send the messages to the librarian
+         */
         for (String message : messages) {
             try {
                 client.sendToClient(new ClientServerMessage(107, message));
