@@ -36,7 +36,7 @@ public class ClientIPFrameController
 
         // Set the scene
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/gui/Subscriber.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/gui/MainFrame.css")).toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.setTitle("Enter Server Details");
         primaryStage.setResizable(false); // Disable window resizing

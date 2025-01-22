@@ -8,176 +8,133 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
-            prefWidth="1920.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.MainFrameController">
-    <AnchorPane fx:id="menu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                prefHeight="1080.0" prefWidth="256.0" styleClass="menu" stylesheets="@/gui/MainFrame.css">
-        <Text fx:id="UsernameText" layoutX="1.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="name"
-              textAlignment="CENTER" wrappingWidth="254.13672351837158">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.MainFrameController">
+    <AnchorPane fx:id="menu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="256.0" styleClass="menu" stylesheets="@/gui/MainFrame.css">
+        <Text fx:id="UsernameText" layoutX="1.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="name" textAlignment="CENTER" wrappingWidth="254.13672351837158">
             <font>
-                <Font name="System Bold" size="24.0"/>
+                <Font name="System Bold" size="24.0" />
             </font>
         </Text>
-        <AnchorPane fx:id="Anchor1" disable="true" layoutY="246.0" prefHeight="800.0" prefWidth="256.0"
-                    stylesheets="@/gui/MainFrame.css" visible="false">
-            <Button fx:id="searchSubButton" alignment="CENTER" contentDisplay="TOP" layoutY="206.0"
-                    mnemonicParsing="false" onAction="#searchForSubscriber" prefHeight="86.0" prefWidth="256.0"
-                    styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Search Subscriber"
-                    textAlignment="CENTER">
+        <AnchorPane fx:id="Anchor1" disable="true" layoutY="246.0" prefHeight="800.0" prefWidth="256.0" stylesheets="@/gui/MainFrame.css" visible="false">
+            <Button fx:id="searchSubButton" alignment="CENTER" contentDisplay="TOP" layoutY="206.0" mnemonicParsing="false" onAction="#searchForSubscriber" prefHeight="86.0" prefWidth="256.0" styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Search Subscriber" textAlignment="CENTER">
                 <graphic>
                     <ImageView fitHeight="39.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../resources/icons8-search-50.png"/>
+                        <Image url="@../resources/icons8-search-50.png" />
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="viewAllButton" contentDisplay="TOP" layoutX="1.0" layoutY="311.0"
-                    mnemonicParsing="false" onAction="#watchSubscribersBtn" prefHeight="86.0" prefWidth="253.0"
-                    styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="View All Subscribers">
+            <Button fx:id="viewAllButton" contentDisplay="TOP" layoutX="1.0" layoutY="311.0" mnemonicParsing="false" onAction="#watchSubscribersBtn" prefHeight="86.0" prefWidth="253.0" styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="View All Subscribers">
                 <graphic>
                     <ImageView fitHeight="39.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../resources/icons8-details-30.png"/>
+                        <Image url="@../resources/icons8-details-30.png" />
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="reportButton" contentDisplay="TOP" graphicTextGap="10.0" layoutY="413.0"
-                    mnemonicParsing="false" onAction="#viewReports" prefHeight="92.0" prefWidth="254.0"
-                    styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="View reports">
+            <Button fx:id="reportButton" contentDisplay="TOP" graphicTextGap="10.0" layoutY="413.0" mnemonicParsing="false" onAction="#viewReports" prefHeight="92.0" prefWidth="254.0" styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="View reports">
                 <graphic>
                     <ImageView fitHeight="39.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../resources/icons8-report-50.png"/>
+                        <Image url="@../resources/icons8-report-50.png" />
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="RegisterButton" contentDisplay="TOP" graphicTextGap="10.0" layoutY="528.0"
-                    mnemonicParsing="false" onAction="#RegisterMember" prefHeight="92.0" prefWidth="254.0"
-                    styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Register member">
+            <Button fx:id="RegisterButton" contentDisplay="TOP" graphicTextGap="10.0" layoutY="528.0" mnemonicParsing="false" onAction="#RegisterMember" prefHeight="92.0" prefWidth="254.0" styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Register member">
                 <graphic>
                     <ImageView fitHeight="39.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../resources/icons8-register-50.png"/>
+                        <Image url="@../resources/icons8-register-50.png" />
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="viewMessagesButton" contentDisplay="TOP" layoutX="2.0" layoutY="644.0"
-                    mnemonicParsing="false" onAction="#viewMessagesButtonClicked" prefHeight="86.0"
-                    prefWidth="253.0" styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css"
-                    text="View messages" textAlignment="CENTER">
+            <Button fx:id="viewMessagesButton" contentDisplay="TOP" layoutX="2.0" layoutY="644.0" mnemonicParsing="false" onAction="#viewMessagesButtonClicked" prefHeight="86.0" prefWidth="253.0" styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="View messages" textAlignment="CENTER">
                 <graphic>
                     <ImageView fitHeight="39.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../resources/icons8-message-32.png"/>
+                        <Image url="@../resources/icons8-message-32.png" />
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="returnButton" alignment="CENTER" contentDisplay="TOP" layoutX="1.0" layoutY="104.0"
-                    mnemonicParsing="false" onAction="#returnBook" prefHeight="86.0" prefWidth="253.0"
-                    styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Return">
+            <Button fx:id="returnButton" alignment="CENTER" contentDisplay="TOP" layoutX="1.0" layoutY="104.0" mnemonicParsing="false" onAction="#returnBook" prefHeight="86.0" prefWidth="253.0" styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Return">
                 <graphic>
                     <ImageView fitHeight="39.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../resources/icons8-return-50.png"/>
+                        <Image url="@../resources/icons8-return-50.png" />
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="borrowButton" alignment="CENTER" contentDisplay="TOP" layoutX="1.0" layoutY="1.0"
-                    mnemonicParsing="false" onAction="#loadBorrow" prefHeight="86.0" prefWidth="254.0"
-                    styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Borrow">
+            <Button fx:id="borrowButton" alignment="CENTER" contentDisplay="TOP" layoutX="1.0" layoutY="1.0" mnemonicParsing="false" onAction="#loadBorrow" prefHeight="86.0" prefWidth="254.0" styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Borrow">
                 <graphic>
                     <ImageView fitHeight="39.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../resources/icons8-book-50.png"/>
+                        <Image url="@../resources/icons8-book-50.png" />
                     </ImageView>
                 </graphic>
             </Button>
         </AnchorPane>
-        <AnchorPane fx:id="Anchor2" disable="true" layoutY="246.0" prefHeight="800.0" prefWidth="256.0"
-                    visible="false">
-            <Button fx:id="editSubDetailsButton" contentDisplay="TOP" layoutX="-1.0" mnemonicParsing="false"
-                    onAction="#editSubscriberDetails" prefHeight="53.0" prefWidth="255.0"
-                    styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Edit details">
+        <AnchorPane fx:id="Anchor2" disable="true" layoutY="246.0" prefHeight="800.0" prefWidth="256.0" visible="false">
+            <Button fx:id="editSubDetailsButton" contentDisplay="TOP" layoutX="-1.0" mnemonicParsing="false" onAction="#editSubscriberDetails" prefHeight="53.0" prefWidth="255.0" styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Edit details">
                 <graphic>
                     <ImageView fitHeight="39.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../resources/icons8-edit-text-file-50.png"/>
+                        <Image url="@../resources/icons8-edit-text-file-50.png" />
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="changePassword" alignment="CENTER" contentDisplay="TOP" layoutX="1.0" layoutY="100.0"
-                    mnemonicParsing="false" onAction="#changePassword" prefHeight="86.0" prefWidth="254.0"
-                    styleClass="buttonCheck" text="Change password">
+            <Button fx:id="changePassword" alignment="CENTER" contentDisplay="TOP" layoutX="1.0" layoutY="100.0" mnemonicParsing="false" onAction="#changePassword" prefHeight="86.0" prefWidth="254.0" styleClass="buttonCheck" text="Change password">
                 <graphic>
                     <ImageView fitHeight="39.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../resources/icons8-password-64.png"/>
+                        <Image url="@../resources/icons8-password-64.png" />
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="watchHistoryButton" contentDisplay="TOP" layoutY="181.0" mnemonicParsing="false"
-                    onAction="#watchHistory" prefHeight="86.0" prefWidth="255.0" styleClass="buttonCheck"
-                    text="Watch history">
+            <Button fx:id="watchHistoryButton" contentDisplay="TOP" layoutY="181.0" mnemonicParsing="false" onAction="#watchHistory" prefHeight="86.0" prefWidth="255.0" styleClass="buttonCheck" text="Watch history">
                 <graphic>
                     <ImageView fitHeight="39.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../resources/icons8-history-50.png"/>
+                        <Image url="@../resources/icons8-history-50.png" />
                     </ImageView>
                 </graphic>
             </Button>
         </AnchorPane>
-        <Line endX="143.5" layoutX="111.0" layoutY="147.0" startX="-109.0"/>
-        <Button fx:id="searchButton" contentDisplay="TOP" layoutX="-1.0" layoutY="156.0" mnemonicParsing="false"
-                onAction="#searchButton" prefHeight="86.0" prefWidth="254.0" styleClass="buttonCheck"
-                stylesheets="@/gui/MainFrame.css" text="Search Book" textAlignment="CENTER">
+        <Line endX="143.5" layoutX="111.0" layoutY="147.0" startX="-109.0" />
+        <Button fx:id="searchButton" contentDisplay="TOP" layoutX="-1.0" layoutY="156.0" mnemonicParsing="false" onAction="#searchButton" prefHeight="86.0" prefWidth="254.0" styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Search Book" textAlignment="CENTER">
             <font>
-                <Font size="96.0"/>
+                <Font size="96.0" />
             </font>
             <graphic>
                 <ImageView fitHeight="39.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../resources/icons8-search-50.png"/>
+                    <Image url="@../resources/icons8-search-50.png" />
                 </ImageView>
             </graphic>
         </Button>
-        <Button fx:id="LogoutButton" contentDisplay="TOP" disable="true" layoutX="9.0" layoutY="15.0"
-                mnemonicParsing="false" onAction="#logout" prefHeight="86.0" prefWidth="105.0"
-                styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Logout" visible="false">
+        <Button fx:id="LogoutButton" contentDisplay="TOP" disable="true" layoutX="9.0" layoutY="15.0" mnemonicParsing="false" onAction="#logout" prefHeight="86.0" prefWidth="105.0" styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Logout" visible="false">
             <graphic>
                 <ImageView fitHeight="39.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../resources/icons8-logout-30.png"/>
+                    <Image url="@../resources/icons8-logout-30.png" />
                 </ImageView>
             </graphic>
         </Button>
-        <Button fx:id="LoginButton" contentDisplay="TOP" layoutX="9.0" layoutY="15.0" mnemonicParsing="false"
-                onAction="#openLogin" prefHeight="86.0" prefWidth="105.0" styleClass="buttonCheck"
-                stylesheets="@/gui/MainFrame.css" text="Login">
+        <Button fx:id="LoginButton" contentDisplay="TOP" layoutX="9.0" layoutY="15.0" mnemonicParsing="false" onAction="#openLogin" prefHeight="86.0" prefWidth="105.0" styleClass="buttonCheck" stylesheets="@/gui/MainFrame.css" text="Login">
             <graphic>
                 <ImageView fitHeight="39.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../resources/icons8-login-50.png"/>
+                    <Image url="@../resources/icons8-login-30.png" />
                 </ImageView>
             </graphic>
         </Button>
-        <Button fx:id="subscriberProfileButton" disable="true" layoutX="146.0" layoutY="12.0"
-                mnemonicParsing="false" onAction="#loadSubscriberProfile" styleClass="buttonCheck"
-                stylesheets="@MainFrame.css" visible="false">
+        <Button fx:id="subscriberProfileButton" disable="true" layoutX="146.0" layoutY="12.0" mnemonicParsing="false" onAction="#loadSubscriberProfile" styleClass="buttonCheck" stylesheets="@MainFrame.css" visible="false">
             <graphic>
-                <ImageView fx:id="userPhoto" fitHeight="57.0" fitWidth="56.0" onMouseClicked="#imageOnClick"
-                           pickOnBounds="true" preserveRatio="true" styleClass="hand-cursor">
-                    <Image url="@../resources/icons8-user-48.png"/>
+                <ImageView fx:id="userPhoto" fitHeight="57.0" fitWidth="56.0" onMouseClicked="#imageOnClick" pickOnBounds="true" preserveRatio="true" styleClass="hand-cursor">
+                    <Image url="@../resources/icons8-user-48.png" />
                 </ImageView>
             </graphic>
         </Button>
-        <Button fx:id="librarianProfileButton" disable="true" layoutX="146.0" layoutY="12.0" mnemonicParsing="false"
-                onAction="#loadMainScene" styleClass="buttonCheck" stylesheets="@MainFrame.css" visible="false">
+        <Button fx:id="librarianProfileButton" disable="true" layoutX="146.0" layoutY="12.0" mnemonicParsing="false" onAction="#loadMainScene" styleClass="buttonCheck" stylesheets="@MainFrame.css" visible="false">
             <graphic>
-                <ImageView fx:id="librarianPhoto" fitHeight="57.0" fitWidth="56.0" pickOnBounds="true"
-                           preserveRatio="true">
-                    <Image url="@../resources/icons8-manager-48.png"/>
+                <ImageView fx:id="librarianPhoto" fitHeight="57.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../resources/icons8-manager-48.png" />
                 </ImageView>
             </graphic>
         </Button>
-        <Button fx:id="MainSceneButton" layoutX="146.0" layoutY="12.0" mnemonicParsing="false"
-                onAction="#loadMainScene" styleClass="buttonCheck" stylesheets="@MainFrame.css">
+        <Button fx:id="MainSceneButton" layoutX="146.0" layoutY="12.0" mnemonicParsing="false" onAction="#loadMainScene" styleClass="buttonCheck" stylesheets="@MainFrame.css">
             <graphic>
-                <ImageView fx:id="userPhoto1" fitHeight="57.0" fitWidth="56.0" onMouseClicked="#imageOnClick"
-                           pickOnBounds="true" preserveRatio="true" styleClass="hand-cursor">
-                    <Image url="@../resources/icons8-library-50.png"/>
+                <ImageView fx:id="userPhoto1" fitHeight="57.0" fitWidth="56.0" onMouseClicked="#imageOnClick" pickOnBounds="true" preserveRatio="true" styleClass="hand-cursor">
+                    <Image url="@../resources/icons8-library-50.png" />
                 </ImageView>
             </graphic>
         </Button>
     </AnchorPane>
-    <AnchorPane fx:id="SceneChanger" layoutX="258.0" layoutY="-3.0" maxHeight="-Infinity" maxWidth="-Infinity"
-                minHeight="-Infinity" minWidth="-Infinity" prefHeight="1084.0" prefWidth="1674.0"
-                stylesheets="@/gui/MainFrame.css"/>
+    <AnchorPane fx:id="SceneChanger" layoutX="258.0" layoutY="-3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1084.0" prefWidth="1674.0" stylesheets="@/gui/MainFrame.css" />
 </AnchorPane>

@@ -42,7 +42,7 @@ public class ClientGUIController extends Application
      *
      * @param event        The ActionEvent triggered by the user's interaction (e.g., button click).
      * @param fxmlFilePath The path to the FXML file to load (e.g., "/gui/SearchPageFrame.fxml").
-     * @param cssFilePath  The optional path to the CSS file to style the new view (e.g., "/gui/Subscriber.css"). Pass null if no CSS is required.
+     * @param cssFilePath  The optional path to the CSS file to style the new view (e.g., "/gui/MainFrame.css"). Pass null if no CSS is required.
      * @param stageTitle   The title for the new stage window (e.g., "Profile Options").
      * @throws Exception If the FXML file cannot be loaded or another error occurs during navigation.
      */
