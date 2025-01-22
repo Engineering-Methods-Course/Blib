@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.StringConverter;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -41,6 +43,22 @@ public class WatchHistorySceneController
         actionTypeColumn.setCellValueFactory(new PropertyValueFactory<>("actionType"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 
+        // Create a DateTimeFormatter
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+        // Set a StringConverter to format the Date object
+        dateColumn.setCellFactory(column -> new TextFieldTableCell<>(new StringConverter<Date>() {
+            @Override
+            public String toString(Date date) {
+                return date != null ? formatter.format(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()) : "";
+            }
+
+            @Override
+            public Date fromString(String string) {
+                return string != null && !string.isEmpty() ? Date.from(LocalDateTime.parse(string, formatter).atZone(ZoneId.systemDefault()).toInstant()) : null;
+            }
+        }));
+
         // sends the server a request for the user's history
         ClientServerMessage message = new ClientServerMessage(214, Subscriber.getLocalSubscriber().getID());
         ClientGUIController.chat.sendToServer(message);
@@ -53,18 +71,14 @@ public class WatchHistorySceneController
      */
     public void setHistory(List<ArrayList<String>> history)
     {
-        // helper Date object for easier reading
-        Date date;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        LocalDateTime localDateTime;
 
         // create a list of SubscriberHistory objects
         List<SubscriberHistory> subscriberHistoryList = new ArrayList<>();
         for (ArrayList<String> historyItem : history)
         {
-            System.out.println(historyItem);
-            localDateTime = LocalDateTime.parse(historyItem.get(0), formatter);
-            date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+            LocalDateTime localDateTime = LocalDateTime.parse(historyItem.get(0), formatter);
+            Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
             subscriberHistoryList.add(new SubscriberHistory(date, historyItem.get(1), historyItem.get(2)));
         }
 

@@ -55,7 +55,7 @@ public class MainFrameController
     public void initialize() throws IOException
     {
         // Set the style of the SceneChanger
-        SceneChanger.setStyle("-fx-background-color: lightblue; -fx-border-color: black; -fx-border-width: 2;");
+        SceneChanger.setStyle("-fx-background-color: E7E8D1; -fx-border-color: black; -fx-border-width: 2;");
 
         // Check if the user is a subscriber or librarian
         if (Subscriber.getLocalSubscriber() == null && Librarian.getLocalLibrarian() == null)

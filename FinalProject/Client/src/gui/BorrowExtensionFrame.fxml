@@ -18,7 +18,7 @@
         <!-- Main Content VBox (centered) -->
         <VBox alignment="CENTER" prefHeight="800.0" prefWidth="696.0" spacing="20.0">
             <!-- Title: "Extend Borrow" -->
-            <Label alignment="CENTER" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Extend Borrow" />
+            <Label alignment="CENTER" styleClass="title" text="Extend Borrow" />
 
             <!-- Subscriber Details -->
             <VBox alignment="CENTER" spacing="10.0">

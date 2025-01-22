@@ -13,7 +13,7 @@
 <VBox fx:id="editInfoFrame" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="790.0" prefWidth="948.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.SubscriberEditProfileFrameController">
     <!-- Spacer to push content towards the center -->
     <Region prefHeight="0.0" prefWidth="948.0" VBox.vgrow="ALWAYS" />
-    <Label alignment="CENTER" style="-fx-font-size: 60px; -fx-font-weight: bold;" text="EDIT DETAILS">
+    <Label alignment="CENTER" styleClass="title" text="EDIT DETAILS">
       <font>
          <Font size="64.0" />
       </font></Label>

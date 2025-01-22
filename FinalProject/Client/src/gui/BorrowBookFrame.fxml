@@ -13,9 +13,9 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.BorrowBookFrameController">
     <Region prefHeight="192.0" prefWidth="1677.0" />
-    <Label alignment="CENTER" layoutX="560.0" layoutY="158.0" prefHeight="88.0" prefWidth="1678.0" style="-fx-font-size: 60px; -fx-font-weight: bold;" text="BORROW BOOK" />
+    <Label alignment="CENTER" layoutX="560.0" layoutY="158.0" prefHeight="88.0" prefWidth="1678.0" styleClass="title" text="BORROW BOOK" />
     <AnchorPane prefHeight="143.0" prefWidth="1678.0">
-      <Label layoutX="573.0" layoutY="69.0" prefHeight="46.0" prefWidth="242.0" style="-fx-font-size: 30px; -fx-font-weight: bold;" text="Book Copy ID:">
+      <Label layoutX="573.0" layoutY="69.0" prefHeight="46.0" prefWidth="242.0" styleClass="label" text="Book Copy ID:">
          <font>
             <Font size="30.0" />
          </font>
@@ -33,7 +33,7 @@
       </ImageView>
     </AnchorPane>
     <AnchorPane prefHeight="143.0" prefWidth="1678.0">
-      <Label layoutX="572.0" layoutY="46.0" prefHeight="46.0" prefWidth="242.0" style="-fx-font-size: 30px; -fx-font-weight: bold;" text="Subscriber ID:">
+      <Label layoutX="572.0" layoutY="46.0" prefHeight="46.0" prefWidth="242.0" styleClass="label" text="Subscriber ID:">
          <font>
             <Font size="30.0" />
          </font>
@@ -51,7 +51,7 @@
       </ImageView>
     </AnchorPane>
     <AnchorPane prefHeight="143.0" prefWidth="1678.0">
-      <Label layoutX="570.0" layoutY="43.0" style="-fx-font-size: 30px; -fx-font-weight: bold;" text="Return Date:">
+      <Label layoutX="570.0" layoutY="43.0" styleClass="label" text="Return Date:">
          <font>
             <Font size="30.0" />
          </font>

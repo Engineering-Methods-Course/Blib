@@ -13,7 +13,7 @@
 
 <VBox fx:id="bookInfoFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.BookInfoFrameController">
     <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="741.0" prefWidth="1281.0">
-        <Label alignment="CENTER" layoutX="-3.0" layoutY="13.0" prefHeight="114.0" prefWidth="1280.0" style="-fx-font-size: 36px; -fx-font-weight: bold;" text="BOOK INFORMATION" />
+        <Label alignment="CENTER" layoutX="-3.0" layoutY="13.0" prefHeight="114.0" prefWidth="1280.0" styleClass="title" text="BOOK INFORMATION" />
         <Text layoutX="340.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-field-style" text="Book Name:" wrappingWidth="203.24102783203102" />
         <Text fx:id="bookName" layoutX="553.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-field-style" text="&lt;Pull Name From DB&gt;" textAlignment="CENTER" wrappingWidth="203.24102783203102" />
         <Text layoutX="340.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-field-style" text="Genre:" wrappingWidth="203.24102783203102" />

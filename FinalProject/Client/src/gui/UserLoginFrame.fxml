@@ -14,7 +14,7 @@
    <AnchorPane prefHeight="697.0" prefWidth="1677.0">
       <children>
           <!-- Top label (Login) -->
-          <Label alignment="CENTER" layoutX="739.0" layoutY="4.0" prefHeight="87.0" prefWidth="199.0" style="-fx-font-size: 60px; -fx-font-weight: bold;" text="LOGIN">
+          <Label alignment="CENTER" layoutX="727.0" layoutY="4.0" prefHeight="87.0" prefWidth="199.0" styleClass="title" text="LOGIN">
             <font>
                <Font size="10.0" />
             </font>
@@ -29,7 +29,7 @@
             </graphic>
          </Label>
             <TextField fx:id="txtUsername" layoutX="752.0" layoutY="212.0" prefHeight="36.0" prefWidth="220.0" promptText="Username" />
-            <Label fx:id="lblUserNameError" layoutX="1028.0" layoutY="33.0" text="Username Error" visible="false" />
+            <Label fx:id="lblUserNameError" layoutX="1010.0" layoutY="222.0" text="Username Error" visible="false" />
             <Label alignment="CENTER" layoutX="586.0" layoutY="293.0" style="-fx-font-size: 18px;" text="Password">
             <graphic>
                <ImageView fitHeight="40.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
@@ -40,7 +40,7 @@
             </graphic>
          </Label>
             <PasswordField fx:id="txtPassword" layoutX="751.0" layoutY="295.0" prefHeight="36.0" prefWidth="222.0" promptText="Password" />
-            <Label fx:id="lblPasswordError" layoutX="1030.0" layoutY="115.0" text="Password Error" visible="false" />
+            <Label fx:id="lblPasswordError" layoutX="1012.0" layoutY="305.0" text="Password Error" visible="false" />
       
            <!-- Login Button -->
            <Button fx:id="btnLogin" layoutX="770.0" layoutY="451.0" onAction="#clickLoginButton" prefHeight="34.0" prefWidth="137.0" text="Login">

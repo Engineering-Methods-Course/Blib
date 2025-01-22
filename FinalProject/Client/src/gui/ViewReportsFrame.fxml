@@ -63,7 +63,7 @@
                  <NumberAxis side="LEFT" />
              </yAxis>
          </BarChart>
-      <Text layoutX="765.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reports">
+      <Text layoutX="765.0" layoutY="99.0" strokeType="OUTSIDE" styleClass="title" strokeWidth="0.0" text="Reports">
          <font>
             <Font size="43.0" />
          </font>
