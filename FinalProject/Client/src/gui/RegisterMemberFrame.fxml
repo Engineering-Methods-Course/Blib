@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
@@ -16,14 +18,26 @@
       </children>
     </HBox>
 
+     <!-- Username Row -->
+     <HBox alignment="CENTER" spacing="10.0">
+      <VBox prefHeight="30.0" prefWidth="580.0">
+         <children>
+               <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="350.0" text="Username:" textAlignment="CENTER">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/account.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
+               <TextField fx:id="txtUsername" prefHeight="30.0" prefWidth="580.0" />
+         </children>
+      </VBox>
+     </HBox>
+
     <!-- Each Label + TextField + Error in its own row -->
     <VBox alignment="CENTER" prefWidth="1280.0" spacing="20.0">
-
-        <!-- Username Row -->
-        <HBox alignment="CENTER" spacing="10.0">
-            <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Username:" />
-            <TextField fx:id="txtUsername" prefWidth="200.0" />
-        </HBox>
         <HBox alignment="CENTER">
             <Label fx:id="lblUserNameError" prefHeight="23.0" prefWidth="500.0" text="UserName Error" visible="false">
             <HBox.margin>
@@ -33,32 +47,62 @@
 
         <!-- Name Row -->
         <HBox alignment="CENTER" spacing="10.0">
-            <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Name:" />
-            <TextField fx:id="txtFirstName" prefWidth="200.0" />
+         <VBox>
+            <children>
+                  <Label alignment="CENTER" prefHeight="20.0" prefWidth="290.0" text="Name:">
+                  <graphic>
+                     <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../resources/name.png" />
+                        </image>
+                     </ImageView>
+                  </graphic>
+               </Label>
+                  <TextField fx:id="txtFirstName" prefHeight="30.0" prefWidth="250.0" />
+            </children>
+         </VBox>
+   
+           <!-- Last Name Row -->
+           <HBox alignment="CENTER" spacing="10.0">
+            <VBox>
+               <children>
+                     <Label alignment="CENTER" prefHeight="20.0" prefWidth="280.0" text="Last Name:">
+                     <graphic>
+                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/name.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                     <TextField fx:id="txtLastName" prefHeight="30.0" prefWidth="240.0" />
+               </children>
+            </VBox>
+           </HBox>
         </HBox>
         <HBox alignment="CENTER">
-            <Label fx:id="lblNameError" prefHeight="23.0" prefWidth="500.0" text="Name Error" visible="false">
-            <HBox.margin>
-               <Insets left="275.0" />
-            </HBox.margin></Label>
-        </HBox>
-
-        <!-- Last Name Row -->
-        <HBox alignment="CENTER" spacing="10.0">
-            <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Last Name:" />
-            <TextField fx:id="txtLastName" prefWidth="200.0" />
-        </HBox>
-        <HBox alignment="CENTER">
-            <Label fx:id="lblLastNameError" prefHeight="23.0" prefWidth="500.0" text="Last Name Error" visible="false">
-            <HBox.margin>
-               <Insets left="275.0" />
-            </HBox.margin></Label>
+         <children>
+               <Label fx:id="lblNameError" prefHeight="23.0" prefWidth="250.0" text="Name Error" visible="false" />
+               <Label fx:id="lblLastNameError" prefHeight="23.0" prefWidth="250.0" text="Last Name Error" visible="false" />
+         </children>
         </HBox>
 
         <!-- Phone Row -->
         <HBox alignment="CENTER" spacing="10.0">
-            <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Phone:" />
-            <TextField fx:id="txtPhone" prefWidth="200.0" />
+         <VBox>
+            <children>
+                  <Label alignment="CENTER" prefWidth="580.0" text="Phone:">
+                  <graphic>
+                     <ImageView fitHeight="40.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../resources/phone.png" />
+                        </image>
+                     </ImageView>
+                  </graphic>
+               </Label>
+                  <TextField fx:id="txtPhone" prefHeight="30.0" prefWidth="200.0" />
+            </children>
+         </VBox>
         </HBox>
         <HBox alignment="CENTER">
             <Label fx:id="lblPhoneError" prefHeight="23.0" prefWidth="500.0" text="Phone Error" visible="false">
@@ -69,8 +113,20 @@
 
         <!-- Email Row -->
         <HBox alignment="CENTER" spacing="10.0">
-            <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Email:" />
-            <TextField fx:id="txtEmail" prefWidth="200.0" />
+         <VBox prefWidth="580.0">
+            <children>
+                  <Label alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="330.0" text="Email:">
+                  <graphic>
+                     <ImageView fitHeight="40.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../resources/email.png" />
+                        </image>
+                     </ImageView>
+                  </graphic>
+               </Label>
+                  <TextField fx:id="txtEmail" prefHeight="30.0" prefWidth="200.0" />
+            </children>
+         </VBox>
         </HBox>
         <HBox alignment="CENTER">
             <Label fx:id="lblEmailError" prefHeight="23.0" prefWidth="500.0" text="Email Error" visible="false">
