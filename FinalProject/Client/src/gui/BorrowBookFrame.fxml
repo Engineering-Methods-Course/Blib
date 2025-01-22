@@ -10,67 +10,66 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.BorrowBookFrameController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.BorrowBookFrameController">
     <Region prefHeight="63.0" prefWidth="600.0" />
-    <Label alignment="CENTER" layoutX="560.0" layoutY="158.0" prefHeight="54.0" prefWidth="1280.0" style="-fx-font-size: 36px; -fx-font-weight: bold;" text="BORROW BOOK" />
-    <AnchorPane prefHeight="140.0" prefWidth="1280.0">
-        <Text layoutX="300.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book:" AnchorPane.leftAnchor="300.0">
-            <font>
-                <Font size="30.0" />
-            </font>
-        </Text>
-        <TextField fx:id="bookIDTextField" layoutX="527.0" layoutY="62.0" prefHeight="50.0" prefWidth="238.0" promptText="Book ID" AnchorPane.bottomAnchor="24.400000000000006" AnchorPane.leftAnchor="527.0" AnchorPane.rightAnchor="515.4000000000001" AnchorPane.topAnchor="62.0">
+    <Label alignment="CENTER" layoutX="560.0" layoutY="158.0" prefHeight="88.0" prefWidth="1678.0" style="-fx-font-size: 60px; -fx-font-weight: bold;" text="BORROW BOOK" />
+    <AnchorPane prefHeight="143.0" prefWidth="1678.0">
+      <Label layoutX="573.0" layoutY="65.0" prefHeight="46.0" prefWidth="242.0" style="-fx-font-size: 30px; -fx-font-weight: bold;" text="Copy Book ID:">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+        <TextField fx:id="bookIDTextField" layoutX="815.0" layoutY="63.0" prefHeight="50.0" prefWidth="377.0" promptText="Copy Book ID" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="814.0" AnchorPane.rightAnchor="485.0" AnchorPane.topAnchor="63.0">
             <font>
                 <Font size="23.0" />
             </font>
         </TextField>
-      <Label fx:id="ErrorBookID" layoutX="482.0" layoutY="102.0" text="Book ID Error" visible="false" />
-      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="250.0" layoutY="68.0" pickOnBounds="true" preserveRatio="true">
+      <Label fx:id="ErrorBookID" layoutX="514.0" layoutY="110.0" prefHeight="18.0" prefWidth="290.0" text="Book ID Error" visible="false" />
+      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="533.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/icons8-book-50.png" />
          </image>
       </ImageView>
     </AnchorPane>
-    <AnchorPane prefHeight="84.0" prefWidth="1474.0">
-        <Text layoutX="100.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscriber ID:" AnchorPane.bottomAnchor="106.070703125" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="991.6708984375" AnchorPane.topAnchor="51.626953125">
-            <font>
-                <Font size="30.0" />
-            </font>
-        </Text>
-        <TextField fx:id="subscriberIDTextField" layoutX="532.0" layoutY="46.0" prefHeight="40.0" prefWidth="238.0" promptText="Subscriber ID" AnchorPane.leftAnchor="532.0" AnchorPane.rightAnchor="704.0">
+    <AnchorPane prefHeight="143.0" prefWidth="1678.0">
+      <Label layoutX="572.0" layoutY="48.0" prefHeight="46.0" prefWidth="242.0" style="-fx-font-size: 30px; -fx-font-weight: bold;" text="Subscriber ID:">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+        <TextField fx:id="subscriberIDTextField" layoutX="814.0" layoutY="46.0" prefHeight="50.0" prefWidth="378.0" promptText="Subscriber ID" AnchorPane.leftAnchor="814.0" AnchorPane.rightAnchor="485.0">
             <font>
                 <Font size="23.0" />
             </font>
         </TextField>
-      <Label fx:id="ErrorSubscriberID" layoutX="482.0" layoutY="115.0" text="Subscriber ID Error" visible="false" />
-      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="250.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
+      <Label fx:id="ErrorSubscriberID" layoutX="519.0" layoutY="87.0" prefHeight="18.0" prefWidth="290.0" text="Subscriber ID Error" visible="false" />
+      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="532.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/account.png" />
          </image>
       </ImageView>
     </AnchorPane>
-    <AnchorPane prefHeight="124.0" prefWidth="1280.0">
-      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="250.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
+    <AnchorPane prefHeight="143.0" prefWidth="1678.0">
+      <Label layoutX="570.0" layoutY="43.0" style="-fx-font-size: 30px; -fx-font-weight: bold;" text="Return Date:">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="530.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/date.png" />
          </image>
       </ImageView>
-        <Text layoutX="298.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Return Date:" AnchorPane.bottomAnchor="43.870703125000006" AnchorPane.leftAnchor="298.0" AnchorPane.rightAnchor="1002.5414062499999" AnchorPane.topAnchor="34.626953125">
-            <font>
-                <Font size="30.0" />
-            </font>
-        </Text>
-        <DatePicker fx:id="returnDatePicker" layoutX="533.0" layoutY="39.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="39.400000000000006" AnchorPane.leftAnchor="533.0" AnchorPane.rightAnchor="732.6" AnchorPane.topAnchor="39.0" />
+        <DatePicker fx:id="returnDatePicker" layoutX="815.0" layoutY="36.0" prefHeight="50.0" prefWidth="182.0" AnchorPane.bottomAnchor="47.2" AnchorPane.leftAnchor="815.0" AnchorPane.rightAnchor="685.8" AnchorPane.topAnchor="36.0" />
     </AnchorPane>
-    <AnchorPane prefHeight="124.0" prefWidth="1280.0" />
+    <AnchorPane prefHeight="124.0" prefWidth="1280.0">
+      <children>
+           <Button fx:id="borrowButton" layoutX="746.0" layoutY="35.0" mnemonicParsing="false" onAction="#borrowButtonClicked" prefHeight="50.0" prefWidth="186.0" text="Borrow" AnchorPane.bottomAnchor="56.19999999999999" AnchorPane.leftAnchor="746.0" AnchorPane.rightAnchor="746.0" AnchorPane.topAnchor="35.0">
+               <font>
+                   <Font size="23.0" />
+               </font>
+           </Button>
+      </children></AnchorPane>
     <Region prefHeight="107.0" prefWidth="1280.0" />
-    <AnchorPane prefHeight="81.0" prefWidth="1280.0">
-        <Button fx:id="borrowButton" layoutX="589.0" layoutY="16.0" mnemonicParsing="false" onAction="#borrowButtonClicked" text="Borrow" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="589.0" AnchorPane.rightAnchor="588.0" AnchorPane.topAnchor="16.0">
-            <font>
-                <Font size="23.0" />
-            </font>
-        </Button>
-    </AnchorPane>
 </VBox>
