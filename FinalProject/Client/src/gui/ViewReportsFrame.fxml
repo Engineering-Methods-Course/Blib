@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1084.0" prefWidth="1674.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ViewReportsFrameController">
    <children>
-       <AnchorPane layoutX="1241.0" layoutY="1.0" prefHeight="1083.0" prefWidth="432.0">
+       <AnchorPane layoutX="1156.0" layoutY="57.0" prefHeight="1027.0" prefWidth="446.0">
          <children>
             <ChoiceBox fx:id="startYear" layoutX="223.0" layoutY="183.0" prefHeight="40.0" prefWidth="180.0" />
             <ChoiceBox fx:id="startMonth" layoutX="30.0" layoutY="183.0" prefHeight="40.0" prefWidth="180.0" />
