@@ -4,6 +4,8 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
@@ -14,47 +16,55 @@
     <Region prefHeight="63.0" prefWidth="600.0" />
     <Label alignment="CENTER" layoutX="560.0" layoutY="158.0" prefHeight="54.0" prefWidth="1280.0" style="-fx-font-size: 36px; -fx-font-weight: bold;" text="BORROW BOOK" />
     <AnchorPane prefHeight="140.0" prefWidth="1280.0">
-        <Text layoutX="292.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book:">
+        <Text layoutX="300.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book:" AnchorPane.leftAnchor="300.0">
             <font>
                 <Font size="30.0" />
             </font>
         </Text>
-        <TextField fx:id="bookIDTextField" layoutX="482.0" layoutY="43.0" prefHeight="50.0" prefWidth="283.0" promptText="Book ID" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="482.0" AnchorPane.rightAnchor="515.0" AnchorPane.topAnchor="43.0">
+        <TextField fx:id="bookIDTextField" layoutX="527.0" layoutY="62.0" prefHeight="50.0" prefWidth="238.0" promptText="Book ID" AnchorPane.bottomAnchor="24.400000000000006" AnchorPane.leftAnchor="527.0" AnchorPane.rightAnchor="515.4000000000001" AnchorPane.topAnchor="62.0">
             <font>
                 <Font size="23.0" />
             </font>
         </TextField>
       <Label fx:id="ErrorBookID" layoutX="482.0" layoutY="102.0" text="Book ID Error" visible="false" />
+      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="250.0" layoutY="68.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/icons8-book-50.png" />
+         </image>
+      </ImageView>
     </AnchorPane>
-    <AnchorPane prefHeight="197.0" prefWidth="1281.0">
-        <Text layoutX="291.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscriber ID:" AnchorPane.bottomAnchor="104.0" AnchorPane.leftAnchor="291.0" AnchorPane.rightAnchor="806.6708984375" AnchorPane.topAnchor="48.0">
+    <AnchorPane prefHeight="84.0" prefWidth="1474.0">
+        <Text layoutX="100.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscriber ID:" AnchorPane.bottomAnchor="106.070703125" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="991.6708984375" AnchorPane.topAnchor="51.626953125">
             <font>
                 <Font size="30.0" />
             </font>
         </Text>
-        <TextField fx:id="subscriberIDTextField" layoutX="484.0" layoutY="47.0" prefHeight="50.0" prefWidth="285.0" promptText="Subscriber ID" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="482.0" AnchorPane.rightAnchor="514.0" AnchorPane.topAnchor="47.0">
+        <TextField fx:id="subscriberIDTextField" layoutX="532.0" layoutY="46.0" prefHeight="40.0" prefWidth="238.0" promptText="Subscriber ID" AnchorPane.leftAnchor="532.0" AnchorPane.rightAnchor="704.0">
             <font>
                 <Font size="23.0" />
             </font>
         </TextField>
       <Label fx:id="ErrorSubscriberID" layoutX="482.0" layoutY="115.0" text="Subscriber ID Error" visible="false" />
+      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="250.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/account.png" />
+         </image>
+      </ImageView>
     </AnchorPane>
     <AnchorPane prefHeight="124.0" prefWidth="1280.0">
-        <Text layoutX="109.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Borrow Date:" AnchorPane.bottomAnchor="38.0" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="999.232421875" AnchorPane.topAnchor="40.0">
+      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="250.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/date.png" />
+         </image>
+      </ImageView>
+        <Text layoutX="298.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Return Date:" AnchorPane.bottomAnchor="43.870703125000006" AnchorPane.leftAnchor="298.0" AnchorPane.rightAnchor="1002.5414062499999" AnchorPane.topAnchor="34.626953125">
             <font>
                 <Font size="30.0" />
             </font>
         </Text>
-        <DatePicker fx:id="borrowDatePicker" editable="false" layoutX="303.0" layoutY="42.0" prefHeight="45.0" prefWidth="174.0" AnchorPane.bottomAnchor="36.0" AnchorPane.leftAnchor="303.0" AnchorPane.rightAnchor="803.0" AnchorPane.topAnchor="42.0" />
+        <DatePicker fx:id="returnDatePicker" layoutX="533.0" layoutY="39.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="39.400000000000006" AnchorPane.leftAnchor="533.0" AnchorPane.rightAnchor="732.6" AnchorPane.topAnchor="39.0" />
     </AnchorPane>
-    <AnchorPane prefHeight="124.0" prefWidth="1280.0">
-        <Text layoutX="109.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Return Date:" AnchorPane.bottomAnchor="38.0" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="999.232421875" AnchorPane.topAnchor="40.0">
-            <font>
-                <Font size="30.0" />
-            </font>
-        </Text>
-        <DatePicker fx:id="returnDatePicker" layoutX="303.0" layoutY="42.0" prefHeight="45.0" prefWidth="174.0" AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="303.0" AnchorPane.rightAnchor="803.0" AnchorPane.topAnchor="42.0" />
-    </AnchorPane>
+    <AnchorPane prefHeight="124.0" prefWidth="1280.0" />
     <Region prefHeight="107.0" prefWidth="1280.0" />
     <AnchorPane prefHeight="81.0" prefWidth="1280.0">
         <Button fx:id="borrowButton" layoutX="589.0" layoutY="16.0" mnemonicParsing="false" onAction="#borrowButtonClicked" text="Borrow" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="589.0" AnchorPane.rightAnchor="588.0" AnchorPane.topAnchor="16.0">

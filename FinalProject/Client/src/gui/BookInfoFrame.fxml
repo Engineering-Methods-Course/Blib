@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -22,6 +24,21 @@
         <Text fx:id="bookLocation" layoutX="543.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-field-style" text="&lt;Pull Location From DB&gt;" textAlignment="CENTER" wrappingWidth="224.78826904296875" />
         <Button fx:id="backButton" layoutX="340.0" layoutY="611.0" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" />
         <Button fx:id="orderBookButton" layoutX="795.0" layoutY="607.0" mnemonicParsing="false" onAction="#orderBookButtonClicked" prefHeight="32.0" prefWidth="78.0" text="Order" AnchorPane.bottomAnchor="102.60000000000002" AnchorPane.leftAnchor="795.0" AnchorPane.rightAnchor="408.20000000000005" AnchorPane.topAnchor="607.0" />
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="294.0" layoutY="149.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/icons8-book-50.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="300.0" layoutY="212.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/genres.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="294.0" layoutY="276.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/locations.png" />
+         </image>
+      </ImageView>
     </AnchorPane>
     <HBox prefHeight="100.0" prefWidth="200.0">
         <AnchorPane prefHeight="59.0" prefWidth="1294.0" />
