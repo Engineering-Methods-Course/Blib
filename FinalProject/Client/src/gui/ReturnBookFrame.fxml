@@ -6,33 +6,21 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ReturnBookFrameController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ReturnBookFrameController">
     <!-- Spacer to center content vertically -->
-    <AnchorPane prefHeight="495.0" prefWidth="1290.0" VBox.vgrow="ALWAYS">
-        <Label alignment="CENTER" layoutX="-1.0" layoutY="2.0" prefHeight="210.0" prefWidth="1080.0" style="-fx-font-size: 36px; -fx-font-weight: bold;" text="RETURN BOOK" />
-
-        <!-- Description Text -->
-        <Text layoutX="426.0" layoutY="204.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter the book copy id number " textAlignment="CENTER" wrappingWidth="243.19921875">
-            <font>
-                <Font size="17.0" />
-            </font>
-        </Text>
+    <AnchorPane prefHeight="495.0" prefWidth="1677.0" VBox.vgrow="ALWAYS">
+        <Label alignment="CENTER" layoutX="-200.0" layoutY="-2.0" prefHeight="224.0" prefWidth="1677.0" style="-fx-font-size: 60px; -fx-font-weight: bold;" text="RETURN BOOK" />
 
         <!-- TextField for entering book ID -->
-        <TextField fx:id="idTextField" layoutX="422.0" layoutY="208.0" prefWidth="250.0" />
+        <TextField fx:id="idTextField" alignment="CENTER" layoutX="503.0" layoutY="209.0" prefHeight="33.0" prefWidth="280.0" />
 
         <!-- Error label to show when the input is invalid -->
-        <Label fx:id="errorLabel" layoutX="508.0" layoutY="248.0" text="Error Message " textFill="red" visible="false" />
+        <Label fx:id="errorLabel" alignment="CENTER" layoutX="394.0" layoutY="243.0" prefHeight="27.0" prefWidth="498.0" text="Error Message " textFill="red" visible="false" />
 
         <!-- Return Button -->
-        <Button fx:id="btnReturn" layoutX="456.0" layoutY="295.0" onAction="#returnButtonClicked" prefWidth="200.0" style="-fx-font-size: 16px;" text="Return" />
+        <Button fx:id="btnReturn" layoutX="543.0" layoutY="309.0" onAction="#returnButtonClicked" prefWidth="200.0" style="-fx-font-size: 18px;" text="Return" />
     </AnchorPane>
-
-             <!-- Spacer to push the content down and center it vertically -->
-    <AnchorPane prefHeight="9.0" prefWidth="1280.0" VBox.vgrow="ALWAYS" />
    <padding>
       <Insets left="200.0" top="150.0" />
    </padding>
