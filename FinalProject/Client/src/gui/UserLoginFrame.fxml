@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -18,10 +20,17 @@
    </Label>
      <!-- Username HBox -->
      <HBox alignment="CENTER" prefHeight="36.0" prefWidth="1677.0" spacing="10.0">
-         <Label prefHeight="23.0" prefWidth="100.0" style="-fx-font-size: 18px;" text="Username">
+         <Label alignment="CENTER" prefHeight="40.0" prefWidth="180.0" style="-fx-font-size: 18px;" text="Username">
              <HBox.margin>
                  <Insets />
              </HBox.margin>
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/account.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Label>
          <TextField fx:id="txtUsername" prefHeight="36.0" prefWidth="220.0" promptText="Username" />
          <Label fx:id="lblUserNameError" text="Username Error" visible="false" />
@@ -29,7 +38,14 @@
 
      <!-- Password HBox -->
      <HBox alignment="CENTER" prefHeight="36.0" prefWidth="1677.0" spacing="10.0">
-         <Label prefHeight="23.0" prefWidth="100.0" style="-fx-font-size: 18px;" text="Password" />
+         <Label alignment="CENTER" prefHeight="40.0" prefWidth="180.0" style="-fx-font-size: 18px;" text="Password">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/password.png" />
+               </image>
+            </ImageView>
+         </graphic></Label>
          <PasswordField fx:id="txtPassword" prefHeight="36.0" prefWidth="222.0" promptText="Password" />
          <Label fx:id="lblPasswordError" text="Password Error" visible="false" />
      </HBox>

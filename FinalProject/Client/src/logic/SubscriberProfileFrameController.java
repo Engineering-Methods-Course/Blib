@@ -46,11 +46,11 @@ public class SubscriberProfileFrameController
     public void initialize()
     {
         // Load all the user info into the fields
-        nameField.setText("Hello: " + Subscriber.getLocalSubscriber().getFirstName() + " " + Subscriber.getLocalSubscriber().getLastName());
-        phoneNumberField.setText("Phone number: " + Subscriber.getLocalSubscriber().getPhoneNumber());
-        emailField.setText("Email: " + Subscriber.getLocalSubscriber().getEmail());
-        statusTextField.setText("Account Status: " + (Subscriber.getLocalSubscriber().getStatusIsFrozen() ? "Frozen" : "Active"));
-        userIDField.setText("User ID: " + Subscriber.getLocalSubscriber().getID());
+        nameField.setText( Subscriber.getLocalSubscriber().getFirstName() + " " + Subscriber.getLocalSubscriber().getLastName());
+        phoneNumberField.setText( Subscriber.getLocalSubscriber().getPhoneNumber());
+        emailField.setText( Subscriber.getLocalSubscriber().getEmail());
+        statusTextField.setText( (Subscriber.getLocalSubscriber().getStatusIsFrozen() ? "Frozen" : "Active"));
+        userIDField.setText(String.valueOf(Subscriber.getLocalSubscriber().getID()));
 
         // Set up the borrowed books table columns
         bookNameColumn.setCellValueFactory(new PropertyValueFactory<>("bookName"));

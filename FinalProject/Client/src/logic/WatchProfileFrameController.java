@@ -120,10 +120,10 @@ public class WatchProfileFrameController
     public void updateSubscriberInfo(Subscriber subscriber)
     {
         txtFullName.setText(subscriber.getFirstName() + " " + subscriber.getLastName());
-        txtEmail.setText("Email: " + subscriber.getEmail());
-        txtPhoneNumber.setText("Phone number: " + subscriber.getPhoneNumber());
-        txtUserID.setText("User ID: " + subscriber.getID());
-        txtStatus.setText("Account Status: " + (subscriber.getStatusIsFrozen() ? "Frozen" : "Active"));
+        txtEmail.setText( subscriber.getEmail());
+        txtPhoneNumber.setText( subscriber.getPhoneNumber());
+        txtUserID.setText(String.valueOf(subscriber.getID()));
+        txtStatus.setText( (subscriber.getStatusIsFrozen() ? "Frozen" : "Active"));
     }
 
     /**

@@ -1,57 +1,165 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<VBox fx:id="extendBorrowLibrarian" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.WatchProfileFrameController">
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox fx:id="extendBorrowLibrarian" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.WatchProfileFrameController">
     <!-- Header Pane -->
     <AnchorPane prefHeight="43.0">
         <!-- Header content can go here -->
     </AnchorPane>
 
     <!-- Main Content Pane with VGrow Property for Resizing -->
-    <AnchorPane VBox.vgrow="ALWAYS">
+    <AnchorPane prefHeight="794.0" prefWidth="1342.0" VBox.vgrow="ALWAYS">
         <!-- Borrowed Books Table with VGrow for resizing -->
-        <TableView fx:id="borrowsTable" layoutX="356.0" prefHeight="607.0" prefWidth="874.0"
-                   AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="356.0" AnchorPane.rightAnchor="50.0"
-                   AnchorPane.topAnchor="50.0">
+        <TableView fx:id="borrowsTable" layoutX="379.2" layoutY="51.2" prefHeight="625.0" prefWidth="902.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="379.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="51.0">
             <columns>
-                <TableColumn fx:id="bookNameColumn" prefWidth="196.0" text="Book Name"/>
-                <TableColumn fx:id="borrowDateColumn" prefWidth="216.0" text="Borrow Date"/>
-                <TableColumn fx:id="returnDateColumn" prefWidth="236.0" text="Return Date"/>
-                <TableColumn fx:id="extendButtonColumn" prefWidth="225.0" text="Extend Options"/>
+                <TableColumn fx:id="bookNameColumn" prefWidth="196.0" text="Book Name" />
+                <TableColumn fx:id="borrowDateColumn" prefWidth="216.0" text="Borrow Date" />
+                <TableColumn fx:id="returnDateColumn" prefWidth="236.0" text="Return Date" />
+                <TableColumn fx:id="extendButtonColumn" prefWidth="225.0" text="Extend Options" />
             </columns>
         </TableView>
 
         <!-- Profile Details Section -->
-        <VBox prefWidth="300.0" spacing="10.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0"
-              AnchorPane.topAnchor="50.0">
-            <Text fx:id="txtFullName" text="&lt;First Name + Last Name&gt;" wrappingWidth="280.0">
-                <font>
-                    <Font size="24.0"/>
-                </font>
-            </Text>
-            <Text fx:id="txtEmail" text="&lt;Email Address&gt;" wrappingWidth="280.0">
-                <font>
-                    <Font size="18.0"/>
-                </font>
-            </Text>
-            <Text fx:id="txtPhoneNumber" text="&lt;Phone Number&gt;" wrappingWidth="280.0">
-                <font>
-                    <Font size="18.0"/>
-                </font>
-            </Text>
-            <Text fx:id="txtUserID" text="&lt;User ID&gt;" wrappingWidth="280.0">
-                <font>
-                    <Font size="18.0"/>
-                </font>
-            </Text>
-            <Text fx:id="txtStatus" text="&lt;Status&gt;" wrappingWidth="280.0">
-                <font>
-                    <Font size="18.0"/>
-                </font>
-            </Text>
+        <VBox layoutX="23.2" layoutY="51.2" prefHeight="674.0" prefWidth="351.0" spacing="10.0" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="23.0" AnchorPane.topAnchor="51.0">
+         <HBox alignment="CENTER" prefHeight="128.0" prefWidth="350.0">
+            <children>
+               <VBox alignment="CENTER">
+                  <children>
+                     <Label alignment="CENTER" prefHeight="54.0" prefWidth="306.0" text="Full name :">
+                        <graphic>
+                           <ImageView fitHeight="40.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../resources/account.png" />
+                              </image>
+                           </ImageView>
+                        </graphic>
+                        <font>
+                           <Font size="30.0" />
+                        </font>
+                     </Label>
+                        <Text fx:id="txtFullName" text="&lt;First Name + Last Name&gt;" textAlignment="CENTER" wrappingWidth="340.80001425743103">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                        </Text>
+                  </children>
+               </VBox>
+            </children>
+         </HBox>
+         <HBox alignment="CENTER" prefHeight="120.0" prefWidth="350.0">
+            <children>
+               <VBox alignment="CENTER">
+                  <children>
+                     <Label alignment="CENTER" prefHeight="46.0" prefWidth="310.0" text="Email :" textAlignment="CENTER">
+                        <graphic>
+                           <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../resources/email.png" />
+                              </image>
+                           </ImageView>
+                        </graphic>
+                        <font>
+                           <Font size="30.0" />
+                        </font>
+                     </Label>
+                        <Text fx:id="txtEmail" text="&lt;Email Address&gt;" textAlignment="CENTER" wrappingWidth="340.800048828125">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Text>
+                  </children>
+               </VBox>
+            </children>
+         </HBox>
+         <HBox alignment="CENTER" prefHeight="120.0" prefWidth="351.0">
+            <children>
+               <HBox>
+                  <children>
+                     <VBox alignment="CENTER" prefHeight="120.0" prefWidth="337.0">
+                        <children>
+                           <Label alignment="CENTER" prefHeight="46.0" prefWidth="299.0" text="Phone :">
+                              <graphic>
+                                 <ImageView fitHeight="49.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../resources/phone.png" />
+                                    </image>
+                                 </ImageView>
+                              </graphic>
+                              <font>
+                                 <Font size="30.0" />
+                              </font>
+                           </Label>
+                              <Text fx:id="txtPhoneNumber" text="&lt;Phone Number&gt;" textAlignment="CENTER" wrappingWidth="296.00004291534424">
+                                  <font>
+                                      <Font size="18.0" />
+                                  </font>
+                              </Text>
+                        </children>
+                     </VBox>
+                  </children>
+               </HBox>
+            </children>
+         </HBox>
+         <HBox alignment="CENTER" prefHeight="121.0" prefWidth="351.0">
+            <children>
+               <VBox alignment="CENTER" prefHeight="122.0" prefWidth="348.0">
+                  <children>
+                     <Label alignment="CENTER" prefHeight="66.0" prefWidth="306.0" text="User ID :">
+                        <graphic>
+                           <ImageView fitHeight="66.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../resources/user%20id.png" />
+                              </image>
+                           </ImageView>
+                        </graphic>
+                        <font>
+                           <Font size="30.0" />
+                        </font>
+                     </Label>
+                        <Text fx:id="txtUserID" text="&lt;User ID&gt;" textAlignment="CENTER" wrappingWidth="224.7999885559111">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Text>
+                  </children>
+               </VBox>
+            </children>
+         </HBox>
+         <HBox alignment="CENTER" prefHeight="120.0" prefWidth="351.0">
+            <children>
+               <VBox alignment="CENTER" prefHeight="120.0" prefWidth="353.0">
+                  <children>
+                     <Label alignment="CENTER" prefHeight="58.0" prefWidth="292.0" text="Status :">
+                        <graphic>
+                           <ImageView fitHeight="49.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../resources/status.png" />
+                              </image>
+                           </ImageView>
+                        </graphic>
+                        <font>
+                           <Font size="30.0" />
+                        </font>
+                     </Label>
+                        <Text fx:id="txtStatus" text="&lt;Status&gt;" textAlignment="CENTER" wrappingWidth="237.59997701644897">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Text>
+                  </children>
+               </VBox>
+            </children>
+         </HBox>
         </VBox>
     </AnchorPane>
 </VBox>

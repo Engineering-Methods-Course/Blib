@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.SubscriberProfileFrameController">
@@ -18,26 +21,91 @@
                 <TableColumn fx:id="extendButtonColumn" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Extend Options" />
             </columns>
         </TableView>
-
-        <!-- Name Field -->
-        <Text fx:id="nameField" text="John Doe" wrappingWidth="568.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="36.677734375" styleClass="text-field-style,text-field-name">
+      <HBox alignment="CENTER" layoutX="14.0" layoutY="57.0">
+         <children>
+            <Label prefHeight="40.0" prefWidth="150.0" text="Hello:">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/hello.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
+      
+                    <!-- Name Field -->
+              <Text fx:id="nameField" styleClass="text-field-style,text-field-name" text="John Doe" wrappingWidth="544.0000019073486">
         </Text>
-
-        <!-- Phone Number -->
-        <Text fx:id="phoneNumberField" text="555-1234" wrappingWidth="469.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="137.1015625" styleClass="text-field-style">
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="14.0" layoutY="136.8000030517578">
+         <children>
+            <Label prefHeight="40.0" prefWidth="150.0" text="Phone:">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/phone.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
+      
+              <!-- Phone Number -->
+              <Text fx:id="phoneNumberField" styleClass="text-field-style" text="555-1234" wrappingWidth="469.0">
         </Text>
-
-        <!-- Status -->
-        <Text fx:id="statusTextField" text="Active" wrappingWidth="627.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="218.1015625" styleClass="text-field-style">
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="14.0" layoutY="218.39999389648438">
+         <children>
+            <Label prefHeight="40.0" prefWidth="150.0" text="Status:">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/status.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
+      
+              <!-- Status -->
+              <Text fx:id="statusTextField" styleClass="text-field-style" text="Active" wrappingWidth="627.0">
         </Text>
-
-        <!-- Email -->
-        <Text fx:id="emailField" text="email@example.com" wrappingWidth="496.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="97.1015625" styleClass="text-field-style">
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="14.0" layoutY="96.0">
+         <children>
+            <Label prefHeight="40.0" prefWidth="150.0" text="Email:">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/email.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
+      
+              <!-- Email -->
+              <Text fx:id="emailField" styleClass="text-field-style" text="email@example.com" wrappingWidth="486.3999938964844">
 
         </Text>
-
-        <!-- User ID -->
-        <Text fx:id="userIDField" text="UserID123" wrappingWidth="665.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="178.1015625" styleClass="text-field-style">
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="14.0" layoutY="178.0">
+         <children>
+            <Label prefHeight="40.0" prefWidth="150.0" text="User ID:">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/user%20id.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
+      
+              <!-- User ID -->
+              <Text fx:id="userIDField" styleClass="text-field-style" text="UserID123" wrappingWidth="665.0">
         </Text>
+         </children>
+      </HBox>
     </AnchorPane>
 </VBox>
