@@ -18,6 +18,7 @@ public class ScheduleController {
     private ScheduleController() {
         scheduler = Executors.newScheduledThreadPool(1);
         dbController = DBController.getInstance();
+        dbController.verifyTasks();
         setSchedulerDailyTask();
         setSchedulerWeeklyTask();
         setSchedulerMonthlyTask();

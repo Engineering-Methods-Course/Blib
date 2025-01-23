@@ -15,7 +15,7 @@ import java.util.List;
 public class DBController {
     private static volatile DBController instance;
     private static NotificationController notificationController;
-    private Connection conn = null;
+    public Connection conn = null;
 
 
     private DBController() {
@@ -2257,6 +2257,11 @@ public class DBController {
             } catch (Exception e) {
                 System.out.println("Error: Exporting log of subscribers status" + e);
             }
+
+
+            /*
+             * This method checks if a subscriber account is frozen
+             */
         };
     }
 
@@ -2423,6 +2428,7 @@ public class DBController {
         return () -> {
 
             try {
+                Date scheduledDate = null;
                 int frozenCouner = 0;
                 int activeCounter = 0;
 
@@ -2447,9 +2453,82 @@ public class DBController {
                 addNewEntryToMonthlyReport("subscriberStatuses", new ReportEntry(new java.util.Date(), "active", String.valueOf(activeCounter)));
 
 
-            } catch (SQLException e) {
+                /*
+                 * This query saves the scheduled date of the task
+                 */
+                String scheduledDateQuery = "SELECT scheduled_date FROM tasks WHERE task type = 'exportStatuses' AND exectued = 0";
+                PreparedStatement scheduledDateStatement = conn.prepareStatement(scheduledDateQuery);
+                scheduledDateStatement.executeQuery();
+                if(scheduledDateStatement.getResultSet().next()) {
+                    scheduledDate = scheduledDateStatement.getResultSet().getDate("scheduled_date");
+                }
+
+                /*
+                 * Ticks true in the tasks table to indicate that the task happened
+                 */
+                String tasksQuery = "UPDATE tasks SET exectued = 1 WHERE task_type = 'exportStatuses' AND executed = 0";
+                PreparedStatement tasksStatement = conn.prepareStatement(tasksQuery);
+                tasksStatement.executeUpdate();
+
+                /*
+                 * Adds a new entry of exportStatuses to the tasks table set to the next week
+                 */
+                String newTaskQuery = "INSERT INTO tasks (task_type, scheduled_date) VALUES (?, ?)";
+                PreparedStatement newTaskStatement = conn.prepareStatement(newTaskQuery);
+                newTaskStatement.setString(1, "exportStatuses");
+                newTaskStatement.setDate(2, Date.valueOf(scheduledDate.toLocalDate().plusWeeks(1)));
+
+
+            } catch (Exception e) {
                 System.out.println("Error: Checking reserved books" + e);
             }
         };
+    }
+
+    /**
+     * This method goes through the tasks table and checks if there are any tasks that should have happened but did not
+     * If so it calls the specific method to handle the task
+     */
+    public void verifyTasks() {
+        try {
+            /*
+             * Query to get tasks that should have been executed but were not
+             */
+            String query = "SELECT task_type FROM tasks WHERE executed = 0 AND scheduled_date < NOW()";
+            PreparedStatement statement = conn.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+
+            /*
+             * Iterate through the result set and handle each task
+             */
+            while (rs.next()) {
+                String taskType = rs.getString("task_type");
+
+                /*
+                 * Call the specific method based on the task type
+                 */
+                switch (taskType) {
+                    case "unfreeze":
+                        unfreezeAccount().run();
+                        break;
+                    case "dueBooks":
+                        checkDueBooks().run();
+                        break;
+                    case "reservedBooks":
+                        checkReservedBooks().run();
+                        break;
+                    case "exportStatuses":
+                        checkSubscribersStatus().run();
+                        break;
+                    case "exportReports":
+                        exportReport().run();
+                        break;
+                    default:
+                        System.out.println("Unknown task type: " + taskType);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: Verifying tasks" + e);
+        }
     }
 }

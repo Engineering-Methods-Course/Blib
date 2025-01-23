@@ -125,7 +125,7 @@ public class NotificationController {
             message.setSubject(subject); // Set the email subject
             message.setContent(text, "text/html"); // Set the email body type
             System.out.println("Sending email...");
-            Transport.send(message); // Send the email
+            //Transport.send(message); // Send the email
             System.out.println("Email sent successfully");
         } catch (MessagingException e) {
             System.out.println("Error sending email" + e.getMessage());
