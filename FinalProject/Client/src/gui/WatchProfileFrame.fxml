@@ -25,10 +25,10 @@
     <!-- Main Content Pane with VGrow Property for Resizing -->
     <AnchorPane prefHeight="794.0" prefWidth="1342.0" VBox.vgrow="ALWAYS">
         <!-- Borrowed Books Table with VGrow for resizing -->
-        <TableView fx:id="borrowsTable" layoutX="374.0" layoutY="15.2" prefHeight="802.0" prefWidth="1256.0" AnchorPane.bottomAnchor="138.0" AnchorPane.leftAnchor="374.0" AnchorPane.rightAnchor="47.0" AnchorPane.topAnchor="15.0">
+        <TableView fx:id="borrowsTable" layoutX="360.0" layoutY="15.2" prefHeight="802.0" prefWidth="1278.0" AnchorPane.bottomAnchor="138.0" AnchorPane.leftAnchor="360.0" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="15.0">
             <columns>
-                <TableColumn fx:id="bookNameColumn" maxWidth="420.0" minWidth="420.0" prefWidth="420.0" text="Book Name" />
-                <TableColumn fx:id="borrowDateColumn" maxWidth="284.0" minWidth="284.0" prefWidth="284.0" text="Borrow Date" />
+                <TableColumn fx:id="bookNameColumn" maxWidth="420.0" minWidth="410.3998473882675" prefWidth="410.3998473882675" text="Book Name" />
+                <TableColumn fx:id="borrowDateColumn" maxWidth="293.6000671386719" minWidth="284.0" prefWidth="293.6000671386719" text="Borrow Date" />
                 <TableColumn fx:id="returnDateColumn" maxWidth="284.0" minWidth="284.0" prefWidth="284.0" text="Return Date" />
                 <TableColumn fx:id="extendButtonColumn" maxWidth="280.0" minWidth="280.0" prefWidth="280.0" text="Extend Options" />
             </columns>

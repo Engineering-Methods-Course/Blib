@@ -70,7 +70,7 @@ public class BorrowExtensionFrameController
         }
         catch (Exception e)
         {
-            System.out.println("Invalid date format: " + currentReturnDateText);
+            showAlert(Alert.AlertType.WARNING, "Invalid date", "Please enter a valid date");
         }
 
 
@@ -101,7 +101,7 @@ public class BorrowExtensionFrameController
         if (newReturnDate == null)
         {
             // Handle missing data (e.g., show an error dialog)
-            System.out.println("Please select a new return date.");
+            showAlert(Alert.AlertType.WARNING, "Invalid return date", "Please select a new return date");
             return;
         }
 
