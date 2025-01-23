@@ -11,7 +11,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="extendBorrowLibrarian" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.WatchProfileFrameController">
+<VBox fx:id="extendBorrowLibrarian" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@/gui/MainFrame.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.WatchProfileFrameController">
+   <Label alignment="CENTER" prefHeight="88.0" prefWidth="1677.0" styleClass="title" text="PROFILE">
+      <font>
+         <Font size="60.0" />
+      </font>
+   </Label>
     <!-- Header Pane -->
     <AnchorPane prefHeight="43.0">
         <!-- Header content can go here -->
@@ -20,17 +25,17 @@
     <!-- Main Content Pane with VGrow Property for Resizing -->
     <AnchorPane prefHeight="794.0" prefWidth="1342.0" VBox.vgrow="ALWAYS">
         <!-- Borrowed Books Table with VGrow for resizing -->
-        <TableView fx:id="borrowsTable" layoutX="379.2" layoutY="51.2" prefHeight="625.0" prefWidth="902.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="379.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="51.0">
+        <TableView fx:id="borrowsTable" layoutX="374.0" layoutY="15.2" prefHeight="802.0" prefWidth="1256.0" AnchorPane.bottomAnchor="138.0" AnchorPane.leftAnchor="374.0" AnchorPane.rightAnchor="47.0" AnchorPane.topAnchor="15.0">
             <columns>
-                <TableColumn fx:id="bookNameColumn" prefWidth="196.0" text="Book Name" />
-                <TableColumn fx:id="borrowDateColumn" prefWidth="216.0" text="Borrow Date" />
-                <TableColumn fx:id="returnDateColumn" prefWidth="236.0" text="Return Date" />
-                <TableColumn fx:id="extendButtonColumn" prefWidth="225.0" text="Extend Options" />
+                <TableColumn fx:id="bookNameColumn" maxWidth="420.0" minWidth="420.0" prefWidth="420.0" text="Book Name" />
+                <TableColumn fx:id="borrowDateColumn" maxWidth="284.0" minWidth="284.0" prefWidth="284.0" text="Borrow Date" />
+                <TableColumn fx:id="returnDateColumn" maxWidth="284.0" minWidth="284.0" prefWidth="284.0" text="Return Date" />
+                <TableColumn fx:id="extendButtonColumn" maxWidth="280.0" minWidth="280.0" prefWidth="280.0" text="Extend Options" />
             </columns>
         </TableView>
 
         <!-- Profile Details Section -->
-        <VBox layoutX="23.2" layoutY="51.2" prefHeight="674.0" prefWidth="351.0" spacing="10.0" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="23.0" AnchorPane.topAnchor="51.0">
+        <VBox layoutX="23.2" layoutY="12.8" prefHeight="891.0" prefWidth="351.0" spacing="10.0" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="23.0" AnchorPane.topAnchor="13.0">
          <HBox alignment="CENTER" prefHeight="128.0" prefWidth="350.0">
             <children>
                <VBox alignment="CENTER">
@@ -49,7 +54,7 @@
                      </Label>
                         <Text fx:id="txtFullName" text="&lt;First Name + Last Name&gt;" textAlignment="CENTER" wrappingWidth="340.80001425743103">
                             <font>
-                                <Font size="24.0" />
+                                <Font size="27.0" />
                             </font>
                         </Text>
                   </children>
@@ -74,7 +79,7 @@
                      </Label>
                         <Text fx:id="txtEmail" text="&lt;Email Address&gt;" textAlignment="CENTER" wrappingWidth="340.800048828125">
                             <font>
-                                <Font size="18.0" />
+                                <Font size="24.0" />
                             </font>
                         </Text>
                   </children>
@@ -101,7 +106,7 @@
                            </Label>
                               <Text fx:id="txtPhoneNumber" text="&lt;Phone Number&gt;" textAlignment="CENTER" wrappingWidth="296.00004291534424">
                                   <font>
-                                      <Font size="18.0" />
+                                      <Font size="22.0" />
                                   </font>
                               </Text>
                         </children>
@@ -128,7 +133,7 @@
                      </Label>
                         <Text fx:id="txtUserID" text="&lt;User ID&gt;" textAlignment="CENTER" wrappingWidth="224.7999885559111">
                             <font>
-                                <Font size="18.0" />
+                                <Font size="22.0" />
                             </font>
                         </Text>
                   </children>
@@ -153,7 +158,7 @@
                      </Label>
                         <Text fx:id="txtStatus" text="&lt;Status&gt;" textAlignment="CENTER" wrappingWidth="237.59997701644897">
                             <font>
-                                <Font size="18.0" />
+                                <Font size="24.0" />
                             </font>
                         </Text>
                   </children>

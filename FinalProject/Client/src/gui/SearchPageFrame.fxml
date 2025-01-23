@@ -21,15 +21,15 @@
                </image>
             </ImageView>
          </graphic></Label>
-        <RadioButton fx:id="nameRadio" layoutX="395.0" layoutY="331.0" mnemonicParsing="false" onAction="#searchByName" prefHeight="42.0" prefWidth="209.0" text="By Name" AnchorPane.bottomAnchor="409.8" AnchorPane.leftAnchor="404.0" AnchorPane.rightAnchor="1073.8" AnchorPane.topAnchor="331.0">
+        <RadioButton fx:id="nameRadio" layoutX="375.2" layoutY="331.0" mnemonicParsing="false" onAction="#searchByName" prefHeight="42.0" prefWidth="229.0" text="By Name" AnchorPane.bottomAnchor="410.0" AnchorPane.leftAnchor="375.0" AnchorPane.rightAnchor="1074.0" AnchorPane.topAnchor="331.0">
          <font>
             <Font size="22.0" />
          </font></RadioButton>
-        <RadioButton fx:id="genreRadio" layoutX="395.0" layoutY="402.0" mnemonicParsing="false" onAction="#searchByGenre" prefHeight="42.0" prefWidth="209.0" text="By Genre" AnchorPane.bottomAnchor="339.59999999999997" AnchorPane.leftAnchor="404.0" AnchorPane.rightAnchor="1073.8" AnchorPane.topAnchor="402.0">
+        <RadioButton fx:id="genreRadio" layoutX="374.4" layoutY="402.0" mnemonicParsing="false" onAction="#searchByGenre" prefHeight="42.0" prefWidth="230.0" text="By Genre" AnchorPane.bottomAnchor="339.0" AnchorPane.leftAnchor="374.0" AnchorPane.rightAnchor="1074.0" AnchorPane.topAnchor="402.0">
          <font>
             <Font size="22.0" />
          </font></RadioButton>
-        <RadioButton fx:id="descriptionRadio" layoutX="395.0" layoutY="467.0" mnemonicParsing="false" onAction="#searchByDescription" prefHeight="42.0" prefWidth="209.0" text="By Description" AnchorPane.bottomAnchor="273.8" AnchorPane.leftAnchor="404.0" AnchorPane.rightAnchor="1073.8" AnchorPane.topAnchor="467.0">
+        <RadioButton fx:id="descriptionRadio" layoutX="374.4" layoutY="467.0" mnemonicParsing="false" onAction="#searchByDescription" prefHeight="42.0" prefWidth="229.0" text="By Description" AnchorPane.bottomAnchor="274.0" AnchorPane.leftAnchor="374.0" AnchorPane.rightAnchor="1074.0" AnchorPane.topAnchor="467.0">
          <font>
             <Font size="22.0" />
          </font></RadioButton>
