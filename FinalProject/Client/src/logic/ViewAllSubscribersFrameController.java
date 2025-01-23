@@ -51,6 +51,13 @@ public class ViewAllSubscribersFrameController
      */
     public void initialize()
     {
+        // Create tooltips for the filter field and button
+        Tooltip filterTextFieldTooltip = new Tooltip("Enter the subscriber ID to filter the list.\nLeave empty to show all subscribers.");
+
+        // Add the tooltip to the filter text field and button
+        filterTextField.setTooltip(filterTextFieldTooltip);
+        filterButton.setTooltip(filterTextFieldTooltip);
+
         // Set up the columns in the table
         idColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));

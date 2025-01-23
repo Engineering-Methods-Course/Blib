@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 
 import java.util.ArrayList;
 
@@ -86,6 +87,20 @@ public class RegisterMemberFrameController
                 resetErrorState(txtEmail, lblEmailError);
             }
         });
+
+        // Create the tooltips for the text fields
+        Tooltip usernameTooltip = new Tooltip("Enter a unique username.");
+        Tooltip nameTooltip = new Tooltip("Enter your first name.");
+        Tooltip lastNameTooltip = new Tooltip("Enter your last name.");
+        Tooltip phoneTooltip = new Tooltip("Enter your phone number.");
+        Tooltip emailTooltip = new Tooltip("Enter your email address.");
+
+        // Add Tooltips to the text boxes that will appear when the user hovers over them
+        txtUsername.setTooltip(usernameTooltip);
+        txtFirstName.setTooltip(nameTooltip);
+        txtLastName.setTooltip(lastNameTooltip);
+        txtPhone.setTooltip(phoneTooltip);
+        txtEmail.setTooltip(emailTooltip);
     }
 
     /**

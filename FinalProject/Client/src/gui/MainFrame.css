@@ -200,3 +200,16 @@
     -fx-border-radius: 10px; /* Border radius */
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 5); /* Subtle shadow */
 }
+
+.tooltip {
+    -fx-background-color: #333333; /* Dark background color */
+    -fx-text-fill: white; /* White text color */
+    -fx-font-size: 20px; /* Font size */
+    -fx-padding: 10px; /* Padding around the text */
+    -fx-border-color: #B85042; /* Border color */
+    -fx-border-width: 2px; /* Border width */
+    -fx-border-radius: 5px; /* Border radius */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0); /* Drop shadow */
+    -fx-opacity: 0.8; /* Lower opacity */
+    -fx-font-weight: bold; /* Bold text */
+}

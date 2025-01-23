@@ -6,10 +6,7 @@ import common.Subscriber;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 import static client.ClientGUIController.*;
@@ -33,6 +30,10 @@ public class SearchSubscriberFrameController
     {
         // Adding listener to the ID TextField
         idTextField.textProperty().addListener((observable, oldValue, newValue) -> validateSubscriberID(newValue));
+
+        // Create a tooltip for the text field
+        Tooltip idTextFieldTooltip = new Tooltip("Enter the subscriber ID to watch their profile.");
+        idTextField.setTooltip(idTextFieldTooltip);
     }
 
     /**

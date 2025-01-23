@@ -3,10 +3,7 @@ package logic;
 import client.ClientGUIController;
 import common.ClientServerMessage;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -57,6 +54,14 @@ public class SearchPageFrameController
         // set the searchField to be visible and the descriptionSearch to be invisible
         searchField.setVisible(true);
         descriptionSearch.setVisible(false);
+
+        // Creates tooltips for the search fields
+        Tooltip searchFieldTooltip = new Tooltip("Enter the name of the book you are looking for.");
+        Tooltip descriptionSearchTooltip = new Tooltip("Enter the description of the book you are looking for.");
+
+        // Add Tooltips to the text boxes that will appear when the user hovers over them
+        searchField.setTooltip(searchFieldTooltip);
+        descriptionSearch.setTooltip(descriptionSearchTooltip);
     }
 
     /**
@@ -81,6 +86,9 @@ public class SearchPageFrameController
         // set the searchField to be visible and the descriptionSearch to be invisible
         searchField.setVisible(true);
         descriptionSearch.setVisible(false);
+
+        // Change the tooltip's text
+        searchField.getTooltip().setText("Enter the name of the book you are looking for.");
     }
 
     /**
@@ -95,6 +103,9 @@ public class SearchPageFrameController
         // set the searchField to be visible and the descriptionSearch to be invisible
         searchField.setVisible(true);
         descriptionSearch.setVisible(false);
+
+        // Change the tooltip's text
+        searchField.getTooltip().setText("Enter the genre of the book you are looking for.");
     }
 
     /**
@@ -110,7 +121,6 @@ public class SearchPageFrameController
         searchButton.setLayoutY(500);
         searchField.setVisible(false);
         descriptionSearch.setVisible(true);
-
     }
 
     /**

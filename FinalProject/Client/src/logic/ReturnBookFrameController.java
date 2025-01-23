@@ -42,6 +42,10 @@ public class ReturnBookFrameController
                 resetErrorState(idTextField, errorLabel);
             }
         });
+
+        // Create a tooltip for the text field
+        Tooltip idTooltip = new Tooltip("Enter the copy ID of the book you want to return.\nShould be on the book's barcode.");
+        idTextField.setTooltip(idTooltip);
     }
 
     /**

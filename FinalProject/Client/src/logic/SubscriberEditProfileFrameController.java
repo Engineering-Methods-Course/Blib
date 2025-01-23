@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -46,6 +47,18 @@ public class SubscriberEditProfileFrameController
 
         // Add validation listeners to the text fields
         addValidationListeners();
+
+        // Create the tooltips for the text fields
+        Tooltip phoneTooltip = new Tooltip("Enter your phone number starting with '05' followed by 8 digits.");
+        Tooltip emailTooltip = new Tooltip("Enter your email address in the format: \"john.doe@[email-provider].com\"");
+        Tooltip firstNameTooltip = new Tooltip("Enter your first name.");
+        Tooltip lastNameTooltip = new Tooltip("Enter your last name.");
+
+        // Add Tooltips to the text boxes that will appear when the user hovers over them
+        txtPhone.setTooltip(phoneTooltip);
+        txtEmail.setTooltip(emailTooltip);
+        txtFirstName.setTooltip(firstNameTooltip);
+        txtLastName.setTooltip(lastNameTooltip);
     }
 
     /**

@@ -218,7 +218,7 @@ public class ClientGUIController extends Application
     public void start(Stage primaryStage) throws Exception
     {
         // hacks the tooltip to change the default duration
-        if(TooltipChanger.setTooltipTimers(100, 5000, 200))
+        if(TooltipChanger.setTooltipTimers(500, 5000, 200))
         {
             System.out.println("Tooltip duration changed successfully");
         }

@@ -23,8 +23,6 @@ public class ViewReportsFrameController
     @FXML
     public ChoiceBox<String> reportChoiceBox;
     @FXML
-    public Button backButton;
-    @FXML
     public BarChart<String, Number> BorrowChart;
     @FXML
     public LineChart<String, Number> subscriberStatusesChart;

@@ -5,10 +5,7 @@ import common.ClientServerMessage;
 import common.Subscriber;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -62,6 +59,14 @@ public class ChangePasswordFrameController
                 validateConfirmPassword(newValue);
             }
         });
+
+        // Create the tooltips for the text fields
+        Tooltip newPassTooltip = new Tooltip("Enter a new password.\nMust be at least 8 characters long, have a Capital letter, lower case letter, numbers and a special character.");
+        Tooltip confirmPassTooltip = new Tooltip("Retype the new password.");
+
+        // Add Tooltips to the text boxes that will appear when the user hovers over them
+        newPassField.setTooltip(newPassTooltip);
+        confirmPassField.setTooltip(confirmPassTooltip);
 
         // Add listener for confirmPassField
         confirmPassField.setOnMouseClicked(event -> isConfirmPassFieldTouched = true);
