@@ -4,6 +4,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.BorrowBookFrameController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.BorrowBookFrameController">
     <Region prefHeight="192.0" prefWidth="1677.0" />
     <Label alignment="CENTER" layoutX="560.0" layoutY="158.0" prefHeight="88.0" prefWidth="1678.0" styleClass="title" text="BORROW BOOK" />
     <AnchorPane prefHeight="143.0" prefWidth="1678.0">
@@ -24,6 +25,9 @@
             <font>
                 <Font size="23.0" />
             </font>
+         <tooltip>
+            <Tooltip text="Empty Tooltip" />
+         </tooltip>
         </TextField>
       <Label fx:id="ErrorBookID" layoutX="514.0" layoutY="110.0" prefHeight="18.0" prefWidth="290.0" text="Book ID Error" visible="false" />
       <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="520.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
@@ -42,6 +46,9 @@
             <font>
                 <Font size="23.0" />
             </font>
+         <tooltip>
+            <Tooltip text="Empty Tooltip" />
+         </tooltip>
         </TextField>
       <Label fx:id="ErrorSubscriberID" layoutX="519.0" layoutY="87.0" prefHeight="18.0" prefWidth="290.0" text="Subscriber ID Error" visible="false" />
       <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="520.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
