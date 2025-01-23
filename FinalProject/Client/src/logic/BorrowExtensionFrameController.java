@@ -43,7 +43,7 @@ public class BorrowExtensionFrameController
     {
         Subscriber subscriber = Subscriber.getWatchProfileSubscriber();
         // Set subscriber details on UI
-        subscriberNameLabel.setText(subscriber.getFirstName() + subscriber.getLastName());
+        subscriberNameLabel.setText(subscriber.getFirstName() +" "+ subscriber.getLastName());
         subscriberIdLabel.setText(String.valueOf(subscriber.getID()));
 
         // Set book details on UI

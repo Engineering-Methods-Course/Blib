@@ -6,6 +6,7 @@ import common.ClientServerMessage;
 import common.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -13,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static client.ClientGUIController.loadFrameIntoPane;
@@ -68,45 +70,36 @@ public class WatchProfileFrameController
         borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("expectedReturnDate"));
 
-        // Set up the "extend button" column
-        extendButtonColumn.setCellFactory(new Callback<TableColumn<BorrowedBook, Button>, TableCell<BorrowedBook, Button>>()
-        {
-            @Override
-            public TableCell<BorrowedBook, Button> call(TableColumn<BorrowedBook, Button> param)
+        // Set up the watch profile column with a button
+        extendButtonColumn.setCellFactory(param -> new TableCell<BorrowedBook, Button>() {
+            // The button to watch the profile
+            private final Button ExtendBorrow = new Button("Extend Borrow");
             {
-                return new TableCell<BorrowedBook, Button>()
-                {
-                    private final Button extendButton = new Button("Extend Borrow");
-
-                    {
-                        extendButton.setOnAction((ActionEvent event) -> {
-                            try
-                            {
-                                extendBorrowButtonClicked();
-                            }
-                            catch (Exception e)
-                            {
-                                e.printStackTrace();
-                            }
-                        });
+                // Set the button's action
+                ExtendBorrow.setOnAction(event -> {
+                    BorrowedBook selectedBook = getTableView().getItems().get(getIndex());
+                    // Handle the extent borrow action here
+                    try {
+                        extendBorrowButtonClicked(selectedBook);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
+                });
+            }
 
-                    @Override
-                    protected void updateItem(Button item, boolean empty)
-                    {
-                        super.updateItem(item, empty);
-                        if (empty)
-                        {
-                            setGraphic(null);
-                        }
-                        else
-                        {
-                            setGraphic(extendButton);
-                        }
-                    }
-                };
+            @Override
+            // Update the cell item
+            protected void updateItem(Button item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(ExtendBorrow);
+                    setAlignment(Pos.CENTER); // Center the button
+                }
             }
         });
+
 
         // Sends a message to the server to get the user's borrowed books
         requestBorrowedBooks(Subscriber.getWatchProfileSubscriber().getID());
@@ -164,10 +157,7 @@ public class WatchProfileFrameController
      *
      * @throws Exception If there is an issue with the navigation
      */
-    public void extendBorrowButtonClicked() throws Exception
-    {
-        // Get the selected BorrowedBook from the clicked row
-        BorrowedBook selectedBook = borrowsTable.getSelectionModel().getSelectedItem();
+    public void extendBorrowButtonClicked(BorrowedBook selectedBook) throws IOException {
 
         if (selectedBook != null)
         {
