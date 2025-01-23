@@ -5,11 +5,14 @@ import common.*;
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.*;
 import java.sql.*;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class DBController {
@@ -2219,6 +2222,9 @@ public class DBController {
         return () -> {
             try {
 
+                Date scheduledDate = null;
+                LocalDate newScheduledDate = null;
+
                 /*
                  * This query updates the ready_for_export column in the monthly_report table
                  */
@@ -2254,14 +2260,41 @@ public class DBController {
                 newReportStatement2.setString(2, "borrowTime");
                 newReportStatement2.executeUpdate();
 
+                /*
+                 * This query saves the scheduled date of the task
+                 */
+                String scheduledDateQuery = "SELECT scheduled_date FROM tasks WHERE task_type = 'exportReports' AND executed = 0";
+                PreparedStatement scheduledDateStatement = conn.prepareStatement(scheduledDateQuery);
+                scheduledDateStatement.executeQuery();
+                if(scheduledDateStatement.getResultSet().next()) {
+                    scheduledDate = scheduledDateStatement.getResultSet().getDate("scheduled_date");
+                    newScheduledDate = scheduledDate.toLocalDate().plusDays(1);
+                }
+
+                /*
+                 * Find the first day of the next month
+                 */
+                LocalDate firstDayOfNextMonth = newScheduledDate.plusMonths(1).withDayOfMonth(1);
+
+                /*
+                 * Ticks true in the tasks table to indicate that the task happened
+                 */
+                String tasksQuery = "UPDATE tasks SET executed = 1 WHERE task_type = 'exportReports' AND executed = 0";
+                PreparedStatement tasksStatement = conn.prepareStatement(tasksQuery);
+                tasksStatement.executeUpdate();
+
+                /*
+                 * Adds a new entry of exportStatuses to the tasks table set to the next week
+                 */
+                String newTaskQuery = "INSERT INTO tasks (task_type, scheduled_date) VALUES (?, ?)";
+                PreparedStatement newTaskStatement = conn.prepareStatement(newTaskQuery);
+                newTaskStatement.setString(1, "exportReports");
+                newTaskStatement.setDate(2, Date.valueOf(firstDayOfNextMonth));
+                newTaskStatement.executeUpdate();
+
             } catch (Exception e) {
                 System.out.println("Error: Exporting log of subscribers status" + e);
             }
-
-
-            /*
-             * This method checks if a subscriber account is frozen
-             */
         };
     }
 
@@ -2298,6 +2331,22 @@ public class DBController {
                         }
                     }
                 }
+
+                /*
+                 * Ticks true in the tasks table to indicate that the task happened
+                 */
+                String tasksQuery = "UPDATE tasks SET executed = 1 WHERE task_type = 'unfreeze' AND executed = 0";
+                PreparedStatement tasksStatement = conn.prepareStatement(tasksQuery);
+                tasksStatement.executeUpdate();
+
+                /*
+                 * Adds a new entry of exportStatuses to the tasks table set to the next week
+                 */
+                String newTaskQuery = "INSERT INTO tasks (task_type, scheduled_date) VALUES (?, ?)";
+                PreparedStatement newTaskStatement = conn.prepareStatement(newTaskQuery);
+                newTaskStatement.setString(1, "unfreeze");
+                newTaskStatement.setDate(2, Date.valueOf(LocalDate.now().plusDays(1)));
+                newTaskStatement.executeUpdate();
 
             } catch (SQLException e) {
                 System.out.println("Error: Unfreezing account" + e);
@@ -2370,6 +2419,23 @@ public class DBController {
                      */
                     updateHistory(subscriberId, "notified", "Reminder to return the book with copy ID " + copyId + " by " + formattedExpectedDate);
                 }
+
+                /*
+                 * Ticks true in the tasks table to indicate that the task happened
+                 */
+                String tasksQuery = "UPDATE tasks SET executed = 1 WHERE task_type = 'dueBooks' AND executed = 0";
+                PreparedStatement tasksStatement = conn.prepareStatement(tasksQuery);
+                tasksStatement.executeUpdate();
+
+                /*
+                 * Adds a new entry of exportStatuses to the tasks table set to the next week
+                 */
+                String newTaskQuery = "INSERT INTO tasks (task_type, scheduled_date) VALUES (?, ?)";
+                PreparedStatement newTaskStatement = conn.prepareStatement(newTaskQuery);
+                newTaskStatement.setString(1, "dueBooks");
+                newTaskStatement.setDate(2, Date.valueOf(LocalDate.now().plusDays(1)));
+                newTaskStatement.executeUpdate();
+
             } catch (SQLException e) {
                 System.out.println("Error: Checking due books" + e);
             }
@@ -2412,8 +2478,25 @@ public class DBController {
                     updateBookStatement.setInt(1, serialNumber);
                     updateBookStatement.executeUpdate();
                 }
+
+                /*
+                 * Ticks true in the tasks table to indicate that the task happened
+                 */
+                String tasksQuery = "UPDATE tasks SET executed = 1 WHERE task_type = 'reservedBooks' AND executed = 0";
+                PreparedStatement tasksStatement = conn.prepareStatement(tasksQuery);
+                tasksStatement.executeUpdate();
+
+                /*
+                 * Adds a new entry of reservedBooks to the tasks table set to the next week
+                 */
+                String newTaskQuery = "INSERT INTO tasks (task_type, scheduled_date) VALUES (?, ?)";
+                PreparedStatement newTaskStatement = conn.prepareStatement(newTaskQuery);
+                newTaskStatement.setString(1, "reservedBooks");
+                newTaskStatement.setDate(2, Date.valueOf(LocalDate.now().plusDays(1)));
+                newTaskStatement.executeUpdate();
+
             } catch (SQLException e) {
-                System.out.println("Error: Checking reserved books" + e);
+                System.out.println("Error: Checking reserved books " + e);
             }
         };
     }
@@ -2428,6 +2511,8 @@ public class DBController {
         return () -> {
 
             try {
+
+                LocalDate newScheduledDate = null;
                 Date scheduledDate = null;
                 int frozenCouner = 0;
                 int activeCounter = 0;
@@ -2452,21 +2537,16 @@ public class DBController {
                 addNewEntryToMonthlyReport("subscriberStatuses", new ReportEntry(new java.util.Date(), "frozen", String.valueOf(frozenCouner)));
                 addNewEntryToMonthlyReport("subscriberStatuses", new ReportEntry(new java.util.Date(), "active", String.valueOf(activeCounter)));
 
-
                 /*
-                 * This query saves the scheduled date of the task
+                 * Find the newScheduledDate's next Sunday from today
                  */
-                String scheduledDateQuery = "SELECT scheduled_date FROM tasks WHERE task type = 'exportStatuses' AND exectued = 0";
-                PreparedStatement scheduledDateStatement = conn.prepareStatement(scheduledDateQuery);
-                scheduledDateStatement.executeQuery();
-                if(scheduledDateStatement.getResultSet().next()) {
-                    scheduledDate = scheduledDateStatement.getResultSet().getDate("scheduled_date");
-                }
+                LocalDate today = LocalDate.now();
+                LocalDate closestSunday = today.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
 
                 /*
                  * Ticks true in the tasks table to indicate that the task happened
                  */
-                String tasksQuery = "UPDATE tasks SET exectued = 1 WHERE task_type = 'exportStatuses' AND executed = 0";
+                String tasksQuery = "UPDATE tasks SET executed = 1 WHERE task_type = 'exportStatuses' AND executed = 0";
                 PreparedStatement tasksStatement = conn.prepareStatement(tasksQuery);
                 tasksStatement.executeUpdate();
 
@@ -2476,7 +2556,8 @@ public class DBController {
                 String newTaskQuery = "INSERT INTO tasks (task_type, scheduled_date) VALUES (?, ?)";
                 PreparedStatement newTaskStatement = conn.prepareStatement(newTaskQuery);
                 newTaskStatement.setString(1, "exportStatuses");
-                newTaskStatement.setDate(2, Date.valueOf(scheduledDate.toLocalDate().plusWeeks(1)));
+                newTaskStatement.setDate(2, Date.valueOf(closestSunday));
+                newTaskStatement.executeUpdate();
 
 
             } catch (Exception e) {
