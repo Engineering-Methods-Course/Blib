@@ -6,9 +6,12 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="allSubscribersFrame" maxHeight="1087.0" maxWidth="1677.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ViewAllSubscribersFrameController">
+<AnchorPane fx:id="allSubscribersFrame" maxHeight="1087.0" maxWidth="1677.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ViewAllSubscribersFrameController">
     <!-- Title for All Subscribers -->
     <Label alignment="CENTER" layoutX="535.0" layoutY="14.0" prefHeight="112.0" prefWidth="573.0" styleClass="title" text="ALL SUBSCRIBERS" />
       <Label layoutX="39.0" layoutY="142.0" text="Search by ID:" />
@@ -33,4 +36,16 @@
             </TableColumn>
         </columns>
     </TableView>
+   <Button fx:id="btnRefresh" layoutX="504.0" layoutY="134.0" mnemonicParsing="false" onAction="#clickRefreshButton" prefHeight="48.0" prefWidth="76.0">
+      <graphic>
+         <ImageView fitHeight="22.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../resources/refresh.png" />
+            </image>
+         </ImageView>
+      </graphic>
+      <font>
+         <Font size="36.0" />
+      </font>
+   </Button>
 </AnchorPane>

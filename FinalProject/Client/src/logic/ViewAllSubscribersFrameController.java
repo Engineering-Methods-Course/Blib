@@ -5,6 +5,7 @@ import common.ClientServerMessage;
 import common.Subscriber;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static client.ClientGUIController.loadFrameIntoPane;
+import static client.ClientGUIController.showAlert;
 
 public class ViewAllSubscribersFrameController
 {
@@ -42,6 +44,8 @@ public class ViewAllSubscribersFrameController
     public TextField filterTextField;
     @FXML
     public AnchorPane allSubscribersFrame;
+    @FXML
+    public Button btnRefresh;
 
     // other class attributes
     private List<Subscriber> allSubscribers;
@@ -141,7 +145,7 @@ public class ViewAllSubscribersFrameController
             // Handle the case where the search ID is not a valid integer
             catch (NumberFormatException e)
             {
-                System.out.println("Invalid ID format: " + searchId);
+                showAlert(Alert.AlertType.ERROR, "Invalid ID", "Invalid ID format: ID must be only numbers.");
             }
         }
         else
@@ -169,6 +173,24 @@ public class ViewAllSubscribersFrameController
         catch (Exception e)
         {
             System.out.println("Error navigating to WatchProfileFrame.fxml\n" + e);
+        }
+    }
+
+    /**
+     * Handles the refresh button click event.
+     * This method will reset the filter text field to empty and set the table's data back to the full list of subscribers.
+     *
+     * @param actionEvent The ActionEvent object.
+     */
+    public void clickRefreshButton(ActionEvent actionEvent) {
+        // Reset the filter text field to empty
+        filterTextField.clear();
+
+        // Set the table's data back to the full list of subscribers
+        if (allSubscribers != null) {
+            subscribersTable.setItems(FXCollections.observableArrayList(allSubscribers));
+        } else {
+            System.out.println("No subscribers to display.");
         }
     }
 }
