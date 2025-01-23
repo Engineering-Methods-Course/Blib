@@ -210,6 +210,5 @@
     -fx-border-width: 2px; /* Border width */
     -fx-border-radius: 5px; /* Border radius */
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0); /* Drop shadow */
-    -fx-opacity: 0.8; /* Lower opacity */
     -fx-font-weight: bold; /* Bold text */
 }

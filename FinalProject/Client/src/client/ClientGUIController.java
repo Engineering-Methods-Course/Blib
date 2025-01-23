@@ -18,7 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import logic.TooltipChanger;
+import logic.CustomTooltip;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -218,7 +218,7 @@ public class ClientGUIController extends Application
     public void start(Stage primaryStage) throws Exception
     {
         // hacks the tooltip to change the default duration
-        if(TooltipChanger.setTooltipTimers(500, 5000, 200))
+        if(CustomTooltip.setTooltipTimers(350, 5000, 500))
         {
             System.out.println("Tooltip duration changed successfully");
         }
