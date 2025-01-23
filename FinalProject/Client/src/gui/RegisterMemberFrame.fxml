@@ -6,142 +6,75 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.RegisterMemberFrameController">
-    <!-- Title Section centered -->
-    <HBox alignment="CENTER" prefHeight="167.0" prefWidth="1280.0">
-      <children>
-          <Label alignment="CENTER" layoutX="560.0" layoutY="158.0" styleClass="title" text="REGISTER MEMBER" />
-      </children>
-    </HBox>
 
-     <!-- Username Row -->
-     <HBox alignment="CENTER" spacing="10.0">
-      <VBox prefHeight="30.0" prefWidth="580.0">
-         <children>
-               <Label alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="331.0" styleClass="label" text="Username:" textAlignment="CENTER">
-               <graphic>
-                  <ImageView fitHeight="40.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../resources/account.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Label>
-               <TextField fx:id="txtUsername" prefHeight="30.0" prefWidth="580.0" />
-         </children>
-      </VBox>
-     </HBox>
-
-    <!-- Each Label + TextField + Error in its own row -->
-    <VBox alignment="CENTER" prefWidth="1280.0" spacing="20.0">
-        <HBox alignment="CENTER">
-            <Label fx:id="lblUserNameError" prefHeight="23.0" prefWidth="500.0" text="UserName Error" visible="false">
-            <HBox.margin>
-               <Insets left="275.0" />
-            </HBox.margin></Label>
-        </HBox>
-
-        <!-- Name Row -->
-        <HBox alignment="CENTER" spacing="10.0">
-         <VBox>
-            <children>
-                  <Label alignment="CENTER" prefHeight="20.0" prefWidth="290.0" styleClass="label" text="Name:">
-                  <graphic>
-                     <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../resources/name.png" />
-                        </image>
-                     </ImageView>
-                  </graphic>
-               </Label>
-                  <TextField fx:id="txtFirstName" prefHeight="30.0" prefWidth="250.0" />
-            </children>
-         </VBox>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1084.0" prefWidth="1674.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.RegisterMemberFrameController">
+   <children>
+         <Label fx:id="lblEmailError" alignment="CENTER" layoutX="554.0" layoutY="661.0" prefHeight="29.0" prefWidth="580.0" text="Email Error" visible="false" />
+       <Label alignment="CENTER" layoutX="551.0" layoutY="77.0" styleClass="title" text="REGISTER MEMBER" />
+         <TextField fx:id="txtUsername" layoutX="510.0" layoutY="310.0" prefHeight="30.0" prefWidth="660.0" />
+         <Label fx:id="lblUserNameError" alignment="CENTER" layoutX="554.0" layoutY="271.0" prefHeight="23.0" prefWidth="580.0" text="UserName Error" visible="false" />
+         <Label alignment="CENTER" layoutX="569.0" layoutY="360.0" prefHeight="40.0" prefWidth="189.0" styleClass="label" text="First Name:">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/name.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
+         <TextField fx:id="txtFirstName" layoutX="510.0" layoutY="440.0" prefHeight="30.0" prefWidth="300.0" />
+         <Label alignment="CENTER" layoutX="948.0" layoutY="361.0" prefHeight="40.0" prefWidth="174.0" styleClass="label" text="Last Name:">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/name.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
+         <TextField fx:id="txtLastName" layoutX="890.0" layoutY="440.0" prefHeight="30.0" prefWidth="276.0" />
+         <Label fx:id="lblNameError" alignment="CENTER" layoutX="492.0" layoutY="400.0" prefHeight="29.0" prefWidth="330.0" text="First Name Error" visible="false">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </Label>
+         <Label fx:id="lblLastNameError" alignment="CENTER" layoutX="860.0" layoutY="400.0" prefHeight="29.0" prefWidth="330.0" text="Last Name Error" visible="false" />
+         <Label alignment="CENTER" layoutX="782.0" layoutY="490.0" prefHeight="40.0" prefWidth="136.0" styleClass="label" text="Phone:">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/phone.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
+         <TextField fx:id="txtPhone" layoutX="510.0" layoutY="570.0" prefHeight="30.0" prefWidth="660.0" />
+         <Label fx:id="lblPhoneError" alignment="CENTER" layoutX="554.0" layoutY="531.0" prefHeight="23.0" prefWidth="580.0" text="Phone Error" visible="false" />
+         <Label alignment="CENTER_RIGHT" layoutX="784.0" layoutY="620.0" prefHeight="46.0" prefWidth="126.0" styleClass="label" text="Email:">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/email.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
+         <TextField fx:id="txtEmail" layoutX="510.0" layoutY="700.0" prefHeight="30.0" prefWidth="660.0" />
+         <Button layoutX="745.0" layoutY="811.0" onAction="#clickRegisterButton" prefHeight="50.0" prefWidth="200.0" text="Register" />
+         <Label alignment="CENTER_RIGHT" layoutX="760.0" layoutY="231.0" prefHeight="40.0" prefWidth="164.0" styleClass="label" text="Username:" textAlignment="CENTER">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/account.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
    
-           <!-- Last Name Row -->
-           <HBox alignment="CENTER" spacing="10.0">
-            <VBox>
-               <children>
-                     <Label alignment="CENTER" prefHeight="20.0" prefWidth="280.0" styleClass="label" text="Last Name:">
-                     <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/name.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Label>
-                     <TextField fx:id="txtLastName" prefHeight="30.0" prefWidth="240.0" />
-               </children>
-            </VBox>
-           </HBox>
-        </HBox>
-        <HBox alignment="CENTER">
-         <children>
-               <Label fx:id="lblNameError" prefHeight="23.0" prefWidth="250.0" text="Name Error" visible="false" />
-               <Label fx:id="lblLastNameError" prefHeight="23.0" prefWidth="250.0" text="Last Name Error" visible="false" />
-         </children>
-        </HBox>
-
-        <!-- Phone Row -->
-        <HBox alignment="CENTER" spacing="10.0">
-         <VBox>
-            <children>
-                  <Label alignment="CENTER" prefWidth="580.0" styleClass="label" text="Phone:">
-                  <graphic>
-                     <ImageView fitHeight="40.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../resources/phone.png" />
-                        </image>
-                     </ImageView>
-                  </graphic>
-               </Label>
-                  <TextField fx:id="txtPhone" prefHeight="30.0" prefWidth="200.0" />
-            </children>
-         </VBox>
-        </HBox>
-        <HBox alignment="CENTER">
-            <Label fx:id="lblPhoneError" prefHeight="23.0" prefWidth="500.0" text="Phone Error" visible="false">
-            <HBox.margin>
-               <Insets left="275.0" />
-            </HBox.margin></Label>
-        </HBox>
-
-        <!-- Email Row -->
-        <HBox alignment="CENTER" spacing="10.0">
-         <VBox prefWidth="580.0">
-            <children>
-                  <Label alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="331.0" styleClass="label" text="Email:">
-                  <graphic>
-                     <ImageView fitHeight="40.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../resources/email.png" />
-                        </image>
-                     </ImageView>
-                  </graphic>
-               </Label>
-                  <TextField fx:id="txtEmail" prefHeight="30.0" prefWidth="200.0" />
-            </children>
-         </VBox>
-        </HBox>
-        <HBox alignment="CENTER">
-            <Label fx:id="lblEmailError" prefHeight="23.0" prefWidth="500.0" text="Email Error" visible="false">
-            <HBox.margin>
-               <Insets left="275.0" />
-            </HBox.margin></Label>
-        </HBox>
-
-        <!-- Register Button Row -->
-        <HBox alignment="CENTER" spacing="10.0">
-            <Button onAction="#clickRegisterButton" prefHeight="50.0" prefWidth="200.0" text="Register" />
-        </HBox>
-
-    </VBox>
-
-    <!-- Spacer to push the "Back" button to the bottom -->
-    <Region VBox.vgrow="ALWAYS" />
-</VBox>
+          <!-- Spacer to push the "Back" button to the bottom -->
+       <Region />
+   </children>
+</AnchorPane>
