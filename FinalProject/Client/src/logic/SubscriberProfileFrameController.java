@@ -7,13 +7,17 @@ import common.Subscriber;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import static client.ClientGUIController.loadFrameIntoPane;
 import static client.ClientGUIController.showAlert;
 
 public class SubscriberProfileFrameController
@@ -57,46 +61,29 @@ public class SubscriberProfileFrameController
         borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("expectedReturnDate"));
 
-        // Set up the "extend button" column
-        extendButtonColumn.setCellFactory(new Callback<TableColumn<BorrowedBook, Button>, TableCell<BorrowedBook, Button>>()
-        {
-            @Override
-            // This method creates a button in the table cell
-            public TableCell<BorrowedBook, Button> call(TableColumn<BorrowedBook, Button> param)
+        // Set up the watch profile column with a button
+        extendButtonColumn.setCellFactory(param -> new TableCell<BorrowedBook, Button>() {
+            // The button to watch the profile
+            private final Button ExtendBorrow = new Button("Extend Borrow");
             {
-                return new TableCell<BorrowedBook, Button>()
-                {
-                    // The button to extend the borrow
-                    private final Button extendButton = new Button("Extend Borrow");
-                    {
-                        // Set the button's action
-                        extendButton.setOnAction((ActionEvent event) -> {
-                            try
-                            {
-                                extendBorrowButtonClicked();
-                            }
-                            catch (Exception e)
-                            {
-                                e.printStackTrace();
-                            }
-                        });
-                    }
+                // Set the button's action
+                ExtendBorrow.setOnAction(event -> {
+                    BorrowedBook selectedBook = getTableView().getItems().get(getIndex());
+                    // Handle the extent borrow action here
+                    extendBorrowButtonClicked(selectedBook);
+                });
+            }
 
-                    @Override
-                    // Update the cell item
-                    protected void updateItem(Button item, boolean empty)
-                    {
-                        super.updateItem(item, empty);
-                        if (empty)
-                        {
-                            setGraphic(null);
-                        }
-                        else
-                        {
-                            setGraphic(extendButton);
-                        }
-                    }
-                };
+            @Override
+            // Update the cell item
+            protected void updateItem(Button item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(ExtendBorrow);
+                    setAlignment(Pos.CENTER); // Center the button
+                }
             }
         });
 
@@ -129,11 +116,8 @@ public class SubscriberProfileFrameController
     /**
      * This method handles the extendBorrowButton click event to send extension request
      */
-    public void extendBorrowButtonClicked()
+    public void extendBorrowButtonClicked(BorrowedBook selectedBook)
     {
-        // Get the selected borrowed book from the table
-        BorrowedBook selectedBook = borrowsTable.getSelectionModel().getSelectedItem();
-
         // Check if a book is selected
         if (selectedBook == null)
         {
