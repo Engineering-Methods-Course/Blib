@@ -33,11 +33,8 @@ public class BorrowBookFrameController
      */
     public void initialize()
     {
-
-
         // Set the default return date to 14 days from today
         returnDatePicker.setValue(LocalDate.now().plusDays(14));
-
 
         // Prevent the user from selecting a return date earlier than or equal to borrow date
         returnDatePicker.setDayCellFactory(picker -> new DateCell()
@@ -54,6 +51,16 @@ public class BorrowBookFrameController
         // Add listeners to validate subscriberID and bookID fields as the user types
         subscriberIDTextField.textProperty().addListener((observable, oldValue, newValue) -> validateSubscriberID(newValue));
         bookIDTextField.textProperty().addListener((observable, oldValue, newValue) -> validateBookID(newValue));
+
+        // Creates Tooltips to the text boxes and date picker that will appear when the user hovers over them
+        Tooltip subscriberIDTooltip = new Tooltip("The Subscriber's unique ID number.\nshould be a 6 digit number (e.g., 100001).");
+        Tooltip bookIDTooltip = new Tooltip("The Book's unique copy number.\nshould appear on the book's barcode.");
+        Tooltip returnDateTooltip = new Tooltip("The date the book should be returned.\nUsually set for 2 weeks.");
+
+        // Adds the tooltips to the text boxes and date picker
+        subscriberIDTextField.setTooltip(subscriberIDTooltip);
+        bookIDTextField.setTooltip(bookIDTooltip);
+        returnDatePicker.setTooltip(returnDateTooltip);
     }
 
     /**

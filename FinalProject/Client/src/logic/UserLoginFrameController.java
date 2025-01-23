@@ -53,6 +53,14 @@ public class UserLoginFrameController
             System.out.println("Error initializing login screen: " + e.getMessage());
         }
 
+        // Create the tooltips for the text fields
+        Tooltip usernameTooltip = new Tooltip("Enter the username you got when registering.");
+        Tooltip passwordTooltip = new Tooltip("Enter the password you got when registering.\nIf it wasn't changed it's \"Aa123456\"");
+
+        // Add Tooltips to the text boxes that will appear when the user hovers over them
+        txtUsername.setTooltip(usernameTooltip);
+        txtPassword.setTooltip(passwordTooltip);
+
         // Add listeners to the fields for error handling
         // Check if the username field is empty with a listener
         txtUsername.textProperty().addListener((observable, oldValue, newValue) -> {

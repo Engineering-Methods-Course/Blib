@@ -4,7 +4,6 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -25,9 +24,6 @@
             <font>
                 <Font size="23.0" />
             </font>
-         <tooltip>
-            <Tooltip text="Empty Tooltip" />
-         </tooltip>
         </TextField>
       <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="520.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -42,7 +38,7 @@
             <Font size="30.0" />
          </font>
       </Label>
-        <TextField fx:id="subscriberIDTextField" layoutX="814.0" layoutY="46.0" prefHeight="50.0" prefWidth="378.0"  AnchorPane.leftAnchor="814.0" AnchorPane.rightAnchor="485.0">
+        <TextField fx:id="subscriberIDTextField" layoutX="814.0" layoutY="46.0" prefHeight="50.0" prefWidth="378.0" AnchorPane.leftAnchor="814.0" AnchorPane.rightAnchor="485.0">
             <font>
                 <Font size="23.0" />
             </font>
