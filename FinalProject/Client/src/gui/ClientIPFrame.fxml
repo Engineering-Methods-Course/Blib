@@ -5,12 +5,12 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ClientIPFrameController">
-      <Label layoutX="481.0" layoutY="465.0" prefHeight="17.0" prefWidth="72.0" text="Port:" />
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ClientIPFrameController">
+      <Label layoutX="435.0" layoutY="465.0" prefHeight="18.0" prefWidth="118.0" text="Port:" AnchorPane.leftAnchor="439.0" />
       <TextField fx:id="txtPort" layoutX="599.0" layoutY="461.0" prefWidth="200.0" />
      <Label alignment="CENTER" layoutY="185.0" prefHeight="114.0" prefWidth="1280.0" styleClass="title" text="LOGIN SERVER" />
-      <Label layoutX="481.0" layoutY="404.0" prefWidth="100.0" text="IP Address:" />
+      <Label layoutX="439.0" layoutY="404.0" prefHeight="18.0" prefWidth="142.0" text="IP Address:" AnchorPane.leftAnchor="439.0" />
       <TextField fx:id="txtIP" layoutX="598.0" layoutY="400.0" prefWidth="200.0" />
       <Button layoutX="590.0" layoutY="546.0" onAction="#clickEnterButton" prefWidth="100.0" text="Enter" />
-      <Label alignment="CENTER" layoutX="463.0" layoutY="325.0" prefHeight="32.0" prefWidth="355.0" text="Enter Server IP Address And Port" />
+      <Label alignment="CENTER" layoutX="391.0" layoutY="325.0" prefHeight="32.0" prefWidth="498.0" text="Enter Server IP Address And Port" />
 </AnchorPane>

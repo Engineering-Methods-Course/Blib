@@ -5,14 +5,14 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ViewMessagesFrameController">
-    <Label alignment="CENTER" layoutX="-3.0" layoutY="13.0" prefHeight="114.0" prefWidth="1280.0" styleClass="title" text="VIEW MESSAGES" />
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ViewMessagesFrameController">
+    <Label alignment="CENTER" layoutX="-3.0" layoutY="13.0" prefHeight="114.0" prefWidth="1677.0" styleClass="title" text="VIEW MESSAGES" />
 
     <!-- TableView for messages -->
-    <TableView fx:id="messagesTableView" layoutX="90.0" layoutY="142.0" prefHeight="500.0" prefWidth="1100.0">
+    <TableView fx:id="messagesTableView" layoutX="32.0" layoutY="204.0" prefHeight="675.0" prefWidth="1611.0">
         <columns>
-            <TableColumn fx:id="dateColumn" prefWidth="162.0" text="Date" />
-            <TableColumn fx:id="contentColumn" prefWidth="938.0" text="Content" />
+            <TableColumn fx:id="dateColumn" maxWidth="251.0" minWidth="251.0" prefWidth="251.0" text="Date" />
+            <TableColumn fx:id="contentColumn" maxWidth="1360.0" minWidth="1360.0" prefWidth="1360.0" text="Content" />
         </columns>
     </TableView>
 
