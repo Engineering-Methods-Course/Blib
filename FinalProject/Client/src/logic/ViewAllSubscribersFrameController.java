@@ -6,6 +6,7 @@ import common.Subscriber;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -59,8 +60,7 @@ public class ViewAllSubscribersFrameController
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("statusIsFrozen"));
 
         // Set up the watch profile column with a button
-        watchProfileColumn.setCellFactory(param -> new TableCell<Subscriber, Void>()
-        {
+        watchProfileColumn.setCellFactory(param -> new TableCell<Subscriber, Void>() {
             // The button to watch the profile
             private final Button watchButton = new Button("Watch Profile");
             {
@@ -74,16 +74,13 @@ public class ViewAllSubscribersFrameController
 
             @Override
             // Update the cell item
-            protected void updateItem(Void item, boolean empty)
-            {
+            protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty)
-                {
+                if (empty) {
                     setGraphic(null);
-                }
-                else
-                {
+                } else {
                     setGraphic(watchButton);
+                    setAlignment(Pos.CENTER); // Center the button
                 }
             }
         });

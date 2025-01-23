@@ -409,6 +409,9 @@ public class ClientController extends AbstractClient
                         {
                             System.out.println("Could not get logs");
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not get logs"));
+                            ViewReportsFrameController controller = loader.getController();
+                            controller.BorrowChart.setVisible(false);
+                            controller.subscriberStatusesChart.setVisible(false);
                         }
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
@@ -418,6 +421,7 @@ public class ClientController extends AbstractClient
                             ViewReportsFrameController controller = loader.getController();
                             //pass the reports to the controller
                             controller.generateBorrowTimeReport(reports);
+                            controller.switchChartVisibility();
                         }
                         break;
                     // Handles the Subscriber Status report response
@@ -427,6 +431,9 @@ public class ClientController extends AbstractClient
                         {
                             System.out.println("Could not get logs");
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not get logs"));
+                            ViewReportsFrameController controller = loader.getController();
+                            controller.BorrowChart.setVisible(false);
+                            controller.subscriberStatusesChart.setVisible(false);
                         }
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
@@ -436,6 +443,7 @@ public class ClientController extends AbstractClient
                             ViewReportsFrameController controller = loader.getController();
                             //pass the logs to the controller
                             controller.generateSubscriberStatusReport(logs);
+                            controller.switchChartVisibility();
                         }
                         break;
                     // View messages response

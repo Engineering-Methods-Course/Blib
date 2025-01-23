@@ -6,7 +6,7 @@
 /* Label Styles */
 .label {
     -fx-text-fill: black; /* Black text */
-    -fx-font-size: 18px;
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-font-family: "Segoe UI", sans-serif;
 }
@@ -16,7 +16,7 @@
     width: 50%;
     -fx-background-color: #B85042; /* Solid button color */
     -fx-text-fill: white;
-    -fx-font-size: 18px;
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-font-family: "Segoe UI", sans-serif;
     -fx-padding: 10px 20px;
@@ -51,7 +51,7 @@
 /* Title Styles */
 .title {
     -fx-text-fill: #333333; /* Dark gray text */
-    -fx-font-size: 40px; /* Large font size */
+    -fx-font-size: 60px; /* Large font size */
     -fx-font-weight: bold; /* Bold text */
     -fx-font-family: "Segoe UI", sans-serif; /* Font family */
     -fx-alignment: center; /* Center alignment */
@@ -179,4 +179,20 @@
 
 .scroll-bar .increment-arrow, .scroll-bar .decrement-arrow {
     -fx-background-color: white; /* Arrow color */
+}
+/* RadioButton Styles */
+.radio-button {
+    -fx-font-weight: bold; /* Bold text */
+    -fx-font-family: "Segoe UI", sans-serif; /* Font family */
+    -fx-font-size: 24px; /* Font size */
+    -fx-text-fill: black; /* Text color */
+}
+/* AnchorPane report Specific Styles */
+.anchor-pane-report {
+    -fx-background-color: #c0c1ac; /* Solid background color */
+    -fx-padding: 10px;
+    -fx-border-color: black; /* Border color */
+    -fx-border-width: 2px; /* Border width */
+    -fx-border-radius: 10px; /* Border radius */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 5); /* Subtle shadow */
 }

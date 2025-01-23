@@ -52,7 +52,7 @@ public class SearchSubscriberFrameController
         else if (!newValue.matches("\\d+"))
         {
             // Call showErrorListenField to display the error
-            showErrorListenField(idTextField, lblSubscriberIDError, "Invalid ID. Please enter a numeric value.");
+            showErrorListenField(idTextField, lblSubscriberIDError, "Subscriber ID must contain only numbers.");
         }
         else
         {

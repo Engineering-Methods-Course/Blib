@@ -53,6 +53,8 @@ public class ViewReportsFrameController
         borrowReportRadio.setToggleGroup(reportToggleGroup);
         subscriberStatusesReportRadio.setToggleGroup(reportToggleGroup);
 
+        borrowReportRadio.setSelected(true);
+
         // Set the visibility of both charts to false at the start
         BorrowChart.setVisible(false);
         subscriberStatusesChart.setVisible(false);
@@ -87,7 +89,7 @@ public class ViewReportsFrameController
     /**
      * changes the chart's visibility based on the selected radio button
      */
-    private void switchChartVisibility()
+    public void switchChartVisibility()
     {
         // Show the appropriate chart based on the selected radio button
         if (borrowReportRadio.isSelected())
@@ -151,7 +153,6 @@ public class ViewReportsFrameController
         ClientGUIController.chat.sendToServer(message);
 
         // Show the appropriate chart based on the selected radio button
-        switchChartVisibility();
     }
 
     /**

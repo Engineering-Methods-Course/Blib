@@ -166,7 +166,6 @@ public class ClientGUIController extends Application
         // Create a new message to send to the server
         ClientServerMessage logoutMessage = new ClientServerMessage(102, 0);
         ClientServerMessage exitMessage = new ClientServerMessage(104, null);
-
         // Check if a subscriber or librarian is logged in and set the message accordingly
         if (Subscriber.getLocalSubscriber() != null)
         {
@@ -180,6 +179,7 @@ public class ClientGUIController extends Application
         // Send the message to the server and exit the program
         ClientGUIController.chat.sendToServer(logoutMessage);
         ClientGUIController.chat.sendToServer(exitMessage);
+        System.exit(0);
     }
 
     /**

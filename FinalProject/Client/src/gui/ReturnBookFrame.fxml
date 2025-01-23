@@ -10,27 +10,29 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ReturnBookFrameController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ReturnBookFrameController">
     <!-- Spacer to center content vertically -->
     <AnchorPane prefHeight="495.0" prefWidth="1677.0" VBox.vgrow="ALWAYS">
-        <Label alignment="CENTER" layoutX="-200.0" layoutY="-2.0" prefHeight="224.0" prefWidth="1677.0" styleClass="title" text="RETURN BOOK" />
+        <Label alignment="CENTER" layoutX="375.0" layoutY="78.0" prefHeight="126.0" prefWidth="503.0" styleClass="title" text="RETURN BOOK" />
 
         <!-- TextField for entering book ID -->
+        <TextField fx:id="idTextField" layoutX="623.0" layoutY="281.0" prefHeight="33.0" prefWidth="280.0" />
         <TextField fx:id="idTextField" alignment="CENTER" layoutX="503.0" layoutY="209.0" prefHeight="33.0" prefWidth="280.0">
          <tooltip>
             <Tooltip text="Empty Tooltip" />
          </tooltip></TextField>
 
         <!-- Error label to show when the input is invalid -->
-        <Label fx:id="errorLabel" alignment="CENTER" layoutX="394.0" layoutY="243.0" prefHeight="27.0" prefWidth="498.0" text="Error Message " textFill="red" visible="false" />
+        <Label fx:id="errorLabel" layoutX="353.0" layoutY="334.0" prefHeight="29.0" prefWidth="474.0" text="Error Message " textFill="red" visible="false" />
 
         <!-- Return Button -->
-        <Button fx:id="btnReturn" layoutX="543.0" layoutY="309.0" onAction="#returnButtonClicked" prefWidth="200.0" style="-fx-font-size: 18px;" text="Return" />
-      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="442.0" layoutY="202.0" pickOnBounds="true" preserveRatio="true">
+        <Button fx:id="btnReturn" layoutX="543.0" layoutY="429.0" onAction="#returnButtonClicked" prefWidth="200.0" style="-fx-font-size: 18px;" text="Return" />
+      <ImageView fitHeight="50.0" fitWidth="51.0" layoutX="353.0" layoutY="274.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/return%20book.png" />
          </image>
       </ImageView>
+      <Label layoutX="421.0" layoutY="287.0" text="Book Copy ID:" />
     </AnchorPane>
    <padding>
       <Insets left="200.0" top="150.0" />

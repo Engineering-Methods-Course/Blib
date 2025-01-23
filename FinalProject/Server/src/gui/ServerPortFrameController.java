@@ -70,6 +70,11 @@ public class ServerPortFrameController {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/gui/ServerPortFrame.fxml")));
 
         Scene scene = new Scene(root);
+
+        // Set default values for the text fields
+        portxt = (TextField) root.lookup("#portxt");
+        portxt.setText("5555");
+
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/gui/Server.css")).toExternalForm());
         primaryStage.setTitle("Set Port Number");
         primaryStage.setScene(scene);

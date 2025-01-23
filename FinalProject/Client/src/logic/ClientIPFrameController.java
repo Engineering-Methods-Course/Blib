@@ -34,6 +34,12 @@ public class ClientIPFrameController
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/gui/ClientIPFrame.fxml")));
         Parent root = loader.load();
 
+        // Set default values for the text fields
+        txtIP = (TextField) root.lookup("#txtIP");
+        txtPort = (TextField) root.lookup("#txtPort");
+        txtIP.setText("localhost");
+        txtPort.setText("5555");
+
         // Set the scene
         Scene scene = new Scene(root);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/gui/MainFrame.css")).toExternalForm());

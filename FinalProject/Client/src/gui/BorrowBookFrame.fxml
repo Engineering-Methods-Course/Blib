@@ -12,16 +12,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.BorrowBookFrameController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.BorrowBookFrameController">
     <Region prefHeight="192.0" prefWidth="1677.0" />
     <Label alignment="CENTER" layoutX="560.0" layoutY="158.0" prefHeight="88.0" prefWidth="1678.0" styleClass="title" text="BORROW BOOK" />
-    <AnchorPane prefHeight="143.0" prefWidth="1678.0">
-      <Label layoutX="573.0" layoutY="69.0" prefHeight="46.0" prefWidth="242.0" styleClass="label" text="Book Copy ID:">
+    <AnchorPane prefHeight="157.0" prefWidth="1677.0">
+      <Label layoutX="573.0" layoutY="69.0" prefHeight="46.0" prefWidth="170.0" styleClass="label" text="Book Copy ID:">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
-        <TextField fx:id="bookIDTextField" layoutX="815.0" layoutY="69.0" prefHeight="50.0" prefWidth="377.0" promptText="Copy Book ID" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="814.0" AnchorPane.rightAnchor="485.0" AnchorPane.topAnchor="63.0">
+        <TextField fx:id="bookIDTextField" layoutX="815.0" layoutY="69.0" prefHeight="50.0" prefWidth="378.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="814.0" AnchorPane.rightAnchor="485.0" AnchorPane.topAnchor="63.0">
             <font>
                 <Font size="23.0" />
             </font>
@@ -29,28 +29,25 @@
             <Tooltip text="Empty Tooltip" />
          </tooltip>
         </TextField>
-      <Label fx:id="ErrorBookID" layoutX="514.0" layoutY="110.0" prefHeight="18.0" prefWidth="290.0" text="Book ID Error" visible="false" />
       <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="520.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/icons8-book-50.png" />
          </image>
       </ImageView>
+      <Label fx:id="ErrorBookID" layoutX="520.0" layoutY="130.0" prefHeight="29.0" prefWidth="672.0" text="Book ID Error" visible="false" />
     </AnchorPane>
     <AnchorPane prefHeight="143.0" prefWidth="1678.0">
-      <Label layoutX="572.0" layoutY="46.0" prefHeight="46.0" prefWidth="242.0" styleClass="label" text="Subscriber ID:">
+      <Label layoutX="572.0" layoutY="46.0" prefHeight="46.0" prefWidth="170.0" styleClass="label" text="Subscriber ID:">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
-        <TextField fx:id="subscriberIDTextField" layoutX="814.0" layoutY="46.0" prefHeight="50.0" prefWidth="378.0" promptText="Subscriber ID" AnchorPane.leftAnchor="814.0" AnchorPane.rightAnchor="485.0">
+        <TextField fx:id="subscriberIDTextField" layoutX="814.0" layoutY="46.0" prefHeight="50.0" prefWidth="378.0"  AnchorPane.leftAnchor="814.0" AnchorPane.rightAnchor="485.0">
             <font>
                 <Font size="23.0" />
             </font>
-         <tooltip>
-            <Tooltip text="Empty Tooltip" />
-         </tooltip>
         </TextField>
-      <Label fx:id="ErrorSubscriberID" layoutX="519.0" layoutY="87.0" prefHeight="18.0" prefWidth="290.0" text="Subscriber ID Error" visible="false" />
+      <Label fx:id="ErrorSubscriberID" layoutX="520.0" layoutY="107.0" prefHeight="29.0" prefWidth="672.0" text="Subscriber ID Error" visible="false" />
       <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="520.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/account.png" />
@@ -58,7 +55,7 @@
       </ImageView>
     </AnchorPane>
     <AnchorPane prefHeight="143.0" prefWidth="1678.0">
-      <Label layoutX="570.0" layoutY="43.0" styleClass="label" text="Return Date:">
+      <Label layoutX="572.0" layoutY="51.0" styleClass="label" text="Return Date:">
          <font>
             <Font size="30.0" />
          </font>

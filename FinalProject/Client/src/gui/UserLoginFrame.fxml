@@ -10,44 +10,38 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.UserLoginFrameController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" spacing="20.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.UserLoginFrameController">
    <AnchorPane prefHeight="697.0" prefWidth="1677.0">
       <children>
           <!-- Top label (Login) -->
-          <Label alignment="CENTER" layoutX="727.0" layoutY="4.0" prefHeight="87.0" prefWidth="199.0" styleClass="title" text="LOGIN">
+          <Label alignment="CENTER" layoutX="708.0" layoutY="4.0" prefHeight="112.0" prefWidth="235.0" styleClass="title" text="LOGIN">
             <font>
                <Font size="10.0" />
             </font>
          </Label>
-            <Label alignment="CENTER" layoutX="584.0" layoutY="210.0" style="-fx-font-size: 18px;" text="Username">
-            <graphic>
-               <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../resources/account.png" />
-                  </image>
-               </ImageView>
-            </graphic>
-         </Label>
-            <TextField fx:id="txtUsername" layoutX="752.0" layoutY="212.0" prefHeight="36.0" prefWidth="220.0" promptText="Username" />
-            <Label fx:id="lblUserNameError" layoutX="1010.0" layoutY="222.0" text="Username Error" visible="false" />
-            <Label alignment="CENTER" layoutX="586.0" layoutY="293.0" style="-fx-font-size: 18px;" text="Password">
-            <graphic>
-               <ImageView fitHeight="40.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../resources/password.png" />
-                  </image>
-               </ImageView>
-            </graphic>
-         </Label>
-            <PasswordField fx:id="txtPassword" layoutX="751.0" layoutY="295.0" prefHeight="36.0" prefWidth="222.0" promptText="Password" />
-            <Label fx:id="lblPasswordError" layoutX="1012.0" layoutY="305.0" text="Password Error" visible="false" />
+            <Label alignment="CENTER" layoutX="594.0" layoutY="219.0" styleClass="label" text="Username" />
+            <TextField fx:id="txtUsername" layoutX="752.0" layoutY="212.0" prefHeight="36.0" prefWidth="220.0" />
+            <Label fx:id="lblUserNameError" layoutX="530.0" layoutY="267.0" prefHeight="29.0" prefWidth="384.0" text="Username Error" visible="false" />
+            <Label alignment="CENTER" layoutX="594.0" layoutY="325.0" styleClass="label" text="Password" />
+            <PasswordField fx:id="txtPassword" layoutX="751.0" layoutY="318.0" prefHeight="36.0" prefWidth="222.0" />
+            <Label fx:id="lblPasswordError" layoutX="530.0" layoutY="377.0" prefHeight="29.0" prefWidth="384.0" text="Password Error" visible="false" />
       
            <!-- Login Button -->
-           <Button fx:id="btnLogin" layoutX="770.0" layoutY="451.0" onAction="#clickLoginButton" prefHeight="34.0" prefWidth="137.0" text="Login">
+           <Button fx:id="btnLogin" layoutX="770.0" layoutY="460.0" onAction="#clickLoginButton" prefHeight="34.0" prefWidth="137.0" text="Login">
             <font>
                <Font size="15.0" />
             </font>
          </Button>
+         <ImageView fitHeight="40.0" fitWidth="57.0" layoutX="527.0" layoutY="319.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../resources/password.png" />
+            </image>
+         </ImageView>
+         <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="527.0" layoutY="213.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../resources/account.png" />
+            </image>
+         </ImageView>
       </children>
    </AnchorPane>
 </VBox>
