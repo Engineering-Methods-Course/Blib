@@ -54,7 +54,7 @@ public class BorrowExtensionFrameController
         // Get the current return date from the label and parse it to LocalDate
         String currentReturnDateText = currentReturnDateLabel.getText();
         try{
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-M-dd][yyyy-M-d][yyyy-MM-dd][yyyy-MM-d]");
             LocalDate currentReturnDate = LocalDate.parse(currentReturnDateText, formatter);
             // Set the minimum date on the DatePicker (restricting dates before the current return date)
             newReturnDatePicker.setDayCellFactory(picker -> new DateCell()
@@ -70,18 +70,7 @@ public class BorrowExtensionFrameController
         }
         catch (Exception e)
         {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-dd");
-            LocalDate currentReturnDate = LocalDate.parse(currentReturnDateText, formatter);// Set the minimum date on the DatePicker (restricting dates before the current return date)
-            newReturnDatePicker.setDayCellFactory(picker -> new DateCell()
-            {
-                @Override
-                public void updateItem(LocalDate date, boolean empty)
-                {
-                    super.updateItem(date, empty);
-                    // Disable dates before the current return date
-                    setDisable(empty || date.isBefore(currentReturnDate));
-                }
-            });
+            System.out.println("Invalid date format: " + currentReturnDateText);
         }
 
 
