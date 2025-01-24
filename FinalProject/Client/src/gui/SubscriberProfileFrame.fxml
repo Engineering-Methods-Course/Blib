@@ -10,18 +10,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.SubscriberProfileFrameController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.SubscriberProfileFrameController">
+   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="1683.0" styleClass="title" text="MY PROFILE" />
     <AnchorPane prefHeight="1087.0" prefWidth="1677.0" VBox.vgrow="ALWAYS">
         <!-- Borrowed Books Table with VGrow for resizing -->
-        <TableView fx:id="borrowsTable" layoutX="50.0" layoutY="278.0" maxHeight="800.0" maxWidth="1000.0" prefHeight="512.0" prefWidth="1000.0">
+        <TableView fx:id="borrowsTable" layoutX="633.0" layoutY="123.0" maxHeight="800.0" maxWidth="1136.0" prefHeight="443.0" prefWidth="998.0">
             <columns>
                 <TableColumn fx:id="bookNameColumn" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Book Name" />
                 <TableColumn fx:id="borrowDateColumn" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Borrow Date" />
                 <TableColumn fx:id="returnDateColumn" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Return Date" />
-                <TableColumn fx:id="extendButtonColumn" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Extend Options" />
+                <TableColumn fx:id="extendButtonColumn" maxWidth="246.0" minWidth="246.0" prefWidth="246.0" text="Extend Options" />
             </columns>
         </TableView>
-      <HBox alignment="CENTER" layoutX="14.0" layoutY="57.0">
+      <HBox alignment="CENTER" layoutX="52.0" layoutY="123.0">
          <children>
             <Label prefHeight="40.0" prefWidth="150.0" text="Hello:">
                <graphic>
@@ -34,11 +35,11 @@
             </Label>
       
                     <!-- Name Field -->
-              <Text fx:id="nameField" styleClass="text-field-style,text-field-name" text="John Doe" wrappingWidth="544.0000019073486">
+              <Text fx:id="nameField" styleClass="label" style="-fx-font-size: 36px;" text="John Doe" wrappingWidth="544.0000019073486">
         </Text>
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutX="14.0" layoutY="136.8000030517578">
+      <HBox alignment="CENTER" layoutX="52.0" layoutY="293.0">
          <children>
             <Label prefHeight="40.0" prefWidth="150.0" text="Phone:">
                <graphic>
@@ -51,11 +52,11 @@
             </Label>
       
               <!-- Phone Number -->
-              <Text fx:id="phoneNumberField" styleClass="text-field-style" text="555-1234" wrappingWidth="469.0">
+              <Text fx:id="phoneNumberField" styleClass="label" text="555-1234" wrappingWidth="469.0">
         </Text>
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutX="14.0" layoutY="218.39999389648438">
+      <HBox alignment="CENTER" layoutX="52.0" layoutY="480.0">
          <children>
             <Label prefHeight="40.0" prefWidth="150.0" text="Status:">
                <graphic>
@@ -68,11 +69,11 @@
             </Label>
       
               <!-- Status -->
-              <Text fx:id="statusTextField" styleClass="text-field-style" text="Active" wrappingWidth="627.0">
+              <Text fx:id="statusTextField" styleClass="label" text="Active" wrappingWidth="627.0">
         </Text>
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutX="14.0" layoutY="96.0">
+      <HBox alignment="CENTER" layoutX="52.0" layoutY="215.0">
          <children>
             <Label prefHeight="40.0" prefWidth="150.0" text="Email:">
                <graphic>
@@ -85,12 +86,12 @@
             </Label>
       
               <!-- Email -->
-              <Text fx:id="emailField" styleClass="text-field-style" text="email@example.com" wrappingWidth="486.3999938964844">
+              <Text fx:id="emailField" styleClass="label" text="email@example.com" wrappingWidth="486.3999938964844">
 
         </Text>
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutX="14.0" layoutY="178.0">
+      <HBox alignment="CENTER" layoutX="52.0" layoutY="382.0">
          <children>
             <Label prefHeight="40.0" prefWidth="150.0" text="User ID:">
                <graphic>
@@ -103,7 +104,7 @@
             </Label>
       
               <!-- User ID -->
-              <Text fx:id="userIDField" styleClass="text-field-style" text="UserID123" wrappingWidth="665.0">
+              <Text fx:id="userIDField" styleClass="label" text="UserID123" wrappingWidth="665.0">
         </Text>
          </children>
       </HBox>
