@@ -126,6 +126,7 @@ public class ServerController extends AbstractServer {
                  * 312 - librarian wants to view Borrow Times Logs
                  * 314 - librarian wants to view Subscriber Status Log
                  * 316 - librarian wants to view messages
+                 * 318 - librarian wants to mark book has lost
                  */
                 ClientServerMessage message = (ClientServerMessage) msg;
                 switch (message.getId()) {
@@ -629,6 +630,31 @@ public class ServerController extends AbstractServer {
                         } catch (Exception e) {
                             client.sendToClient(new ClientServerMessage(317, null));
                             System.out.println("Error: with getting messages (case 316)" + e);
+                        }
+                        break;
+                    case (318):
+                        /*
+                         * Do: librarian marks book as lost
+                         * In: ArrayList<String> {subscriber id, book id}
+                         * Return: (id 319) ArrayList<String> {true/false, error message}
+                         */
+                        try{
+                            if (message.getMessageContent() instanceof ArrayList) {
+                                client.sendToClient(new ClientServerMessage(319, dbController.markBookAsLost((ArrayList<String>) message.getMessageContent())));
+                                System.out.println("Book was marked as lost");
+                            } else {
+                                client.sendToClient(new ClientServerMessage(319, new ArrayList<String>() {{
+                                    add("false");
+                                    add("Cannot mark book as lost Message is not an ArrayList<String>");
+                                }}));
+                                System.out.println("Cannot mark book as lost Message is not an ArrayList<String> (case 318)");
+                            }
+                        } catch (Exception e) {
+                            client.sendToClient(new ClientServerMessage(319, new ArrayList<String>() {{
+                                add("false");
+                                add("Server Error");
+                            }}));
+                            System.out.println("Error: with mark book as lost method (case 318)" + e);
                         }
                         break;
                     default:
