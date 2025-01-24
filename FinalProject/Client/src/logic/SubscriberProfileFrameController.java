@@ -53,7 +53,7 @@ public class SubscriberProfileFrameController
         nameField.setText( Subscriber.getLocalSubscriber().getFirstName() + " " + Subscriber.getLocalSubscriber().getLastName());
         phoneNumberField.setText( Subscriber.getLocalSubscriber().getPhoneNumber());
         emailField.setText( Subscriber.getLocalSubscriber().getEmail());
-        statusTextField.setText( (Subscriber.getLocalSubscriber().getStatusIsFrozen() ? "Frozen" : "Active"));
+        statusTextField.setText( (Subscriber.getLocalSubscriber().getStatusIsFrozen()));
         userIDField.setText(String.valueOf(Subscriber.getLocalSubscriber().getID()));
 
         // Set up the borrowed books table columns

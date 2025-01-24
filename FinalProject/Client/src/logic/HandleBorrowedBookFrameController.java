@@ -8,7 +8,6 @@ import javafx.scene.control.*;
 
 import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
-
 import java.time.LocalDate;
 
 import static client.ClientGUIController.showAlert;
@@ -41,7 +40,7 @@ public class HandleBorrowedBookFrameController
     {
         Subscriber subscriber = Subscriber.getWatchProfileSubscriber();
         // Set subscriber details on UI
-        subscriberNameLabel.setText(subscriber.getFirstName() +" "+ subscriber.getLastName());
+        subscriberNameLabel.setText(subscriber.getFirstName() + " " + subscriber.getLastName());
         subscriberIdLabel.setText(String.valueOf(subscriber.getID()));
 
         // Set book details on UI
@@ -51,7 +50,8 @@ public class HandleBorrowedBookFrameController
 
         // Get the current return date from the label and parse it to LocalDate
         String currentReturnDateText = currentReturnDateLabel.getText();
-        try{
+        try
+        {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-M-dd][yyyy-M-d][yyyy-MM-dd][yyyy-MM-d]");
             LocalDate currentReturnDate = LocalDate.parse(currentReturnDateText, formatter);
             // Set the minimum date on the DatePicker (restricting dates before the current return date)

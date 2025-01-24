@@ -32,7 +32,7 @@ public class ViewAllSubscribersFrameController
     @FXML
     public TableColumn<Subscriber, String> emailColumn;
     @FXML
-    public TableColumn<Subscriber, Boolean> statusColumn;
+    public TableColumn<Subscriber, String> statusColumn;
     @FXML
     public TableColumn<Subscriber, Void> watchProfileColumn;
     @FXML

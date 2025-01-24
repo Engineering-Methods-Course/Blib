@@ -123,7 +123,7 @@ public class WatchProfileFrameController
         txtEmail.setText(subscriber.getEmail());
         txtPhoneNumber.setText(subscriber.getPhoneNumber());
         txtUserID.setText(String.valueOf(subscriber.getID()));
-        txtStatus.setText((subscriber.getStatusIsFrozen() ? "Frozen" : "Active"));
+        txtStatus.setText((subscriber.getStatusIsFrozen()));
     }
 
     /**

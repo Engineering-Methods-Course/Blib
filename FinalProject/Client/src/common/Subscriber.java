@@ -22,7 +22,7 @@ public class Subscriber extends User implements Serializable
     private String email;
 
     // Status to check if the subscriber is frozen (inactive)
-    private boolean statusIsFrozen;
+    private String statusIsFrozen;
 
     /**
      * Constructor to initialize a Subscriber object with all necessary details.
@@ -39,7 +39,7 @@ public class Subscriber extends User implements Serializable
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.statusIsFrozen = status;
+        this.statusIsFrozen = status ? "Frozen" : "Active";
         this.subscriptionHistory = subscriptionHistory;
     }
 
@@ -198,7 +198,7 @@ public class Subscriber extends User implements Serializable
      *
      * @return true if the account is frozen, false otherwise
      */
-    public boolean getStatusIsFrozen()
+    public String getStatusIsFrozen()
     {
         return statusIsFrozen;
     }
@@ -210,6 +210,6 @@ public class Subscriber extends User implements Serializable
      */
     public void setStatusIsFrozen(boolean statusIsFrozen)
     {
-        this.statusIsFrozen = statusIsFrozen;
+        this.statusIsFrozen = statusIsFrozen ? "Frozen" : "Active";
     }
 }

@@ -206,6 +206,8 @@ public class ViewReportsFrameController
             returnsSeries.setName("Returns");
             XYChart.Series<String, Number> lateReturnsSeries = new XYChart.Series<>();
             lateReturnsSeries.setName("Late Returns");
+            XYChart.Series<String, Number> lostSeries = new XYChart.Series<>();
+            lostSeries.setName("Lost");
 
             // Initialize the maximum value
             int maxValue = 0;
@@ -251,6 +253,7 @@ public class ViewReportsFrameController
                 borrowsSeries.getData().add(new XYChart.Data<>(week, actionCounts.getOrDefault("borrow", 0)));
                 returnsSeries.getData().add(new XYChart.Data<>(week, actionCounts.getOrDefault("return", 0)));
                 lateReturnsSeries.getData().add(new XYChart.Data<>(week, actionCounts.getOrDefault("late return", 0)));
+                lostSeries.getData().add(new XYChart.Data<>(week, actionCounts.getOrDefault("lost", 0)));
             }
 
             // Configure the x-axis to handle week values
@@ -266,7 +269,7 @@ public class ViewReportsFrameController
             yAxis.setUpperBound(maxValue + 1);
 
             // Adds the new series to the bar chart
-            BorrowChart.getData().addAll(borrowsSeries, returnsSeries, lateReturnsSeries);
+            BorrowChart.getData().addAll(lateReturnsSeries, returnsSeries, borrowsSeries, lostSeries);
             BorrowChart.setTitle("Borrow Statuses Per Week");
         });
     }
