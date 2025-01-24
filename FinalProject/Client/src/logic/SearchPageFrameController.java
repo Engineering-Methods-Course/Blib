@@ -15,6 +15,8 @@ public class SearchPageFrameController
     @FXML
     public VBox searchFrame;
     @FXML
+    public ChoiceBox<String> categoriesDropDown;
+    @FXML
     private SearchType searchType;
     @FXML
     public AnchorPane searchPane;
@@ -57,11 +59,25 @@ public class SearchPageFrameController
 
         // Creates tooltips for the search fields
         Tooltip searchFieldTooltip = new Tooltip("Enter the name of the book you are looking for.");
+        Tooltip searchByCategoriesFieldTooltip = new Tooltip("Choose the category of the book you are looking for.");
         Tooltip descriptionSearchTooltip = new Tooltip("Enter the description of the book you are looking for.");
 
         // Add Tooltips to the text boxes that will appear when the user hovers over them
         searchField.setTooltip(searchFieldTooltip);
+        categoriesDropDown.setTooltip(searchByCategoriesFieldTooltip);
         descriptionSearch.setTooltip(descriptionSearchTooltip);
+
+        // Add options to the ChoiceBox
+        categoriesDropDown.getItems().addAll(
+                "Fantasy",
+                "Classic",
+                "Historical Fiction",
+                "Sci-Fi",
+                "Psychological Thriller",
+                "Memoir",
+                "Science"
+        );
+
     }
 
     /**
@@ -85,6 +101,7 @@ public class SearchPageFrameController
 
         // set the searchField to be visible and the descriptionSearch to be invisible
         searchField.setVisible(true);
+        categoriesDropDown.setVisible(false);
         descriptionSearch.setVisible(false);
 
         // Change the tooltip's text
@@ -101,8 +118,11 @@ public class SearchPageFrameController
         changeAllRadioSelected(false, true, false);
 
         // set the searchField to be visible and the descriptionSearch to be invisible
-        searchField.setVisible(true);
+        searchField.setVisible(false);
+        categoriesDropDown.setVisible(true);
         descriptionSearch.setVisible(false);
+
+
 
         // Change the tooltip's text
         searchField.getTooltip().setText("Enter the genre of the book you are looking for.");
@@ -120,6 +140,7 @@ public class SearchPageFrameController
         // move the search button to the bottom of the screen and set the searchField to be invisible and the descriptionSearch to be visible
         searchButton.setLayoutY(500);
         searchField.setVisible(false);
+        categoriesDropDown.setVisible(false);
         descriptionSearch.setVisible(true);
     }
 
@@ -161,7 +182,7 @@ public class SearchPageFrameController
             // sets the search to work with the genre of the book
             case GENRE:
                 messageCode = 202;
-                messageContent = searchField.getText();
+                messageContent = categoriesDropDown.getValue();
                 break;
             // sets the search to work with the description of the book
             case DESCRIPTION:
