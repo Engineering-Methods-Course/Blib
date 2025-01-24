@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 import static client.ClientGUIController.showAlert;
 
-public class BorrowExtensionFrameController
+public class HandleBorrowedBookFrameController
 {
     // FXML attributes
     @FXML
@@ -72,10 +72,6 @@ public class BorrowExtensionFrameController
         {
             showAlert(Alert.AlertType.WARNING, "Invalid date", "Please enter a valid date");
         }
-
-
-
-
     }
 
     /**
@@ -83,7 +79,7 @@ public class BorrowExtensionFrameController
      */
     public static void setBorrowedBook(BorrowedBook borrowedBook)
     {
-        BorrowExtensionFrameController.borrowedBookCopy = borrowedBook;
+        HandleBorrowedBookFrameController.borrowedBookCopy = borrowedBook;
     }
 
     /**
@@ -117,6 +113,25 @@ public class BorrowExtensionFrameController
 
         // Create the ClientServerMessage object
         ClientServerMessage message = new ClientServerMessage(310, dataToSend);
+
+        // Send the message to the server
+        ClientGUIController.chat.sendToServer(message);
+    }
+
+    /**
+     * This method handles the markLostButton click event to mark the book as lost
+     */
+    public void markLostButtonPressed()
+    {
+        //send the book id and the subscriber id to the server
+        ArrayList<String> dataToSend = new ArrayList<>();
+        dataToSend.add(subscriberIdLabel.getText());
+        dataToSend.add(String.valueOf(borrowedBookCopy.getCopyID()));
+
+        System.out.println(dataToSend);
+
+        // Create the ClientServerMessage object
+        ClientServerMessage message = new ClientServerMessage(318, dataToSend);
 
         // Send the message to the server
         ClientGUIController.chat.sendToServer(message);

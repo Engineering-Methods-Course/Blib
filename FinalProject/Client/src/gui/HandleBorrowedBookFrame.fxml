@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.BorrowExtensionFrameController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" spacing="20.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.HandleBorrowedBookFrameController">
 
      <!-- Main Content VBox (centered) -->
      <VBox alignment="CENTER" prefHeight="1087.0" prefWidth="1677.0" spacing="20.0">
@@ -138,6 +138,11 @@
                      <Font size="16.0" />
                  </font>
              </Button>
+         <Button fx:id="markLostButton" onAction="#markLostButtonPressed" prefHeight="59.0" prefWidth="138.0" text="Mark Lost">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Button>
          </HBox>
      </VBox>
 </VBox>

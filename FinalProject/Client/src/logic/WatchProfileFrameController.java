@@ -4,7 +4,6 @@ import client.ClientGUIController;
 import common.BorrowedBook;
 import common.ClientServerMessage;
 import common.Subscriber;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -12,7 +11,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,17 +69,22 @@ public class WatchProfileFrameController
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("expectedReturnDate"));
 
         // Set up the watch profile column with a button
-        extendButtonColumn.setCellFactory(param -> new TableCell<BorrowedBook, Button>() {
+        extendButtonColumn.setCellFactory(param -> new TableCell<BorrowedBook, Button>()
+        {
             // The button to watch the profile
-            private final Button ExtendBorrow = new Button("Extend Borrow");
+            private final Button ExtendBorrow = new Button("Handle Book");
+
             {
                 // Set the button's action
                 ExtendBorrow.setOnAction(event -> {
                     BorrowedBook selectedBook = getTableView().getItems().get(getIndex());
                     // Handle the extent borrow action here
-                    try {
-                        extendBorrowButtonClicked(selectedBook);
-                    } catch (IOException e) {
+                    try
+                    {
+                        HandleBorrowedBookButtonClicked(selectedBook);
+                    }
+                    catch (IOException e)
+                    {
                         throw new RuntimeException(e);
                     }
                 });
@@ -89,11 +92,15 @@ public class WatchProfileFrameController
 
             @Override
             // Update the cell item
-            protected void updateItem(Button item, boolean empty) {
+            protected void updateItem(Button item, boolean empty)
+            {
                 super.updateItem(item, empty);
-                if (empty) {
+                if (empty)
+                {
                     setGraphic(null);
-                } else {
+                }
+                else
+                {
                     setGraphic(ExtendBorrow);
                     setAlignment(Pos.CENTER); // Center the button
                 }
@@ -113,10 +120,10 @@ public class WatchProfileFrameController
     public void updateSubscriberInfo(Subscriber subscriber)
     {
         txtFullName.setText(subscriber.getFirstName() + " " + subscriber.getLastName());
-        txtEmail.setText( subscriber.getEmail());
-        txtPhoneNumber.setText( subscriber.getPhoneNumber());
+        txtEmail.setText(subscriber.getEmail());
+        txtPhoneNumber.setText(subscriber.getPhoneNumber());
         txtUserID.setText(String.valueOf(subscriber.getID()));
-        txtStatus.setText( (subscriber.getStatusIsFrozen() ? "Frozen" : "Active"));
+        txtStatus.setText((subscriber.getStatusIsFrozen() ? "Frozen" : "Active"));
     }
 
     /**
@@ -157,15 +164,15 @@ public class WatchProfileFrameController
      *
      * @throws Exception If there is an issue with the navigation
      */
-    public void extendBorrowButtonClicked(BorrowedBook selectedBook) throws IOException {
-
+    public void HandleBorrowedBookButtonClicked(BorrowedBook selectedBook) throws IOException
+    {
         if (selectedBook != null)
         {
             // Save the selected book using the set method or pass it directly
-            BorrowExtensionFrameController.setBorrowedBook(selectedBook); // Set the selected book in the Subscriber object, or use a different method
+            HandleBorrowedBookFrameController.setBorrowedBook(selectedBook); // Set the selected book in the Subscriber object, or use a different method
 
-            // Navigate to the BorrowExtensionFrameController, passing the selected book
-            loadFrameIntoPane((AnchorPane) extendBorrowLibrarian.getParent(), "/gui/BorrowExtensionFrame.fxml");
+            // Navigate to the HandleBorrowedBookFrameController, passing the selected book
+            loadFrameIntoPane((AnchorPane) extendBorrowLibrarian.getParent(), "/gui/HandleBorrowedBookFrame.fxml");
         }
         else
         {

@@ -388,12 +388,12 @@ public class ClientController extends AbstractClient
                             System.out.println("Could not extend borrow");
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not extend borrow"));
                         }
-                        //if the content is instance of arraylist, pass it to BorrowExtensionFrameController's showExtendMessageResponse
+                        //if the content is instance of arraylist, pass it to HandleBorrowedBookFrameController's showExtendMessageResponse
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked")
                             ArrayList<String> arrayMessageFromServer = (ArrayList<String>) message.getMessageContent();
-                            BorrowExtensionFrameController.showExtendMessageResponse(arrayMessageFromServer);
+                            HandleBorrowedBookFrameController.showExtendMessageResponse(arrayMessageFromServer);
                         }
                         //if the content is not, show error message
                         else
@@ -467,6 +467,27 @@ public class ClientController extends AbstractClient
                             controller.loadLibrarianMessages(messages);
                         }
                         break;
+                        // handles a lost book response
+                    case 319:
+                        if(message.getMessageContent() == null)
+                        {
+                            System.out.println("Could not get messages");
+                            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not get messages"));
+                        }
+                        else if (message.getMessageContent() instanceof ArrayList)
+                        {
+                            // Cast the message content to an ArrayList and give a pop-up message to the librarian
+                            @SuppressWarnings("unchecked") ArrayList<Boolean> serverResponse = (ArrayList<Boolean>) message.getMessageContent();
+
+                            if(serverResponse.get(0))
+                            {
+                                Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Success", "The book was marked as lost successfully"));
+                            }
+                            else
+                            {
+                                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "The book could not be marked as lost"));
+                            }
+                        }
                     // Server has closed its connection
                     case 999:
                         Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Server closed", "Server has closed its connection for maintenance"));
