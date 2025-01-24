@@ -9,14 +9,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Region?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1084.0" prefWidth="1674.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.RegisterMemberFrameController">
    <children>
          <Label fx:id="lblEmailError" alignment="CENTER" layoutX="554.0" layoutY="661.0" prefHeight="29.0" prefWidth="580.0" text="Email Error" visible="false" />
        <Label alignment="CENTER" layoutX="551.0" layoutY="77.0" styleClass="title" text="REGISTER MEMBER" />
          <TextField fx:id="txtUsername" layoutX="510.0" layoutY="310.0" prefHeight="30.0" prefWidth="660.0" />
          <Label fx:id="lblUserNameError" alignment="CENTER" layoutX="554.0" layoutY="271.0" prefHeight="23.0" prefWidth="580.0" text="UserName Error" visible="false" />
-         <Label alignment="CENTER" layoutX="569.0" layoutY="360.0" prefHeight="40.0" prefWidth="189.0" styleClass="label" text="First Name:">
+         <Label alignment="CENTER" layoutX="554.0" layoutY="361.0" prefHeight="40.0" prefWidth="183.0" styleClass="label" text="First Name:">
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -26,7 +25,7 @@
          </graphic>
       </Label>
          <TextField fx:id="txtFirstName" layoutX="510.0" layoutY="440.0" prefHeight="30.0" prefWidth="300.0" />
-         <Label alignment="CENTER" layoutX="948.0" layoutY="361.0" prefHeight="40.0" prefWidth="174.0" styleClass="label" text="Last Name:">
+         <Label alignment="CENTER" layoutX="938.0" layoutY="361.0" prefHeight="40.0" prefWidth="174.0" styleClass="label" text="Last Name:">
          <graphic>
             <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                <image>
