@@ -19,7 +19,7 @@
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../resources/name.png" />
+                  <Image url="@../resources/icons8-name-100.png" />
                </image>
             </ImageView>
          </graphic>
@@ -29,7 +29,7 @@
          <graphic>
             <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../resources/name.png" />
+                  <Image url="@../resources/icons8-name-100.png" />
                </image>
             </ImageView>
          </graphic>
@@ -52,7 +52,7 @@
       </Label>
          <TextField fx:id="txtPhone" layoutX="510.0" layoutY="570.0" prefHeight="30.0" prefWidth="660.0" />
          <Label fx:id="lblPhoneError" alignment="CENTER" layoutX="554.0" layoutY="531.0" prefHeight="23.0" prefWidth="580.0" text="Phone Error" visible="false" />
-         <Label alignment="CENTER_RIGHT" layoutX="784.0" layoutY="620.0" prefHeight="46.0" prefWidth="126.0" styleClass="label" text="Email:">
+         <Label alignment="CENTER_RIGHT" layoutX="784.0" layoutY="620.0" prefHeight="40.0" prefWidth="126.0" styleClass="label" text="Email:">
          <graphic>
             <ImageView fitHeight="40.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true">
                <image>
