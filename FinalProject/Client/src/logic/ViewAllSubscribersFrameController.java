@@ -5,7 +5,6 @@ import common.ClientServerMessage;
 import common.Subscriber;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -71,9 +70,11 @@ public class ViewAllSubscribersFrameController
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("statusIsFrozen"));
 
         // Set up the watch profile column with a button
-        watchProfileColumn.setCellFactory(param -> new TableCell<Subscriber, Void>() {
+        watchProfileColumn.setCellFactory(param -> new TableCell<Subscriber, Void>()
+        {
             // The button to watch the profile
             private final Button watchButton = new Button("Watch Profile");
+
             {
                 // Set the button's action
                 watchButton.setOnAction(event -> {
@@ -85,11 +86,15 @@ public class ViewAllSubscribersFrameController
 
             @Override
             // Update the cell item
-            protected void updateItem(Void item, boolean empty) {
+            protected void updateItem(Void item, boolean empty)
+            {
                 super.updateItem(item, empty);
-                if (empty) {
+                if (empty)
+                {
                     setGraphic(null);
-                } else {
+                }
+                else
+                {
                     setGraphic(watchButton);
                     setAlignment(Pos.CENTER); // Center the button
                 }
@@ -180,17 +185,19 @@ public class ViewAllSubscribersFrameController
     /**
      * Handles the refresh button click event.
      * This method will reset the filter text field to empty and set the table's data back to the full list of subscribers.
-     *
-     * @param actionEvent The ActionEvent object.
      */
-    public void clickRefreshButton(ActionEvent actionEvent) {
+    public void clickRefreshButton()
+    {
         // Reset the filter text field to empty
         filterTextField.clear();
 
         // Set the table's data back to the full list of subscribers
-        if (allSubscribers != null) {
+        if (allSubscribers != null)
+        {
             subscribersTable.setItems(FXCollections.observableArrayList(allSubscribers));
-        } else {
+        }
+        else
+        {
             System.out.println("No subscribers to display.");
         }
     }
