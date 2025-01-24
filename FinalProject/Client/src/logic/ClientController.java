@@ -142,6 +142,7 @@ public class ClientController extends AbstractClient
                                 //Indicate that the search results were successful by setting the flag to true.
                                 SearchPageFrameController.changeCanSearch(true);
                                 @SuppressWarnings("unchecked") ArrayList<Book> bookList = (ArrayList<Book>) message.getMessageContent();
+
                                 //pass the list of books to the searchResultFrameController
                                 SearchResultFrameController.setBookArray(bookList);
                             }
@@ -157,6 +158,7 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked") ArrayList<String> details = (ArrayList<String>) message.getMessageContent();
+
                             //pass the list with the availability of the book to BookInfoFrameController
                             BookInfoFrameController.setAvailability(details);
                         }
@@ -176,6 +178,7 @@ public class ClientController extends AbstractClient
                             if (details.get(0).equals("true"))
                             {
                                 Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Book ordered", "Book was ordered"));
+
                                 //signals that the order process is done
                                 BookInfoFrameController.orderComplete = true;
                                 System.out.println("Book Ordered Successfully");
@@ -184,6 +187,7 @@ public class ClientController extends AbstractClient
                             else
                             {
                                 Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Book ordered", details.get(1)));
+
                                 //signals that the order process ended in failure
                                 BookInfoFrameController.orderComplete = false;
                                 System.out.println("Book Ordered Failed");
@@ -269,6 +273,7 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked") ArrayList<String> serverResponse = (ArrayList<String>) message.getMessageContent();
+
                             //if the first element is true, display successful update message
                             if (Boolean.parseBoolean(serverResponse.get(0)))
                             {
@@ -293,6 +298,7 @@ public class ClientController extends AbstractClient
                         {
                             // casts the message content to an ArrayList and gives a pop-up message to the librarian
                             @SuppressWarnings("unchecked") ArrayList<String> serverResponse = (ArrayList<String>) message.getMessageContent();
+
                             //if the first element of the content is true, show a success message
                             if (Boolean.parseBoolean(serverResponse.get(0)))
                             {
@@ -356,8 +362,10 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked") ArrayList<Subscriber> subscribers = (ArrayList<Subscriber>) message.getMessageContent();
+
                             // Retrieve the controller for the "View All Subscribers" frame.
                             ViewAllSubscribersFrameController controller = loader.getController();
+
                             // Pass the list of subscribers to the controller to populate the table view.
                             controller.addToTable(subscribers);
                         }
@@ -374,8 +382,10 @@ public class ClientController extends AbstractClient
                         {
                             Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
                             Subscriber.setWatchProfileSubscriber(subscriberFromServer);
+
                             //retrieve the controller for "SearchSubscriberFrameController" frame.
                             SearchSubscriberFrameController Controller = loader.getController();
+
                             //pass the subscriber to the controller
                             Controller.WatchProfileResponse(subscriberFromServer);
                         }
@@ -439,8 +449,10 @@ public class ClientController extends AbstractClient
                         {
                             @SuppressWarnings("unchecked")
                             ArrayList<MonthlyReport> logs = (ArrayList<MonthlyReport>) message.getMessageContent();
+
                             //retrieve the controller for " ViewReportsFrameController" frame.
                             ViewReportsFrameController controller = loader.getController();
+
                             //pass the logs to the controller
                             controller.generateSubscriberStatusReport(logs);
                             controller.switchChartVisibility();
@@ -454,7 +466,6 @@ public class ClientController extends AbstractClient
                             System.out.println("Could not get messages");
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not get messages"));
                         }
-
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked")
@@ -479,6 +490,7 @@ public class ClientController extends AbstractClient
                             // Cast the message content to an ArrayList and give a pop-up message to the librarian
                             @SuppressWarnings("unchecked") ArrayList<String> serverResponse = (ArrayList<String>) message.getMessageContent();
 
+                            // If the first element of the content is true, show a success message
                             if (Boolean.parseBoolean(serverResponse.get(0)))
                             {
                                 Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Success", "The book was marked as lost successfully"));
@@ -488,6 +500,7 @@ public class ClientController extends AbstractClient
                                 Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", serverResponse.get(1)));
                             }
                         }
+                        break;
                         // Server has closed its connection
                     case 999:
                         Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Server closed", "Server has closed its connection for maintenance"));
