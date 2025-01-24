@@ -17,8 +17,6 @@ public class HandleBorrowedBookFrameController
 {
     // FXML attributes
     @FXML
-    public Button backButton;
-    @FXML
     public Button extendButton;
     @FXML
     public Label subscriberNameLabel;
@@ -127,8 +125,6 @@ public class HandleBorrowedBookFrameController
         ArrayList<String> dataToSend = new ArrayList<>();
         dataToSend.add(subscriberIdLabel.getText());
         dataToSend.add(String.valueOf(borrowedBookCopy.getCopyID()));
-
-        System.out.println(dataToSend);
 
         // Create the ClientServerMessage object
         ClientServerMessage message = new ClientServerMessage(318, dataToSend);
