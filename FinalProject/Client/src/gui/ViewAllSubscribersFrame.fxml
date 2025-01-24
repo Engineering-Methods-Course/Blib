@@ -21,12 +21,12 @@
           <!-- TableView to display subscribers -->
     <TableView fx:id="subscribersTable" layoutX="32.0" layoutY="204.0" prefHeight="675.0" prefWidth="1611.0">
         <columns>
-            <TableColumn fx:id="idColumn" maxWidth="200.0" minWidth="154.66665649414062" prefWidth="154.66665649414062" styleClass="table-column-center" text="ID" />
-            <TableColumn fx:id="firstNameColumn" maxWidth="245.33334350585938" minWidth="200.0" prefWidth="202.0" styleClass="table-column-center" text="First Name" />
-            <TableColumn fx:id="lastNameColumn" maxWidth="244.0" minWidth="200.0" prefWidth="205.33331298828125" styleClass="table-column-center" text="Last Name" />
-            <TableColumn fx:id="phoneNumberColumn" maxWidth="238.66668701171875" minWidth="200.0" prefWidth="207.0" styleClass="table-column-center" text="Phone Number" />
-            <TableColumn fx:id="emailColumn" maxWidth="438.66668701171875" minWidth="292.0" prefWidth="392.3333740234375" styleClass="table-column-center" text="Email" />
-            <TableColumn fx:id="statusColumn" maxWidth="340.0" minWidth="200.0" prefWidth="208.6666259765625" styleClass="table-column-center" text="Account Frozen" />
+            <TableColumn fx:id="idColumn" maxWidth="200.0" minWidth="154.66665649414062" prefWidth="154.66665649414062"  text="ID" />
+            <TableColumn fx:id="firstNameColumn" maxWidth="245.33334350585938" minWidth="200.0" prefWidth="202.0" text="First Name" />
+            <TableColumn fx:id="lastNameColumn" maxWidth="244.0" minWidth="200.0" prefWidth="205.33331298828125"  text="Last Name" />
+            <TableColumn fx:id="phoneNumberColumn" maxWidth="238.66668701171875" minWidth="200.0" prefWidth="207.0"  text="Phone Number" />
+            <TableColumn fx:id="emailColumn" maxWidth="438.66668701171875" minWidth="292.0" prefWidth="392.3333740234375"  text="Email" />
+            <TableColumn fx:id="statusColumn" maxWidth="340.0" minWidth="200.0" prefWidth="208.6666259765625" text="Account Frozen" />
 
                   <!-- Adding the "Watch Profile" button column -->
             <TableColumn fx:id="watchProfileColumn" maxWidth="282.6666259765625" minWidth="200.0" prefWidth="234.333251953125" text="Watch Profile">

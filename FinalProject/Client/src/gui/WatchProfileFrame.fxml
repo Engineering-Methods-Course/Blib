@@ -25,7 +25,7 @@
     <!-- Main Content Pane with VGrow Property for Resizing -->
     <AnchorPane prefHeight="794.0" prefWidth="1342.0" VBox.vgrow="ALWAYS">
         <!-- Borrowed Books Table with VGrow for resizing -->
-        <TableView fx:id="borrowsTable" layoutX="360.0" layoutY="15.2" prefHeight="802.0" prefWidth="1278.0" AnchorPane.bottomAnchor="138.0" AnchorPane.leftAnchor="360.0" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="15.0">
+        <TableView fx:id="borrowsTable" layoutX="385.0" layoutY="14.0" prefHeight="802.0" prefWidth="1278.0" AnchorPane.bottomAnchor="139.60000000000002" AnchorPane.leftAnchor="385.0" AnchorPane.rightAnchor="14.200000000000045" AnchorPane.topAnchor="14.0">
             <columns>
                 <TableColumn fx:id="bookNameColumn" maxWidth="420.0" minWidth="410.3998473882675" prefWidth="410.3998473882675" text="Book Name" />
                 <TableColumn fx:id="borrowDateColumn" maxWidth="293.6000671386719" minWidth="284.0" prefWidth="293.6000671386719" text="Borrow Date" />
@@ -77,7 +77,7 @@
                            <Font size="30.0" />
                         </font>
                      </Label>
-                        <Text fx:id="txtEmail" text="&lt;Email Address&gt;" textAlignment="CENTER" wrappingWidth="340.800048828125">
+                        <Text fx:id="txtEmail" text="&lt;Email Address&gt;" textAlignment="CENTER" wrappingWidth="360.0">
                             <font>
                                 <Font size="24.0" />
                             </font>

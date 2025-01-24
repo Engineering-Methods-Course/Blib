@@ -23,7 +23,7 @@ public class BookInfoFrameController
     @FXML
     public Text bookGenre;
     @FXML
-    public TextArea bookdescription;
+    public Text bookdescriptionTxt;
     @FXML
     public Text bookLocation;
     @FXML
@@ -50,7 +50,7 @@ public class BookInfoFrameController
         //set the text according to the book that is being viewed
         bookName.setText(localBook.getBookName());
         bookGenre.setText(localBook.getBookGenre());
-        bookdescription.setText(localBook.getBookDescription());
+        bookdescriptionTxt.setText(localBook.getBookDescription());
 
         //check if the book is available or not and sets its location or closest return copy date accordingly
         if (Availability.get(0).equals("true"))
