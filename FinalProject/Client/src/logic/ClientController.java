@@ -467,9 +467,9 @@ public class ClientController extends AbstractClient
                             controller.loadLibrarianMessages(messages);
                         }
                         break;
-                        // handles a lost book response
+                    // handles a lost book response
                     case 319:
-                        if(message.getMessageContent() == null)
+                        if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not get messages");
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Could not get messages"));
@@ -477,18 +477,18 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             // Cast the message content to an ArrayList and give a pop-up message to the librarian
-                            @SuppressWarnings("unchecked") ArrayList<Boolean> serverResponse = (ArrayList<Boolean>) message.getMessageContent();
+                            @SuppressWarnings("unchecked") ArrayList<String> serverResponse = (ArrayList<String>) message.getMessageContent();
 
-                            if(serverResponse.get(0))
+                            if (Boolean.parseBoolean(serverResponse.get(0)))
                             {
                                 Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Success", "The book was marked as lost successfully"));
                             }
                             else
                             {
-                                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "The book could not be marked as lost"));
+                                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", serverResponse.get(1)));
                             }
                         }
-                    // Server has closed its connection
+                        // Server has closed its connection
                     case 999:
                         Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Server closed", "Server has closed its connection for maintenance"));
                         break;
