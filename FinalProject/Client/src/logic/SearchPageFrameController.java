@@ -77,7 +77,7 @@ public class SearchPageFrameController
                 "Memoir",
                 "Science"
         );
-
+        categoriesDropDown.setValue("Classic");
     }
 
     /**

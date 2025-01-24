@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="searchFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.SearchPageFrameController">
+<VBox fx:id="searchFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.SearchPageFrameController">
     <AnchorPane fx:id="searchPane" prefHeight="783.0" prefWidth="1175.0">
         <Label alignment="CENTER" layoutX="-1.0" layoutY="158.0" prefHeight="54.0" prefWidth="1678.0" styleClass="title" text="SEARCH BOOK">
          <graphic>
@@ -34,12 +34,12 @@
          <font>
             <Font size="22.0" />
          </font></RadioButton>
-        <TextField fx:id="searchField" layoutX="604.0" layoutY="333.0" prefHeight="51.0" prefWidth="670.0" promptText="Search" AnchorPane.bottomAnchor="399.0" AnchorPane.leftAnchor="604.0" AnchorPane.rightAnchor="404.0" AnchorPane.topAnchor="333.0">
+        <TextField fx:id="searchField" layoutX="604.0" layoutY="333.0" prefHeight="51.0" prefWidth="670.0" AnchorPane.bottomAnchor="399.0" AnchorPane.leftAnchor="604.0" AnchorPane.rightAnchor="404.0" AnchorPane.topAnchor="333.0">
          <font>
             <Font size="22.0" />
          </font></TextField>
-      <ChoiceBox fx:id="categoriesDropDown" layoutX="604.0" layoutY="331.0" prefHeight="51.0" prefWidth="670.0" visible="false" />
-        <TextArea fx:id="descriptionSearch" layoutX="604.0" layoutY="331.0" prefHeight="225.0" prefWidth="670.0" promptText="describe your book:" wrapText="true" AnchorPane.bottomAnchor="227.39999999999998" AnchorPane.leftAnchor="604.0" AnchorPane.rightAnchor="404.0" AnchorPane.topAnchor="331.0">
+      <ChoiceBox fx:id="categoriesDropDown" layoutX="604.0" layoutY="331.0" prefHeight="51.0" prefWidth="670.0"  visible="false" />
+        <TextArea fx:id="descriptionSearch" layoutX="604.0" layoutY="331.0" prefHeight="225.0" prefWidth="670.0" wrapText="true" AnchorPane.bottomAnchor="227.39999999999998" AnchorPane.leftAnchor="604.0" AnchorPane.rightAnchor="404.0" AnchorPane.topAnchor="331.0">
          <font>
             <Font size="22.0" />
          </font></TextArea>
