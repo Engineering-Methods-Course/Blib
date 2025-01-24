@@ -11,10 +11,10 @@
 <?import javafx.scene.text.Text?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.SubscriberProfileFrameController">
-   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="1683.0" styleClass="title" text="MY PROFILE" />
+   <Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="1678.0" styleClass="title" text="MY PROFILE" />
     <AnchorPane prefHeight="1087.0" prefWidth="1677.0" VBox.vgrow="ALWAYS">
         <!-- Borrowed Books Table with VGrow for resizing -->
-        <TableView fx:id="borrowsTable" layoutX="633.0" layoutY="123.0" maxHeight="800.0" maxWidth="1136.0" prefHeight="443.0" prefWidth="998.0">
+        <TableView fx:id="borrowsTable" layoutX="633.0" layoutY="123.0" maxHeight="800.0" maxWidth="1136.0" prefHeight="471.0" prefWidth="998.0">
             <columns>
                 <TableColumn fx:id="bookNameColumn" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Book Name" />
                 <TableColumn fx:id="borrowDateColumn" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Borrow Date" />
@@ -35,7 +35,7 @@
             </Label>
       
                     <!-- Name Field -->
-              <Text fx:id="nameField" styleClass="label" style="-fx-font-size: 36px;" text="John Doe" wrappingWidth="544.0000019073486">
+              <Text fx:id="nameField" style="-fx-font-size: 36px;" styleClass="label" text="John Doe" wrappingWidth="544.0000019073486">
         </Text>
          </children>
       </HBox>
