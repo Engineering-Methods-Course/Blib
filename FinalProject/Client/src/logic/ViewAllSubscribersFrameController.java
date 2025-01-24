@@ -146,6 +146,7 @@ public class ViewAllSubscribersFrameController
             catch (NumberFormatException e)
             {
                 showAlert(Alert.AlertType.ERROR, "Invalid ID", "Invalid ID format: ID must be only numbers.");
+                System.out.println("Invalid ID format: " + searchId);
             }
         }
         else
