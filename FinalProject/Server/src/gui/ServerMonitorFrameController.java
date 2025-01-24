@@ -1,5 +1,6 @@
 package gui;
 
+import javafx.application.Platform;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,8 +10,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import ocsf.server.ConnectionToClient;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.*;
 
 public class ServerMonitorFrameController {
@@ -19,6 +24,7 @@ public class ServerMonitorFrameController {
     private final ObservableList<List<String>> serverMonitorList = FXCollections.observableArrayList();
     private final Property<ObservableList<List<String>>> serverMonitorListProperty = new SimpleObjectProperty<>(serverMonitorList);
     private final Map<ConnectionToClient, Integer> clientMap = new HashMap<>();
+    public TextArea consoleTextArea;
 
     // FXML elements for the server monitor table
     @FXML
@@ -46,10 +52,18 @@ public class ServerMonitorFrameController {
         serverMonitorTable.itemsProperty().bind(serverMonitorListProperty);
         serverMonitorTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
+
         clientNum.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
         ip.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(1)));
         host.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(2)));
         status.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(3)));
+
+
+        Console console = new Console(consoleTextArea);
+        PrintStream ps = new PrintStream(console, true);
+        System.setOut(ps);
+        System.setErr(ps);
+
 
     }
 
@@ -108,5 +122,33 @@ public class ServerMonitorFrameController {
         }
         clientMap.remove(client);
         index--;
+    }
+
+    public static class Console extends OutputStream {
+        private final TextArea console;
+        private final StringBuilder buffer = new StringBuilder();
+
+        public Console(TextArea console) {
+            this.console = console;
+        }
+
+        @Override
+        public void write(int b) throws IOException {
+            buffer.append((char) b);
+            updateConsole();
+        }
+
+        @Override
+        public void write(byte[] b, int off, int len) throws IOException {
+            buffer.append(new String(b, off, len));
+            updateConsole();
+        }
+
+        private void updateConsole() {
+            Platform.runLater(() -> {
+                console.appendText(buffer.toString());
+                buffer.setLength(0);
+            });
+        }
     }
 }

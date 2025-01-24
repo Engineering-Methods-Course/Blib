@@ -5,12 +5,12 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ClientIPFrameController">
-      <Label layoutX="435.0" layoutY="465.0" prefHeight="18.0" prefWidth="118.0" text="Port:" AnchorPane.leftAnchor="439.0" />
-      <TextField fx:id="txtPort" layoutX="599.0" layoutY="461.0" prefWidth="200.0" />
-     <Label alignment="CENTER" layoutY="185.0" prefHeight="114.0" prefWidth="1280.0" styleClass="title" text="LOGIN SERVER" />
-      <Label layoutX="439.0" layoutY="404.0" prefHeight="18.0" prefWidth="142.0" text="IP Address:" AnchorPane.leftAnchor="439.0" />
-      <TextField fx:id="txtIP" layoutX="598.0" layoutY="400.0" prefWidth="200.0" />
-      <Button layoutX="590.0" layoutY="546.0" onAction="#clickEnterButton" prefWidth="100.0" text="Enter" />
-      <Label alignment="CENTER" layoutX="391.0" layoutY="325.0" prefHeight="32.0" prefWidth="498.0" text="Enter Server IP Address And Port" />
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ClientIPFrameController">
+      <TextField fx:id="txtPort" layoutX="635.0" layoutY="482.0" prefHeight="42.0" prefWidth="227.0" />
+     <Label alignment="CENTER" layoutX="373.0" layoutY="146.0" prefHeight="114.0" prefWidth="577.0" styleClass="title" text="LOGIN SERVER" />
+      <TextField fx:id="txtIP" layoutX="635.0" layoutY="377.0" prefHeight="42.0" prefWidth="227.0" />
+      <Button layoutX="612.0" layoutY="615.0" onAction="#clickEnterButton" prefWidth="100.0" text="Enter" />
+      <Label alignment="CENTER" layoutX="467.0" layoutY="292.0" prefHeight="32.0" prefWidth="389.0" text="Enter Server IP Address And Port" />
+   <Label layoutX="455.0" layoutY="384.0" text="IP Address:" />
+   <Label layoutX="455.0" layoutY="489.0" text="Port:" />
 </AnchorPane>

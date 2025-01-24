@@ -25,9 +25,6 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 2); /* Subtle shadow */
 }
 
-.chart-bar returns-series .chart-bar {
-    -fx-bar-fill: blue;
-}
 
 .button:hover {
     -fx-background-color: #A7BEAE; /* Hover color */

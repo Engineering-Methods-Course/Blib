@@ -10,7 +10,6 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1084.0" prefWidth="1674.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ViewReportsFrameController">
    <children>
@@ -52,10 +51,6 @@
                  <NumberAxis side="LEFT" />
              </yAxis>
          </BarChart>
-      <Text layoutX="667.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Reports">
-         <font>
-            <Font size="43.0" />
-         </font>
-      </Text>
+      <Label layoutX="686.0" layoutY="21.0" styleClass="title" stylesheets="@MainFrame.css" text="REPORTS" />
    </children>
 </AnchorPane>

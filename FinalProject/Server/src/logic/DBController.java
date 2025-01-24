@@ -1883,7 +1883,9 @@ public class DBController {
         /*
          * This query selects all columns from the log table where the export date is between given times and the log type is borrowTime
          */
+
         try {
+
             String reportQuery = "SELECT * FROM monthly_report WHERE creation_date BETWEEN ? AND ? AND report_type = 'subscriberStatuses' AND  ready_for_export = 1";
             PreparedStatement statement = conn.prepareStatement(reportQuery);
             statement.setDate(1, startDate);

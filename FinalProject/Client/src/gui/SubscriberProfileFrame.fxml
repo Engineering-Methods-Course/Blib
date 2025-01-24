@@ -18,7 +18,7 @@
                 <TableColumn fx:id="bookNameColumn" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Book Name" />
                 <TableColumn fx:id="borrowDateColumn" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Borrow Date" />
                 <TableColumn fx:id="returnDateColumn" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Return Date" />
-                <TableColumn fx:id="extendButtonColumn" maxWidth="246.0" minWidth="246.0" prefWidth="246.0" text="Extend Options" />
+                <TableColumn fx:id="extendButtonColumn" maxWidth="246.0" minWidth="246.0" prefWidth="246.0" text="Extend Book" />
             </columns>
         </TableView>
 

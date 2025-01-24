@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="extendBorrowLibrarian" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@/gui/MainFrame.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.WatchProfileFrameController">
+<VBox fx:id="extendBorrowLibrarian" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@/gui/MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.WatchProfileFrameController">
    <Label alignment="CENTER" prefHeight="88.0" prefWidth="1677.0" styleClass="title" text="PROFILE">
       <font>
          <Font size="60.0" />
@@ -30,7 +30,7 @@
                 <TableColumn fx:id="bookNameColumn" maxWidth="417.0" minWidth="417.0" prefWidth="417.0" text="Book Name" />
                 <TableColumn fx:id="borrowDateColumn" maxWidth="280.0" minWidth="280.0" prefWidth="280.0" text="Borrow Date" />
                 <TableColumn fx:id="returnDateColumn" maxWidth="280.0" minWidth="280.0" prefWidth="280.0" text="Return Date" />
-                <TableColumn fx:id="extendButtonColumn" maxWidth="280.0" minWidth="280.0" prefWidth="280.0" text="Extend Options" />
+                <TableColumn fx:id="extendButtonColumn" maxWidth="280.0" minWidth="280.0" prefWidth="280.0" text="Handle Book" />
             </columns>
         </TableView>
 

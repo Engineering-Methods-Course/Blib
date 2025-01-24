@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="allSubscribersFrame" maxHeight="1087.0" maxWidth="1677.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ViewAllSubscribersFrameController">
+<AnchorPane fx:id="allSubscribersFrame" maxHeight="1087.0" maxWidth="1677.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.ViewAllSubscribersFrameController">
     <!-- Title for All Subscribers -->
-    <Label alignment="CENTER" layoutX="535.0" layoutY="14.0" prefHeight="112.0" prefWidth="573.0" styleClass="title" text="ALL SUBSCRIBERS" />
+    <Label alignment="CENTER" layoutX="535.0" layoutY="14.0" prefHeight="112.0" prefWidth="573.0" styleClass="title" text="SUBSCRIBERS LIST" />
       <Label layoutX="39.0" layoutY="142.0" text="Search by ID:" />
       <TextField fx:id="filterTextField" layoutX="202.0" layoutY="137.0" prefWidth="150.0" />
       <Button fx:id="filterButton" layoutX="383.0" layoutY="136.0" onAction="#onFilterButtonClicked" text="Search" />
@@ -21,11 +21,11 @@
           <!-- TableView to display subscribers -->
     <TableView fx:id="subscribersTable" layoutX="32.0" layoutY="204.0" prefHeight="675.0" prefWidth="1611.0">
         <columns>
-            <TableColumn fx:id="idColumn" maxWidth="200.0" minWidth="154.66665649414062" prefWidth="154.66665649414062"  text="ID" />
+            <TableColumn fx:id="idColumn" maxWidth="200.0" minWidth="154.66665649414062" prefWidth="154.66665649414062" text="ID" />
             <TableColumn fx:id="firstNameColumn" maxWidth="245.33334350585938" minWidth="200.0" prefWidth="202.0" text="First Name" />
-            <TableColumn fx:id="lastNameColumn" maxWidth="244.0" minWidth="200.0" prefWidth="205.33331298828125"  text="Last Name" />
-            <TableColumn fx:id="phoneNumberColumn" maxWidth="238.66668701171875" minWidth="200.0" prefWidth="207.0"  text="Phone Number" />
-            <TableColumn fx:id="emailColumn" maxWidth="438.66668701171875" minWidth="292.0" prefWidth="392.3333740234375"  text="Email" />
+            <TableColumn fx:id="lastNameColumn" maxWidth="244.0" minWidth="200.0" prefWidth="205.33331298828125" text="Last Name" />
+            <TableColumn fx:id="phoneNumberColumn" maxWidth="238.66668701171875" minWidth="200.0" prefWidth="207.0" text="Phone Number" />
+            <TableColumn fx:id="emailColumn" maxWidth="438.66668701171875" minWidth="292.0" prefWidth="392.3333740234375" text="Email" />
             <TableColumn fx:id="statusColumn" maxWidth="340.0" minWidth="200.0" prefWidth="208.6666259765625" text="Account Frozen" />
 
                   <!-- Adding the "Watch Profile" button column -->

@@ -131,6 +131,12 @@ public class SubscriberProfileFrameController
         // Send the message to the server
         ClientGUIController.chat.sendToServer(message);
 
+        // reload the borrows table
+        borrowsTable.getItems().clear();
+        ClientServerMessage reloadMessage = new ClientServerMessage(210, Subscriber.getLocalSubscriber().getID());
+        ClientGUIController.chat.sendToServer(reloadMessage);
+
+
     }
 
     /**
