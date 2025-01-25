@@ -5,6 +5,7 @@ import common.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.util.StringConverter;
 
 import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
@@ -148,34 +149,52 @@ public class HandleBorrowedBookFrameController
         });
     }
 
-    /**
-     * A helper method to initialize the DatePicker
-     */
     private void initializeDatePicker()
     {
-        try
+        // gets the current return date from the label and parse it to LocalDate
+        String currentReturnDateText = currentReturnDateLabel.getText();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd][yyyy-M-d][yyyy-M-dd][yyyy-MM-d]");
+        LocalDate currentReturnDate = LocalDate.parse(currentReturnDateText, formatter);
+
+        //gets the current date
+        LocalDate currentDate = LocalDate.now();
+
+        // sets the minimum date on the DatePicker
+        newReturnDatePicker.setDayCellFactory(picker -> new DateCell()
         {
-            // gets the current return date from the label and parse it to LocalDate
-            String currentReturnDateText = currentReturnDateLabel.getText();
-            LocalDate currentReturnDate = LocalDate.parse(currentReturnDateText);
-
-            //gets the current date
-            LocalDate currentDate = LocalDate.now();
-
-            // sets the minimum date on the DatePicker
-            newReturnDatePicker.setDayCellFactory(picker -> new DateCell()
+            @Override
+            public void updateItem(LocalDate date, boolean empty)
             {
-                @Override
-                public void updateItem(LocalDate date, boolean empty)
-                {
-                    super.updateItem(date, empty);
-                    setDisable(empty || date.isBefore(currentReturnDate.isAfter(currentDate) ? currentReturnDate : currentDate));
+                super.updateItem(date, empty);
+                setDisable(empty || date.isBefore(currentReturnDate.isAfter(currentDate) ? currentReturnDate : currentDate));
+            }
+        });
+
+        // sets the date format
+        newReturnDatePicker.setConverter(new StringConverter<LocalDate>() {
+            // the date format
+            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return formatter.format(date);
+                } else {
+                    return "";
                 }
-            });
-        }
-        catch (Exception e)
-        {
-            showAlert(Alert.AlertType.WARNING, "Invalid date", "Please enter a valid date");
-        }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, formatter);
+                } else {
+                    return null;
+                }
+            }
+        });
+
+        //sets the initial date as the return date or the current date the latter of them
+        newReturnDatePicker.setValue(currentReturnDate.isAfter(currentDate) ? currentReturnDate : currentDate);
     }
 }

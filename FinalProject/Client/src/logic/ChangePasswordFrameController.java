@@ -134,6 +134,11 @@ public class ChangePasswordFrameController
         {
             showErrorListenField(newPassField, lblNewPasswordError, "Password must be at least 8 characters long.");
         }
+        // checks if the password matches the requirements
+        else if (!newPassword.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"))
+        {
+            showErrorListenField(newPassField, lblNewPasswordError, "Password must have a Capital letter, lower case letter, numbers and a special character.");
+        }
         // reset the error state
         else
         {
@@ -157,6 +162,11 @@ public class ChangePasswordFrameController
         else if (!confirmPassword.equals(newPassField.getText()))
         {
             showErrorListenField(confirmPassField, lblConfirmError, "Passwords do not match.");
+        }
+        // checks if the password matches the requirements
+        else if (!confirmPassword.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"))
+        {
+            showErrorListenField(confirmPassField, lblNewPasswordError, "Password must have a Capital letter, lower case letter, numbers and a special character.");
         }
         // reset the error state
         else

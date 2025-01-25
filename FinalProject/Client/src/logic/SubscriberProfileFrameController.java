@@ -5,19 +5,16 @@ import common.BorrowedBook;
 import common.ClientServerMessage;
 import common.Subscriber;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
 
-import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import static client.ClientGUIController.loadFrameIntoPane;
 import static client.ClientGUIController.showAlert;
 
 public class SubscriberProfileFrameController
@@ -108,6 +105,37 @@ public class SubscriberProfileFrameController
             borrowedBook.setExpectedReturnDate(addDay(borrowedBook.getExpectedReturnDate()));
             borrowedBook.setBorrowDate(addDay(borrowedBook.getBorrowDate()));
 
+
+            /// //////////////////////////  not working    ////////////////////////////////
+            // Checks if the return date is today or has passed and if so sets the row to red
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd][yyyy-M-dd][yyyy-M-d]");
+            LocalDate returnDate = LocalDate.parse(borrowedBook.getExpectedReturnDate(), formatter);
+            if (returnDate.isBefore(LocalDate.now()) || returnDate.isEqual(LocalDate.now()))
+            {
+                // Set the row to red
+                borrowsTable.setRowFactory(tv -> new TableRow<BorrowedBook>()
+                {
+                    @Override
+                    protected void updateItem(BorrowedBook item, boolean empty)
+                    {
+                        super.updateItem(item, empty);
+                        if (item == null || empty)
+                        {
+                            setStyle("");
+                        }
+                        else if (returnDate.isBefore(LocalDate.now()))
+                        {
+                            setStyle("-fx-text-fill: red;");
+                        }
+                        else
+                        {
+                            setStyle("");
+                        }
+                    }
+                });
+            }
+            /// //////////////////////////  not working    ////////////////////////////////
+
             // Adds the borrowed book to the table
             borrowsTable.getItems().add(borrowedBook);
         }
@@ -135,8 +163,6 @@ public class SubscriberProfileFrameController
         borrowsTable.getItems().clear();
         ClientServerMessage reloadMessage = new ClientServerMessage(210, Subscriber.getLocalSubscriber().getID());
         ClientGUIController.chat.sendToServer(reloadMessage);
-
-
     }
 
     /**
