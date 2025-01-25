@@ -5,15 +5,21 @@ import common.BorrowedBook;
 import common.ClientServerMessage;
 import common.Subscriber;
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Observable;
 
 import static client.ClientGUIController.showAlert;
 
@@ -96,51 +102,44 @@ public class SubscriberProfileFrameController
      *
      * @param borrowedBooks The list of borrowed books
      */
-    public void loadBorrowsTable(ArrayList<BorrowedBook> borrowedBooks)
-    {
+    public void loadBorrowsTable(ArrayList<BorrowedBook> borrowedBooks) {
         // Adds the borrowed books to the table
-        for (BorrowedBook borrowedBook : borrowedBooks)
-        {
+        for (BorrowedBook borrowedBook : borrowedBooks) {
             // Adds a day to the return date and borrow date
             borrowedBook.setExpectedReturnDate(addDay(borrowedBook.getExpectedReturnDate()));
             borrowedBook.setBorrowDate(addDay(borrowedBook.getBorrowDate()));
 
-
-            /// //////////////////////////  not working    ////////////////////////////////
-            // Checks if the return date is today or has passed and if so sets the row to red
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd][yyyy-M-dd][yyyy-M-d]");
-            LocalDate returnDate = LocalDate.parse(borrowedBook.getExpectedReturnDate(), formatter);
-            if (returnDate.isBefore(LocalDate.now()) || returnDate.isEqual(LocalDate.now()))
-            {
-                // Set the row to red
-                borrowsTable.setRowFactory(tv -> new TableRow<BorrowedBook>()
-                {
-                    @Override
-                    protected void updateItem(BorrowedBook item, boolean empty)
-                    {
-                        super.updateItem(item, empty);
-                        if (item == null || empty)
-                        {
-                            setStyle("");
-                        }
-                        else if (returnDate.isBefore(LocalDate.now()))
-                        {
-                            setStyle("-fx-text-fill: red;");
-                        }
-                        else
-                        {
-                            setStyle("");
-                        }
-                    }
-                });
-            }
-            /// //////////////////////////  not working    ////////////////////////////////
-
             // Adds the borrowed book to the table
             borrowsTable.getItems().add(borrowedBook);
         }
-    }
+        // Assuming you have this in your TableColumn setup
+        returnDateColumn.setCellFactory(column -> new TableCell<BorrowedBook, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
 
+                if (!empty && item != null) {
+                    // Parse the expected return date
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd][yyyy-M-dd][yyyy-M-d]");
+                    LocalDate returnDate = LocalDate.parse(item, formatter);
+
+                    // Set the text for the cell
+                    setText(item);
+
+                    // Apply the style if the date is before today
+                    if (returnDate.isBefore(LocalDate.now())) {
+                        setStyle("-fx-text-fill: #e51b1b;");
+                    } else {
+                        setStyle(""); // Reset style for cells that don't meet the condition
+                    }
+                } else {
+                    setText(null);
+                    setStyle(""); // Reset style for empty cells
+                }
+            }
+        });
+
+    }
     /**
      * This method handles the extendBorrowButton click event to send extension request
      */
