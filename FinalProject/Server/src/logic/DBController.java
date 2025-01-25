@@ -12,7 +12,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class DBController {
@@ -918,13 +917,43 @@ public class DBController {
     public ArrayList<String> editSubscriberDetails(ArrayList<String> messageContent) {
         ArrayList<String> response = new ArrayList<>();
         try {
-            conn.setAutoCommit(false);
+
 
             int subscriberId = Integer.parseInt(messageContent.get(0));
             String newSubscriberEmail = messageContent.get(1);
             String newSubscriberPhoneNumber = messageContent.get(2);
             String newSubscriberFirstName = messageContent.get(3);
             String newSubscriberLastName = messageContent.get(4);
+
+            /*
+             *Check if the email already exists for a different subscriber
+             */
+            String checkEmailQuery = "SELECT COUNT(*) FROM subscriber WHERE email = ? AND subscriber_id != ?";
+            PreparedStatement checkEmailStatement = conn.prepareStatement(checkEmailQuery);
+            checkEmailStatement.setString(1, newSubscriberEmail);
+            checkEmailStatement.setInt(2, subscriberId);
+            ResultSet checkEmailRs = checkEmailStatement.executeQuery();
+            if (checkEmailRs.next() && checkEmailRs.getInt(1) > 0) {
+                response.add("false");
+                response.add("Email already exists for a different subscriber");
+                return response;
+            }
+
+            /*
+             *Check if the phone number already exists for a different subscriber
+             */
+            String checkPhoneQuery = "SELECT COUNT(*) FROM subscriber WHERE phone_number = ? AND subscriber_id != ?";
+            PreparedStatement checkPhoneStatement = conn.prepareStatement(checkPhoneQuery);
+            checkPhoneStatement.setString(1, newSubscriberPhoneNumber);
+            checkPhoneStatement.setInt(2, subscriberId);
+            ResultSet checkPhoneRs = checkPhoneStatement.executeQuery();
+            if (checkPhoneRs.next() && checkPhoneRs.getInt(1) > 0) {
+                response.add("false");
+                response.add("Phone number already exists for a different subscriber");
+                return response;
+            }
+
+            conn.setAutoCommit(false);
 
             /*
              * The query updates the phone number and email of the subscriber where the id matches the given value
@@ -1116,6 +1145,46 @@ public class DBController {
                 throw new SQLException("Error: Getting new user ID");
             }
 
+
+            /*
+             * Check if the email already exists
+             */
+
+            String checkEmailQuery = "SELECT COUNT(*) FROM subscriber WHERE email = ?";
+            PreparedStatement checkEmailStatement = conn.prepareStatement(checkEmailQuery);
+            checkEmailStatement.setString(1, messageContent.get(4));
+            ResultSet checkEmailRs = checkEmailStatement.executeQuery();
+            if (checkEmailRs.next() && checkEmailRs.getInt(1) > 0) {
+                try {
+                    conn.rollback();
+                } catch (SQLException rollbackEx) {
+                    System.out.println("Error: Rolling back transaction" + rollbackEx);
+                }
+                response.add("false");
+                response.add("Email already exists");
+                return response;
+            }
+
+            /*
+             * Check if the phone number already exists
+             */
+
+            String checkPhoneQuery = "SELECT COUNT(*) FROM subscriber WHERE phone_number = ?";
+            PreparedStatement checkPhoneStatement = conn.prepareStatement(checkPhoneQuery);
+            checkPhoneStatement.setString(1, messageContent.get(3));
+            ResultSet checkPhoneRs = checkPhoneStatement.executeQuery();
+            if (checkPhoneRs.next() && checkPhoneRs.getInt(1) > 0) {
+                try {
+                    conn.rollback();
+                } catch (SQLException rollbackEx) {
+                    System.out.println("Error: Rolling back transaction" + rollbackEx);
+                }
+                response.add("false");
+                response.add("Phone number already exists");
+                return response;
+
+            }
+
             /*
              * Create a new subscriber record for the new subscriber
              */
@@ -1132,6 +1201,7 @@ public class DBController {
             /*
              * Commit the transaction
              */
+
             conn.commit();
 
             response.add("true");
@@ -2268,7 +2338,7 @@ public class DBController {
                 String scheduledDateQuery = "SELECT scheduled_date FROM tasks WHERE task_type = 'exportReports' AND executed = 0";
                 PreparedStatement scheduledDateStatement = conn.prepareStatement(scheduledDateQuery);
                 scheduledDateStatement.executeQuery();
-                if(scheduledDateStatement.getResultSet().next()) {
+                if (scheduledDateStatement.getResultSet().next()) {
                     scheduledDate = scheduledDateStatement.getResultSet().getDate("scheduled_date");
                     newScheduledDate = scheduledDate.toLocalDate().plusDays(1);
                 }
@@ -2617,6 +2687,7 @@ public class DBController {
 
     /**
      * This method remove book copy from the library
+     *
      * @param messageContent Array list containing the copy ID
      * @return Array list containing true if the book was removed successfully and false if not with the error message
      */
@@ -2688,7 +2759,7 @@ public class DBController {
             removeBookStatement.executeUpdate();
 
             /*
-            * freeze the account of the subscriber
+             * freeze the account of the subscriber
              */
 
             freezeAccount(subscriberId, "Book: " + bookName + " copy id: " + copyId + " has been lost");
@@ -2706,7 +2777,7 @@ public class DBController {
             addNewEntryToMonthlyReport("borrowTime", new ReportEntry(new java.util.Date(), "lost", bookName));
 
             /*
-                * Commit the transaction
+             * Commit the transaction
              */
 
             conn.commit();
