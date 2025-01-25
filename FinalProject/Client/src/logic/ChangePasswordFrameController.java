@@ -163,11 +163,6 @@ public class ChangePasswordFrameController
         {
             showErrorListenField(confirmPassField, lblConfirmError, "Passwords do not match.");
         }
-        // checks if the password matches the requirements
-        else if (!confirmPassword.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"))
-        {
-            showErrorListenField(confirmPassField, lblNewPasswordError, "Password must have a Capital letter, lower case letter, numbers and a special character.");
-        }
         // reset the error state
         else
         {

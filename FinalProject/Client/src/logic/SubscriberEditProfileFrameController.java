@@ -3,7 +3,6 @@ package logic;
 import client.ClientGUIController;
 import common.ClientServerMessage;
 import common.Subscriber;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -15,7 +14,6 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 
 import static client.ClientGUIController.*;
-import static client.ClientGUIController.loadFrameIntoPane;
 
 public class SubscriberEditProfileFrameController
 {
@@ -116,7 +114,6 @@ public class SubscriberEditProfileFrameController
         // Send the message to the server
         ClientGUIController.chat.sendToServer(message);
         loadFrameIntoPane((AnchorPane) editInfoFrame.getParent(),"/gui/SubscriberProfileFrame.fxml");
-
     }
 
     /**
