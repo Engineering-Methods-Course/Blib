@@ -4,6 +4,7 @@ import client.ClientGUIController;
 import common.BorrowedBook;
 import common.ClientServerMessage;
 import common.Subscriber;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -22,7 +23,7 @@ public class WatchProfileFrameController
 {
     // The FXML elements
     @FXML
-    public VBox extendBorrowLibrarian;
+    public VBox viewSubscriberProfileLibrarian;
     @FXML
     private Text txtFullName;
     @FXML
@@ -45,6 +46,9 @@ public class WatchProfileFrameController
     public TableColumn<BorrowedBook, String> returnDateColumn;
     @FXML
     public TableColumn<BorrowedBook, Button> extendButtonColumn;
+
+    private static String previousFrame;
+
 
     /**
      * Initializes the WatchProfileFrameController.
@@ -172,7 +176,7 @@ public class WatchProfileFrameController
             HandleBorrowedBookFrameController.setBorrowedBook(selectedBook); // Set the selected book in the Subscriber object, or use a different method
 
             // Navigate to the HandleBorrowedBookFrameController, passing the selected book
-            loadFrameIntoPane((AnchorPane) extendBorrowLibrarian.getParent(), "/gui/HandleBorrowedBookFrame.fxml");
+            loadFrameIntoPane((AnchorPane) viewSubscriberProfileLibrarian.getParent(), "/gui/HandleBorrowedBookFrame.fxml");
         }
         else
         {
@@ -217,4 +221,22 @@ public class WatchProfileFrameController
         // Returns the new date
         return year + "-" + month + "-" + day;
     }
+
+    public void goBack(ActionEvent actionEvent) {
+        try {
+            loadFrameIntoPane((AnchorPane) viewSubscriberProfileLibrarian.getParent(), previousFrame);
+        } catch (Exception e) {
+            System.out.println("Error loading SearchSubscriberFrame.fxml");
+        }
+    }
+
+    public static void setPreviousFrame(String frame) {
+        previousFrame = frame;
+    }
+
+    public static String getPreviousFrame() {
+        return previousFrame;
+    }
+
+
 }

@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.HandleBorrowedBookFrameController">
+<AnchorPane fx:id="handleBorrow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.HandleBorrowedBookFrameController">
    <children>
       <Button fx:id="markLostButton" layoutX="995.0" layoutY="830.0" onAction="#markLostButtonPressed" prefHeight="60.0" prefWidth="140.0" text="Mark Lost">
          <font>
@@ -121,7 +121,7 @@
          </graphic>
       </Label>
           <DatePicker fx:id="newReturnDatePicker" layoutX="935.0" layoutY="700.0" prefHeight="40.0" prefWidth="200.0" />
-      <Button fx:id="backButton" layoutX="495.0" layoutY="830.0" onAction="#extendButtonClicked" prefHeight="60.0" prefWidth="140.0" text="Back">
+      <Button fx:id="backButton" layoutX="495.0" layoutY="830.0" onAction="#goBack" prefHeight="60.0" prefWidth="140.0" text="Back">
          <font>
             <Font size="16.0" />
          </font>

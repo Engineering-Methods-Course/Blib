@@ -132,6 +132,7 @@ public class SearchSubscriberFrameController
                     try
                     {
                         // Load the WatchProfileFrame
+                        WatchProfileFrameController.setPreviousFrame("/gui/SearchSubscriberFrame.fxml");
                         loadFrameIntoPane((AnchorPane) searchSubscriberFrame.getParent(), "/gui/WatchProfileFrame.fxml");
                     }
                     catch (Exception e)

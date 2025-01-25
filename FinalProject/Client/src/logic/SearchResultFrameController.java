@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -33,10 +34,12 @@ public class SearchResultFrameController
     @FXML
     public VBox SearchResultFrame;
 
+
     //other class attributes
     private final ObservableList<List<String>> BookList = FXCollections.observableArrayList();
     private final Property<ObservableList<List<String>>> BookListProperty = new SimpleObjectProperty<>(BookList);
     private static ArrayList<Book> books;
+    public Button backButtom;
 
     /**
      * initializes the table with the books that were found
@@ -139,6 +142,21 @@ public class SearchResultFrameController
 
             // Set the local book
             BookInfoFrameController.setLocalBook(bk);
+        }
+    }
+
+    /**
+     * This method handles the back button click event to return to the previous page
+     *
+     * @param actionEvent the event of the click
+     */
+    public void goBack(ActionEvent actionEvent) {
+        try
+        {
+            loadFrameIntoPane((AnchorPane) SearchResultFrame.getParent(), "/gui/SearchPageFrame.fxml");
+        }
+        catch (Exception e) {
+            System.out.println("Failed to load the search page.");
         }
     }
 }

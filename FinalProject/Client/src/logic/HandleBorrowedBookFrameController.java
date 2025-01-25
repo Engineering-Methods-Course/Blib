@@ -3,15 +3,19 @@ package logic;
 import client.ClientGUIController;
 import common.*;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 
+import static client.ClientGUIController.loadFrameIntoPane;
 import static client.ClientGUIController.showAlert;
 
 public class HandleBorrowedBookFrameController
@@ -31,6 +35,8 @@ public class HandleBorrowedBookFrameController
     public Label currentReturnDateLabel;
     @FXML
     public DatePicker newReturnDatePicker;
+    @FXML
+    public AnchorPane handleBorrow;
 
     // Other attributes
     private static BorrowedBook borrowedBookCopy;
@@ -197,5 +203,9 @@ public class HandleBorrowedBookFrameController
 
         //sets the initial date as the return date or the current date the latter of them
         newReturnDatePicker.setValue(currentReturnDate.isAfter(currentDate) ? currentReturnDate : currentDate);
+    }
+
+    public void goBack(ActionEvent actionEvent) throws IOException {
+        loadFrameIntoPane((AnchorPane) handleBorrow.getParent(),"/gui/WatchProfileFrame.fxml");
     }
 }

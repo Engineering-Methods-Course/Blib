@@ -174,6 +174,7 @@ public class ViewAllSubscribersFrameController
         //wrapped in a try catch block so the button will not crash the program
         try
         {
+            WatchProfileFrameController.setPreviousFrame("/gui/ViewAllSubscribersFrame.fxml");
             loadFrameIntoPane((AnchorPane) allSubscribersFrame.getParent(), "/gui/WatchProfileFrame.fxml");
         }
         catch (Exception e)

@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="extendBorrowLibrarian" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.WatchProfileFrameController">
+<VBox fx:id="viewSubscriberProfileLibrarian" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.WatchProfileFrameController">
    <Label alignment="CENTER" prefHeight="88.0" prefWidth="1677.0" styleClass="title" text="PROFILE">
       <font>
          <Font size="60.0" />
@@ -170,7 +170,7 @@
             <children>
                <VBox alignment="CENTER" prefHeight="120.0" prefWidth="353.0">
                   <children>
-                     <Button mnemonicParsing="false" text="Back" />
+                     <Button mnemonicParsing="false" onAction="#goBack" text="Back" />
                   </children>
                </VBox>
             </children>
