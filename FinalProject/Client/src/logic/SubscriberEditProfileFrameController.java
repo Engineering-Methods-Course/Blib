@@ -3,6 +3,7 @@ package logic;
 import client.ClientGUIController;
 import common.ClientServerMessage;
 import common.Subscriber;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -72,20 +73,36 @@ public class SubscriberEditProfileFrameController
         // Validate that the first name and last name are not empty
         String firstName = txtFirstName.getText().trim();
         String lastName = txtLastName.getText().trim();
+        String phone = txtPhone.getText().trim();
+        String email = txtEmail.getText().trim();
 
         // Check if the first name and last name are empty and if so show an alert
-        if (firstName.isEmpty() || lastName.isEmpty())
+        if (firstName.isEmpty() || lastName.isEmpty() || phone.isEmpty() || email.isEmpty())
         {
             // Show an alert if either field is empty
-            showAlert(Alert.AlertType.WARNING, "Input Error", "First name and last name cannot be empty.");
+            showAlert(Alert.AlertType.WARNING, "Input Error", "Detail fields cannot be empty.");
+            return;
+        }
+
+        // Check if the phone number is in the correct format
+        if (!phone.matches("^0(50|52|53|54|58|2|3|4|8|9|7|56|59)\\d{7}$"))
+        {
+            showAlert(Alert.AlertType.WARNING, "Input Error", "Invalid phone number");
+            return;
+        }
+
+        // Check if the email is in the correct format
+        if (!email.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$"))
+        {
+            showAlert(Alert.AlertType.WARNING, "Input Error", "Invalid email format");
             return;
         }
 
         // Create a new ArrayList to store the updated subscriber details
         ArrayList<String> changedSubscriber = new ArrayList<>();
         changedSubscriber.add(String.valueOf(Subscriber.getLocalSubscriber().getID()));
-        changedSubscriber.add(txtPhone.getText());
-        changedSubscriber.add(txtEmail.getText());
+        changedSubscriber.add(phone);
+        changedSubscriber.add(email);
         changedSubscriber.add(firstName);
         changedSubscriber.add(lastName);
 
@@ -99,7 +116,8 @@ public class SubscriberEditProfileFrameController
         ClientGUIController.chat.sendToServer(message);
 
         // Navigate to the previous screen
-        loadFrameIntoPane((AnchorPane) editInfoFrame.getParent(), "/gui/SubscriberProfileFrame.fxml");
+        ActionEvent event = new ActionEvent();
+        navigateTo(event, "/gui/SubscriberProfileFrame.fxml", "/gui/MainFrame.css", "Profile Page");
     }
 
     /**
@@ -155,7 +173,7 @@ public class SubscriberEditProfileFrameController
                 showErrorListenField(txtPhone, lblPhoneError, "Phone number cannot be empty.");
             }
             // Match phone number starting with '05' and followed by 8 digits using regex
-            else if (!newValue.matches("^05\\d{8}$"))
+            else if (!newValue.matches("^0(50|52|53|54|58|2|3|4|8|9|7|56|59)\\d{7}$"))
             {
                 showErrorListenField(txtPhone, lblPhoneError, "Invalid phone number. It must start with '05' and be followed by 8 digits.");
             }

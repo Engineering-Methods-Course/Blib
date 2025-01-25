@@ -48,28 +48,8 @@ public class HandleBorrowedBookFrameController
         bookIdLabel.setText(String.valueOf(borrowedBookCopy.getCopyID()));
         currentReturnDateLabel.setText(borrowedBookCopy.getExpectedReturnDate());
 
-        // Get the current return date from the label and parse it to LocalDate
-        String currentReturnDateText = currentReturnDateLabel.getText();
-        try
-        {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-M-dd][yyyy-M-d][yyyy-MM-dd][yyyy-MM-d]");
-            LocalDate currentReturnDate = LocalDate.parse(currentReturnDateText, formatter);
-            // Set the minimum date on the DatePicker (restricting dates before the current return date)
-            newReturnDatePicker.setDayCellFactory(picker -> new DateCell()
-            {
-                @Override
-                public void updateItem(LocalDate date, boolean empty)
-                {
-                    super.updateItem(date, empty);
-                    // Disable dates before the current return date
-                    setDisable(empty || date.isBefore(currentReturnDate));
-                }
-            });
-        }
-        catch (Exception e)
-        {
-            showAlert(Alert.AlertType.WARNING, "Invalid date", "Please enter a valid date");
-        }
+        // Initialize the DatePicker
+        initializeDatePicker();
     }
 
     /**
@@ -166,5 +146,36 @@ public class HandleBorrowedBookFrameController
                 showAlert(Alert.AlertType.ERROR, "Error", "Unexpected response format from server.");
             }
         });
+    }
+
+    /**
+     * A helper method to initialize the DatePicker
+     */
+    private void initializeDatePicker()
+    {
+        try
+        {
+            // gets the current return date from the label and parse it to LocalDate
+            String currentReturnDateText = currentReturnDateLabel.getText();
+            LocalDate currentReturnDate = LocalDate.parse(currentReturnDateText);
+
+            //gets the current date
+            LocalDate currentDate = LocalDate.now();
+
+            // sets the minimum date on the DatePicker
+            newReturnDatePicker.setDayCellFactory(picker -> new DateCell()
+            {
+                @Override
+                public void updateItem(LocalDate date, boolean empty)
+                {
+                    super.updateItem(date, empty);
+                    setDisable(empty || date.isBefore(currentReturnDate.isAfter(currentDate) ? currentReturnDate : currentDate));
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            showAlert(Alert.AlertType.WARNING, "Invalid date", "Please enter a valid date");
+        }
     }
 }

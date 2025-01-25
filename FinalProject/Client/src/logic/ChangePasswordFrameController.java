@@ -87,11 +87,15 @@ public class ChangePasswordFrameController
             System.out.println("Password fields cannot be empty");
             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Password fields cannot be empty"));
         }
-        // checks if the new password is less than 6 characters
+        // checks if the new password matches the "confirm password" field
         else if (!newPassField.getText().equals(confirmPassField.getText()))
         {
             System.out.println("Passwords do not match");
             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Passwords do not match"));
+        }
+        else if(!newPassField.getText().matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"))
+        {
+            showAlert(Alert.AlertType.ERROR, "Error", "Password must be at least 8 characters long, have a Capital letter, lower case letter, numbers and a special character.");
         }
         else
         {
@@ -126,9 +130,9 @@ public class ChangePasswordFrameController
             showErrorListenField(newPassField, lblNewPasswordError, "New password cannot be empty.");
         }
         // Check if the new password is less than 6 characters
-        else if (newPassword.length() < 6)
+        else if (newPassword.trim().length() < 8)
         {
-            showErrorListenField(newPassField, lblNewPasswordError, "Password must be at least 6 characters long.");
+            showErrorListenField(newPassField, lblNewPasswordError, "Password must be at least 8 characters long.");
         }
         // reset the error state
         else

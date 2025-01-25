@@ -72,7 +72,7 @@ public class RegisterMemberFrameController
 
         // Phone field listener
         txtPhone.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (regexMatcher("^\\+?[0-9. ()-]{7,}$", newValue)) {
+            if (regexMatcher("^0(50|52|53|54|58|2|3|4|8|9|7|56|59)\\d{7}$", newValue)) {
                 showErrorListenField(txtPhone, lblPhoneError, "Invalid phone number format");
             } else {
                 resetErrorState(txtPhone, lblPhoneError);
@@ -130,7 +130,7 @@ public class RegisterMemberFrameController
         }
 
         // Validate phone format
-        if (regexMatcher("^\\+?[0-9. ()-]{7,}$", phone))
+        if (regexMatcher("^0(50|52|53|54|58|2|3|4|8|9|7|56|59)\\d{7}$", phone))
         {
             showAlert(Alert.AlertType.WARNING, "Invalid Phone Number", "Please enter a valid phone number.");
             return;
