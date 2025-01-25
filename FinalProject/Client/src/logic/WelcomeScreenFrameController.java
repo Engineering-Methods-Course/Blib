@@ -1,34 +1,41 @@
 package logic;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.util.Objects;
 
-public class WelcomeScreenFrameController {
-
+public class WelcomeScreenFrameController
+{
+    // The number of clicks on the image
     private int clickCount = 0;
 
+    /**
+     * handles the image click event and counts the number of clicks for the popup
+     */
     @FXML
-    private void handleImageClick(MouseEvent event) {
+    private void handleImageClick()
+    {
         clickCount++;
-        if (clickCount == 5) {
+        if (clickCount == 5)
+        {
             showPopup();
             clickCount = 0; // Reset the click count
         }
     }
 
-    private void showPopup() {
+    /**
+     * Shows a popup with an image and a close button.
+     * It's an Easter egg!
+     */
+    private void showPopup()
+    {
         Stage stage = new Stage();
         stage.initStyle(StageStyle.UNDECORATED); // Remove window decorations
 
@@ -43,7 +50,6 @@ public class WelcomeScreenFrameController {
         closeButton.setLayoutX(950); // Adjust the position as needed
         closeButton.setLayoutY(700); // Adjust the position as needed
         closeButton.setOnAction(e -> stage.close());
-
 
         // Create an AnchorPane and add the ImageView and Button
         AnchorPane pane = new AnchorPane(imageView, closeButton);

@@ -3,7 +3,6 @@ package logic;
 import client.ClientGUIController;
 import common.*;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -156,6 +155,9 @@ public class HandleBorrowedBookFrameController
         });
     }
 
+    /**
+     * This method initializes the DatePicker
+     */
     private void initializeDatePicker()
     {
         // gets the current return date from the label and parse it to LocalDate
@@ -178,24 +180,33 @@ public class HandleBorrowedBookFrameController
         });
 
         // sets the date format
-        newReturnDatePicker.setConverter(new StringConverter<LocalDate>() {
+        newReturnDatePicker.setConverter(new StringConverter<LocalDate>()
+        {
             // the date format
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
             @Override
-            public String toString(LocalDate date) {
-                if (date != null) {
+            public String toString(LocalDate date)
+            {
+                if (date != null)
+                {
                     return formatter.format(date);
-                } else {
+                }
+                else
+                {
                     return "";
                 }
             }
 
             @Override
-            public LocalDate fromString(String string) {
-                if (string != null && !string.isEmpty()) {
+            public LocalDate fromString(String string)
+            {
+                if (string != null && !string.isEmpty())
+                {
                     return LocalDate.parse(string, formatter);
-                } else {
+                }
+                else
+                {
                     return null;
                 }
             }
@@ -204,12 +215,13 @@ public class HandleBorrowedBookFrameController
         //sets the initial date as the return date or the current date the latter of them
         newReturnDatePicker.setValue(currentReturnDate.isAfter(currentDate) ? currentReturnDate : currentDate);
     }
+
     /**
      * This method goes back to the previous frame
      *
-     * @param actionEvent the event that triggered the method
      */
-    public void goBack(ActionEvent actionEvent) throws IOException {
-        loadFrameIntoPane((AnchorPane) handleBorrow.getParent(),"/gui/WatchProfileFrame.fxml");
+    public void goBack() throws IOException
+    {
+        loadFrameIntoPane((AnchorPane) handleBorrow.getParent(), "/gui/WatchProfileFrame.fxml");
     }
 }

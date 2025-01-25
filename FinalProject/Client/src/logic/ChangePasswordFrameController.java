@@ -93,7 +93,7 @@ public class ChangePasswordFrameController
             System.out.println("Passwords do not match");
             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Passwords do not match"));
         }
-        else if(!newPassField.getText().matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"))
+        else if (!newPassField.getText().matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"))
         {
             showAlert(Alert.AlertType.ERROR, "Error", "Must be at least 8 characters long, have a capital letter, have a lower case letter, have numbers and a special character.");
         }

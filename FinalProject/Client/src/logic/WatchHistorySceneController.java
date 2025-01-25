@@ -5,7 +5,6 @@ import common.ClientServerMessage;
 import common.Subscriber;
 import common.SubscriberHistory;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -29,8 +28,6 @@ public class WatchHistorySceneController
     @FXML
     public TableColumn<SubscriberHistory, String> descriptionColumn;
     @FXML
-    public Button backButton;
-    @FXML
     public TableView<SubscriberHistory> historyTable;
 
     /**
@@ -47,14 +44,17 @@ public class WatchHistorySceneController
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
         // Set a StringConverter to format the Date object
-        dateColumn.setCellFactory(column -> new TextFieldTableCell<>(new StringConverter<Date>() {
+        dateColumn.setCellFactory(column -> new TextFieldTableCell<>(new StringConverter<Date>()
+        {
             @Override
-            public String toString(Date date) {
+            public String toString(Date date)
+            {
                 return date != null ? formatter.format(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()) : "";
             }
 
             @Override
-            public Date fromString(String string) {
+            public Date fromString(String string)
+            {
                 return string != null && !string.isEmpty() ? Date.from(LocalDateTime.parse(string, formatter).atZone(ZoneId.systemDefault()).toInstant()) : null;
             }
         }));

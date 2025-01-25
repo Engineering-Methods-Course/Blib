@@ -45,45 +45,60 @@ public class RegisterMemberFrameController
     {
         // Username field listener
         txtUsername.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.isEmpty()) {
+            if (newValue.isEmpty())
+            {
                 showErrorListenField(txtUsername, lblUserNameError, "Username cannot be empty");
-            } else {
+            }
+            else
+            {
                 resetErrorState(txtUsername, lblUserNameError);
             }
         });
 
         // First Name field listener
         txtFirstName.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.isEmpty()) {
+            if (newValue.isEmpty())
+            {
                 showErrorListenField(txtFirstName, lblNameError, "First Name cannot be empty");
-            } else {
+            }
+            else
+            {
                 resetErrorState(txtFirstName, lblNameError);
             }
         });
 
         // Last Name field listener
         txtLastName.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.isEmpty()) {
+            if (newValue.isEmpty())
+            {
                 showErrorListenField(txtLastName, lblLastNameError, "Last Name cannot be empty");
-            } else {
+            }
+            else
+            {
                 resetErrorState(txtLastName, lblLastNameError);
             }
         });
 
         // Phone field listener
         txtPhone.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (regexMatcher("^0(50|52|53|54|58|2|3|4|8|9|7|56|59)\\d{7}$", newValue)) {
+            if (regexMatcher("^0(50|52|53|54|58|2|3|4|8|9|7|56|59)\\d{7}$", newValue))
+            {
                 showErrorListenField(txtPhone, lblPhoneError, "Invalid phone number format");
-            } else {
+            }
+            else
+            {
                 resetErrorState(txtPhone, lblPhoneError);
             }
         });
 
         // Email field listener
         txtEmail.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (regexMatcher("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", newValue)) {
+            if (regexMatcher("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", newValue))
+            {
                 showErrorListenField(txtEmail, lblEmailError, "Invalid email format");
-            } else {
+            }
+            else
+            {
                 resetErrorState(txtEmail, lblEmailError);
             }
         });

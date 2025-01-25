@@ -120,7 +120,6 @@ public class SearchPageFrameController
         descriptionSearch.setVisible(false);
 
 
-
         // Change the tooltip's text
         searchField.getTooltip().setText("Enter the genre of the book you are looking for.");
     }

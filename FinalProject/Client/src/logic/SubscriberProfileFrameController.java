@@ -169,7 +169,7 @@ public class SubscriberProfileFrameController
      * creates a ClientServerMessage object with code 212 for extend borrow request
      *
      * @param selectedBook The selected borrowed book
-     * @return The ClientServerMessage object
+     * @return             The ClientServerMessage object
      */
     private static ClientServerMessage getClientServerMessage(BorrowedBook selectedBook)
     {

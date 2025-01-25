@@ -4,7 +4,6 @@ import client.ClientGUIController;
 import common.BorrowedBook;
 import common.ClientServerMessage;
 import common.Subscriber;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -34,8 +33,6 @@ public class WatchProfileFrameController
     private Text txtEmail;
     @FXML
     private Text txtUserID;
-    @FXML
-    public Button btnBack;
     @FXML
     public TableView<BorrowedBook> borrowsTable;
     @FXML
@@ -111,7 +108,6 @@ public class WatchProfileFrameController
             }
         });
 
-
         // Sends a message to the server to get the user's borrowed books
         requestBorrowedBooks(Subscriber.getWatchProfileSubscriber().getID());
     }
@@ -166,7 +162,8 @@ public class WatchProfileFrameController
     /**
      * Handles the extendBorrowButton click event to extend the book borrowing period
      *
-     * @throws Exception If there is an issue with the navigation
+     * @param selectedBook The selected book to extend the borrow period for
+     * @throws IOException If an error occurs during navigation
      */
     public void HandleBorrowedBookButtonClicked(BorrowedBook selectedBook) throws IOException
     {
@@ -221,15 +218,18 @@ public class WatchProfileFrameController
         // Returns the new date
         return year + "-" + month + "-" + day;
     }
+
     /**
      * Handles the back button click event to navigate back to the previous frame
-     *
-     * @param actionEvent The action event
      */
-    public void goBack(ActionEvent actionEvent) {
-        try {
+    public void goBack()
+    {
+        try
+        {
             loadFrameIntoPane((AnchorPane) viewSubscriberProfileLibrarian.getParent(), previousFrame);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             System.out.println("Error loading SearchSubscriberFrame.fxml");
         }
     }
@@ -239,19 +239,8 @@ public class WatchProfileFrameController
      *
      * @param frame The previous frame
      */
-
-    public static void setPreviousFrame(String frame) {
+    public static void setPreviousFrame(String frame)
+    {
         previousFrame = frame;
     }
-
-    /**
-     * Gets the previous frame
-     *
-     * @return The previous frame
-     */
-    public static String getPreviousFrame() {
-        return previousFrame;
-    }
-
-
 }

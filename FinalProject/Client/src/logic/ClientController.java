@@ -12,7 +12,6 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-import static client.ClientGUIController.navigateTo;
 import static client.ClientGUIController.showAlert;
 
 public class ClientController extends AbstractClient
@@ -258,8 +257,8 @@ public class ClientController extends AbstractClient
                         //if content is instance of arraylist, pass it to updateSubscriberDetails and display a successful message
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
-                            ArrayList<String> newDetails = (ArrayList<String>) message.getMessageContent();
-                            if(newDetails.get(0).equals("true"))
+                            @SuppressWarnings("unchecked") ArrayList<String> newDetails = (ArrayList<String>) message.getMessageContent();
+                            if (newDetails.get(0).equals("true"))
                             {
                                 updateSubscriberDetails(newDetails);
                                 Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Update successful", "Subscriber details updated successfully"));
@@ -509,7 +508,7 @@ public class ClientController extends AbstractClient
                             }
                         }
                         break;
-                        // Server has closed its connection
+                    // Server has closed its connection
                     case 999:
                         Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Server closed", "Server has closed its connection for maintenance"));
                         break;

@@ -10,6 +10,9 @@ import javafx.util.Duration;
 
 public class CustomTooltip extends Tooltip
 {
+    /**
+     * Creates a new CustomTooltip with the given text.
+     */
     public CustomTooltip(String text)
     {
         super(text);
