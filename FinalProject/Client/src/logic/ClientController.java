@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import static client.ClientGUIController.navigateTo;
 import static client.ClientGUIController.showAlert;
 
 public class ClientController extends AbstractClient
@@ -257,9 +258,16 @@ public class ClientController extends AbstractClient
                         //if content is instance of arraylist, pass it to updateSubscriberDetails and display a successful message
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
-                            @SuppressWarnings("unchecked") ArrayList<String> newDetails = (ArrayList<String>) message.getMessageContent();
-                            updateSubscriberDetails(newDetails);
-                            Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Update successful", "Subscriber details updated successfully"));
+                            ArrayList<String> newDetails = (ArrayList<String>) message.getMessageContent();
+                            if(newDetails.get(0).equals("true"))
+                            {
+                                updateSubscriberDetails(newDetails);
+                                Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Update successful", "Subscriber details updated successfully"));
+                            }
+                            else
+                            {
+                                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Update error", newDetails.get(1)));
+                            }
                         }
                         break;
                     //Edit login details response

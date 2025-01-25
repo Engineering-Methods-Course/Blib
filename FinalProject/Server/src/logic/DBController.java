@@ -920,20 +920,23 @@ public class DBController {
 
 
             int subscriberId = Integer.parseInt(messageContent.get(0));
-            String newSubscriberEmail = messageContent.get(1);
-            String newSubscriberPhoneNumber = messageContent.get(2);
+            String newSubscriberEmail = messageContent.get(2);
+            String newSubscriberPhoneNumber = messageContent.get(1);
             String newSubscriberFirstName = messageContent.get(3);
             String newSubscriberLastName = messageContent.get(4);
+            System.out.println("Subscriber ID: " + subscriberId);
+            System.out.println("Subscriber Email: " + newSubscriberEmail);
+            System.out.println("Subscriber Phone Number: " + newSubscriberPhoneNumber);
 
             /*
              *Check if the email already exists for a different subscriber
              */
-            String checkEmailQuery = "SELECT COUNT(*) FROM subscriber WHERE email = ? AND subscriber_id != ?";
+            String checkEmailQuery = "SELECT * FROM subscriber WHERE email = ? AND subscriber_id != ?";
             PreparedStatement checkEmailStatement = conn.prepareStatement(checkEmailQuery);
             checkEmailStatement.setString(1, newSubscriberEmail);
             checkEmailStatement.setInt(2, subscriberId);
             ResultSet checkEmailRs = checkEmailStatement.executeQuery();
-            if (checkEmailRs.next() && checkEmailRs.getInt(1) > 0) {
+            if (checkEmailRs.next()) {
                 response.add("false");
                 response.add("Email already exists for a different subscriber");
                 return response;
@@ -942,12 +945,12 @@ public class DBController {
             /*
              *Check if the phone number already exists for a different subscriber
              */
-            String checkPhoneQuery = "SELECT COUNT(*) FROM subscriber WHERE phone_number = ? AND subscriber_id != ?";
+            String checkPhoneQuery = "SELECT * FROM subscriber WHERE phone_number = ? AND subscriber_id != ?";
             PreparedStatement checkPhoneStatement = conn.prepareStatement(checkPhoneQuery);
             checkPhoneStatement.setString(1, newSubscriberPhoneNumber);
             checkPhoneStatement.setInt(2, subscriberId);
             ResultSet checkPhoneRs = checkPhoneStatement.executeQuery();
-            if (checkPhoneRs.next() && checkPhoneRs.getInt(1) > 0) {
+            if (checkPhoneRs.next()) {
                 response.add("false");
                 response.add("Phone number already exists for a different subscriber");
                 return response;
@@ -960,15 +963,15 @@ public class DBController {
              */
             String subscriberInfoQuery = "UPDATE subscriber SET phone_number = ?, email = ?, first_name = ?, last_name = ? WHERE subscriber_id = ?";
             PreparedStatement subscriberInfoStatement = conn.prepareStatement(subscriberInfoQuery);
-            subscriberInfoStatement.setString(1, newSubscriberEmail);
-            subscriberInfoStatement.setString(2, newSubscriberPhoneNumber);
+            subscriberInfoStatement.setString(1, newSubscriberPhoneNumber);
+            subscriberInfoStatement.setString(2, newSubscriberEmail);
             subscriberInfoStatement.setString(3, newSubscriberFirstName);
             subscriberInfoStatement.setString(4, newSubscriberLastName);
             subscriberInfoStatement.setInt(5, subscriberId);
             subscriberInfoStatement.executeUpdate();
             response.add("true");
-            response.add(newSubscriberEmail);
             response.add(newSubscriberPhoneNumber);
+            response.add(newSubscriberEmail);
             response.add(newSubscriberFirstName);
             response.add(newSubscriberLastName);
 

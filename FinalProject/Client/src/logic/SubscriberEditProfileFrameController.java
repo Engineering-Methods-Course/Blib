@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 
 import static client.ClientGUIController.*;
+import static client.ClientGUIController.loadFrameIntoPane;
 
 public class SubscriberEditProfileFrameController
 {
@@ -25,6 +26,7 @@ public class SubscriberEditProfileFrameController
     public TextField txtFirstName;
     @FXML
     public VBox editInfoFrame;
+    public AnchorPane subscribereditdetails;
     @FXML
     private TextField txtPhone;
     @FXML
@@ -114,10 +116,8 @@ public class SubscriberEditProfileFrameController
 
         // Send the message to the server
         ClientGUIController.chat.sendToServer(message);
+        loadFrameIntoPane((AnchorPane) subscribereditdetails.getParent(),"/gui/SubscriberProfileFrame.fxml");
 
-        // Navigate to the previous screen
-        ActionEvent event = new ActionEvent();
-        navigateTo(event, "/gui/SubscriberProfileFrame.fxml", "/gui/MainFrame.css", "Profile Page");
     }
 
     /**
