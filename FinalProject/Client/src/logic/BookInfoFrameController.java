@@ -66,7 +66,8 @@ public class BookInfoFrameController
         }
 
         //if the user that views the book is subscriber allow him to view order button, other than him hide it
-        if ((Librarian.getLocalLibrarian() != null && !Availability.get(0).equals("true")) || (Subscriber.getLocalSubscriber() == null && Librarian.getLocalLibrarian() == null))
+        System.out.println(Availability.get(0));
+        if (Librarian.getLocalLibrarian() != null || Subscriber.getLocalSubscriber() == null || Availability.get(0).equals("true"))
         {
             orderBookButton.setDisable(true);
             orderBookButton.setVisible(false);
