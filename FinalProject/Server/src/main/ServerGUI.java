@@ -48,7 +48,7 @@ public class ServerGUI extends Application {
         Stage primaryStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
 
-        Pane root = loader.load(ServerGUI.class.getResource("/gui/ServerMonitorFrame.fxml").openStream());
+        Pane root = loader.load(Objects.requireNonNull(ServerGUI.class.getResource("/gui/ServerMonitorFrame.fxml")).openStream());
         ServerMonitorFrameController serverMonitorController = loader.getController();
 
         Scene scene = new Scene(root);
