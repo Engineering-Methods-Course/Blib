@@ -2706,13 +2706,13 @@ public class DBController {
             int copyId = Integer.parseInt(messageContent.get(1));
 
             /*
-             *Turn off auto-commit
+             * Turn off auto-commit
              */
 
             conn.setAutoCommit(false);
 
             /*
-             *Update borrow table
+             * Update borrow table
              */
 
             String updateBorrowQuery = "UPDATE borrow SET status = 'lost', return_date = NOW() WHERE subscriber_id = ? AND copy_id = ?";
@@ -2727,7 +2727,7 @@ public class DBController {
             }
 
             /*
-             *Get the book name
+             * Get the book name
              */
 
             String getBookNameQuery = "SELECT name FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
@@ -2740,7 +2740,7 @@ public class DBController {
             }
 
             /*
-             *Edit number of books in the book table
+             * Edit number of books in the book table
              */
 
             String editBookQuery = "UPDATE book SET copies = copies - 1, borrowed_copies = borrowed_copies - 1 WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
@@ -2749,16 +2749,16 @@ public class DBController {
             editBookStatement.executeUpdate();
 
             /*
-             *Remove the reference to the copy_id in the borrow table
+             * Remove the reference to the copy_id in the borrow table
              */
 
-            String removeBorrowReferenceQuery = "DELETE FROM borrow WHERE copy_id = ?";
+            String removeBorrowReferenceQuery = "UPDATE borrow SET copy_id = NULL WHERE copy_id = ?";
             PreparedStatement removeBorrowReferenceStatement = conn.prepareStatement(removeBorrowReferenceQuery);
             removeBorrowReferenceStatement.setInt(1, copyId);
             removeBorrowReferenceStatement.executeUpdate();
 
             /*
-             *Remove the book from the library
+             * Remove the book from the library
              */
 
             String removeBookQuery = "DELETE FROM book_copy WHERE copy_id = ?";
@@ -2767,19 +2767,19 @@ public class DBController {
             removeBookStatement.executeUpdate();
 
             /*
-             * freeze the account of the subscriber
+             * Freeze the account of the subscriber
              */
 
             freezeAccount(subscriberId, "Book: " + bookName + " copy id: " + copyId + " has been lost");
 
             /*
-             *Update subscriber history
+             * Update subscriber history
              */
 
             updateHistory(subscriberId, "lost", "Book: " + bookName + " copy id: " + copyId + " has been lost");
 
             /*
-             *Add the new entry to the monthly report
+             * Add the new entry to the monthly report
              */
 
             addNewEntryToMonthlyReport("borrowTime", new ReportEntry(new java.util.Date(), "lost", bookName));

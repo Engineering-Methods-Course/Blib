@@ -124,26 +124,51 @@ public class ServerMonitorFrameController {
         index--;
     }
 
+    /**
+     * Inner class to redirect System.out and System.err to the console
+     */
     public static class Console extends OutputStream {
         private final TextArea console;
         private final StringBuilder buffer = new StringBuilder();
 
+        /**
+         * Constructor for the Console class
+         *
+         * @param console The TextArea to redirect the output to
+         */
         public Console(TextArea console) {
             this.console = console;
         }
 
+        /**
+         * Writes the output to the console
+         *
+         * @param b The byte to write
+         * @throws IOException If there is an issue writing the byte
+         */
         @Override
         public void write(int b) throws IOException {
             buffer.append((char) b);
             updateConsole();
         }
 
+        /**
+         * Writes the output to the console
+         *
+         * @param b   The byte array to write
+         * @param off The offset to start writing
+         * @param len The length of the byte array
+         * @throws IOException If there is an issue writing the byte
+         */
         @Override
         public void write(byte[] b, int off, int len) throws IOException {
             buffer.append(new String(b, off, len));
             updateConsole();
         }
 
+        /**
+         * Updates the console with the output
+         */
         private void updateConsole() {
             Platform.runLater(() -> {
                 console.appendText(buffer.toString());

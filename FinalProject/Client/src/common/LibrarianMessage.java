@@ -8,10 +8,10 @@ public class LibrarianMessage implements Serializable
     private String content;
 
     /**
-     * Constructor for the LibrarianMessage class.
+     * Constructor for the LibrarianMessage class
      *
-     * @param date    The date of the message.
-     * @param content The content of the message.
+     * @param date    the date of the message
+     * @param content the content of the message
      */
     public LibrarianMessage(String date, String content)
     {
@@ -20,19 +20,18 @@ public class LibrarianMessage implements Serializable
     }
 
     /**
-     * Gets the date of the message.
+     * Returns the date of the message
      *
-     * @return The date of the message.
+     * @return the date of the message
      */
     public String getDate()
     {
         return date;
     }
-
     /**
-     * Gets the content of the message.
+     * Returns the content of the message
      *
-     * @return The content of the message.
+     * @return the content of the message
      */
     public String getContent()
     {
