@@ -1,6 +1,6 @@
 package logic;
 
-import client.ClientGUIController;
+import main.ClientGUIController;
 import common.ClientServerMessage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -10,7 +10,7 @@ import javafx.scene.control.Tooltip;
 
 import java.util.ArrayList;
 
-import static client.ClientGUIController.*;
+import static main.ClientGUIController.*;
 
 public class RegisterMemberFrameController
 {

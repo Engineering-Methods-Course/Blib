@@ -1,6 +1,6 @@
 package logic;
 
-import client.ClientGUIController;
+import main.ClientGUIController;
 import common.ClientServerMessage;
 import common.Librarian;
 import common.Subscriber;
@@ -10,7 +10,7 @@ import javafx.scene.control.*;
 
 import java.util.ArrayList;
 
-import static client.ClientGUIController.*;
+import static main.ClientGUIController.*;
 
 public class UserLoginFrameController
 {

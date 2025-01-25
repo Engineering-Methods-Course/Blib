@@ -1,6 +1,6 @@
 package logic;
 
-import client.ClientGUIController;
+import main.ClientGUIController;
 import common.Book;
 import common.ClientServerMessage;
 import javafx.beans.property.Property;
@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.List;
 
-import static client.ClientGUIController.loadFrameIntoPane;
+import static main.ClientGUIController.loadFrameIntoPane;
 
 public class SearchResultFrameController
 {

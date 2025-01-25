@@ -1,6 +1,6 @@
 package logic;
 
-import client.ClientGUIController;
+import main.ClientGUIController;
 import common.ClientServerMessage;
 import common.MonthlyReport;
 import common.ReportEntry;

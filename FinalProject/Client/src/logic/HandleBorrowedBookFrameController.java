@@ -1,6 +1,6 @@
 package logic;
 
-import client.ClientGUIController;
+import main.ClientGUIController;
 import common.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 
-import static client.ClientGUIController.loadFrameIntoPane;
-import static client.ClientGUIController.showAlert;
+import static main.ClientGUIController.loadFrameIntoPane;
+import static main.ClientGUIController.showAlert;
 
 public class HandleBorrowedBookFrameController
 {

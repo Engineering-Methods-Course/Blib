@@ -1,6 +1,6 @@
 package logic;
 
-import client.ClientGUIController;
+import main.ClientGUIController;
 import common.Book;
 import common.ClientServerMessage;
 import common.Librarian;
@@ -13,7 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
 
-import static client.ClientGUIController.loadFrameIntoPane;
+import static main.ClientGUIController.loadFrameIntoPane;
 
 public class BookInfoFrameController
 {

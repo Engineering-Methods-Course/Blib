@@ -1,7 +1,7 @@
 package logic;
 
-import client.ChatClient;
-import client.ClientGUIController;
+import main.ChatClient;
+import main.ClientGUIController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
-import static client.ClientGUIController.navigateTo;
+import static main.ClientGUIController.navigateTo;
 
 public class ClientIPFrameController
 {

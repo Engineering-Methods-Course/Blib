@@ -1,6 +1,6 @@
 package logic;
 
-import client.ClientGUIController;
+import main.ClientGUIController;
 import common.BorrowedBook;
 import common.ClientServerMessage;
 import common.Subscriber;
@@ -15,8 +15,8 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static client.ClientGUIController.loadFrameIntoPane;
-import static client.ClientGUIController.showAlert;
+import static main.ClientGUIController.loadFrameIntoPane;
+import static main.ClientGUIController.showAlert;
 
 public class WatchProfileFrameController
 {

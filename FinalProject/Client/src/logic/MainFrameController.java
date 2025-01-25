@@ -1,6 +1,6 @@
 package logic;
 
-import client.ClientGUIController;
+import main.ClientGUIController;
 import common.ClientServerMessage;
 import common.Librarian;
 import common.Subscriber;
@@ -14,8 +14,8 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
-import static client.ClientGUIController.navigateTo;
-import static client.ClientGUIController.loadFrameIntoPane;
+import static main.ClientGUIController.navigateTo;
+import static main.ClientGUIController.loadFrameIntoPane;
 
 public class MainFrameController
 {

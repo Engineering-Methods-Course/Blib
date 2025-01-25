@@ -12,7 +12,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-import static client.ClientGUIController.showAlert;
+import static main.ClientGUIController.showAlert;
 
 public class ClientController extends AbstractClient
 {

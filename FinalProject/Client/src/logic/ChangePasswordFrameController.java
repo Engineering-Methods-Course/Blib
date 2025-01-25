@@ -1,6 +1,6 @@
 package logic;
 
-import client.ClientGUIController;
+import main.ClientGUIController;
 import common.ClientServerMessage;
 import common.Subscriber;
 import javafx.application.Platform;
@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 
-import static client.ClientGUIController.*;
+import static main.ClientGUIController.*;
 
 public class ChangePasswordFrameController
 {

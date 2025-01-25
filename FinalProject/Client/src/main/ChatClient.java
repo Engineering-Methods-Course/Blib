@@ -1,4 +1,4 @@
-package client;
+package main;
 
 import common.ChatIF;
 import common.ClientServerMessage;

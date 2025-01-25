@@ -1,27 +1,22 @@
 package logic;
 
-import client.ClientGUIController;
+import main.ClientGUIController;
 import common.BorrowedBook;
 import common.ClientServerMessage;
 import common.Subscriber;
 import javafx.application.Platform;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
 
-import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Observable;
 
-import static client.ClientGUIController.showAlert;
+import static main.ClientGUIController.showAlert;
 
 public class SubscriberProfileFrameController
 {

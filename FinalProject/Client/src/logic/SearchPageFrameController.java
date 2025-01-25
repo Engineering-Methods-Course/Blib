@@ -1,13 +1,13 @@
 package logic;
 
-import client.ClientGUIController;
+import main.ClientGUIController;
 import common.ClientServerMessage;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-import static client.ClientGUIController.loadFrameIntoPane;
+import static main.ClientGUIController.loadFrameIntoPane;
 
 public class SearchPageFrameController
 {
