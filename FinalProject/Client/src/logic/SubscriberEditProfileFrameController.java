@@ -26,7 +26,6 @@ public class SubscriberEditProfileFrameController
     public TextField txtFirstName;
     @FXML
     public VBox editInfoFrame;
-    public AnchorPane subscribereditdetails;
     @FXML
     private TextField txtPhone;
     @FXML
@@ -116,7 +115,7 @@ public class SubscriberEditProfileFrameController
 
         // Send the message to the server
         ClientGUIController.chat.sendToServer(message);
-        loadFrameIntoPane((AnchorPane) subscribereditdetails.getParent(),"/gui/SubscriberProfileFrame.fxml");
+        loadFrameIntoPane((AnchorPane) editInfoFrame.getParent(),"/gui/SubscriberProfileFrame.fxml");
 
     }
 
