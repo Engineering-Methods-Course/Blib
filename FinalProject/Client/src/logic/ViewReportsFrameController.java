@@ -22,8 +22,6 @@ public class ViewReportsFrameController
 {
     // The FXML elements
     @FXML
-    public ChoiceBox<String> reportChoiceBox;
-    @FXML
     public BarChart<String, Number> BorrowChart;
     @FXML
     public LineChart<String, Number> subscriberStatusesChart;
@@ -210,52 +208,30 @@ public class ViewReportsFrameController
             XYChart.Series<String, Number> lostSeries = new XYChart.Series<>();
             lostSeries.setName("Lost");
 
-            // Initialize the maximum value
-            int maxValue = 0;
-
             // Define the week formatter
             DateTimeFormatter weekFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-            // Map to store counts of each action per week
-            Map<String, Map<String, Integer>> weeklyCounts = new HashMap<>();
-
-            // Process the log entries and add the data points directly
-            for (ReportEntry entry : reportEntries)
-            {
-                // Convert the date to a LocalDate
-                LocalDate date = entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                String week = date.format(weekFormatter);
-
-                // Get the action type
-                String action = entry.getType();
-
-                // Initialize the week map if not present
-                weeklyCounts.putIfAbsent(week, new HashMap<>());
-                Map<String, Integer> actionCounts = weeklyCounts.get(week);
-
-                // Increment the count for the action
-                actionCounts.put(action, actionCounts.getOrDefault(action, 0) + 1);
-
-                // Update the maximum value
-                maxValue = Math.max(maxValue, actionCounts.get(action));
-            }
+            // Process the log entries and collect counts per week
+            Map<String, Map<String, Integer>> weeklyCounts = reportEntries.stream().collect(Collectors.groupingBy(
+                    entry -> entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(weekFormatter),
+                    Collectors.groupingBy(
+                            ReportEntry::getType,
+                            Collectors.summingInt(e -> 1)
+                    )
+            ));
 
             // Sort the weeks
             List<String> sortedWeeks = new ArrayList<>(weeklyCounts.keySet());
             sortedWeeks.sort(Comparator.comparing(week -> LocalDate.parse(week, weekFormatter)));
 
             // Add the data points to the series
-            for (String week : sortedWeeks)
-            {
-                // Get the action counts for the week
+            sortedWeeks.forEach(week -> {
                 Map<String, Integer> actionCounts = weeklyCounts.get(week);
-
-                // Add the data points to the series
                 borrowsSeries.getData().add(new XYChart.Data<>(week, actionCounts.getOrDefault("borrow", 0)));
                 returnsSeries.getData().add(new XYChart.Data<>(week, actionCounts.getOrDefault("return", 0)));
                 lateReturnsSeries.getData().add(new XYChart.Data<>(week, actionCounts.getOrDefault("late return", 0)));
                 lostSeries.getData().add(new XYChart.Data<>(week, actionCounts.getOrDefault("lost", 0)));
-            }
+            });
 
             // Configure the x-axis to handle week values
             CategoryAxis xAxis = (CategoryAxis) BorrowChart.getXAxis();
@@ -265,12 +241,10 @@ public class ViewReportsFrameController
             // Configure the y-axis
             NumberAxis yAxis = (NumberAxis) BorrowChart.getYAxis();
             yAxis.setLabel("Count of Actions");
-            yAxis.setAutoRanging(false);
-            yAxis.setTickUnit(1);
-            yAxis.setUpperBound(maxValue + 1);
+            yAxis.setAutoRanging(true);
 
             // Adds the new series to the bar chart
-            BorrowChart.getData().addAll(lateReturnsSeries, returnsSeries, borrowsSeries, lostSeries);
+            BorrowChart.getData().setAll(lateReturnsSeries, returnsSeries, borrowsSeries, lostSeries);
             BorrowChart.setTitle("Borrow Statuses Per Week");
         });
     }
@@ -282,59 +256,35 @@ public class ViewReportsFrameController
      */
     private void generateLineChart(ArrayList<ReportEntry> reportEntries)
     {
-        Platform.runLater(() -> { // Create new series for each account status
+        Platform.runLater(() -> {
+            // Create new series for each account status
             XYChart.Series<String, Number> frozenSeries = new XYChart.Series<>();
             frozenSeries.setName("Frozen");
             XYChart.Series<String, Number> activeSeries = new XYChart.Series<>();
             activeSeries.setName("Active");
 
-            // Initialize the maximum value
-            int maxValue = 0;
-
             // Define the week formatter
             DateTimeFormatter weekFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-            // Map to store counts of each status per week
-            Map<String, Map<String, Integer>> weeklyCounts = new HashMap<>();
-
-            // Process the log entries and add the data points directly
-            for (ReportEntry entry : reportEntries)
-            {
-                // Convert the date to a LocalDate
-                LocalDate date = entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                String week = date.format(weekFormatter);
-
-                // Get the action type
-                String action = entry.getType();
-
-                // Get the number of accounts from the description
-                int count = Integer.parseInt(entry.getDescription());
-
-                // Initialize the week map if not present
-                weeklyCounts.putIfAbsent(week, new HashMap<>());
-                Map<String, Integer> actionCounts = weeklyCounts.get(week);
-
-                // Set the count for the action
-                actionCounts.put(action, count);
-
-                // Update the maximum value
-                maxValue = Math.max(maxValue, actionCounts.get(action));
-            }
+            // Process the log entries and collect counts per week
+            Map<String, Map<String, Integer>> weeklyCounts = reportEntries.stream().collect(Collectors.groupingBy(
+                    entry -> entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(weekFormatter),
+                    Collectors.groupingBy(
+                            ReportEntry::getType,
+                            Collectors.summingInt(entry -> Integer.parseInt(entry.getDescription()))
+                    )
+            ));
 
             // Sort the weeks
             List<String> sortedWeeks = new ArrayList<>(weeklyCounts.keySet());
             sortedWeeks.sort(Comparator.comparing(week -> LocalDate.parse(week, weekFormatter)));
 
             // Add the data points to the series
-            for (String week : sortedWeeks)
-            {
-                // Get the action counts for the week
+            sortedWeeks.forEach(week -> {
                 Map<String, Integer> actionCounts = weeklyCounts.get(week);
-
-                // Add the data points to the series
                 frozenSeries.getData().add(new XYChart.Data<>(week, actionCounts.getOrDefault("frozen", 0)));
                 activeSeries.getData().add(new XYChart.Data<>(week, actionCounts.getOrDefault("active", 0)));
-            }
+            });
 
             // Create new axes
             CategoryAxis xAxis = new CategoryAxis();
