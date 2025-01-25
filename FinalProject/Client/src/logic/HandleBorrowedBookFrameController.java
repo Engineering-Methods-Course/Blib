@@ -5,6 +5,7 @@ import common.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class HandleBorrowedBookFrameController
     @FXML
     public Label subscriberIdLabel;
     @FXML
-    public Label bookNameLabel;
+    public Text bookNameLabel;
     @FXML
     public Label bookIdLabel;
     @FXML

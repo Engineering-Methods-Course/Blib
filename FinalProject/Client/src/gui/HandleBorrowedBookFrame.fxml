@@ -5,144 +5,127 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" spacing="20.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.HandleBorrowedBookFrameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.HandleBorrowedBookFrameController">
+   <children>
+      <Button fx:id="markLostButton" layoutX="995.0" layoutY="830.0" onAction="#markLostButtonPressed" prefHeight="60.0" prefWidth="140.0" text="Mark Lost">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
 
-     <!-- Main Content VBox (centered) -->
-     <VBox alignment="CENTER" prefHeight="1087.0" prefWidth="1677.0" spacing="20.0">
+                <!-- Extend Button (centered) -->
+          <Button fx:id="extendButton" layoutX="745.0" layoutY="830.0" onAction="#extendButtonClicked" prefHeight="60.0" prefWidth="140.0" text="Extend">
+              <font>
+                  <Font size="16.0" />
+              </font>
+          </Button>
+          <Label fx:id="currentReturnDateLabel" layoutX="935.0" layoutY="600.0" prefHeight="40.0" prefWidth="200.0" text="X/X/X">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
          <!-- Title: "Extend Borrow" -->
-         <Label alignment="TOP_CENTER" prefHeight="99.0" prefWidth="1678.0" styleClass="title" text="Extend Borrow" />
+         <Label alignment="TOP_CENTER" layoutX="490.0" layoutY="38.0" prefHeight="112.0" prefWidth="612.0" styleClass="title" text="Handle Borrow" />
+          <Label layoutX="495.0" layoutY="300.0" prefHeight="40.0" prefWidth="350.0" text="Subscriber Name:" textAlignment="CENTER">
+         <font>
+            <Font size="36.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/account.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
+          <Label fx:id="subscriberNameLabel" layoutX="935.0" layoutY="300.0" prefHeight="40.0" prefWidth="200.0" text="SubscriberName" textAlignment="CENTER">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
 
-         <!-- Subscriber Details -->
-         <VBox alignment="CENTER" spacing="10.0">
-             <Label prefHeight="50.0" prefWidth="350.0" text="Subscriber Name:" textAlignment="CENTER">
-            <font>
-               <Font size="36.0" />
-            </font>
-            <graphic>
-               <ImageView fitHeight="40.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../resources/account.png" />
-                  </image>
-               </ImageView>
-            </graphic>
-         </Label>
-             <Label fx:id="subscriberNameLabel" text="X" textAlignment="CENTER">
-            <font>
-               <Font size="24.0" />
-            </font>
-         </Label>
+                <Label layoutX="495.0" layoutY="200.0" prefHeight="40.0" prefWidth="350.0" text="Subscriber ID:">
+         <font>
+            <Font size="36.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/user%20id.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
+          <Label fx:id="subscriberIdLabel" layoutX="935.0" layoutY="200.0" prefHeight="40.0" prefWidth="200.0" text="100000">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+          <Label layoutX="495.0" layoutY="500.0" prefHeight="40.0" prefWidth="350.0" text="Book Name:" textAlignment="CENTER">
+         <font>
+            <Font size="36.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/icons8-book-50.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
+          <Label fx:id="bookIdLabel" layoutX="935.0" layoutY="400.0" prefHeight="40.0" prefWidth="200.0" text="BookID">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
 
-             <Label prefHeight="50.0" prefWidth="350.0" text="Subscriber ID:">
-            <font>
-               <Font size="36.0" />
-            </font>
-            <graphic>
-               <ImageView fitHeight="40.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../resources/user%20id.png" />
-                  </image>
-               </ImageView>
-            </graphic>
-         </Label>
-             <Label fx:id="subscriberIdLabel" text="X">
-            <font>
-               <Font size="24.0" />
-            </font>
-         </Label>
-         </VBox>
+                <Label layoutX="495.0" layoutY="400.0" prefHeight="50.0" prefWidth="350.0" text="Book ID:">
+         <font>
+            <Font size="36.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/book%20id.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
+          <Label layoutX="495.0" layoutY="600.0" prefHeight="40.0" prefWidth="350.0" text="Current Return Date:">
+         <font>
+            <Font size="36.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/date.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
 
-         <!-- Book Details -->
-         <VBox alignment="CENTER" prefHeight="98.0" prefWidth="524.0" spacing="10.0">
-             <Label prefHeight="50.0" prefWidth="350.0" text="Book Name:" textAlignment="CENTER">
-            <font>
-               <Font size="36.0" />
-            </font>
-            <graphic>
-               <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../resources/icons8-book-50.png" />
-                  </image>
-               </ImageView>
-            </graphic>
-         </Label>
-             <Label fx:id="bookNameLabel" text="X">
-            <font>
-               <Font size="24.0" />
-            </font>
-         </Label>
-
-             <Label prefHeight="50.0" prefWidth="350.0" text="Book ID:">
-            <font>
-               <Font size="36.0" />
-            </font>
-            <graphic>
-               <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../resources/book%20id.png" />
-                  </image>
-               </ImageView>
-            </graphic>
-         </Label>
-             <Label fx:id="bookIdLabel" text="X">
-            <font>
-               <Font size="24.0" />
-            </font>
-         </Label>
-         </VBox>
-
-         <!-- Current and New Return Date -->
-         <VBox alignment="CENTER" spacing="10.0">
-             <Label prefHeight="50.0" prefWidth="350.0" text="Current Return Date:">
-            <font>
-               <Font size="36.0" />
-            </font>
-            <graphic>
-               <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../resources/date.png" />
-                  </image>
-               </ImageView>
-            </graphic>
-         </Label>
-             <Label fx:id="currentReturnDateLabel" text="X/X/X">
-            <font>
-               <Font size="24.0" />
-            </font>
-         </Label>
-
-             <Label prefHeight="50.0" prefWidth="350.0" text="New Return Date:">
-            <font>
-               <Font size="36.0" />
-            </font>
-            <graphic>
-               <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../resources/date.png" />
-                  </image>
-               </ImageView>
-            </graphic>
-         </Label>
-             <DatePicker fx:id="newReturnDatePicker" />
-         </VBox>
-
-         <!-- Buttons: Back and Extend -->
-         <HBox alignment="CENTER" spacing="20.0">
-
-             <!-- Extend Button (centered) -->
-             <Button fx:id="extendButton" onAction="#extendButtonClicked" prefHeight="59.0" prefWidth="138.0" text="Extend">
-                 <font>
-                     <Font size="16.0" />
-                 </font>
-             </Button>
-         <Button fx:id="markLostButton" onAction="#markLostButtonPressed" prefHeight="59.0" prefWidth="138.0" text="Mark Lost">
-            <font>
-               <Font size="16.0" />
-            </font>
-         </Button>
-         </HBox>
-     </VBox>
-</VBox>
+                <Label layoutX="495.0" layoutY="700.0" prefHeight="40.0" prefWidth="350.0" text="New Return Date:">
+         <font>
+            <Font size="36.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/date.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
+          <DatePicker fx:id="newReturnDatePicker" layoutX="935.0" layoutY="700.0" prefHeight="40.0" prefWidth="200.0" />
+      <Button fx:id="backButton" layoutX="495.0" layoutY="830.0" onAction="#extendButtonClicked" prefHeight="60.0" prefWidth="140.0" text="Back">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Text fx:id="bookNameLabel" layoutX="935.0" layoutY="529.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label" text="BookName" />
+   </children>
+</AnchorPane>
