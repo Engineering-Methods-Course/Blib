@@ -61,7 +61,7 @@ public class ChangePasswordFrameController
         });
 
         // Create the tooltips for the text fields
-        Tooltip newPassTooltip = new Tooltip("Enter a new password.\nMust be at least 8 characters long.\nMust have a Capital letter.\nMust have a lower case letter.\nMust have numbers and a special character.");
+        Tooltip newPassTooltip = new Tooltip("Enter a new password.\nMust be at least 8 characters long.\nMust have a capital letter.\nMust have a lower case letter.\nMust have numbers and a special character.");
         Tooltip confirmPassTooltip = new Tooltip("Re-enter the new password.");
 
         // Add Tooltips to the text boxes that will appear when the user hovers over them
@@ -95,7 +95,7 @@ public class ChangePasswordFrameController
         }
         else if(!newPassField.getText().matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"))
         {
-            showAlert(Alert.AlertType.ERROR, "Error", "Password must be at least 8 characters long, have a Capital letter, lower case letter, numbers and a special character.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Must be at least 8 characters long, have a capital letter, have a lower case letter, have numbers and a special character.");
         }
         else
         {
@@ -129,15 +129,10 @@ public class ChangePasswordFrameController
         {
             showErrorListenField(newPassField, lblNewPasswordError, "New password cannot be empty.");
         }
-        // Check if the new password is less than 6 characters
-        else if (newPassword.trim().length() < 8)
-        {
-            showErrorListenField(newPassField, lblNewPasswordError, "Password must be at least 8 characters long.");
-        }
         // checks if the password matches the requirements
         else if (!newPassword.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"))
         {
-            showErrorListenField(newPassField, lblNewPasswordError, "Password must have a Capital letter, lower case letter, numbers and a special character.");
+            showErrorListenField(newPassField, lblNewPasswordError, "Must be at least 8 characters long, have a capital letter, have a lower case letter, have numbers and a special character.");
         }
         // reset the error state
         else
