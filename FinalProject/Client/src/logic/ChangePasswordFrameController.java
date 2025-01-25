@@ -61,8 +61,8 @@ public class ChangePasswordFrameController
         });
 
         // Create the tooltips for the text fields
-        Tooltip newPassTooltip = new Tooltip("Enter a new password.\nMust be at least 8 characters long, have a Capital letter, lower case letter, numbers and a special character.");
-        Tooltip confirmPassTooltip = new Tooltip("Retype the new password.");
+        Tooltip newPassTooltip = new Tooltip("Enter a new password.\nMust be at least 8 characters long.\nMust have a Capital letter.\nMust have a lower case letter.\nMust have numbers and a special character.");
+        Tooltip confirmPassTooltip = new Tooltip("Re-enter the new password.");
 
         // Add Tooltips to the text boxes that will appear when the user hovers over them
         newPassField.setTooltip(newPassTooltip);

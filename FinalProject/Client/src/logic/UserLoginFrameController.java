@@ -54,8 +54,8 @@ public class UserLoginFrameController
         }
 
         // Create the tooltips for the text fields
-        Tooltip usernameTooltip = new CustomTooltip("Enter the username you got when registering.");
-        Tooltip passwordTooltip = new CustomTooltip("Enter the password you got when registering.\nIf it wasn't changed it's \"Aa123456\"");
+        Tooltip usernameTooltip = new CustomTooltip("Enter your username.");
+        Tooltip passwordTooltip = new CustomTooltip("Enter your password.\nDefaulted set as Aa123456");
 
         // Add Tooltips to the text boxes that will appear when the user hovers over them
         txtUsername.setTooltip(usernameTooltip);

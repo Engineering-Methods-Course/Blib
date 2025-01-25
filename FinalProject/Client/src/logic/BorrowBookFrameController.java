@@ -53,9 +53,9 @@ public class BorrowBookFrameController
         bookIDTextField.textProperty().addListener((observable, oldValue, newValue) -> validateBookID(newValue));
 
         // Creates Tooltips to the text boxes and date picker that will appear when the user hovers over them
-        Tooltip subscriberIDTooltip = new Tooltip("The Subscriber's unique ID number.\nshould be a 6 digit number (e.g., 100001).");
-        Tooltip bookIDTooltip = new Tooltip("The Book's unique copy number.\nshould appear on the book's barcode.");
-        Tooltip returnDateTooltip = new Tooltip("The date the book should be returned.\nUsually set for 2 weeks.");
+        Tooltip subscriberIDTooltip = new Tooltip("Enter the subscribers unique ID number (e.g., 100001).");
+        Tooltip bookIDTooltip = new Tooltip("Enter the books unique copy number.");
+        Tooltip returnDateTooltip = new Tooltip("Enter the return date of the book (Default is set for 2 weeks).");
 
         // Adds the tooltips to the text boxes and date picker
         subscriberIDTextField.setTooltip(subscriberIDTooltip);

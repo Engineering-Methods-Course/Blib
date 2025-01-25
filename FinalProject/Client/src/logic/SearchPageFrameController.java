@@ -103,9 +103,6 @@ public class SearchPageFrameController
         searchField.setVisible(true);
         categoriesDropDown.setVisible(false);
         descriptionSearch.setVisible(false);
-
-        // Change the tooltip's text
-        searchField.getTooltip().setText("Enter the name of the book you are looking for.");
     }
 
     /**
