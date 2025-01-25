@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
+import javafx.scene.layout.*;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -281,8 +282,7 @@ public class ViewReportsFrameController
      */
     private void generateLineChart(ArrayList<ReportEntry> reportEntries)
     {
-        Platform.runLater(() -> {
-            // Create new series for each action type
+        Platform.runLater(() -> { // Create new series for each account status
             XYChart.Series<String, Number> frozenSeries = new XYChart.Series<>();
             frozenSeries.setName("Frozen");
             XYChart.Series<String, Number> activeSeries = new XYChart.Series<>();
@@ -294,6 +294,9 @@ public class ViewReportsFrameController
             // Define the week formatter
             DateTimeFormatter weekFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+            // Map to store counts of each status per week
+            Map<String, Map<String, Integer>> weeklyCounts = new HashMap<>();
+
             // Process the log entries and add the data points directly
             for (ReportEntry entry : reportEntries)
             {
@@ -304,44 +307,66 @@ public class ViewReportsFrameController
                 // Get the action type
                 String action = entry.getType();
 
-                // Parse the count
+                // Get the number of accounts from the description
                 int count = Integer.parseInt(entry.getDescription());
 
-                // Add the data points to the respective series
-                if (action.equalsIgnoreCase("frozen"))
-                {
-                    frozenSeries.getData().add(new XYChart.Data<>(week, count));
-                }
-                else if (action.equalsIgnoreCase("active"))
-                {
-                    activeSeries.getData().add(new XYChart.Data<>(week, count));
-                }
+                // Initialize the week map if not present
+                weeklyCounts.putIfAbsent(week, new HashMap<>());
+                Map<String, Integer> actionCounts = weeklyCounts.get(week);
+
+                // Set the count for the action
+                actionCounts.put(action, count);
 
                 // Update the maximum value
-                maxValue = Math.max(maxValue, count);
+                maxValue = Math.max(maxValue, actionCounts.get(action));
             }
 
             // Sort the weeks
-            List<String> sortedWeeks = frozenSeries.getData().stream()
-                    .map(data -> data.getXValue())
-                    .sorted(Comparator.comparing(week -> LocalDate.parse(week, weekFormatter)))
-                    .collect(Collectors.toList());
+            List<String> sortedWeeks = new ArrayList<>(weeklyCounts.keySet());
+            sortedWeeks.sort(Comparator.comparing(week -> LocalDate.parse(week, weekFormatter)));
 
-            // Configure the x-axis to handle week values
-            CategoryAxis xAxis = (CategoryAxis) subscriberStatusesChart.getXAxis();
+            // Add the data points to the series
+            for (String week : sortedWeeks)
+            {
+                // Get the action counts for the week
+                Map<String, Integer> actionCounts = weeklyCounts.get(week);
+
+                // Add the data points to the series
+                frozenSeries.getData().add(new XYChart.Data<>(week, actionCounts.getOrDefault("frozen", 0)));
+                activeSeries.getData().add(new XYChart.Data<>(week, actionCounts.getOrDefault("active", 0)));
+            }
+
+            // Create new axes
+            CategoryAxis xAxis = new CategoryAxis();
             xAxis.setLabel("Week");
             xAxis.setCategories(FXCollections.observableArrayList(sortedWeeks));
 
-            // Configure the y-axis
-            NumberAxis yAxis = (NumberAxis) subscriberStatusesChart.getYAxis();
-            yAxis.setLabel("Count of Actions");
-            yAxis.setAutoRanging(false);
-            yAxis.setTickUnit(1);
-            yAxis.setUpperBound(maxValue + 1);
+            NumberAxis yAxis = new NumberAxis();
+            yAxis.setLabel("Number of Accounts");
 
-            // Adds the new series to the line chart
-            subscriberStatusesChart.getData().addAll(frozenSeries, activeSeries);
-            subscriberStatusesChart.setTitle("Subscriber Statuses Per Week");
+            // Create a new chart
+            LineChart<String, Number> newChart = new LineChart<>(xAxis, yAxis);
+            newChart.setTitle("Account Statuses Per Week");
+            newChart.getData().addAll(frozenSeries, activeSeries);
+
+            // Match the layout constraints of the old chart
+            Pane parent = (Pane) subscriberStatusesChart.getParent();
+            newChart.setLayoutX(subscriberStatusesChart.getLayoutX());
+            newChart.setLayoutY(subscriberStatusesChart.getLayoutY());
+            newChart.setPrefSize(subscriberStatusesChart.getWidth(), subscriberStatusesChart.getHeight());
+
+            // Copy alignment if applicable
+            AnchorPane.setTopAnchor(newChart, AnchorPane.getTopAnchor(subscriberStatusesChart));
+            AnchorPane.setBottomAnchor(newChart, AnchorPane.getBottomAnchor(subscriberStatusesChart));
+            AnchorPane.setLeftAnchor(newChart, AnchorPane.getLeftAnchor(subscriberStatusesChart));
+            AnchorPane.setRightAnchor(newChart, AnchorPane.getRightAnchor(subscriberStatusesChart));
+
+            // Replace the chart
+            int index = parent.getChildren().indexOf(subscriberStatusesChart);
+            parent.getChildren().set(index, newChart);
+
+            // Update the reference
+            subscriberStatusesChart = newChart;
         });
     }
 }
