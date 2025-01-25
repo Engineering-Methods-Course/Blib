@@ -68,7 +68,7 @@ public class SubscriberEditProfileFrameController
      *
      * @throws Exception If there is an issue with the navigation
      */
-    public void clickUpdateButton() throws Exception
+    public void clickUpdateButton(ActionEvent event) throws Exception
     {
         // Validate that the first name and last name are not empty
         String firstName = txtFirstName.getText().trim();
@@ -116,7 +116,6 @@ public class SubscriberEditProfileFrameController
         ClientGUIController.chat.sendToServer(message);
 
         // Navigate to the previous screen
-        ActionEvent event = new ActionEvent();
         navigateTo(event, "/gui/SubscriberProfileFrame.fxml", "/gui/MainFrame.css", "Profile Page");
     }
 
