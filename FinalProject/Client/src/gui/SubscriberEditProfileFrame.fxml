@@ -51,7 +51,7 @@
          </graphic>
       </Label>
          <TextField fx:id="txtPhone" layoutX="510.0" layoutY="570.0" prefHeight="30.0" prefWidth="660.0" />
-      <Label fx:id="lblPhoneError" layoutX="554.0" layoutY="531.0" prefHeight="23.0" prefWidth="580.0" text="phone Error" visible="false" />
+      <Label fx:id="lblPhoneError" alignment="CENTER" layoutX="375.0" layoutY="531.0" prefHeight="29.0" prefWidth="958.0" text="phone Error" visible="false" />
          <Label layoutX="782.0" layoutY="620.0" prefHeight="40.0" prefWidth="126.0" text="Email:">
          <graphic>
             <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">

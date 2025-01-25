@@ -7,6 +7,7 @@ import common.Librarian;
 import common.Subscriber;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -33,7 +34,7 @@ public class BookInfoFrameController
     @FXML
     public Button backButton;
     @FXML
-    public Text TextForAvailability;
+    public Label TextForAvailability;
     @FXML
     public VBox bookInfoFrame;
 
@@ -60,7 +61,7 @@ public class BookInfoFrameController
         }
         else
         {
-            TextForAvailability.setText("Closest Date: ");
+            TextForAvailability.setText("Closest availability date: ");
             bookLocation.setText(Availability.get(1));
         }
 

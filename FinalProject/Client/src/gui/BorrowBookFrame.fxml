@@ -30,7 +30,7 @@
             <Image url="@../resources/icons8-book-50.png" />
          </image>
       </ImageView>
-      <Label fx:id="ErrorBookID" layoutX="520.0" layoutY="130.0" prefHeight="29.0" prefWidth="672.0" text="Book ID Error" visible="false" />
+      <Label fx:id="ErrorBookID" alignment="CENTER" layoutX="520.0" layoutY="130.0" prefHeight="29.0" prefWidth="672.0" text="Book ID Error" visible="false" />
     </AnchorPane>
     <AnchorPane prefHeight="143.0" prefWidth="1678.0">
       <Label layoutX="572.0" layoutY="46.0" prefHeight="46.0" prefWidth="170.0" styleClass="label" text="Subscriber ID:">
@@ -43,7 +43,7 @@
                 <Font size="23.0" />
             </font>
         </TextField>
-      <Label fx:id="ErrorSubscriberID" layoutX="520.0" layoutY="107.0" prefHeight="29.0" prefWidth="672.0" text="Subscriber ID Error" visible="false" />
+      <Label fx:id="ErrorSubscriberID" alignment="CENTER" layoutX="520.0" layoutY="107.0" prefHeight="29.0" prefWidth="672.0" text="Subscriber ID Error" visible="false" />
       <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="520.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/account.png" />

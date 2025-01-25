@@ -18,7 +18,7 @@
         <TextField fx:id="idTextField" layoutX="623.0" layoutY="281.0" prefHeight="33.0" prefWidth="280.0" />
 
         <!-- Error label to show when the input is invalid -->
-        <Label fx:id="errorLabel" layoutX="353.0" layoutY="334.0" prefHeight="29.0" prefWidth="474.0" text="Error Message " textFill="red" visible="false" />
+        <Label fx:id="errorLabel" alignment="CENTER" layoutX="353.0" layoutY="334.0" prefHeight="29.0" prefWidth="474.0" text="Error Message " textFill="red" visible="false" />
 
         <!-- Return Button -->
         <Button fx:id="btnReturn" layoutX="543.0" layoutY="429.0" onAction="#returnButtonClicked" prefWidth="200.0" style="-fx-font-size: 18px;" text="Return" />

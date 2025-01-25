@@ -32,7 +32,7 @@ public class SearchSubscriberFrameController
         idTextField.textProperty().addListener((observable, oldValue, newValue) -> validateSubscriberID(newValue));
 
         // Create a tooltip for the text field
-        Tooltip idTextFieldTooltip = new Tooltip("Enter the subscribers ID.");
+        Tooltip idTextFieldTooltip = new Tooltip("Enter the subscribers unique ID number (e.g. 100001).");
         idTextField.setTooltip(idTextFieldTooltip);
     }
 

@@ -10,38 +10,50 @@
 <?import javafx.scene.text.Text?>
 
 <VBox fx:id="bookInfoFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.BookInfoFrameController">
-    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0">
+    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1477.0">
         <Label alignment="CENTER" layoutX="-45.0" layoutY="14.0" prefHeight="114.0" prefWidth="1280.0" styleClass="title" text="BOOK INFORMATION" />
-        <Text layoutX="440.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label" text="Book Name:" wrappingWidth="203.24102783203102" AnchorPane.leftAnchor="400.0" />
         <Text fx:id="bookName" layoutX="637.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label" text="&lt;Pull Name From DB&gt;" wrappingWidth="500.0" AnchorPane.leftAnchor="637.0" />
-        <Text layoutX="440.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label" text="Genre:" wrappingWidth="203.24102783203102" AnchorPane.leftAnchor="400.0" />
         <Text fx:id="bookGenre" layoutX="637.0" layoutY="285.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label" text="&lt;Pull Genre From DB&gt;" wrappingWidth="500.0" AnchorPane.leftAnchor="637.0" />
-        <Text layoutX="440.0" layoutY="421.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label" text="Description:" wrappingWidth="203.24102783203102" AnchorPane.leftAnchor="400.0" />
-        <Text fx:id="bookdescriptionTxt" layoutX="648.0" layoutY="421.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label" text="&lt;Pull Description From DB&gt;" wrappingWidth="500.0" AnchorPane.leftAnchor="637.0" />
-        <Text fx:id="TextForAvailability" layoutX="440.0" layoutY="351.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label" text="Location:" wrappingWidth="203.24102783203125" AnchorPane.leftAnchor="400.0" />
+        <Text fx:id="bookdescriptionTxt" layoutX="648.0" layoutY="421.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label" text="&lt;Pull Description From DB&gt;" wrappingWidth="386.666748046875" AnchorPane.leftAnchor="637.0" />
         <Text fx:id="bookLocation" layoutX="637.0" layoutY="351.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label" text="&lt;Pull Location From DB&gt;" wrappingWidth="500.0" AnchorPane.leftAnchor="637.0" />
-        <Button fx:id="backButton" layoutX="394.0" layoutY="667.0" mnemonicParsing="false" onAction="#backButtonClicked" prefHeight="39.0" prefWidth="151.0" text="Back" AnchorPane.leftAnchor="303.0" />
-        <Button fx:id="orderBookButton" layoutX="784.0" layoutY="666.0" mnemonicParsing="false" onAction="#orderBookButtonClicked" prefHeight="46.0" prefWidth="174.0" text="Order" AnchorPane.bottomAnchor="375.0" AnchorPane.leftAnchor="784.0" AnchorPane.rightAnchor="720.0" AnchorPane.topAnchor="666.0" />
-      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="303.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="303.0" AnchorPane.rightAnchor="1344.6">
-         <image>
-            <Image url="@../resources/icons8-book-50.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="303.0" layoutY="267.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="303.0">
-         <image>
-            <Image url="@../resources/genres.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="303.0" layoutY="331.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="303.0">
-         <image>
-            <Image url="@../resources/locations.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="303.0" layoutY="401.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="303.0">
-         <image>
-            <Image url="@../resources/description1.png" />
-         </image>
-      </ImageView>
+        <Button fx:id="backButton" layoutX="532.0" layoutY="636.0" mnemonicParsing="false" onAction="#backButtonClicked" prefHeight="39.0" prefWidth="151.0" text="Back" AnchorPane.leftAnchor="532.0" />
+        <Button fx:id="orderBookButton" layoutX="531.0" layoutY="715.0" mnemonicParsing="false" onAction="#orderBookButtonClicked" prefHeight="39.0" prefWidth="151.0" text="Order" />
+      <Label layoutX="294.0" layoutY="199.0" text="Book Name:">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/icons8-book-50.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
+      <Label layoutX="294.0" layoutY="259.0" text="Genre:">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/genres.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
+      <Label fx:id="TextForAvailability" layoutX="294.0" layoutY="329.0" text="Book Location:">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/locations.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
+      <Label layoutX="294.0" layoutY="395.0" text="Description:">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/description1.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
     </AnchorPane>
    <padding>
       <Insets left="200.0" />

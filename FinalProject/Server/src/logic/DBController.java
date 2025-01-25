@@ -395,9 +395,9 @@ public class DBController {
             /*
              * The query selects all columns from the book table where the description matches a given value
              */
-            String findBookQuery = "SELECT * FROM book WHERE MATCH(description) AGAINST(? IN NATURAL LANGUAGE MODE)";
+            String findBookQuery = "SELECT * FROM book WHERE description LIKE ?";
             PreparedStatement findBookStatement = conn.prepareStatement(findBookQuery);
-            findBookStatement.setString(1, text);
+            findBookStatement.setString(1, "%" + text + "%");
 
             ResultSet rs = findBookStatement.executeQuery();
 
@@ -761,12 +761,17 @@ public class DBController {
             checkReturnDateStatement.setInt(2, copyId);
             ResultSet checkReturnDateRs = checkReturnDateStatement.executeQuery();
             if (checkReturnDateRs.next()) {
-                LocalDate localDate = checkReturnDateRs.getDate("expected_return_date").toLocalDate().plusDays(7);
+                LocalDate localDate = checkReturnDateRs.getDate("expected_return_date").toLocalDate().plusDays(8); // plus 8 to handle time differences(will add 7 days)
                 newReturnDate = Date.valueOf(localDate);
                 int daysDiff = checkReturnDateRs.getInt("days_diff");
                 if (daysDiff > 7) {
                     response.add("false");
                     response.add("Cannot extend the return date due to having more than a week left");
+                    return response;
+                }
+                if(daysDiff < 1){
+                    response.add("false");
+                    response.add("Cannot extend the return date due to the book already being late");
                     return response;
                 }
             } else {

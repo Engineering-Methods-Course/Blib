@@ -23,7 +23,7 @@
         </TableView>
 
           <!-- Name Field -->
-          <Text fx:id="nameField" layoutX="210.0" layoutY="255.0" styleClass="label" text="John Doe" wrappingWidth="396.00000190734863">
+          <Text fx:id="nameField" layoutX="210.0" layoutY="255.8984375" styleClass="label" text="John Doe" wrappingWidth="396.00000190734863">
                 </Text>
           <Label layoutX="56.0" layoutY="224.0" prefHeight="40.0" prefWidth="122.0" text="Name:">
               <graphic>
@@ -45,7 +45,7 @@
           </Label>
 
           <!-- Email -->
-          <Text fx:id="emailField" layoutX="210.0" layoutY="455.0" styleClass="label" text="email@example.com" wrappingWidth="396.0000019073485">
+          <Text fx:id="emailField" layoutX="210.0" layoutY="454.0" styleClass="label" text="email@example.com" wrappingWidth="396.0000019073485">
 
                 </Text>
           <Label layoutX="56.0" layoutY="524.0" prefHeight="40.0" prefWidth="150.0" text="Phone:">
