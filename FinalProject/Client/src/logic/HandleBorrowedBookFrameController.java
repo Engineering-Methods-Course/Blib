@@ -204,7 +204,11 @@ public class HandleBorrowedBookFrameController
         //sets the initial date as the return date or the current date the latter of them
         newReturnDatePicker.setValue(currentReturnDate.isAfter(currentDate) ? currentReturnDate : currentDate);
     }
-
+    /**
+     * This method goes back to the previous frame
+     *
+     * @param actionEvent the event that triggered the method
+     */
     public void goBack(ActionEvent actionEvent) throws IOException {
         loadFrameIntoPane((AnchorPane) handleBorrow.getParent(),"/gui/WatchProfileFrame.fxml");
     }

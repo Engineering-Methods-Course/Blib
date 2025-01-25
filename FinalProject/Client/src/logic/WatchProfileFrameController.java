@@ -221,7 +221,11 @@ public class WatchProfileFrameController
         // Returns the new date
         return year + "-" + month + "-" + day;
     }
-
+    /**
+     * Handles the back button click event to navigate back to the previous frame
+     *
+     * @param actionEvent The action event
+     */
     public void goBack(ActionEvent actionEvent) {
         try {
             loadFrameIntoPane((AnchorPane) viewSubscriberProfileLibrarian.getParent(), previousFrame);
@@ -230,10 +234,21 @@ public class WatchProfileFrameController
         }
     }
 
+    /**
+     * Sets the previous frame
+     *
+     * @param frame The previous frame
+     */
+
     public static void setPreviousFrame(String frame) {
         previousFrame = frame;
     }
 
+    /**
+     * Gets the previous frame
+     *
+     * @return The previous frame
+     */
     public static String getPreviousFrame() {
         return previousFrame;
     }
