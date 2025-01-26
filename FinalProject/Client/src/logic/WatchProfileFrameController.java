@@ -1,5 +1,6 @@
 package logic;
 
+import common.SubscriberHistory;
 import main.ClientGUIController;
 import common.BorrowedBook;
 import common.ClientServerMessage;
@@ -14,8 +15,12 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static main.ClientGUIController.loadFrameIntoPane;
 import static main.ClientGUIController.showAlert;
@@ -25,6 +30,9 @@ public class WatchProfileFrameController
     // The FXML elements
     @FXML
     public VBox viewSubscriberProfileLibrarian;
+    @FXML
+    public VBox backButton;
+
     @FXML
     private Text txtFullName;
     @FXML
@@ -45,6 +53,17 @@ public class WatchProfileFrameController
     public TableColumn<BorrowedBook, String> returnDateColumn;
     @FXML
     public TableColumn<BorrowedBook, Button> extendButtonColumn;
+
+    @FXML
+    public TableView<SubscriberHistory> tblHistory;
+    @FXML
+    public TableColumn<SubscriberHistory, String> dateColumn;
+    @FXML
+    public TableColumn<SubscriberHistory, String> actionColumn;
+    @FXML
+    public TableColumn<SubscriberHistory, String> descriptionColumn;
+
+
 
     private static String previousFrame;
 
@@ -167,7 +186,7 @@ public class WatchProfileFrameController
 
                 if (!empty && item != null) {
                     // Parse the expected return date
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd][yyyy-M-dd][yyyy-M-d]");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd][yyyy-M-dd][yyyy-M-d][yyyy-MM-d]");
                     LocalDate returnDate = LocalDate.parse(item, formatter);
 
                     // Set the text for the cell
@@ -186,6 +205,29 @@ public class WatchProfileFrameController
             }
         });
     }
+
+    /**
+     * Sets the history of the subscriber in the table.
+     *
+     * @param history The history of the subscriber.
+     */
+    public void loadHistoryTable(List<ArrayList<String>> history)
+    {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+        // create a list of SubscriberHistory objects
+        List<SubscriberHistory> subscriberHistoryList = new ArrayList<>();
+        for (ArrayList<String> historyItem : history)
+        {
+            LocalDateTime localDateTime = LocalDateTime.parse(historyItem.get(0), formatter);
+            Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+            subscriberHistoryList.add(new SubscriberHistory(date, historyItem.get(1), historyItem.get(2)));
+        }
+
+        // set the items in the table
+        tblHistory.getItems().setAll(subscriberHistoryList);
+    }
+
 
     /**
      * Handles the extendBorrowButton click event to extend the book borrowing period
