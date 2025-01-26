@@ -132,7 +132,6 @@ public class NotificationController {
             throw new RuntimeException(e);
 
         }
-        System.out.println("Email sent successfully");
     }
 
     /**
