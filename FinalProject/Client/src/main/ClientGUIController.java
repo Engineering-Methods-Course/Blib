@@ -10,7 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.transform.Scale;
 import javafx.stage.Screen;
 import logic.ClientController;
-import logic.ClientIPFrameController;
+import gui.controllers.ClientIPFrameController;
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -18,7 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import logic.CustomTooltip;
+import gui.controllers.CustomTooltip;
 
 import java.io.IOException;
 import java.util.Objects;

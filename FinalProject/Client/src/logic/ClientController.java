@@ -1,6 +1,7 @@
 package logic;
 
 import common.*;
+import gui.controllers.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;

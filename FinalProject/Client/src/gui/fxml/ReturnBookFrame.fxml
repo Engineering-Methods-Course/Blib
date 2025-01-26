@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@../css/MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ReturnBookFrameController">
+    <!-- Spacer to center content vertically -->
+    <AnchorPane prefHeight="495.0" prefWidth="1677.0" VBox.vgrow="ALWAYS">
+        <Label alignment="CENTER" layoutX="375.0" layoutY="78.0" prefHeight="126.0" prefWidth="503.0" styleClass="title" text="RETURN BOOK" />
+
+        <!-- TextField for entering book ID -->
+        <TextField fx:id="idTextField" layoutX="623.0" layoutY="281.0" prefHeight="33.0" prefWidth="280.0" />
+
+        <!-- Error label to show when the input is invalid -->
+        <Label fx:id="errorLabel" alignment="CENTER" layoutX="353.0" layoutY="334.0" prefHeight="29.0" prefWidth="474.0" text="Error Message " textFill="red" visible="false" />
+
+        <!-- Return Button -->
+        <Button fx:id="btnReturn" layoutX="543.0" layoutY="429.0" onAction="#returnButtonClicked" prefWidth="200.0" style="-fx-font-size: 18px;" text="Return" />
+      <ImageView fitHeight="50.0" fitWidth="51.0" layoutX="353.0" layoutY="274.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/return%20book.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="421.0" layoutY="287.0" text="Book Copy ID:" />
+    </AnchorPane>
+   <padding>
+      <Insets left="200.0" top="150.0" />
+   </padding>
+</VBox>
