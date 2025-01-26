@@ -143,6 +143,8 @@ public class SubscriberProfileFrameController
     }
     /**
      * This method handles the extendBorrowButton click event to send extension request
+     *
+     * @param selectedBook The selected borrowed book
      */
     public void extendBorrowButtonClicked(BorrowedBook selectedBook)
     {

@@ -296,7 +296,7 @@ public class ServerController extends AbstractServer {
                         /*
                          * Do: subscriber reserves a book
                          * In: ArrayList<String> {subscriber id, book id}
-                         * Return: (id 209) arraylist<string> {success/fail, error message}
+                         * Return: (id 209) ArrayList<string> {success/fail, error message}
                          */
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
@@ -322,7 +322,7 @@ public class ServerController extends AbstractServer {
                         /*
                          * Do: subscriber views his borrowed books list
                          * In: int
-                         * Return: (id 211) arraylist<book>
+                         * Return: (id 211) ArrayList<Book>
                          */
                         try {
                             if (message.getMessageContent() instanceof Integer) {
@@ -370,7 +370,7 @@ public class ServerController extends AbstractServer {
                         /*
                          * Do: subscriber views his history
                          * In: int
-                         * Return: (id 215) ArrayList<MonthlyReport> {subscriber history}
+                         * Return: (id 215) List<ArrayList<String>> {subscriber history}
                          */
                         try {
                             if (message.getMessageContent() instanceof Integer) {
@@ -416,7 +416,7 @@ public class ServerController extends AbstractServer {
                         /*
                          * Do: subscriber edits his login information
                          * In: int
-                         * Return: (id 217) arraylist<string> {success/fail, error message}
+                         * Return: (id 219) ArrayList<string> {success/fail, error message}
                          */
                         try {
                             if (message.getMessageContent() instanceof ArrayList) {
@@ -521,7 +521,7 @@ public class ServerController extends AbstractServer {
                         /*
                          * Do: librarian views all subscribers in the system
                          * In: none
-                         * Return: (id 307) arraylist<subscriber>
+                         * Return: (id 307) ArrayList<subscriber>
                          */
                         try {
                             client.sendToClient(new ClientServerMessage(307, dbController.viewAllSubscribers()));
@@ -537,7 +537,7 @@ public class ServerController extends AbstractServer {
                         /*
                          * Do: librarian views the details of a specific subscriber
                          * In: Int {subscriber id}
-                         * Return: (id 309) subscriber
+                         * Return: (id 309) Subscriber
                          */
                         try {
                             if (message.getMessageContent() instanceof Integer) {

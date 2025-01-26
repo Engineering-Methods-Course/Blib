@@ -2170,7 +2170,7 @@ public class DBController {
      * case 320
      * This method returns a subscribers active reserves
      * @param subscriberId The subscriber ID
-     * @return ArrayList<ActiveReserves> containing the active reserves of a specific subscriber
+     * @return ArrayList<ActiveReserves> containing the active reserves of a specific subscriber or null
      */
     public ArrayList<ActiveReserves> viewActiveReserves(int subscriberId) {
         try {

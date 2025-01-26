@@ -68,6 +68,7 @@ public class ClientController extends AbstractClient
                 /*
                  * The following switch case is used to handle the different responses from the server:
                  * 101 - login response from the server
+                 * 107 - message from server (pop-up message)
                  * 201 - search book response
                  * 207 - Show book details response
                  * 209 - Order book response
@@ -82,18 +83,23 @@ public class ClientController extends AbstractClient
                  * 307 - Get all subscribers list
                  * 309 - Watch subscriber details response
                  * 311 - Extend borrow - librarian response
-                 * 313 - Watch logs response
-                 * 315 -
-                 * 317 -
-                 * 319 -
-                 * 321 -
+                 * 313 - View borrow times log response
+                 * 315 - View subscriber statuses log response
+                 * 317 - View messages response
+                 * 319 - Mark book as lost response
+                 * 321 - View all active reservations of a subscriber response
                  * Default - Invalid command id
                  */
                 switch (message.getId())
                 {
-                    //login response from the server
+                    /*
+                     * Do: Login user to his account
+                     * In: User object (Subscriber or Librarian)
+                     */
                     case 101:
-                        //display an error if the message content is null
+                        /*
+                         * Display an error if the message content is null
+                         */
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Wrong Username(id) or Password");
@@ -102,13 +108,17 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof User)
                         {
                             User user = (User) message.getMessageContent();
-                            //if the user is a subscriber, set the local instance of Subscriber to it
+                            /*
+                             * If the user is a subscriber, set the local instance of Subscriber to it
+                             */
                             if (user instanceof Subscriber)
                             {
                                 Subscriber subscriberFromServer = (Subscriber) user;
                                 Subscriber.setLocalSubscriber(subscriberFromServer);
                             }
-                            //if the user is a librarian, set the local instance of Librarian to it
+                            /*
+                             * If the user is a librarian, set the local instance of Librarian to it
+                             */
                             else if (user instanceof Librarian)
                             {
                                 Librarian librarianFromServer = (Librarian) user;
@@ -116,9 +126,14 @@ public class ClientController extends AbstractClient
                             }
                         }
                         break;
-                    // message to the client
+                    /*
+                     * Do: Display a message to the user
+                     * In: String message
+                     */
                     case 107:
-                        //display an error if the message content is null
+                        /*
+                         * display an error if the message content is null
+                         */
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not get message");
@@ -130,9 +145,14 @@ public class ClientController extends AbstractClient
                             Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Message", response));
                         }
                         break;
-                    //search book response
+                    /*
+                     * Do: Show book search results to the user or display an error message
+                     * In: ArrayList<Book> or null
+                     */
                     case 201:
-                        //display an error if the message content is null
+                        /*
+                         * display an error if the message content is null
+                         */
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Book not found");
@@ -143,16 +163,23 @@ public class ClientController extends AbstractClient
                         {
                             if (message.getMessageContent() instanceof ArrayList)
                             {
-                                //Indicate that the search results were successful by setting the flag to true.
+                                /*
+                                 * Indicate that the search results were successful by setting the flag to true.
+                                 */
                                 SearchPageFrameController.changeCanSearch(true);
                                 @SuppressWarnings("unchecked") ArrayList<Book> bookList = (ArrayList<Book>) message.getMessageContent();
 
-                                //pass the list of books to the searchResultFrameController
+                                /*
+                                 * pass the list of books to the searchResultFrameController
+                                 */
                                 SearchResultFrameController.setBookArray(bookList);
                             }
                         }
                         break;
-                    //Show book details response
+                    /*
+                     * Do: Present the book details to the user
+                     * In: ArrayList<String> or null
+                     */
                     case 207:
                         //display an error if the message content is null
                         if (message.getMessageContent() == null)
@@ -167,7 +194,10 @@ public class ClientController extends AbstractClient
                             BookInfoFrameController.setAvailability(details);
                         }
                         break;
-                    // Order book response
+                    /*
+                     * Do: Showing a pop-up message to the user about the book order
+                     * In: ArrayList<String>
+                     */
                     case 209:
                         //display an error if the message content is null
                         if (message.getMessageContent() == null)
@@ -178,7 +208,7 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked") ArrayList<String> details = (ArrayList<String>) message.getMessageContent();
-                            //if the book order process ended successfully shows a correct message for it
+                             // if the book order process ended successfully shows a correct message for it
                             if (details.get(0).equals("true"))
                             {
                                 Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Book ordered", "Book was ordered"));
@@ -198,7 +228,10 @@ public class ClientController extends AbstractClient
                             }
                         }
                         break;
-                    // Show borrowed list response
+                    /*
+                     * Do: Present the borrowed books list to the user
+                     * In: ArrayList<BorrowedBook> or null
+                     */
                     case 211:
                         {
                             @SuppressWarnings("unchecked") ArrayList<BorrowedBook> messages = (ArrayList<BorrowedBook>) message.getMessageContent();
@@ -216,7 +249,10 @@ public class ClientController extends AbstractClient
                             }
                         }
                         break;
-                    //Extend book borrow - subscriber response
+                    /*
+                     * Do: Extend book borrow time as a subscriber
+                     * In: ArrayList<String>
+                     */
                     case 213:
                         //if the content is an instance of arraylist, pass it to SubscriberProfileFrameController
                         if (message.getMessageContent() instanceof ArrayList)
@@ -231,7 +267,10 @@ public class ClientController extends AbstractClient
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Data Error", "Expected an ArrayList for borrow extension."));
                         }
                         break;
-                    //Watch history response
+                    /*
+                     * Do: Show the history of the user
+                     * In: List<ArrayList<String>>
+                     */
                     case 215:
                         //display an error if the message content is null
                         if (message.getMessageContent() == null)
@@ -258,7 +297,10 @@ public class ClientController extends AbstractClient
 
                         }
                         break;
-                    //Edit subscriber details
+                    /*
+                     * Do: Receive the new subscriber details after updating
+                     * In: ArrayList<String> or null
+                     */
                     case 217:
                         //display an error if the message content is null
                         if (message.getMessageContent() == null)
@@ -282,7 +324,10 @@ public class ClientController extends AbstractClient
                             }
                         }
                         break;
-                    //Edit login details response
+                    /*
+                     * Do: Edit the login details of the user
+                     * In: ArrayList<String>
+                     */
                     case 219:
                         //display an error if the message content is null
                         if (message.getMessageContent() == null)
@@ -306,7 +351,10 @@ public class ClientController extends AbstractClient
                             }
                         }
                         break;
-                    //Register new subscriber response
+                    /*
+                     * Do: Register a new subscriber
+                     * In: ArrayList<String>
+                     */
                     case 301:
                         //display an error if the message content is null
                         if (message.getMessageContent() == null)
@@ -331,7 +379,10 @@ public class ClientController extends AbstractClient
                             }
                         }
                         break;
-                    //Borrow book response
+                    /*
+                     * Do: Borrow book response from the server
+                     * In: ArrayList<String> true/false and explanation
+                     */
                     case 303:
                         Object messageContent = message.getMessageContent();
                         if (messageContent instanceof ArrayList<?>)
@@ -348,7 +399,10 @@ public class ClientController extends AbstractClient
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Borrow Book Error", "Invalid response format from the server."));
                         }
                         break;
-                    //Return book response
+                    /*
+                     * Do: Return a subscribers book to the library
+                     * In: ArrayList<String>
+                     */
                     case 305:
                         //display an error if the message content is null
                         if (message.getMessageContent() == null)
@@ -370,7 +424,10 @@ public class ClientController extends AbstractClient
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Return Book Error", "Invalid response format from the server."));
                         }
                         break;
-                    // Get all subscribers list
+                    /*
+                     * Do: Get all subscribers list
+                     * In: ArrayList<Subscriber> or null
+                     */
                     case 307:
                         //display an error if the message content is null
                         if (message.getMessageContent() == null)
@@ -390,7 +447,10 @@ public class ClientController extends AbstractClient
                             controller.addToTable(subscribers);
                         }
                         break;
-                    // Watch subscriber details response
+                    /*
+                     * Do: Watch subscriber details response
+                     * In: Subscriber or null
+                     */
                     case 309:
                         //display an error if the message content is null
                         if (message.getMessageContent() == null)
@@ -415,7 +475,10 @@ public class ClientController extends AbstractClient
                             }
                         }
                         break;
-                    // Extend borrow - librarian response
+                    /*
+                     * Do: Extend borrow - librarian response - show a message to the librarian
+                     * In: ArrayList<String>
+                     */
                     case 311:
                         //display an error if the message content is null
                         if (message.getMessageContent() == null)
@@ -437,7 +500,10 @@ public class ClientController extends AbstractClient
                             Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Data Error", "Expected an ArrayList for borrow extension."));
                         }
                         break;
-                    // Watch logs response
+                    /*
+                     * Do: View borrow times report response
+                     * In: ArrayList<MonthlyReport> or null
+                     */
                     case 313:
                         //display an error if the message content is null
                         if (message.getMessageContent() == null)
@@ -459,7 +525,10 @@ public class ClientController extends AbstractClient
                             controller.switchChartVisibility();
                         }
                         break;
-                    // Handles the Subscriber Status report response
+                    /*
+                     * Do: View subscriber statuses report response
+                     * In: ArrayList<MonthlyReport> or null
+                     */
                     case 315:
                         //display an error if the message content is null
                         if (message.getMessageContent() == null)
@@ -483,7 +552,10 @@ public class ClientController extends AbstractClient
                             controller.switchChartVisibility();
                         }
                         break;
-                    // View messages response
+                    /*
+                     * Do: View messages response
+                     * In: List<ArrayList<String>> or null
+                     */
                     case 317:
                         //display an error if the message content is null
                         if (message.getMessageContent() == null)
@@ -503,7 +575,10 @@ public class ClientController extends AbstractClient
                             controller.loadLibrarianMessages(messages);
                         }
                         break;
-                    // handles a lost book response
+                    /*
+                     * Do: Mark book as lost response
+                     * In: ArrayList<String>
+                     */
                     case 319:
                         if (message.getMessageContent() == null)
                         {
@@ -526,9 +601,13 @@ public class ClientController extends AbstractClient
                             }
                         }
                         break;
-                    // Server has closed its connection
+                    /*
+                     * Do: Display messages that the server was closed
+                     * In: null
+                     */
                     case 999:
                         Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Server closed", "Server has closed its connection for maintenance"));
+                        quit();
                         break;
                     default:
                         System.out.println("Invalid command id");
@@ -585,7 +664,7 @@ public class ClientController extends AbstractClient
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            System.out.println("Could not close connection");
         }
         System.exit(0);
     }

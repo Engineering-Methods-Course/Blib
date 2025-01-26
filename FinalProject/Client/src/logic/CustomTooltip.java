@@ -22,6 +22,10 @@ public class CustomTooltip extends Tooltip
     /**
      * Returns true if successful.
      * Current defaults are 1000, 5000, 200;
+     *
+     * @param openDelay The delay before the tooltip opens
+     * @param visibleDuration The duration the tooltip is visible
+     * @param closeDelay The delay before the tooltip closes
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static boolean setTooltipTimers(long openDelay, long visibleDuration, long closeDelay)
