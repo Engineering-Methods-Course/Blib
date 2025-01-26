@@ -83,6 +83,10 @@ public class ClientController extends AbstractClient
                  * 309 - Watch subscriber details response
                  * 311 - Extend borrow - librarian response
                  * 313 - Watch logs response
+                 * 315 -
+                 * 317 -
+                 * 319 -
+                 * 321 -
                  * Default - Invalid command id
                  */
                 switch (message.getId())

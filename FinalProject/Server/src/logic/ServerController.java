@@ -127,6 +127,7 @@ public class ServerController extends AbstractServer {
                  * 314 - librarian wants to view Subscriber Status Log
                  * 316 - librarian wants to view messages
                  * 318 - librarian wants to mark book has lost
+                 * 320 - librarian wants to view all active reserves of a specific subscriber
                  */
                 ClientServerMessage message = (ClientServerMessage) msg;
                 switch (message.getId()) {
