@@ -32,6 +32,12 @@ public class WatchProfileFrameController
     public VBox viewSubscriberProfileLibrarian;
     @FXML
     public VBox backButton;
+    @FXML
+    public RadioButton rdBorrowedBooks;
+    @FXML
+    public RadioButton rdHistory;
+    @FXML
+    public RadioButton rdReserves;
 
     @FXML
     private Text txtFullName;
@@ -84,53 +90,24 @@ public class WatchProfileFrameController
             // Update the subscriber information on the UI
             updateSubscriberInfo(subscriber);
         }
+        ToggleGroup toggleGroup = new ToggleGroup();
+        rdBorrowedBooks.setToggleGroup(toggleGroup);
+        rdHistory.setToggleGroup(toggleGroup);
+        rdReserves.setToggleGroup(toggleGroup);
 
-        // Set up the borrowed books table columns
-        bookNameColumn.setCellValueFactory(new PropertyValueFactory<>("bookName"));
-        borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
-        returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("expectedReturnDate"));
-
-        // Set up the watch profile column with a button
-        extendButtonColumn.setCellFactory(param -> new TableCell<BorrowedBook, Button>()
-        {
-            // The button to watch the profile
-            private final Button ExtendBorrow = new Button("Handle Book");
-
-            {
-                // Set the button's action
-                ExtendBorrow.setOnAction(event -> {
-                    BorrowedBook selectedBook = getTableView().getItems().get(getIndex());
-                    // Handle the extent borrow action here
-                    try
-                    {
-                        HandleBorrowedBookButtonClicked(selectedBook);
-                    }
-                    catch (IOException e)
-                    {
-                        throw new RuntimeException(e);
-                    }
-                });
-            }
-
-            @Override
-            // Update the cell item
-            protected void updateItem(Button item, boolean empty)
-            {
-                super.updateItem(item, empty);
-                if (empty)
-                {
-                    setGraphic(null);
-                }
-                else
-                {
-                    setGraphic(ExtendBorrow);
-                    setAlignment(Pos.CENTER); // Center the button
-                }
+        toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == rdBorrowedBooks) {
+                requestBorrowedBooks(Subscriber.getWatchProfileSubscriber().getID());
+            } else if (newValue == rdHistory) {
+                requestHistory(Subscriber.getWatchProfileSubscriber().getID());
+            } else if (newValue == rdReserves) {
+                requestReserves(Subscriber.getWatchProfileSubscriber().getID());
             }
         });
+        // Ensure a default state
+        rdBorrowedBooks.setSelected(true);
 
-        // Sends a message to the server to get the user's borrowed books
-        requestBorrowedBooks(Subscriber.getWatchProfileSubscriber().getID());
+
     }
 
     /**
@@ -162,45 +139,102 @@ public class WatchProfileFrameController
     }
 
     /**
-     * Load the borrowed books into the table
+     * Request the history for the user
      *
-     * @param borrowedBooks The list of borrowed books
+     * @param userID The user ID to request the history for
      */
-    public void loadBorrowsTable(ArrayList<BorrowedBook> borrowedBooks)
+    private void requestHistory(int userID)
     {
+        // Create a message with code 210 and userID
+        ClientServerMessage message = new ClientServerMessage(214, userID);
+
+        // Send the message to the server
+        ClientGUIController.chat.sendToServer(message);
+    }
+
+    /**
+     * Request the reserves for the user
+     *
+     * @param userID The user ID to request the reserves for
+     */
+    private void requestReserves(int userID)
+    {
+        // Create a message with code 210 and userID
+        ClientServerMessage message = new ClientServerMessage(7777, userID);
+
+        // Send the message to the server
+        ClientGUIController.chat.sendToServer(message);
+    }
+
+    /**
+     * Load the borrowed books into the table.
+     *
+     * @param borrowedBooks The list of borrowed books.
+     */
+    public void loadBorrowsTable(ArrayList<BorrowedBook> borrowedBooks) {
+        //set borrow table to visible and the rest
+        borrowsTable.setVisible(true);
+        tblHistory.setVisible(false);
+        borrowsTable.setManaged(true);
+        tblHistory.setManaged(false);
+
+
+        // Set up the borrowed books table columns
+        bookNameColumn.setCellValueFactory(new PropertyValueFactory<>("bookName"));
+        borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
+        returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("expectedReturnDate"));
+
+        // Set up the watch profile column with a button
+        extendButtonColumn.setCellFactory(param -> new TableCell<BorrowedBook, Button>() {
+            private final Button ExtendBorrow = new Button("Handle Book");
+
+            {
+                ExtendBorrow.setOnAction(event -> {
+                    BorrowedBook selectedBook = getTableView().getItems().get(getIndex());
+                    try {
+                        HandleBorrowedBookButtonClicked(selectedBook);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Button item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(ExtendBorrow);
+                    setAlignment(Pos.CENTER);
+                }
+            }
+        });
+
         // Adds the borrowed books to the table
-        for (BorrowedBook borrowedBook : borrowedBooks)
-        {
-            // Add a day to the return date
+        for (BorrowedBook borrowedBook : borrowedBooks) {
             borrowedBook.setBorrowDate(addDay(borrowedBook.getBorrowDate()));
             borrowedBook.setExpectedReturnDate(addDay(borrowedBook.getExpectedReturnDate()));
-
-            // Add the borrowed book to the table
             borrowsTable.getItems().add(borrowedBook);
         }
 
+        // Customize the return date column
         returnDateColumn.setCellFactory(column -> new TableCell<BorrowedBook, String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-
                 if (!empty && item != null) {
-                    // Parse the expected return date
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd][yyyy-M-dd][yyyy-M-d][yyyy-MM-d]");
                     LocalDate returnDate = LocalDate.parse(item, formatter);
-
-                    // Set the text for the cell
                     setText(item);
-
-                    // Apply the style if the date is before today
                     if (returnDate.isBefore(LocalDate.now())) {
                         setStyle("-fx-text-fill: #e51b1b;");
                     } else {
-                        setStyle(""); // Reset style for cells that don't meet the condition
+                        setStyle("");
                     }
                 } else {
                     setText(null);
-                    setStyle(""); // Reset style for empty cells
+                    setStyle("");
                 }
             }
         });
@@ -213,7 +247,21 @@ public class WatchProfileFrameController
      */
     public void loadHistoryTable(List<ArrayList<String>> history)
     {
+        //set borrow table to visible and the rest
+        borrowsTable.setVisible(false);
+        tblHistory.setVisible(true);
+        borrowsTable.setManaged(false);
+        tblHistory.setManaged(true);
+
+        // set up the table to accept SubscriberHistory objects
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        actionColumn.setCellValueFactory(new PropertyValueFactory<>("actionType"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+
+        // Create a DateTimeFormatter
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+
 
         // create a list of SubscriberHistory objects
         List<SubscriberHistory> subscriberHistoryList = new ArrayList<>();

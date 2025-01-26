@@ -200,7 +200,6 @@ public class ClientController extends AbstractClient
                         break;
                     // Show borrowed list response
                     case 211:
-                        if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked") ArrayList<BorrowedBook> messages = (ArrayList<BorrowedBook>) message.getMessageContent();
                             // Handle SubscriberProfileFrameController
@@ -243,10 +242,20 @@ public class ClientController extends AbstractClient
                         //if the content is an instance of List, pass it to WatchHistorySceneController's
                         else if (message.getMessageContent() instanceof List)
                         {
-                            @SuppressWarnings("unchecked")
-                            List<ArrayList<String>> history = (ArrayList<ArrayList<String>>) message.getMessageContent();
-                            WatchHistorySceneController controller = loader.getController();
-                            controller.setHistory(history);
+                            // Handle WatchProfileFrameController
+                            if (loader.getController().getClass().getSimpleName().equals("WatchHistorySceneController"))
+                            {
+                                List<ArrayList<String>> history = (ArrayList<ArrayList<String>>) message.getMessageContent();
+                                WatchHistorySceneController controller = loader.getController();
+                                controller.setHistory(history);
+                            }
+                            if (loader.getController().getClass().getSimpleName().equals("WatchProfileFrameController"))
+                            {
+                                List<ArrayList<String>> history = (ArrayList<ArrayList<String>>) message.getMessageContent();
+                                WatchProfileFrameController controller = loader.getController();
+                                controller.loadHistoryTable(history);
+                            }
+
                         }
                         break;
                     //Edit subscriber details
