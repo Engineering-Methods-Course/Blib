@@ -35,8 +35,6 @@ public class WatchProfileFrameController
     public RadioButton rdHistory;
     @FXML
     public RadioButton rdReserves;
-
-
     @FXML
     private Text txtFullName;
     @FXML
@@ -57,7 +55,6 @@ public class WatchProfileFrameController
     public TableColumn<BorrowedBook, String> returnDateColumn;
     @FXML
     public TableColumn<BorrowedBook, Button> extendButtonColumn;
-
     @FXML
     public TableView<SubscriberHistory> tblHistory;
     @FXML
@@ -66,19 +63,17 @@ public class WatchProfileFrameController
     public TableColumn<SubscriberHistory, String> actionColumn;
     @FXML
     public TableColumn<SubscriberHistory, String> descriptionColumn;
-
     @FXML
     public TableView<ActiveReserves> tblReserves;
     @FXML
-    public TableColumn<ActiveReserves,String> clmnSerialNumber;
+    public TableColumn<ActiveReserves, String> clmnSerialNumber;
     @FXML
-    public TableColumn<ActiveReserves,String> clmnBookName;
+    public TableColumn<ActiveReserves, String> clmnBookName;
     @FXML
-    public TableColumn<ActiveReserves,String> clmnReserveDate;
+    public TableColumn<ActiveReserves, String> clmnReserveDate;
 
-
+    // Other class attributes
     private static String previousFrame;
-
 
     /**
      * Initializes the WatchProfileFrameController.
@@ -102,12 +97,17 @@ public class WatchProfileFrameController
         rdReserves.setToggleGroup(toggleGroup);
 
         toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == rdBorrowedBooks) {
+            if (newValue == rdBorrowedBooks)
+            {
                 requestBorrowedBooks(Subscriber.getWatchProfileSubscriber().getID());
-            } else if (newValue == rdHistory) {
+            }
+            else if (newValue == rdHistory)
+            {
                 requestHistory(Subscriber.getWatchProfileSubscriber().getID());
-            } else if (newValue == rdReserves) {
-                requestReserves(Subscriber.getWatchProfileSubscriber().getID());
+            }
+            else if (newValue == rdReserves)
+            {
+                requestReservations(Subscriber.getWatchProfileSubscriber().getID());
             }
         });
         // Ensure a default state
@@ -161,7 +161,7 @@ public class WatchProfileFrameController
      *
      * @param userID The user ID to request the reserves for
      */
-    private void requestReserves(int userID)
+    private void requestReservations(int userID)
     {
         // Create a message with code 210 and userID
         ClientServerMessage message = new ClientServerMessage(320, userID);
@@ -176,7 +176,8 @@ public class WatchProfileFrameController
      *
      * @param borrowedBooks The list of borrowed books.
      */
-    public void loadBorrowsTable(ArrayList<BorrowedBook> borrowedBooks) {
+    public void loadBorrowsTable(ArrayList<BorrowedBook> borrowedBooks)
+    {
         //set borrow table to visible and the rest
         borrowsTable.setVisible(true);
         borrowsTable.setManaged(true);
@@ -192,26 +193,34 @@ public class WatchProfileFrameController
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("expectedReturnDate"));
 
         // Set up the watch profile column with a button
-        extendButtonColumn.setCellFactory(param -> new TableCell<BorrowedBook, Button>() {
+        extendButtonColumn.setCellFactory(param -> new TableCell<BorrowedBook, Button>()
+        {
             private final Button ExtendBorrow = new Button("Handle Book");
 
             {
                 ExtendBorrow.setOnAction(event -> {
                     BorrowedBook selectedBook = getTableView().getItems().get(getIndex());
-                    try {
+                    try
+                    {
                         HandleBorrowedBookButtonClicked(selectedBook);
-                    } catch (IOException e) {
+                    }
+                    catch (IOException e)
+                    {
                         throw new RuntimeException(e);
                     }
                 });
             }
 
             @Override
-            protected void updateItem(Button item, boolean empty) {
+            protected void updateItem(Button item, boolean empty)
+            {
                 super.updateItem(item, empty);
-                if (empty) {
+                if (empty)
+                {
                     setGraphic(null);
-                } else {
+                }
+                else
+                {
                     setGraphic(ExtendBorrow);
                     setAlignment(Pos.CENTER);
                 }
@@ -219,27 +228,36 @@ public class WatchProfileFrameController
         });
 
         // Adds the borrowed books to the table
-        for (BorrowedBook borrowedBook : borrowedBooks) {
+        for (BorrowedBook borrowedBook : borrowedBooks)
+        {
             borrowedBook.setBorrowDate(addDay(borrowedBook.getBorrowDate()));
             borrowedBook.setExpectedReturnDate(addDay(borrowedBook.getExpectedReturnDate()));
             borrowsTable.getItems().add(borrowedBook);
         }
 
         // Customize the return date column
-        returnDateColumn.setCellFactory(column -> new TableCell<BorrowedBook, String>() {
+        returnDateColumn.setCellFactory(column -> new TableCell<BorrowedBook, String>()
+        {
             @Override
-            protected void updateItem(String item, boolean empty) {
+            protected void updateItem(String item, boolean empty)
+            {
                 super.updateItem(item, empty);
-                if (!empty && item != null) {
+                if (!empty && item != null)
+                {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd][yyyy-M-dd][yyyy-M-d][yyyy-MM-d]");
                     LocalDate returnDate = LocalDate.parse(item, formatter);
                     setText(item);
-                    if (returnDate.isBefore(LocalDate.now())) {
+                    if (returnDate.isBefore(LocalDate.now()))
+                    {
                         setStyle("-fx-text-fill: #e51b1b;");
-                    } else {
+                    }
+                    else
+                    {
                         setStyle("");
                     }
-                } else {
+                }
+                else
+                {
                     setText(null);
                     setStyle("");
                 }
@@ -271,7 +289,6 @@ public class WatchProfileFrameController
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
 
-
         // create a list of SubscriberHistory objects
         List<SubscriberHistory> subscriberHistoryList = new ArrayList<>();
         for (ArrayList<String> historyItem : history)
@@ -290,8 +307,8 @@ public class WatchProfileFrameController
      *
      * @param reservedBooks The list of reserved books
      */
-    public void loadReservesTable(ArrayList<ActiveReserves> reservedBooks) {
-
+    public void loadReservesTable(ArrayList<ActiveReserves> reservedBooks)
+    {
         //set borrow table to visible and the rest
         borrowsTable.setVisible(false);
         borrowsTable.setManaged(false);
@@ -306,9 +323,7 @@ public class WatchProfileFrameController
         clmnReserveDate.setCellValueFactory(new PropertyValueFactory<>("reserveDate"));
         // Adds the reserved books to the table
         tblReserves.getItems().setAll(reservedBooks);
-
     }
-
 
     /**
      * Handles the extendBorrowButton click event to extend the book borrowing period

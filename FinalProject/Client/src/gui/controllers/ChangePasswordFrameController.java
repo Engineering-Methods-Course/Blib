@@ -1,5 +1,6 @@
 package gui.controllers;
 
+import main.ClientGUIController;
 import common.ClientServerMessage;
 import common.Subscriber;
 import javafx.application.Platform;
@@ -7,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import main.ClientGUIController;
 
 import java.util.ArrayList;
 

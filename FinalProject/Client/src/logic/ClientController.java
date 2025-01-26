@@ -9,7 +9,6 @@ import javafx.scene.control.Alert;
 import ocsf.client.*;
 
 import java.io.*;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,6 @@ import static main.ClientGUIController.showAlert;
 public class ClientController extends AbstractClient
 {
     public static boolean awaitResponse = false;
-    private Connection conn;
     private static ActionEvent storedActionEvent;
     private static FXMLLoader loader;
     final ChatIF clientUI;

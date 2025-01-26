@@ -33,7 +33,6 @@ public class SearchResultFrameController
     @FXML
     public VBox SearchResultFrame;
 
-
     //other class attributes
     private final ObservableList<List<String>> BookList = FXCollections.observableArrayList();
     private final Property<ObservableList<List<String>>> BookListProperty = new SimpleObjectProperty<>(BookList);

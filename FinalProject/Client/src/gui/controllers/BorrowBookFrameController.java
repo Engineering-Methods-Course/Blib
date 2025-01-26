@@ -1,10 +1,10 @@
 package gui.controllers;
 
+import main.ClientGUIController;
 import common.ClientServerMessage;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import main.ClientGUIController;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

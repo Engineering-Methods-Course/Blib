@@ -1,7 +1,7 @@
 package gui.controllers;
 
-import common.ActiveReserves;
 import main.ClientGUIController;
+import common.ActiveReserves;
 import common.BorrowedBook;
 import common.ClientServerMessage;
 import common.Subscriber;
