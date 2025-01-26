@@ -13,6 +13,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import static main.ClientGUIController.loadFrameIntoPane;
@@ -157,6 +159,32 @@ public class WatchProfileFrameController
             // Add the borrowed book to the table
             borrowsTable.getItems().add(borrowedBook);
         }
+
+        returnDateColumn.setCellFactory(column -> new TableCell<BorrowedBook, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (!empty && item != null) {
+                    // Parse the expected return date
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd][yyyy-M-dd][yyyy-M-d]");
+                    LocalDate returnDate = LocalDate.parse(item, formatter);
+
+                    // Set the text for the cell
+                    setText(item);
+
+                    // Apply the style if the date is before today
+                    if (returnDate.isBefore(LocalDate.now())) {
+                        setStyle("-fx-text-fill: #e51b1b;");
+                    } else {
+                        setStyle(""); // Reset style for cells that don't meet the condition
+                    }
+                } else {
+                    setText(null);
+                    setStyle(""); // Reset style for empty cells
+                }
+            }
+        });
     }
 
     /**
