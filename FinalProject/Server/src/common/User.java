@@ -10,8 +10,8 @@ public class User implements Serializable
     /**
      * Constructor for the User class.
      *
-     * @param firstName
-     * @param lastName
+     * @param firstName The first name of the user.
+     * @param lastName The last name of the user.
      */
     public User(String firstName, String lastName)
     {
