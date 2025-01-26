@@ -85,8 +85,14 @@ public class SubscriberProfileFrameController
             }
         });
 
+        ClientServerMessage message = new ClientServerMessage(308, Subscriber.getLocalSubscriber().getID());
+
+        // Sends the message to the server
+        ClientGUIController.chat.sendToServer(message);
+
+
         // Sends a message to the server to get the user's borrowed books
-        ClientServerMessage message = new ClientServerMessage(210, Subscriber.getLocalSubscriber().getID());
+         message = new ClientServerMessage(210, Subscriber.getLocalSubscriber().getID());
 
         // Sends the message to the server
         ClientGUIController.chat.sendToServer(message);

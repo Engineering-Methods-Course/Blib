@@ -387,14 +387,19 @@ public class ClientController extends AbstractClient
                         }
                         else if (message.getMessageContent() instanceof Subscriber)
                         {
-                            Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
-                            Subscriber.setWatchProfileSubscriber(subscriberFromServer);
+                            if (Librarian.getLocalLibrarian() == null){
+                                Subscriber.setLocalSubscriber((Subscriber) message.getMessageContent());
+                            }
+                            else {
+                                Subscriber subscriberFromServer = (Subscriber) message.getMessageContent();
+                                Subscriber.setWatchProfileSubscriber(subscriberFromServer);
 
-                            //retrieve the controller for "SearchSubscriberFrameController" frame.
-                            SearchSubscriberFrameController Controller = loader.getController();
+                                //retrieve the controller for "SearchSubscriberFrameController" frame.
+                                SearchSubscriberFrameController Controller = loader.getController();
 
-                            //pass the subscriber to the controller
-                            Controller.WatchProfileResponse(subscriberFromServer);
+                                //pass the subscriber to the controller
+                                Controller.WatchProfileResponse(subscriberFromServer);
+                            }
                         }
                         break;
                     // Extend borrow - librarian response

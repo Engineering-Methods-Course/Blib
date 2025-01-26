@@ -291,6 +291,7 @@ public class MainFrameController
     public void loadSubscriberProfile() throws IOException
     {
         // loads the subscriber profile frame
+
         loadFrameIntoPane(SceneChanger, "/gui/SubscriberProfileFrame.fxml");
     }
 
