@@ -2267,7 +2267,6 @@ public class DBController {
             }
         } catch (Exception e) {
             System.out.println("Error: Checking the reservation" + e);
-            throw new RuntimeException(e);
         }
     }
 
