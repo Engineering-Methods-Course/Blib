@@ -27,6 +27,8 @@ public class ClientController extends AbstractClient
      * @param host     The server to connect to.
      * @param port     The port number to connect on.
      * @param clientUI The interface type variable.
+     * @param loader   The loader for the FXML file.
+     * @throws IOException If an error occurs.
      */
     public ClientController(String host, int port, ChatIF clientUI, FXMLLoader loader) throws IOException
     {

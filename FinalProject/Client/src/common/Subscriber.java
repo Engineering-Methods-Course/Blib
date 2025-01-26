@@ -32,6 +32,8 @@ public class Subscriber extends User implements Serializable
      * @param lastName    Last name of the subscriber
      * @param phoneNumber Subscriber's phone number
      * @param email       Subscriber's email address
+     * @param status      Status to check if the subscriber is frozen (inactive)
+     * @param subscriptionHistory Subscription history (e.g., the number of subscriptions)
      */
     public Subscriber(int id, String firstName, String lastName, String phoneNumber, String email, boolean status, List<ArrayList<String>> subscriptionHistory)
     {

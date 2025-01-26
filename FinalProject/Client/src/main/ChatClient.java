@@ -17,6 +17,8 @@ public class ChatClient implements ChatIF
      *
      * @param host The host to connect to.
      * @param port The port to connect on.
+     * @param loader The loader for the FXML file
+     * @throws Exception If an error occurs.
      */
     public ChatClient(String host, int port, FXMLLoader loader) throws Exception
     {

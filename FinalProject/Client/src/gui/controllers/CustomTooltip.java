@@ -12,6 +12,7 @@ public class CustomTooltip extends Tooltip
 {
     /**
      * Creates a new CustomTooltip with the given text.
+     * @param text The text to display in the tooltip
      */
     public CustomTooltip(String text)
     {
@@ -26,6 +27,7 @@ public class CustomTooltip extends Tooltip
      * @param openDelay The delay before the tooltip opens
      * @param visibleDuration The duration the tooltip is visible
      * @param closeDelay The delay before the tooltip closes
+     * @return true if successful and false if not
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static boolean setTooltipTimers(long openDelay, long visibleDuration, long closeDelay)

@@ -73,7 +73,7 @@ public class HandleBorrowedBookFrameController
     /**
      * This method handles the extendButton click event to extend the book borrowing period
      *
-     * @throws IOException
+     * @throws IOException If an I/O error occurs
      */
     public void extendButtonClicked() throws IOException {
         // Extract data from the fields
@@ -111,7 +111,7 @@ public class HandleBorrowedBookFrameController
     /**
      * This method handles the markLostButton click event to mark the book as lost
      *
-     * @throws IOException
+     * @throws IOException If an I/O error occurs
      */
     public void markLostButtonPressed() throws IOException {
         //send the book id and the subscriber id to the server
@@ -226,7 +226,7 @@ public class HandleBorrowedBookFrameController
     /**
      * This method goes back to the previous frame
      *
-     * @throws IOException
+     * @throws IOException If an I/O error occurs
      */
     public void goBack() throws IOException
     {

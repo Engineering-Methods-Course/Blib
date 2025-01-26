@@ -186,7 +186,10 @@ public class ClientGUIController extends Application
     /**
      * Shows the error state: sets the TextField border to red and displays the error label.
      *
+     * @param textFieldToChange The TextField to change the border of.
+     * @param labelToChange     The Label to display the error message in.
      * @param errorMessage The error message to display.
+     *
      */
     public static void showErrorListenField(TextField textFieldToChange, Label labelToChange, String errorMessage)
     {
@@ -201,6 +204,8 @@ public class ClientGUIController extends Application
 
     /**
      * Resets the error state (removes red border and hides the error label).
+     * @param textFieldToReset The TextField to reset the border of.
+     * @param labelToReset The Label to hide.
      */
     public static void resetErrorState(TextField textFieldToReset,Label labelToReset)
     {

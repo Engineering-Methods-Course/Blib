@@ -16,8 +16,10 @@ public class BorrowedBook implements Serializable
      *
      * @param copyID             - the ID of the copy
      * @param borrowerID         - the ID of the borrower
+     * @param bookName           - the name of the book
      * @param borrowDate         - the date the book was borrowed
      * @param expectedReturnDate - the date the book is to be returned
+     * @param returnDate         - the date the book was returned
      */
     public BorrowedBook(int copyID, int borrowerID, String bookName, String borrowDate, String expectedReturnDate, String returnDate)
     {
