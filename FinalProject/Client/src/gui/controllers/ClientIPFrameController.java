@@ -37,7 +37,6 @@ public class ClientIPFrameController
         // Set default values for the text fields
         txtIP = (TextField) root.lookup("#txtIP");
         txtPort = (TextField) root.lookup("#txtPort");
-        txtIP.setText("localhost");
         txtPort.setText("5555");
 
         // Set the scene
