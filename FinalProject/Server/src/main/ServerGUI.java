@@ -1,10 +1,9 @@
 package main;
 
 import common.ClientServerMessage;
-import logic.ScheduleController;
 import logic.ServerController;
-import gui.ServerMonitorFrameController;
-import gui.ServerPortFrameController;
+import gui.controllers.ServerMonitorFrameController;
+import gui.controllers.ServerPortFrameController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -48,11 +47,11 @@ public class ServerGUI extends Application {
         Stage primaryStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
 
-        Pane root = loader.load(Objects.requireNonNull(ServerGUI.class.getResource("/gui/ServerMonitorFrame.fxml")).openStream());
+        Pane root = loader.load(Objects.requireNonNull(ServerGUI.class.getResource("/gui/fxml/ServerMonitorFrame.fxml")).openStream());
         ServerMonitorFrameController serverMonitorController = loader.getController();
 
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(Objects.requireNonNull(ServerGUI.class.getResource("/gui/Server.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(ServerGUI.class.getResource("/gui/css/Server.css")).toExternalForm());
         primaryStage.setTitle("Server Monitor");
 
         primaryStage.setScene(scene);

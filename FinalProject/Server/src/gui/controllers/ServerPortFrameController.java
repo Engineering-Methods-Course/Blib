@@ -1,4 +1,4 @@
-package gui;
+package gui.controllers;
 
 import main.ServerGUI;
 import javafx.collections.ObservableList;
@@ -67,7 +67,7 @@ public class ServerPortFrameController {
      * @throws Exception If there is an issue with exiting the server
      */
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/gui/ServerPortFrame.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/gui/fxml/ServerPortFrame.fxml")));
 
         Scene scene = new Scene(root);
 
@@ -75,7 +75,7 @@ public class ServerPortFrameController {
         portxt = (TextField) root.lookup("#portxt");
         portxt.setText("5555");
 
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/gui/Server.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/gui/css/Server.css")).toExternalForm());
         primaryStage.setTitle("Set Port Number");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false); // Disable window resizing

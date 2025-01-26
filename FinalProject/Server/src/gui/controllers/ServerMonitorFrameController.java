@@ -1,4 +1,4 @@
-package gui;
+package gui.controllers;
 
 import javafx.application.Platform;
 import javafx.beans.property.Property;

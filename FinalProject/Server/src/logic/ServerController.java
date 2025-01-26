@@ -5,7 +5,7 @@ import common.ClientServerMessage;
 import common.Librarian;
 import common.Subscriber;
 import common.User;
-import gui.ServerMonitorFrameController;
+import gui.controllers.ServerMonitorFrameController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
