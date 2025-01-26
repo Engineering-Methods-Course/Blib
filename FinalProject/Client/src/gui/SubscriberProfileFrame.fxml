@@ -118,9 +118,16 @@
                 </Text>
                </children>
             </HBox>
-            <VBox alignment="CENTER">
+            <VBox alignment="CENTER_LEFT">
                <children>
-                  <Label text="Select table To view :" />
+                  <Label text="Select table To view :">
+                     <graphic>
+                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/table.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Label>
                   <RadioButton fx:id="rdBorrowedBooks" mnemonicParsing="false" text="Borrowed Books" />
                   <RadioButton fx:id="rdReserves" mnemonicParsing="false" prefHeight="32.0" prefWidth="229.0" text="Active Orders" />
                </children>
