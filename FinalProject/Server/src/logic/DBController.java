@@ -1857,6 +1857,11 @@ public class DBController {
             addNewEntryToMonthlyReport("borrowTime", new ReportEntry(new java.util.Date(), "extend", bookName));
 
             /*
+            * notify the subscriber
+             */
+            notificationController.sendSMSSimulator(subscriberId, "Return date for the book: " + bookName + " copy ID: " + copyId + " was extended by librarian " + librarianName + " to " + newReturnDate);
+
+            /*
              * Commit the transaction
              */
             conn.commit();

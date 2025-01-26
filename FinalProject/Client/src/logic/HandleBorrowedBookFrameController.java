@@ -39,6 +39,7 @@ public class HandleBorrowedBookFrameController
 
     // Other attributes
     private static BorrowedBook borrowedBookCopy;
+    private static String previousFrame;
 
     /**
      * This method initializes the Borrow Extension Frame
@@ -70,8 +71,7 @@ public class HandleBorrowedBookFrameController
     /**
      * This method handles the extendButton click event to extend the book borrowing period
      */
-    public void extendButtonClicked()
-    {
+    public void extendButtonClicked() throws IOException {
         // Extract data from the fields
         String subscriberID = subscriberIdLabel.getText().trim();
         String copyID = bookIdLabel.getText().trim();
@@ -101,13 +101,13 @@ public class HandleBorrowedBookFrameController
 
         // Send the message to the server
         ClientGUIController.chat.sendToServer(message);
+        loadFrameIntoPane((AnchorPane) handleBorrow.getParent(), previousFrame);
     }
 
     /**
      * This method handles the markLostButton click event to mark the book as lost
      */
-    public void markLostButtonPressed()
-    {
+    public void markLostButtonPressed() throws IOException {
         //send the book id and the subscriber id to the server
         ArrayList<String> dataToSend = new ArrayList<>();
         dataToSend.add(subscriberIdLabel.getText());
@@ -118,6 +118,7 @@ public class HandleBorrowedBookFrameController
 
         // Send the message to the server
         ClientGUIController.chat.sendToServer(message);
+        loadFrameIntoPane((AnchorPane) handleBorrow.getParent(), previousFrame);
     }
 
     /**
@@ -223,5 +224,15 @@ public class HandleBorrowedBookFrameController
     public void goBack() throws IOException
     {
         loadFrameIntoPane((AnchorPane) handleBorrow.getParent(), "/gui/WatchProfileFrame.fxml");
+    }
+
+    /**
+     * Sets the previous frame
+     *
+     * @param frame The previous frame
+     */
+    public static void setPreviousFrame(String frame)
+    {
+        previousFrame = frame;
     }
 }

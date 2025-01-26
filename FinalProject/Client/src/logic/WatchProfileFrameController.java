@@ -201,6 +201,7 @@ public class WatchProfileFrameController
             HandleBorrowedBookFrameController.setBorrowedBook(selectedBook); // Set the selected book in the Subscriber object, or use a different method
 
             // Navigate to the HandleBorrowedBookFrameController, passing the selected book
+            HandleBorrowedBookFrameController.setPreviousFrame(previousFrame);
             loadFrameIntoPane((AnchorPane) viewSubscriberProfileLibrarian.getParent(), "/gui/HandleBorrowedBookFrame.fxml");
         }
         else
