@@ -1,5 +1,6 @@
 package logic;
 
+import common.ActiveReserves;
 import main.ClientGUIController;
 import common.BorrowedBook;
 import common.ClientServerMessage;
@@ -41,6 +42,18 @@ public class SubscriberProfileFrameController
     public TableColumn<BorrowedBook, String> returnDateColumn;
     @FXML
     public TableColumn<BorrowedBook, Button> extendButtonColumn;
+    @FXML
+    public RadioButton rdBorrowedBooks;
+    @FXML
+    public RadioButton rdReserves;
+    @FXML
+    public TableView<ActiveReserves> tblReserves;
+    @FXML
+    public TableColumn<ActiveReserves,String> clmnSerialNumber;
+    @FXML
+    public TableColumn<ActiveReserves,String> clmnBookName;
+    @FXML
+    public TableColumn<ActiveReserves,String> clmnReserveDate;
 
     /**
      * This method is called when the frame is initialized
@@ -53,6 +66,83 @@ public class SubscriberProfileFrameController
         emailField.setText( Subscriber.getLocalSubscriber().getEmail());
         statusTextField.setText( (Subscriber.getLocalSubscriber().getStatusIsFrozen()));
         userIDField.setText(String.valueOf(Subscriber.getLocalSubscriber().getID()));
+
+
+        ClientServerMessage message = new ClientServerMessage(308, Subscriber.getLocalSubscriber().getID());
+
+        // Sends the message to the server
+        ClientGUIController.chat.sendToServer(message);
+
+        ToggleGroup toggleGroup = new ToggleGroup();
+        rdBorrowedBooks.setToggleGroup(toggleGroup);
+        rdReserves.setToggleGroup(toggleGroup);
+
+        // Set the default selected radio button to "Borrowed Books"
+        rdBorrowedBooks.setSelected(true);
+
+
+        // Add listeners for radio button changes
+        rdBorrowedBooks.setOnAction(event -> onRadioButtonChanged());
+        rdReserves.setOnAction(event -> onRadioButtonChanged());
+
+        // Request borrowed books by default
+        requestBorrowedBooks(Subscriber.getLocalSubscriber().getID());
+    }
+
+    /**
+     * Handle the radio button change to switch between borrowed books and reserves
+     */
+    private void onRadioButtonChanged() {
+        if (rdBorrowedBooks.isSelected()) {
+            // Request borrowed books
+            requestBorrowedBooks(Subscriber.getLocalSubscriber().getID());
+        } else if (rdReserves.isSelected()) {
+            // Request reserves
+            requestReserves(Subscriber.getLocalSubscriber().getID());
+        }
+    }
+
+    /**
+     * Request the borrowed books for the user
+     *
+     * @param userID The user ID to request the borrowed books for
+     */
+    private void requestBorrowedBooks(int userID)
+    {
+        // Create a message with code 210 and userID
+        ClientServerMessage message = new ClientServerMessage(210, userID);
+
+        // Send the message to the server
+        ClientGUIController.chat.sendToServer(message);
+    }
+
+    /**
+     * Request the reserves for the user
+     *
+     * @param userID The user ID to request the reserves for
+     */
+    private void requestReserves(int userID)
+    {
+        // Create a message with code 210 and userID
+        ClientServerMessage message = new ClientServerMessage(320, userID);
+
+        // Send the message to the server
+        ClientGUIController.chat.sendToServer(message);
+
+    }
+
+    /**
+     * This method loads the borrowed books into the table
+     *
+     * @param borrowedBooks The list of borrowed books
+     */
+    public void loadBorrowsTable(ArrayList<BorrowedBook> borrowedBooks) {
+        //set borrow table to visible and the rest
+        borrowsTable.setVisible(true);
+        borrowsTable.setManaged(true);
+        tblReserves.setVisible(false);
+        tblReserves.setManaged(false);
+
 
         // Set up the borrowed books table columns
         bookNameColumn.setCellValueFactory(new PropertyValueFactory<>("bookName"));
@@ -85,25 +175,6 @@ public class SubscriberProfileFrameController
             }
         });
 
-        ClientServerMessage message = new ClientServerMessage(308, Subscriber.getLocalSubscriber().getID());
-
-        // Sends the message to the server
-        ClientGUIController.chat.sendToServer(message);
-
-
-        // Sends a message to the server to get the user's borrowed books
-         message = new ClientServerMessage(210, Subscriber.getLocalSubscriber().getID());
-
-        // Sends the message to the server
-        ClientGUIController.chat.sendToServer(message);
-    }
-
-    /**
-     * This method loads the borrowed books into the table
-     *
-     * @param borrowedBooks The list of borrowed books
-     */
-    public void loadBorrowsTable(ArrayList<BorrowedBook> borrowedBooks) {
         // Adds the borrowed books to the table
         for (BorrowedBook borrowedBook : borrowedBooks) {
             // Adds a day to the return date and borrow date
@@ -141,6 +212,30 @@ public class SubscriberProfileFrameController
         });
 
     }
+
+    /**
+     * Load the reserves into the table
+     *
+     * @param reservedBooks The list of reserved books
+     */
+    public void loadReservesTable(ArrayList<ActiveReserves> reservedBooks) {
+
+        //set borrow table to visible and the rest
+        borrowsTable.setVisible(false);
+        borrowsTable.setManaged(false);
+        tblReserves.setVisible(true);
+        tblReserves.setManaged(true);
+
+        // Set up the reserve table columns
+        clmnSerialNumber.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
+        clmnBookName.setCellValueFactory(new PropertyValueFactory<>("bookName"));
+        clmnReserveDate.setCellValueFactory(new PropertyValueFactory<>("reserveDate"));
+        // Adds the reserved books to the table
+        tblReserves.getItems().setAll(reservedBooks);
+
+    }
+
+
     /**
      * This method handles the extendBorrowButton click event to send extension request
      *

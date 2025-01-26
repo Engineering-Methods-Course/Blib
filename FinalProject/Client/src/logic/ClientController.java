@@ -589,7 +589,7 @@ public class ClientController extends AbstractClient
                             }
                         }
                         break;
-//i will get arraylist of active reserve(class) or null if nothing
+
                     case 321:
                         @SuppressWarnings("unchecked") ArrayList<ActiveReserves> messages = (ArrayList<ActiveReserves>) message.getMessageContent();
                         // Handle SubscriberProfileFrameController
@@ -597,6 +597,11 @@ public class ClientController extends AbstractClient
                         {
                             WatchProfileFrameController controllerFromLibrarianFrames = loader.getController();
                             controllerFromLibrarianFrames.loadReservesTable(messages);
+                        }
+                        if(loader.getController().getClass().getSimpleName().equals("SubscriberProfileFrameController"))
+                        {
+                            SubscriberProfileFrameController controllerSubscriberOption = loader.getController();
+                            controllerSubscriberOption.loadReservesTable(messages);
                         }
 
                         break;
