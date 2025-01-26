@@ -24,7 +24,7 @@
         <Button fx:id="btnReturn" layoutX="543.0" layoutY="429.0" onAction="#returnButtonClicked" prefWidth="200.0" style="-fx-font-size: 18px;" text="Return" />
       <ImageView fitHeight="50.0" fitWidth="51.0" layoutX="353.0" layoutY="274.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../resources/return%20book.png" />
+            <Image url="@../../resources/return%20book.png" />
          </image>
       </ImageView>
       <Label layoutX="421.0" layoutY="287.0" text="Book Copy ID:" />

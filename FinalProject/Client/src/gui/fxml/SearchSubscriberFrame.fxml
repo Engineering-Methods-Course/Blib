@@ -21,7 +21,7 @@
     <Button fx:id="watchProfileButton" layoutX="745.0" layoutY="607.0" onAction="#watchProfileButtonClicked" prefHeight="46.0" prefWidth="183.0" styleClass="button" text="Watch Profile" />
    <ImageView fitHeight="54.0" fitWidth="54.0" layoutX="521.0" layoutY="456.0" pickOnBounds="true" preserveRatio="true">
       <image>
-         <Image url="@../resources/user%20id.png" />
+         <Image url="@../../resources/user%20id.png" />
       </image>
    </ImageView>
 

@@ -135,7 +135,7 @@
                                 <graphic>
                                     <ImageView fitHeight="66.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true">
                                         <image>
-                                            <Image url="@../resources/user%20id.png" />
+                                            <Image url="@../../resources/user%20id.png" />
                                         </image>
                                     </ImageView>
                                 </graphic>
