@@ -633,6 +633,7 @@ public class ServerController extends AbstractServer {
                         }
                         break;
                     case (318):
+
                         /*
                          * Do: librarian marks book as lost
                          * In: ArrayList<String> {subscriber id, book id}
@@ -655,6 +656,25 @@ public class ServerController extends AbstractServer {
                                 add("Server Error");
                             }}));
                             System.out.println("Error: with mark book as lost method (case 318)" + e);
+                        }
+                        break;
+                    case (320):
+                        /*
+                         * Do: librarian views all active reserves of a specific subscriber
+                         * In: int {subscriber id}
+                         * Return: (id 321) ArrayList<ActiveReserves> {active reserves} or null
+                         */
+                        try {
+                            if (message.getMessageContent() instanceof Integer) {
+                                client.sendToClient(new ClientServerMessage(321, dbController.viewActiveReserves((Integer) message.getMessageContent())));
+                                System.out.println("Active reserves were sent to client");
+                            } else {
+                                client.sendToClient(new ClientServerMessage(321, null));
+                                System.out.println("Cannot get active reserves - message is not an integer (case 320)");
+                            }
+                        } catch (Exception e) {
+                            client.sendToClient(new ClientServerMessage(321, null));
+                            System.out.println("Error: with getting active reserves (case 320)" + e);
                         }
                         break;
                     default:

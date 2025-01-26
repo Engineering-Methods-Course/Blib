@@ -1890,7 +1890,7 @@ public class DBController {
     }
 
     /**
-     * Case 312
+     * case 312
      * This method return an array list containing a log of the subscribers borrow histories between two time frames
      *
      * @param messageContent The time frames
@@ -1942,7 +1942,7 @@ public class DBController {
     }
 
     /**
-     * Case 314
+     * case 314
      * This method return an array list containing a log of the subscribers status abnormalities between two time frames
      *
      * @param messageContent The time frames
@@ -1996,7 +1996,7 @@ public class DBController {
     }
 
     /**
-     * Case 316
+     * case 316
      * This method returns all the librarian messages
      *
      * @return ArrayList<String> containing the messages
@@ -2039,6 +2039,182 @@ public class DBController {
             return null;
         }
 
+    }
+
+    /**
+     * case 318
+     * This method remove book copy from the library
+     *
+     * @param messageContent Array list containing the copy ID
+     * @return Array list containing true if the book was removed successfully and false if not with the error message
+     */
+    public ArrayList<String> markBookAsLost(ArrayList<String> messageContent) {
+        ArrayList<String> response = new ArrayList<>();
+        try {
+            int subscriberId = Integer.parseInt(messageContent.get(0));
+            int copyId = Integer.parseInt(messageContent.get(1));
+
+            /*
+             * Turn off auto-commit
+             */
+
+            conn.setAutoCommit(false);
+
+            /*
+             * Update borrow table
+             */
+
+            String updateBorrowQuery = "UPDATE borrow SET status = 'lost', return_date = NOW() WHERE subscriber_id = ? AND copy_id = ?";
+            PreparedStatement updateBorrowStatement = conn.prepareStatement(updateBorrowQuery);
+            updateBorrowStatement.setInt(1, subscriberId);
+            updateBorrowStatement.setInt(2, copyId);
+            int rowsUpdated = updateBorrowStatement.executeUpdate();
+            if (rowsUpdated == 0) {
+                response.add("false");
+                response.add("No borrow record found for the given subscriber and copy ID");
+                return response;
+            }
+
+            /*
+             * Get the book name
+             */
+
+            String getBookNameQuery = "SELECT name FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+            PreparedStatement getBookNameStatement = conn.prepareStatement(getBookNameQuery);
+            getBookNameStatement.setInt(1, copyId);
+            ResultSet getBookNameRs = getBookNameStatement.executeQuery();
+            String bookName = "";
+            if (getBookNameRs.next()) {
+                bookName = getBookNameRs.getString("name");
+            }
+
+            /*
+             * Edit number of books in the book table
+             */
+
+            String editBookQuery = "UPDATE book SET copies = copies - 1, borrowed_copies = borrowed_copies - 1 WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
+            PreparedStatement editBookStatement = conn.prepareStatement(editBookQuery);
+            editBookStatement.setInt(1, copyId);
+            editBookStatement.executeUpdate();
+
+            /*
+             * Remove the reference to the copy_id in the borrow table
+             */
+
+            String removeBorrowReferenceQuery = "UPDATE borrow SET copy_id = NULL WHERE copy_id = ?";
+            PreparedStatement removeBorrowReferenceStatement = conn.prepareStatement(removeBorrowReferenceQuery);
+            removeBorrowReferenceStatement.setInt(1, copyId);
+            removeBorrowReferenceStatement.executeUpdate();
+
+            /*
+             * Remove the book from the library
+             */
+
+            String removeBookQuery = "DELETE FROM book_copy WHERE copy_id = ?";
+            PreparedStatement removeBookStatement = conn.prepareStatement(removeBookQuery);
+            removeBookStatement.setInt(1, copyId);
+            removeBookStatement.executeUpdate();
+
+            /*
+             * Freeze the account of the subscriber
+             */
+
+            freezeAccount(subscriberId, "Book: " + bookName + " copy id: " + copyId + " has been lost");
+
+            /*
+             * Update subscriber history
+             */
+
+            updateHistory(subscriberId, "lost", "Book: " + bookName + " copy id: " + copyId + " has been lost");
+
+            /*
+             * Add the new entry to the monthly report
+             */
+
+            addNewEntryToMonthlyReport("borrowTime", new ReportEntry(new java.util.Date(), "lost", bookName));
+
+            /*
+             * Commit the transaction
+             */
+
+            conn.commit();
+            response.add("true");
+            response.add("Book has been marked as lost");
+        } catch (SQLException e) {
+            try {
+                // Rollback the transaction in case of an error
+                conn.rollback();
+            } catch (SQLException rollbackEx) {
+                System.out.println("Error: Rolling back transaction" + rollbackEx);
+            }
+            System.out.println("Error: Marking book as lost" + e);
+            response.add("false");
+            response.add("Problem with marking the book as lost");
+        } finally {
+            try {
+                // Turn auto-commit back on
+                conn.setAutoCommit(true);
+            } catch (SQLException ex) {
+                System.out.println("Error: Setting auto-commit back to true" + ex);
+            }
+        }
+        return response;
+    }
+
+    /**
+     * case 320
+     * This method returns a subscribers active reserves
+     * @param subscriberId The subscriber ID
+     * @return ArrayList<ActiveReserves> containing the active reserves of a specific subscriber
+     */
+    public ArrayList<ActiveReserves> viewActiveReserves(int subscriberId) {
+        try {
+            ArrayList<ActiveReserves> activeReserves = new ArrayList<>();
+
+            /*
+             * This query selects all columns from the reservation table where the subscriber ID matches the given value
+             */
+            String getActiveReservesQuery = "SELECT * FROM reservation WHERE subscriber_id = ?";
+            PreparedStatement getActiveReservesStatement = conn.prepareStatement(getActiveReservesQuery);
+            getActiveReservesStatement.setInt(1, subscriberId);
+            ResultSet getActiveReservesRs = getActiveReservesStatement.executeQuery();
+            /*
+             * Creates an ActiveReserves object based on the details
+             * And adds it to the activeReserves array list
+             */
+            while (getActiveReservesRs.next()) {
+                int serialNumber = getActiveReservesRs.getInt("serial_number");
+                Date reserveDate = getActiveReservesRs.getDate("reserve_date");
+
+                /*
+                 * This query selects the book name where the serial number matches the given value
+                 */
+                String getBookNameQuery = "SELECT name FROM book WHERE serial_number = ?";
+                PreparedStatement getBookNameStatement = conn.prepareStatement(getBookNameQuery);
+                getBookNameStatement.setInt(1, serialNumber);
+                ResultSet getBookNameRs = getBookNameStatement.executeQuery();
+                String bookName = "";
+                if (getBookNameRs.next()) {
+                    bookName = getBookNameRs.getString("name");
+                }
+
+                ActiveReserves activeReserve = new ActiveReserves(serialNumber, bookName, reserveDate);
+
+                activeReserves.add(activeReserve);
+            }
+
+            /*
+             * If no active reserves were found returns null
+             */
+            if (activeReserves.isEmpty()) {
+                return null;
+            }
+            return activeReserves;
+
+        } catch (SQLException e) {
+            System.out.println("Error: Getting active reserves" + e);
+            return null;
+        }
     }
 
     /**
@@ -2691,124 +2867,5 @@ public class DBController {
         } catch (SQLException e) {
             System.out.println("Error: Verifying tasks" + e);
         }
-    }
-
-    /**
-     * This method remove book copy from the library
-     *
-     * @param messageContent Array list containing the copy ID
-     * @return Array list containing true if the book was removed successfully and false if not with the error message
-     */
-    public ArrayList<String> markBookAsLost(ArrayList<String> messageContent) {
-        ArrayList<String> response = new ArrayList<>();
-        try {
-            int subscriberId = Integer.parseInt(messageContent.get(0));
-            int copyId = Integer.parseInt(messageContent.get(1));
-
-            /*
-             * Turn off auto-commit
-             */
-
-            conn.setAutoCommit(false);
-
-            /*
-             * Update borrow table
-             */
-
-            String updateBorrowQuery = "UPDATE borrow SET status = 'lost', return_date = NOW() WHERE subscriber_id = ? AND copy_id = ?";
-            PreparedStatement updateBorrowStatement = conn.prepareStatement(updateBorrowQuery);
-            updateBorrowStatement.setInt(1, subscriberId);
-            updateBorrowStatement.setInt(2, copyId);
-            int rowsUpdated = updateBorrowStatement.executeUpdate();
-            if (rowsUpdated == 0) {
-                response.add("false");
-                response.add("No borrow record found for the given subscriber and copy ID");
-                return response;
-            }
-
-            /*
-             * Get the book name
-             */
-
-            String getBookNameQuery = "SELECT name FROM book WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
-            PreparedStatement getBookNameStatement = conn.prepareStatement(getBookNameQuery);
-            getBookNameStatement.setInt(1, copyId);
-            ResultSet getBookNameRs = getBookNameStatement.executeQuery();
-            String bookName = "";
-            if (getBookNameRs.next()) {
-                bookName = getBookNameRs.getString("name");
-            }
-
-            /*
-             * Edit number of books in the book table
-             */
-
-            String editBookQuery = "UPDATE book SET copies = copies - 1, borrowed_copies = borrowed_copies - 1 WHERE serial_number = (SELECT serial_number FROM book_copy WHERE copy_id = ?)";
-            PreparedStatement editBookStatement = conn.prepareStatement(editBookQuery);
-            editBookStatement.setInt(1, copyId);
-            editBookStatement.executeUpdate();
-
-            /*
-             * Remove the reference to the copy_id in the borrow table
-             */
-
-            String removeBorrowReferenceQuery = "UPDATE borrow SET copy_id = NULL WHERE copy_id = ?";
-            PreparedStatement removeBorrowReferenceStatement = conn.prepareStatement(removeBorrowReferenceQuery);
-            removeBorrowReferenceStatement.setInt(1, copyId);
-            removeBorrowReferenceStatement.executeUpdate();
-
-            /*
-             * Remove the book from the library
-             */
-
-            String removeBookQuery = "DELETE FROM book_copy WHERE copy_id = ?";
-            PreparedStatement removeBookStatement = conn.prepareStatement(removeBookQuery);
-            removeBookStatement.setInt(1, copyId);
-            removeBookStatement.executeUpdate();
-
-            /*
-             * Freeze the account of the subscriber
-             */
-
-            freezeAccount(subscriberId, "Book: " + bookName + " copy id: " + copyId + " has been lost");
-
-            /*
-             * Update subscriber history
-             */
-
-            updateHistory(subscriberId, "lost", "Book: " + bookName + " copy id: " + copyId + " has been lost");
-
-            /*
-             * Add the new entry to the monthly report
-             */
-
-            addNewEntryToMonthlyReport("borrowTime", new ReportEntry(new java.util.Date(), "lost", bookName));
-
-            /*
-             * Commit the transaction
-             */
-
-            conn.commit();
-            response.add("true");
-            response.add("Book has been marked as lost");
-        } catch (SQLException e) {
-            try {
-                // Rollback the transaction in case of an error
-                conn.rollback();
-            } catch (SQLException rollbackEx) {
-                System.out.println("Error: Rolling back transaction" + rollbackEx);
-            }
-            System.out.println("Error: Marking book as lost" + e);
-            response.add("false");
-            response.add("Problem with marking the book as lost");
-        } finally {
-            try {
-                // Turn auto-commit back on
-                conn.setAutoCommit(true);
-            } catch (SQLException ex) {
-                System.out.println("Error: Setting auto-commit back to true" + ex);
-            }
-        }
-        return response;
     }
 }
