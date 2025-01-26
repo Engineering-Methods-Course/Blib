@@ -13,16 +13,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="viewSubscriberProfileLibrarian" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.WatchProfileFrameController">
-    <Label alignment="CENTER" prefHeight="88.0" prefWidth="1677.0" styleClass="title" text="PROFILE">
+<VBox fx:id="viewSubscriberProfileLibrarian" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.WatchProfileFrameController">
+    <Label alignment="CENTER" prefHeight="88.0" prefWidth="1677.0" styleClass="title" text=" SUBSCIBER PROFILE">
         <font>
             <Font size="60.0" />
         </font>
     </Label>
-    <!-- Header Pane -->
-    <AnchorPane prefHeight="43.0">
-        <!-- Header content can go here -->
-    </AnchorPane>
 
     <!-- Main Content Pane with VGrow Property for Resizing -->
     <AnchorPane prefHeight="794.0" prefWidth="1342.0" VBox.vgrow="ALWAYS">

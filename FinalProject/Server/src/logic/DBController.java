@@ -19,7 +19,9 @@ public class DBController {
     private static NotificationController notificationController;
     public Connection conn = null;
 
-
+    /**
+     * This method creates an instance of the DBController
+     */
     private DBController() {
         connectToDb();
     }
@@ -769,7 +771,7 @@ public class DBController {
                     response.add("Cannot extend the return date due to having more than a week left");
                     return response;
                 }
-                if(daysDiff < 1){
+                if (daysDiff < 0) {
                     response.add("false");
                     response.add("Cannot extend the return date due to the book already being late");
                     return response;
@@ -1857,7 +1859,7 @@ public class DBController {
             addNewEntryToMonthlyReport("borrowTime", new ReportEntry(new java.util.Date(), "extend", bookName));
 
             /*
-            * notify the subscriber
+             * notify the subscriber
              */
             notificationController.sendSMSSimulator(subscriberId, "Return date for the book: " + bookName + " copy ID: " + copyId + " was extended by librarian " + librarianName + " to " + newReturnDate);
 
@@ -2169,6 +2171,7 @@ public class DBController {
     /**
      * case 320
      * This method returns a subscribers active reserves
+     *
      * @param subscriberId The subscriber ID
      * @return ArrayList<ActiveReserves> containing the active reserves of a specific subscriber or null
      */
@@ -2587,6 +2590,7 @@ public class DBController {
                              * Update subscriber history
                              */
                             updateHistory(subscriberId, "unfrozen", "Account was unfrozen");
+                            System.out.println("Subscriber: " + subscriberId + " was unfrozen");
                         }
                     }
                 }
