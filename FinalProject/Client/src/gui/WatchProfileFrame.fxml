@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="viewSubscriberProfileLibrarian" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.WatchProfileFrameController">
+<VBox fx:id="viewSubscriberProfileLibrarian" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@MainFrame.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.WatchProfileFrameController">
    <Label alignment="CENTER" prefHeight="88.0" prefWidth="1677.0" styleClass="title" text="PROFILE">
       <font>
          <Font size="60.0" />
@@ -25,6 +25,13 @@
 
     <!-- Main Content Pane with VGrow Property for Resizing -->
     <AnchorPane prefHeight="794.0" prefWidth="1342.0" VBox.vgrow="ALWAYS">
+      <TableView layoutX="385.0" layoutY="15.0" prefHeight="770.0" prefWidth="1259.0">
+        <columns>
+          <TableColumn maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Date" />
+          <TableColumn maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Action" />
+            <TableColumn maxWidth="766.0" minWidth="766.0" prefWidth="766.0" text="Description" />
+        </columns>
+      </TableView>
         <!-- Borrowed Books Table with VGrow for resizing -->
         <TableView fx:id="borrowsTable" layoutX="385.0" layoutY="14.0" prefHeight="801.0" prefWidth="1267.0" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="385.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="14.0">
             <columns>
