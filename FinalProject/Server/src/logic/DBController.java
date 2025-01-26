@@ -2204,7 +2204,6 @@ public class DBController {
                 }
 
                 ActiveReserves activeReserve = new ActiveReserves(serialNumber, bookName, reserveDate);
-
                 activeReserves.add(activeReserve);
             }
 

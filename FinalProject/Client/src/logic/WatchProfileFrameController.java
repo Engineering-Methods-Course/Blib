@@ -1,10 +1,7 @@
 package logic;
 
-import common.SubscriberHistory;
+import common.*;
 import main.ClientGUIController;
-import common.BorrowedBook;
-import common.ClientServerMessage;
-import common.Subscriber;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -39,6 +36,7 @@ public class WatchProfileFrameController
     @FXML
     public RadioButton rdReserves;
 
+
     @FXML
     private Text txtFullName;
     @FXML
@@ -69,6 +67,14 @@ public class WatchProfileFrameController
     @FXML
     public TableColumn<SubscriberHistory, String> descriptionColumn;
 
+    @FXML
+    public TableView<ActiveReserves> tblReserves;
+    @FXML
+    public TableColumn<ActiveReserves,String> clmnSerialNumber;
+    @FXML
+    public TableColumn<ActiveReserves,String> clmnBookName;
+    @FXML
+    public TableColumn<ActiveReserves,String> clmnReserveDate;
 
 
     private static String previousFrame;
@@ -106,8 +112,6 @@ public class WatchProfileFrameController
         });
         // Ensure a default state
         rdBorrowedBooks.setSelected(true);
-
-
     }
 
     /**
@@ -160,10 +164,11 @@ public class WatchProfileFrameController
     private void requestReserves(int userID)
     {
         // Create a message with code 210 and userID
-        ClientServerMessage message = new ClientServerMessage(7777, userID);
+        ClientServerMessage message = new ClientServerMessage(320, userID);
 
         // Send the message to the server
         ClientGUIController.chat.sendToServer(message);
+
     }
 
     /**
@@ -174,9 +179,11 @@ public class WatchProfileFrameController
     public void loadBorrowsTable(ArrayList<BorrowedBook> borrowedBooks) {
         //set borrow table to visible and the rest
         borrowsTable.setVisible(true);
-        tblHistory.setVisible(false);
         borrowsTable.setManaged(true);
+        tblHistory.setVisible(false);
         tblHistory.setManaged(false);
+        tblReserves.setVisible(false);
+        tblReserves.setManaged(false);
 
 
         // Set up the borrowed books table columns
@@ -249,9 +256,11 @@ public class WatchProfileFrameController
     {
         //set borrow table to visible and the rest
         borrowsTable.setVisible(false);
-        tblHistory.setVisible(true);
         borrowsTable.setManaged(false);
+        tblHistory.setVisible(true);
         tblHistory.setManaged(true);
+        tblReserves.setVisible(false);
+        tblReserves.setManaged(false);
 
         // set up the table to accept SubscriberHistory objects
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -274,6 +283,30 @@ public class WatchProfileFrameController
 
         // set the items in the table
         tblHistory.getItems().setAll(subscriberHistoryList);
+    }
+
+    /**
+     * Load the reserves into the table
+     *
+     * @param reservedBooks The list of reserved books
+     */
+    public void loadReservesTable(ArrayList<ActiveReserves> reservedBooks) {
+
+        //set borrow table to visible and the rest
+        borrowsTable.setVisible(false);
+        borrowsTable.setManaged(false);
+        tblHistory.setVisible(false);
+        tblHistory.setManaged(false);
+        tblReserves.setVisible(true);
+        tblReserves.setManaged(true);
+
+        // Set up the reserve table columns
+        clmnSerialNumber.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
+        clmnBookName.setCellValueFactory(new PropertyValueFactory<>("bookName"));
+        clmnReserveDate.setCellValueFactory(new PropertyValueFactory<>("reserveDate"));
+        // Adds the reserved books to the table
+        tblReserves.getItems().setAll(reservedBooks);
+
     }
 
 

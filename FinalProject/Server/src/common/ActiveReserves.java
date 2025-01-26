@@ -1,8 +1,9 @@
 package common;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ActiveReserves {
+public class ActiveReserves implements Serializable {
 
     private int serialNumber;
     private String bookName;
@@ -40,7 +41,7 @@ public class ActiveReserves {
      * Get the copy ID of the book
      * @return the copy ID of the book
      */
-    public int getCopyID() {
+    public int getSerialNumber() {
         return serialNumber;
     }
 }

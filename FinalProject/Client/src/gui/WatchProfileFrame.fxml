@@ -26,6 +26,13 @@
 
     <!-- Main Content Pane with VGrow Property for Resizing -->
     <AnchorPane prefHeight="794.0" prefWidth="1342.0" VBox.vgrow="ALWAYS">
+      <TableView fx:id="tblReserves" layoutX="385.0" layoutY="14.0" prefHeight="777.0" prefWidth="1260.0">
+        <columns>
+          <TableColumn fx:id="clmnSerialNumber" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Serial Number" />
+          <TableColumn fx:id="clmnBookName" maxWidth="505.0" minWidth="505.0" prefWidth="505.0" text="Book Name" />
+            <TableColumn fx:id="clmnReserveDate" maxWidth="505.0" minWidth="505.0" prefWidth="505.0" text="Reserve Date" />
+        </columns>
+      </TableView>
         <TableView fx:id="tblHistory" layoutX="385.0" layoutY="15.0" prefHeight="770.0" prefWidth="1259.0">
             <columns>
                 <TableColumn fx:id="dateColumn" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Date" />

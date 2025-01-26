@@ -108,17 +108,13 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof User)
                         {
                             User user = (User) message.getMessageContent();
-                            /*
-                             * If the user is a subscriber, set the local instance of Subscriber to it
-                             */
+                            //if the user is a subscriber, set the local instance of Subscriber to it
                             if (user instanceof Subscriber)
                             {
                                 Subscriber subscriberFromServer = (Subscriber) user;
                                 Subscriber.setLocalSubscriber(subscriberFromServer);
                             }
-                            /*
-                             * If the user is a librarian, set the local instance of Librarian to it
-                             */
+                            //if the user is a librarian, set the local instance of Librarian to it
                             else if (user instanceof Librarian)
                             {
                                 Librarian librarianFromServer = (Librarian) user;
@@ -131,9 +127,7 @@ public class ClientController extends AbstractClient
                      * In: String message
                      */
                     case 107:
-                        /*
-                         * display an error if the message content is null
-                         */
+                        //display an error if the message content is null
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Could not get message");
@@ -150,9 +144,7 @@ public class ClientController extends AbstractClient
                      * In: ArrayList<Book> or null
                      */
                     case 201:
-                        /*
-                         * display an error if the message content is null
-                         */
+                        //display an error if the message content is null
                         if (message.getMessageContent() == null)
                         {
                             System.out.println("Book not found");
@@ -163,15 +155,11 @@ public class ClientController extends AbstractClient
                         {
                             if (message.getMessageContent() instanceof ArrayList)
                             {
-                                /*
-                                 * Indicate that the search results were successful by setting the flag to true.
-                                 */
+                                //Indicate that the search results were successful by setting the flag to true.
                                 SearchPageFrameController.changeCanSearch(true);
                                 @SuppressWarnings("unchecked") ArrayList<Book> bookList = (ArrayList<Book>) message.getMessageContent();
 
-                                /*
-                                 * pass the list of books to the searchResultFrameController
-                                 */
+                                //pass the list of books to the searchResultFrameController
                                 SearchResultFrameController.setBookArray(bookList);
                             }
                         }
@@ -208,7 +196,7 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof ArrayList)
                         {
                             @SuppressWarnings("unchecked") ArrayList<String> details = (ArrayList<String>) message.getMessageContent();
-                             // if the book order process ended successfully shows a correct message for it
+                            //if the book order process ended successfully shows a correct message for it
                             if (details.get(0).equals("true"))
                             {
                                 Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Book ordered", "Book was ordered"));
@@ -601,6 +589,18 @@ public class ClientController extends AbstractClient
                             }
                         }
                         break;
+//i will get arraylist of active reserve(class) or null if nothing
+                    case 321:
+                        @SuppressWarnings("unchecked") ArrayList<ActiveReserves> messages = (ArrayList<ActiveReserves>) message.getMessageContent();
+                        // Handle SubscriberProfileFrameController
+                        if (loader.getController().getClass().getSimpleName().equals("WatchProfileFrameController"))
+                        {
+                            WatchProfileFrameController controllerFromLibrarianFrames = loader.getController();
+                            controllerFromLibrarianFrames.loadReservesTable(messages);
+                        }
+
+                        break;
+                    // The Server has closed its connection
                     /*
                      * Do: Display messages that the server was closed
                      * In: null
