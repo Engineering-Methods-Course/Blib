@@ -108,6 +108,7 @@ public class NotificationController {
      * This method sends an email to the recipient
      *
      * @param recipientEmail the recipient of the email
+     * @param recipientID    the recipient ID
      * @param subject        the subject of the email
      * @param text           the text of the email
      */

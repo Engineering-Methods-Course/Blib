@@ -46,10 +46,10 @@ public class DBController {
     }
 
     /**
-     * This method converts a Blob to a List<ArrayList<String>>
+     * This method converts a Blob to a List of array lists of strings
      *
      * @param blob The Blob
-     * @return List<ArrayList < String>>
+     * @return List of array lists of strings
      * @throws IOException            If an error occurs
      * @throws SQLException           If an error occurs
      * @throws ClassNotFoundException If an error occurs
@@ -78,9 +78,9 @@ public class DBController {
     }
 
     /**
-     * This method converts a List<ArrayList<String>> to a Blob
+     * This method converts a List of array lists of strings to a Blob
      *
-     * @param data The List<ArrayList<String>> data
+     * @param data The List of array lists of strings data
      * @return Blob
      * @throws IOException  If an error occurs
      * @throws SQLException If an error occurs
@@ -388,6 +388,7 @@ public class DBController {
      * case 204
      * This method gets the list of all books in the system by description
      *
+     *@param text The text to search for in the description
      * @return The arraylist of all books
      */
     public ArrayList<Book> searchBookByDescription(String text) {
@@ -1901,7 +1902,7 @@ public class DBController {
      * This method return an array list containing a log of the subscribers borrow histories between two time frames
      *
      * @param messageContent The time frames
-     * @return ArrayList<MonthlyReport> containing the logs
+     * @return arraylist of MonthlyReport containing the logs
      */
     public ArrayList<MonthlyReport> exportBorrowTimeLogs(List<java.util.Date> messageContent) {
 
@@ -1953,7 +1954,7 @@ public class DBController {
      * This method return an array list containing a log of the subscribers status abnormalities between two time frames
      *
      * @param messageContent The time frames
-     * @return ArrayList<MonthlyReport> containing the logs
+     * @return ArrayList MonthlyReport containing the logs
      */
     public ArrayList<MonthlyReport> exportSubscriberStatusLogs(List<java.util.Date> messageContent) {
 
@@ -2006,7 +2007,7 @@ public class DBController {
      * case 316
      * This method returns all the librarian messages
      *
-     * @return ArrayList<String> containing the messages
+     * @return ArrayList String containing the messages
      */
     public List<ArrayList<String>> ViewLibrarianMessages() {
 
@@ -2173,7 +2174,7 @@ public class DBController {
      * This method returns a subscribers active reserves
      *
      * @param subscriberId The subscriber ID
-     * @return ArrayList<ActiveReserves> containing the active reserves of a specific subscriber or null
+     * @return ArrayList ActiveReserves containing the active reserves of a specific subscriber or null
      */
     public ArrayList<ActiveReserves> viewActiveReserves(int subscriberId) {
         try {
@@ -2408,7 +2409,7 @@ public class DBController {
      * This method checks if there are messages for the subscriber and returns them
      *
      * @param subscriberID The ID of the subscriber
-     * @return ArrayList<String>
+     * @return ArrayList String
      */
     public ArrayList<String> checkSubscriberMessages(int subscriberID) {
         ArrayList<String> messages = new ArrayList<>();
@@ -2444,7 +2445,7 @@ public class DBController {
     /**
      * This method checks if there are messages for the librarian and returns them
      *
-     * @return ArrayList<String>
+     * @return ArrayList String
      */
     public ArrayList<String> checkLibrarianMessages() {
 
@@ -2562,6 +2563,8 @@ public class DBController {
 
     /**
      * This method unfreezes a subscriber account
+     * 
+     * @return Runnable
      */
     public Runnable unfreezeAccount() {
         return () -> {

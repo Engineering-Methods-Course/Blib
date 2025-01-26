@@ -97,7 +97,6 @@ public class ServerController extends AbstractServer {
      *
      * @param msg    The message received from the client. (msg contains the id of the message and the message content)
      * @param client The connection from which the message originated.
-     * @param
      */
     @Override
     protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
