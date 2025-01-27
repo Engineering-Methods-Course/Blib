@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@../css/MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ViewMessagesFrameController">
+    <Label alignment="CENTER" layoutX="-3.0" layoutY="13.0" prefHeight="114.0" prefWidth="1677.0" styleClass="title" text="VIEW MESSAGES" />
+
+    <!-- TableView for messages -->
+    <TableView fx:id="messagesTableView" layoutX="32.0" layoutY="204.0" prefHeight="675.0" prefWidth="1600.0">
+        <columns>
+            <TableColumn fx:id="dateColumn" maxWidth="251.0" minWidth="251.0" prefWidth="251.0" text="Date" />
+            <TableColumn fx:id="contentColumn" maxWidth="1347.0" minWidth="1347.0" prefWidth="1347.0" text="Content" />
+        </columns>
+    </TableView>
+
+</AnchorPane>

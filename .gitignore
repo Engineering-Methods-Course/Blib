@@ -210,5 +210,14 @@ RemoteSystemsTempFiles/
 # remove manifest.mf files
 *.MF
 
-# Allow to add mysql connection jar
+# Allow to add project jars
 !mysql-connector-java-8.0.13.jar
+!javax.mail.jar
+!dotenv-java-2.2.0.jar
+
+# CSV files
+*.CSV
+
+#.env
+.env
+

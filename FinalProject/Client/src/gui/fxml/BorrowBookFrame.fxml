@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" stylesheets="@../css/MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.BorrowBookFrameController">
+    <Region prefHeight="192.0" prefWidth="1677.0" />
+    <Label alignment="CENTER" layoutX="560.0" layoutY="158.0" prefHeight="88.0" prefWidth="1678.0" styleClass="title" text="BORROW BOOK" />
+    <AnchorPane prefHeight="157.0" prefWidth="1677.0">
+      <Label layoutX="573.0" layoutY="69.0" prefHeight="46.0" prefWidth="170.0" styleClass="label" text="Book Copy ID:">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+        <TextField fx:id="bookIDTextField" layoutX="815.0" layoutY="69.0" prefHeight="50.0" prefWidth="378.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="814.0" AnchorPane.rightAnchor="485.0" AnchorPane.topAnchor="63.0">
+            <font>
+                <Font size="23.0" />
+            </font>
+        </TextField>
+      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="520.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/icons8-book-50.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="ErrorBookID" alignment="CENTER" layoutX="520.0" layoutY="130.0" prefHeight="29.0" prefWidth="672.0" text="Book ID Error" visible="false" />
+    </AnchorPane>
+    <AnchorPane prefHeight="143.0" prefWidth="1678.0">
+      <Label layoutX="572.0" layoutY="46.0" prefHeight="46.0" prefWidth="170.0" styleClass="label" text="Subscriber ID:">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+        <TextField fx:id="subscriberIDTextField" layoutX="814.0" layoutY="46.0" prefHeight="50.0" prefWidth="378.0" AnchorPane.leftAnchor="814.0" AnchorPane.rightAnchor="485.0">
+            <font>
+                <Font size="23.0" />
+            </font>
+        </TextField>
+      <Label fx:id="ErrorSubscriberID" alignment="CENTER" layoutX="520.0" layoutY="107.0" prefHeight="29.0" prefWidth="672.0" text="Subscriber ID Error" visible="false" />
+      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="520.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/account.png" />
+         </image>
+      </ImageView>
+    </AnchorPane>
+    <AnchorPane prefHeight="143.0" prefWidth="1678.0">
+      <Label layoutX="572.0" layoutY="51.0" styleClass="label" text="Return Date:">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="520.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/date.png" />
+         </image>
+      </ImageView>
+        <DatePicker fx:id="returnDatePicker" layoutX="815.0" layoutY="36.0" prefHeight="50.0" prefWidth="182.0" AnchorPane.bottomAnchor="47.2" AnchorPane.leftAnchor="815.0" AnchorPane.rightAnchor="685.8" AnchorPane.topAnchor="36.0" />
+    </AnchorPane>
+    <AnchorPane prefHeight="124.0" prefWidth="1280.0">
+      <children>
+           <Button fx:id="borrowButton" layoutX="746.0" layoutY="35.0" mnemonicParsing="false" onAction="#borrowButtonClicked" prefHeight="50.0" prefWidth="186.0" text="Borrow" AnchorPane.bottomAnchor="56.19999999999999" AnchorPane.leftAnchor="746.0" AnchorPane.rightAnchor="746.0" AnchorPane.topAnchor="35.0">
+               <font>
+                   <Font size="23.0" />
+               </font>
+           </Button>
+      </children></AnchorPane>
+    <Region prefHeight="107.0" prefWidth="1280.0" />
+</VBox>

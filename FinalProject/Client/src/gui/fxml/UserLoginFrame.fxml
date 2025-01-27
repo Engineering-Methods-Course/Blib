@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1087.0" prefWidth="1677.0" spacing="20.0" stylesheets="@../css/MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.UserLoginFrameController">
+   <AnchorPane prefHeight="697.0" prefWidth="1677.0">
+      <children>
+          <!-- Top label (Login) -->
+          <Label alignment="CENTER" layoutX="708.0" layoutY="-3.0" prefHeight="112.0" prefWidth="235.0" styleClass="title" text="LOGIN">
+            <font>
+               <Font size="10.0" />
+            </font>
+         </Label>
+            <Label alignment="CENTER" layoutX="594.0" layoutY="219.0" styleClass="label" text="Username" />
+            <TextField fx:id="txtUsername" layoutX="752.0" layoutY="212.0" prefHeight="36.0" prefWidth="220.0" />
+            <Label fx:id="lblUserNameError" alignment="CENTER" layoutX="530.0" layoutY="267.0" prefHeight="29.0" prefWidth="444.0" text="Username Error" visible="false" />
+            <Label alignment="CENTER" layoutX="594.0" layoutY="325.0" styleClass="label" text="Password" />
+            <PasswordField fx:id="txtPassword" layoutX="751.0" layoutY="318.0" prefHeight="36.0" prefWidth="222.0" />
+            <Label fx:id="lblPasswordError" alignment="CENTER" layoutX="530.0" layoutY="377.0" prefHeight="29.0" prefWidth="444.0" text="Password Error" visible="false" />
+      
+           <!-- Login Button -->
+           <Button fx:id="btnLogin" layoutX="770.0" layoutY="460.0" onAction="#clickLoginButton" prefHeight="34.0" prefWidth="137.0" text="Login">
+            <font>
+               <Font size="15.0" />
+            </font>
+         </Button>
+         <ImageView fitHeight="40.0" fitWidth="57.0" layoutX="527.0" layoutY="319.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../../resources/password.png" />
+            </image>
+         </ImageView>
+         <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="527.0" layoutY="213.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../../resources/account.png" />
+            </image>
+         </ImageView>
+      </children>
+   </AnchorPane>
+</VBox>
