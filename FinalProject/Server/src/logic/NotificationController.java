@@ -20,6 +20,7 @@ public class NotificationController {
     private static final HashMap<Integer, ConnectionToClient> subscriberClients = new HashMap<>();
     private static final HashMap<Integer, ConnectionToClient> librarianClients = new HashMap<>();
     private static volatile NotificationController instance;
+    private static Dotenv dotenv;
     private static DBController dbController;
     private final String from;
     private final String username;
@@ -35,7 +36,7 @@ public class NotificationController {
         /*
          * Load the .env file to get the email address and password
          */
-        Dotenv dotenv = Dotenv.load();
+        dotenv = Dotenv.configure().directory("./src/main/.env").load();
         from = dotenv.get("EMAIL_ADDRESS");
         username = dotenv.get("EMAIL_ADDRESS");
         password = dotenv.get("EMAIL_PASSWORD");
