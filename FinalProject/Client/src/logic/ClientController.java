@@ -13,6 +13,9 @@ import ocsf.client.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static main.ClientGUIController.showAlert;
 
@@ -139,7 +142,19 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof String)
                         {
                             String response = (String) message.getMessageContent();
-                            Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Message", response));                        }
+                            //Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Message", response));
+                            // Create a ScheduledExecutorService in order to have the user login before the msg is shown
+                            ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+
+                            // Schedule the task with a delay of 10 millisecond
+                            scheduler.schedule(() ->
+                                            Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Message", response)),
+                                    10, TimeUnit.MILLISECONDS
+                            );
+
+                            // Shut down the scheduler after the task is complete
+                            scheduler.shutdown();
+                        }
                         break;
                     /*
                      * Do: Show book search results to the user or display an error message
