@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Region?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1084.0" prefWidth="1674.0" stylesheets="@../css/MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.RegisterMemberFrameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1084.0" prefWidth="1674.0" stylesheets="@../css/MainFrame.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.RegisterMemberFrameController">
    <children>
          <Label fx:id="lblEmailError" alignment="CENTER" layoutX="554.0" layoutY="661.0" prefHeight="29.0" prefWidth="580.0" text="Email Error" visible="false" />
        <Label alignment="CENTER" layoutX="551.0" layoutY="77.0" styleClass="title" text="REGISTER MEMBER" />
@@ -62,7 +62,7 @@
          </graphic>
       </Label>
          <TextField fx:id="txtEmail" layoutX="510.0" layoutY="700.0" prefHeight="30.0" prefWidth="660.0" />
-         <Button layoutX="745.0" layoutY="811.0" onAction="#clickRegisterButton" prefHeight="50.0" prefWidth="200.0" text="Register" />
+         <Button layoutX="970.0" layoutY="814.0" onAction="#clickRegisterButton" prefHeight="50.0" prefWidth="200.0" text="Register" />
          <Label alignment="CENTER_RIGHT" layoutX="760.0" layoutY="231.0" prefHeight="40.0" prefWidth="164.0" styleClass="label" text="Username:" textAlignment="CENTER">
          <graphic>
             <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
@@ -75,5 +75,6 @@
    
           <!-- Spacer to push the "Back" button to the bottom -->
        <Region />
+      <Button fx:id="Clearbtn" layoutX="510.0" layoutY="814.0" mnemonicParsing="false" onAction="#clickClearButton" prefHeight="50.0" prefWidth="200.0" text="Clear" />
    </children>
 </AnchorPane>

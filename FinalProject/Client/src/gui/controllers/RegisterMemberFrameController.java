@@ -163,6 +163,31 @@ public class RegisterMemberFrameController
 
         // Send the message to the server
         ClientGUIController.chat.sendToServer(message);
+        clickClearButton();
+    }
+
+
+    public void clickClearButton() {
+        // Clear all text fields
+        txtUsername.clear();
+        txtFirstName.clear();
+        txtLastName.clear();
+        txtPhone.clear();
+        txtEmail.clear();
+
+        // Reset the style for all text fields
+        txtUsername.setStyle(null);
+        txtFirstName.setStyle(null);
+        txtLastName.setStyle(null);
+        txtPhone.setStyle(null);
+        txtEmail.setStyle(null);
+
+        // Hide all error labels
+        lblUserNameError.setVisible(false);
+        lblNameError.setVisible(false);
+        lblLastNameError.setVisible(false);
+        lblPhoneError.setVisible(false);
+        lblEmailError.setVisible(false);
     }
 
     /**
