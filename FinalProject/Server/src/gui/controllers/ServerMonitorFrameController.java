@@ -7,15 +7,14 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import ocsf.server.ConnectionToClient;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.*;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+
+import java.net.URL;
 import java.util.*;
 
 public class ServerMonitorFrameController {
@@ -25,6 +24,8 @@ public class ServerMonitorFrameController {
     private final Property<ObservableList<List<String>>> serverMonitorListProperty = new SimpleObjectProperty<>(serverMonitorList);
     private final Map<ConnectionToClient, Integer> clientMap = new HashMap<>();
     public TextArea consoleTextArea;
+    public Label LocalIP;
+    public Label ExternalIP;
 
     // FXML elements for the server monitor table
     @FXML
@@ -63,6 +64,23 @@ public class ServerMonitorFrameController {
         PrintStream ps = new PrintStream(console, true);
         System.setOut(ps);
         System.setErr(ps);
+
+        try (final DatagramSocket socket = new DatagramSocket())
+        {
+            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+            LocalIP.setText("Server IP: " + socket.getLocalAddress().getHostAddress());
+        }
+        catch (Exception ignored)
+        {
+        }
+        try {
+            URL url = new URL("http://checkip.amazonaws.com");
+            BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+            String ip = br.readLine();
+            ExternalIP.setText("External IP: " + ip);
+        } catch (Exception ignored)
+        {
+        }
 
 
     }

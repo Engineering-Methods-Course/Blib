@@ -69,6 +69,7 @@ public class ServerController extends AbstractServer {
         System.out.println("Server listening for connections on port " + getPort());
         // connect to the database (get instance)
         this.dbController = DBController.getInstance();
+        this.dbController.verifyTasks();
     }
 
     /**
