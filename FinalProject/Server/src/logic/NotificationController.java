@@ -36,7 +36,7 @@ public class NotificationController {
         /*
          * Load the .env file to get the email address and password
          */
-        dotenv = Dotenv.configure().directory("./src/main/.env").load();
+        dotenv = Dotenv.configure().load();
         from = dotenv.get("EMAIL_ADDRESS");
         username = dotenv.get("EMAIL_ADDRESS");
         password = dotenv.get("EMAIL_PASSWORD");
