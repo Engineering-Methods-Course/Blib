@@ -66,7 +66,7 @@ public class BorrowBookFrameController {
 
             else if ("false".equals(status)) {
                 String explanation = msg.size() > 1 ? msg.get(1) : "Unknown error occurred.";
-                showAlert(Alert.AlertType.ERROR, "Borrow Failed", "Reason: " + explanation);
+                showAlert(Alert.AlertType.ERROR, "Borrow Failed", "Can't borrow, reason: " + explanation);
             }
 
             /*

@@ -153,7 +153,7 @@ public class HandleBorrowedBookFrameController
             else if ("false".equals(status))
             {
                 String explanation = msg.size() > 1 ? msg.get(1) : "Unknown error occurred.";
-                showAlert(Alert.AlertType.ERROR, "Extension Failed", "Reason: " + explanation);
+                showAlert(Alert.AlertType.ERROR, "Extension Failed", "Can't extend, reason: " + explanation);
             }
             else
             {
