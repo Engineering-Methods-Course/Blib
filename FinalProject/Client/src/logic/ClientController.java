@@ -306,7 +306,7 @@ public class ClientController extends AbstractClient
                             if (newDetails.get(0).equals("true"))
                             {
                                 updateSubscriberDetails(newDetails);
-                                Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Update successful", "Subscriber details updated successfully"));
+                                Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Update successful", "Subscriber details updated successfully, Please reconnect to apply the changes. "));
                             }
                             else
                             {
