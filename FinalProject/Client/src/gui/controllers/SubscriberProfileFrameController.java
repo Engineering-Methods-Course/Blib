@@ -143,6 +143,8 @@ public class SubscriberProfileFrameController
         tblReserves.setVisible(false);
         tblReserves.setManaged(false);
 
+        // Clear the table
+        borrowsTable.getItems().clear();
 
         // Set up the borrowed books table columns
         bookNameColumn.setCellValueFactory(new PropertyValueFactory<>("bookName"));

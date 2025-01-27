@@ -14,6 +14,7 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class NotificationController {
 
     private static final HashMap<Integer, ConnectionToClient> subscriberClients = new HashMap<>();
@@ -47,6 +48,7 @@ public class NotificationController {
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.host", host);
         properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.ssl.trust", host);
         /*
          * Create an authenticator object to authenticate the email
          */
@@ -130,7 +132,6 @@ public class NotificationController {
             System.out.println("Email sent successfully");
         } catch (MessagingException e) {
             System.out.println("Error sending email" + e.getMessage());
-            throw new RuntimeException(e);
 
         }
     }

@@ -2,10 +2,12 @@ package logic;
 
 import common.*;
 import gui.controllers.*;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
+import javafx.util.Duration;
 import ocsf.client.*;
 
 import java.io.*;
@@ -24,10 +26,10 @@ public class ClientController extends AbstractClient
     /**
      * Constructs an instance of the chat client.
      *
-     * @param host     The server to connect to.
-     * @param port     The port number to connect on.
-     * @param clientUI The interface type variable.
-     * @param loader   The loader for the FXML file.
+     * @param host         The server to connect to.
+     * @param port         The port number to connect on.
+     * @param clientUI     The interface type variable.
+     * @param loader       The loader for the FXML file.
      * @throws IOException If an error occurs.
      */
     public ClientController(String host, int port, ChatIF clientUI, FXMLLoader loader) throws IOException
@@ -137,8 +139,7 @@ public class ClientController extends AbstractClient
                         else if (message.getMessageContent() instanceof String)
                         {
                             String response = (String) message.getMessageContent();
-                            Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Message", response));
-                        }
+                            Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "Message", response));                        }
                         break;
                     /*
                      * Do: Show book search results to the user or display an error message

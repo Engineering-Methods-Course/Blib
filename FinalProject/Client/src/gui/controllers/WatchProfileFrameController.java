@@ -186,6 +186,8 @@ public class WatchProfileFrameController
         tblReserves.setVisible(false);
         tblReserves.setManaged(false);
 
+        //clear the table from old data
+        borrowsTable.getItems().clear();
 
         // Set up the borrowed books table columns
         bookNameColumn.setCellValueFactory(new PropertyValueFactory<>("bookName"));
