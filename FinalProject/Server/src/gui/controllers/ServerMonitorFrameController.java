@@ -65,6 +65,7 @@ public class ServerMonitorFrameController {
         System.setOut(ps);
         System.setErr(ps);
 
+        // Get the local and external IP addresses
         try (final DatagramSocket socket = new DatagramSocket())
         {
             socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
