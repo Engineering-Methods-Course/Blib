@@ -541,7 +541,7 @@ public class DBController {
             if (checkSubscriberRs.next()) {
                 if (checkSubscriberRs.getInt("status") == 1) {
                     response.add("false");
-                    response.add("Subscriber is frozen");
+                    response.add("Can't reserve the book subscriber is frozen");
                     return response;
                 }
             } else {
