@@ -166,7 +166,9 @@ public class RegisterMemberFrameController
         clickClearButton();
     }
 
-
+    /**
+     * Handles the Clear button click event.
+     */
     public void clickClearButton() {
         // Clear all text fields
         txtUsername.clear();
