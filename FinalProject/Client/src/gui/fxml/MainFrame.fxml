@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../css/MainFrame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.MainFrameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../css/MainFrame.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.MainFrameController">
     <AnchorPane fx:id="menu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="256.0" styleClass="menu" stylesheets="@/gui/css/MainFrame.css">
         <Text fx:id="UsernameText" layoutX="1.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="name" textAlignment="CENTER" wrappingWidth="254.13672351837158">
             <font>
@@ -51,14 +51,14 @@
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="returnButton" alignment="CENTER" contentDisplay="TOP" layoutX="1.0" layoutY="104.0" mnemonicParsing="false" onAction="#returnBook" prefHeight="86.0" prefWidth="253.0" styleClass="buttonCheck" stylesheets="@/gui/css/MainFrame.css" text="Return">
+            <Button fx:id="returnButton" alignment="CENTER" contentDisplay="TOP" layoutX="1.0" layoutY="104.0" mnemonicParsing="false" onAction="#returnBook" prefHeight="86.0" prefWidth="253.0" styleClass="buttonCheck" stylesheets="@/gui/css/MainFrame.css" text="Return Book">
                 <graphic>
                     <ImageView fitHeight="39.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                         <Image url="@../../resources/icons8-return-50.png" />
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="borrowButton" alignment="CENTER" contentDisplay="TOP" layoutX="1.0" layoutY="1.0" mnemonicParsing="false" onAction="#loadBorrow" prefHeight="86.0" prefWidth="254.0" styleClass="buttonCheck" stylesheets="@/gui/css/MainFrame.css" text="Borrow">
+            <Button fx:id="borrowButton" alignment="CENTER" contentDisplay="TOP" layoutX="1.0" layoutY="1.0" mnemonicParsing="false" onAction="#loadBorrow" prefHeight="86.0" prefWidth="254.0" styleClass="buttonCheck" stylesheets="@/gui/css/MainFrame.css" text="Borrow Book">
                 <graphic>
                     <ImageView fitHeight="39.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                         <Image url="@../../resources/icons8-book-50.png" />
