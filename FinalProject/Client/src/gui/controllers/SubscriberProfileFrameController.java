@@ -245,12 +245,6 @@ public class SubscriberProfileFrameController
      */
     public void extendBorrowButtonClicked(BorrowedBook selectedBook)
     {
-        // Check if a book is selected
-        if (selectedBook == null)
-        {
-            showAlert(Alert.AlertType.ERROR, "Error", "Please select a book to extend.");
-            return;
-        }
 
         // Extract subscriberID and copyID from the selected book
         ClientServerMessage message = getClientServerMessage(selectedBook);
@@ -313,7 +307,7 @@ public class SubscriberProfileFrameController
             {
                 // Extract explanation if available
                 String explanation = msg.size() > 1 ? msg.get(1) : "Unknown error occurred.";
-                showAlert(Alert.AlertType.ERROR, "Extension Failed", "Reason: " + explanation);
+                showAlert(Alert.AlertType.ERROR, "Extension Failed", "Can't extend, reason: " + explanation);
             }
             // Show an error message if the response format is unexpected
             else
