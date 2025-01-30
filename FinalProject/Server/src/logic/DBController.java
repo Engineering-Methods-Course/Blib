@@ -736,10 +736,6 @@ public class DBController {
                 if (getBookNameRs.next()) {
                     bookName = getBookNameRs.getString("name");
                 }
-                System.out.println("TEST");
-                System.out.println(rs.getDate("borrowed_date").toString());
-                System.out.println(rs.getDate("expected_return_date").toString());
-                System.out.println("TEST");
                 BorrowedBook borrow = new BorrowedBook(rs.getInt("copy_id"), rs.getInt("subscriber_id"), bookName, rs.getDate("borrowed_date").toString(), rs.getDate("expected_return_date").toString(), rs.getDate("return_date") != null ? rs.getDate("return_date").toString() : null);
                 borrowedBooks.add(borrow);
 
